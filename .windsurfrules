@@ -1,0 +1,321 @@
+# LLM Response
+
+- use Korean, for Korean
+
+# General Code Style & Formatting
+
+- Follow the Airbnb Style Guide for code formatting.
+- Use KebabCase for React component file names (e.g., user-card.tsx , not UserCard.tsx).
+- Prefer named exports for components.
+
+# Project Structure & Architecture
+
+- Follow Next.js patterns and use the App Router.
+- Correctly determine when to use server vs. client components in Next.js.
+
+# Styling & UI
+
+- Use Tailwind CSS for styling.
+- Use Shadcn UI for components.
+
+# Data Fetching & Forms
+
+- Use TanStack Query (react-query) for frontend data fetching.
+- Use React Hook Form for form handling.
+- Use Zod for validation.
+
+# State Management & Logic
+
+- Use React Context
+- use zustand
+
+# Backend & Database
+
+- firebase
+
+# General Code Style & Formatting
+
+- Use English for all code and documentation.
+- Always declare the type of each variable and function (parameters and return value).
+- Avoid using any.
+- Create necessary types.
+- Use JSDoc to document public classes and methods.
+- Don't leave blank lines within a function.
+- One export per file.
+
+# Naming Conventions
+
+- Use PascalCase for classes.
+- Use camelCase for variables, functions, and methods.
+- Use kebab-case for file and directory names.
+- Use UPPERCASE for environment variables.
+- Avoid magic numbers and define constants.
+
+# Functions & Logic
+
+- Keep functions short and single-purpose (<20 lines).
+- Avoid deeply nested blocks by:
+- Using early returns.
+- Extracting logic into utility functions.
+- Use higher-order functions (map, filter, reduce) to simplify logic.
+- Use arrow functions for simple cases (<3 instructions), named functions otherwise.
+- Use default parameter values instead of null/undefined checks.
+- Use RO-RO (Receive Object, Return Object) for passing and returning multiple parameters.
+
+# Data Handling
+
+- Avoid excessive use of primitive types; encapsulate data in composite types.
+- Avoid placing validation inside functions—use classes with internal validation instead.
+- Prefer immutability for data:
+- Use readonly for immutable properties.
+- Use as const for literals that never change.
+
+<!-- 🎯 핵심 기능 구성 (MVP 기준)
+기능 구분	상세 내용
+✅ 랜덤 번호 추첨	로또, 숫자 범위 추첨기 (예: 1~100 중 3개 추첨)
+✅ 이름 추첨기	여러 명 입력 → 랜덤 추첨 (경품 뽑기 등)
+✅ 자리 배정기	이름과 자리 수 입력 → 랜덤 자리 배정
+✅ 사다리 타기	기본 사다리 + 결과 입력 → 랜덤 결과
+✅ 로또 분석	회차별 당첨 번호, 자주 나온 번호 등
+✅ 결과 공유	결과 캡처 or 링크로 공유
+✅ 사용자 저장	자주 쓰는 이름 목록 저장 (로그인 기능 연계)
+
+광고 삽입	Google AdSense (PWA도 가능)
+통계 분석	Firebase Analytics 또는 Plausible.io (유료)
+
+🔮 추후 확장 아이디어
+기능	설명
+✅ 공유 URL 생성	특정 추첨 결과를 링크로 공유
+✅ 로그인 유저 기능	자주 쓰는 목록 저장, 즐겨찾기
+✅ 모바일 앱화	PWA 적용 또는 React Native 확장
+✅ 커스텀 테마	프리미엄 테마 (광고 제거 포함)
+✅ 챗GPT 연동	“오늘 뭐 먹지?” 추천 프롬프트 삽입 등
+
+💰 수익화 포인트
+수익 방식	예시
+광고 삽입	페이지 우측/하단 Google AdSense
+기능 제한	저장, 테마, 고급 분석 등은 로그인/구독 필요
+링크 후원	Buy Me a Coffee / Toss 후원 등
+결과 캡처 이미지에 워터마크 제거 (유료)	공유 이미지 커스터마이징 유료 -->
+
+# Project Rules
+
+## Core Features (MVP)
+
+### Random Number Generator
+
+- Lotto number generation
+- Custom range number picker (e.g., pick 3 numbers from 1-100)
+
+### Name Picker
+
+-Multiple name input
+-Random selection with winner count
+-Prize draw functionality
+
+### Seat Assignment
+
+-Input names and number of seats
+-Random seat allocation
+-Visual seat arrangement
+
+### Ladder Game
+
+-Customizable ladder
+-Input for participants and results
+-Animated drawing
+
+### Lotto Analysis
+
+-Past winning numbers
+-Frequency analysis
+-Number pattern statistics
+
+### Result Sharing
+
+-Screenshot functionality
+-Shareable links
+-Social media integration
+
+### User Data
+
+-Save frequently used lists
+-User authentication
+-Cloud sync
+
+## Technical Stack
+
+### Frontend
+
+- Next.js with App Router
+- TypeScript
+- Tailwind CSS + Shadcn UI
+- React Hook Form + Zod
+- TanStack Query
+
+### Backend
+
+- Firebase (Authentication, Firestore)
+- Serverless Functions
+
+### Analytics
+
+- Firebase Analytics
+- Plausible.io (alternative)
+
+## Monetization
+
+### Ads Integration
+
+- Google AdSense
+- In-app advertising
+
+### Premium Features
+
+- Ad-free experience
+- Custom themes
+- Advanced analytics
+- Watermark removal
+
+### Donations
+
+- Buy Me a Coffee
+- Toss Donation
+
+## Future Features
+
+### Enhanced Sharing
+
+- Custom shareable URLs
+- Rich previews
+
+### User Accounts
+
+- Saved lists
+- Favorites
+- History
+
+### Mobile Experience
+
+- PWA support
+- Mobile-optimized UI
+
+### AI Integration
+
+- ChatGPT-powered suggestions
+- Smart recommendations
+
+### UI/UX Guidelines
+
+- Design System
+- Light/Dark mode
+- Responsive layouts
+- Accessibility (a11y) compliant
+
+### Animations
+
+- Smooth transitions
+- Loading states
+- Interactive feedback
+
+## Development Rules
+
+### Code Quality
+
+- ESLint + Prettier
+- Airbnb style guide
+- TypeScript strict mode
+
+### Git Workflow
+
+- Feature branches
+- Conventional commits
+- PR reviews
+
+### Testing
+
+- Unit tests (Jest)
+- E2E tests (Cypress)
+- Component tests (React Testing Library)
+
+## Localization
+
+- Korean (default)
+- English (future)
+- i18n ready
+
+## Deployment
+
+-Vercel (primary)
+-Firebase Hosting (backup)
+-CI/CD with GitHub Actions
+
+## 🗺️ Development Roadmap
+
+### Phase 1: Planning & Setup
+
+1. **MVP 범위 확정**
+
+   - 주요 기능 우선순위 정하기
+   - MVP 기능 목록 확정
+
+2. **기본 구조 설정**
+
+   - 프로젝트 초기화 (Next.js + TypeScript)
+   - ESLint, Prettier, Husky 설정
+   - Git 저장소 초기화
+
+3. **UI/라우팅 설계**
+   - 페이지 구조 설계
+   - 공통 컴포넌트 구조 설계
+   - 전역 상태 관리 구조 설계
+
+### Phase 2: Core Features
+
+1. **Firebase 연동**
+
+   - Authentication 설정
+   - Firestore 설정
+   - 보안 규칙 구성
+
+2. **로또 추첨 기능 개발**
+
+   - 기본 로또 번호 생성기
+   - 사용자 지정 범위 번호 생성기
+   - 결과 저장 및 공유 기능
+
+3. **이름 추첨기 개발**
+   - 다중 이름 입력 기능
+   - 랜덤 추첨 로직
+   - 결과 표시 및 저장
+
+### Phase 3: Additional Features
+
+1. **자리 배정기 개발**
+2. **사다리 타기 게임 개발**
+3. **로또 분석 도구 개발**
+
+### Phase 4: Polish & Launch
+
+1. **UI/UX 개선**
+
+   - 반응형 디자인 최적화
+   - 다크 모드 지원
+   - 애니메이션 추가
+
+2. **테스트 및 버그 수정**
+
+   - 단위 테스트 작성
+   - 통합 테스트
+   - 성능 최적화
+
+3. **배포 및 모니터링**
+   - Vercel에 배포
+   - Google Analytics 연동
+   - 에러 모니터링 설정
+
+### Phase 5: Post-Launch
+
+1. **사용자 피드백 수집**
+2. **성능 모니터링**
+3. **지속적인 개선 및 업데이트**
