@@ -1,12 +1,16 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss';
+import animate from 'tailwindcss-animate';
+
+const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
-    './app/**/*.{js,ts,jsx,tsx}', // Next.js 13 이상일 때
+    './app/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [animate],
 };
+
+export default config;

@@ -2,8 +2,8 @@ import LottoRandomComponent from './components/lotto-random.component';
 
 export default function LottoPage() {
   return (
-    <div>
-      <h1>로또번호</h1>
+    <div className="@container">
+      <h1>랜덤 번호 추천</h1>
       <LottoRandomComponent />
     </div>
   );

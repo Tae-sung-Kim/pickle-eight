@@ -1,7 +1,14 @@
+'use client';
+import { Button } from '@/components/ui/button';
+
 export default function LottoRandomComponent() {
+  const handleRandomLottoNumber = () => {
+    console.log('1111');
+  };
+
   return (
-    <div>
-      <h1>랜덤로또 번호 생성</h1>
-    </div>
+    <Button variant="outline" onClick={handleRandomLottoNumber}>
+      랜덤번호 생성11
+    </Button>
   );
 }
