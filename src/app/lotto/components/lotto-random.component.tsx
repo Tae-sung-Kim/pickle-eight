@@ -1,9 +1,9 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import { CounterComponent } from '@/components/counter.component';
+
+import { Button, CounterComponent } from '@/components';
 import { useCallback, useState } from 'react';
 
-export default function LottoRandomComponent() {
+export function LottoRandomComponent() {
   const [orderCount, setOrderCount] = useState(1);
   const [lottoNumberList, setLottoNumberList] = useState<number[][]>([]);
 
@@ -59,3 +59,5 @@ export default function LottoRandomComponent() {
     </div>
   );
 }
+
+export default LottoRandomComponent;

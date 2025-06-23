@@ -165,3 +165,4 @@ export function CounterComponent({
 }
 
 CounterComponent.displayName = 'CounterComponent';
+export default CounterComponent;

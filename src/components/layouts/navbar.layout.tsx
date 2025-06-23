@@ -1,13 +1,8 @@
 'use client';
 
+import { MENU_LIST } from '@/constants';
 import { usePathname } from 'next/navigation';
 import { NavLinkComponent } from '../nav-link.component';
-
-const navItems = [
-  { href: '/lotto', label: '로또 번호' },
-  // { href: '/random-number', label: '숫자 뽑기' },
-  // { href: '/random-name', label: '이름 뽑기' },
-];
 
 export function NavbarLayout() {
   const pathname = usePathname();
@@ -16,7 +11,7 @@ export function NavbarLayout() {
     <nav className="hidden border-b md:block">
       <div className="container">
         <div className="flex h-16 items-center space-x-8">
-          {navItems.map((item) => (
+          {MENU_LIST.map((item) => (
             <NavLinkComponent
               key={item.href}
               href={item.href}
@@ -30,3 +25,5 @@ export function NavbarLayout() {
     </nav>
   );
 }
+
+export default NavbarLayout;

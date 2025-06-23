@@ -1,19 +1,26 @@
-export function FooterLayout() {
-  const currentYear = new Date().getFullYear();
+import Link from 'next/link';
 
+export function FooterLayout() {
   return (
-    <footer className="border-t py-8 md:py-12">
-      <div className="container">
+    <footer className="w-full border-t border-border/40 py-6">
+      <div className="px-4 sm:px-6">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-            <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-              &copy; {currentYear} Pickle. All rights reserved.
-            </p>
-          </div>
+          <p className="text-center text-sm text-muted-foreground">
+            © {new Date().getFullYear()} Pickle. All rights reserved.
+          </p>
           <div className="flex items-center space-x-4">
-            <p className="text-sm text-muted-foreground">
-              다양한 종류의 랜덤 뽑기 서비스
-            </p>
+            <Link
+              href="/terms"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              이용약관
+            </Link>
+            <Link
+              href="/privacy"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              개인정보처리방침
+            </Link>
           </div>
         </div>
       </div>
