@@ -28,7 +28,7 @@ type CounterProps = {
   inputClassName?: string;
 };
 
-export function Counter({
+export function CounterComponent({
   value: propValue,
   min = 1,
   max = 10,
@@ -163,3 +163,5 @@ export function Counter({
     </div>
   );
 }
+
+CounterComponent.displayName = 'CounterComponent';

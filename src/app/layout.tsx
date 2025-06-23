@@ -1,33 +1,28 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   title: 'Pickle',
   description: '다양한 종류의 랜덤 뽑기',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 };
+
+import { HeaderLayout } from '@/components/layouts/header.layout';
+import { FooterLayout } from '@/components/layouts/footer.layout';
+import { NavbarLayout } from '@/components/layouts/navbar.layout';
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="ko" className="h-full">
+      <body className="flex min-h-screen flex-col">
+        <HeaderLayout />
+        <NavbarLayout />
+        <main className="flex-1">{children}</main>
+        <FooterLayout />
       </body>
     </html>
   );

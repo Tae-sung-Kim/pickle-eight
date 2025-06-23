@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Counter } from '@/components/counter';
+import { CounterComponent } from '@/components/counter.component';
 import { useCallback, useState } from 'react';
 
 export default function LottoRandomComponent() {
@@ -37,7 +37,7 @@ export default function LottoRandomComponent() {
   return (
     <div className="space-y-4 p-4">
       <div className="flex items-center gap-4">
-        <Counter
+        <CounterComponent
           value={orderCount}
           min={1}
           max={99}
