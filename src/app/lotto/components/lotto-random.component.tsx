@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CounterComponent } from '@/components';
 import { useCallback, useState } from 'react';
+import LottoBallComponent from './lotto-ball.component';
+import { FaSpinner } from 'react-icons/fa';
+import { generateLottoNumbers } from '@/utils';
+import { cn } from '@/lib/utils';
 
 export function LottoRandomComponent() {
   const [orderCount, setOrderCount] = useState(1);
@@ -22,14 +26,6 @@ export function LottoRandomComponent() {
 
     const lottoNumberList: number[][] = [];
 
-    const generateLottoNumbers = (): number[] => {
-      const numbers = new Set<number>();
-      while (numbers.size < 6) {
-        numbers.add(Math.floor(Math.random() * 45) + 1);
-      }
-      return Array.from(numbers).sort((a, b) => a - b);
-    };
-
     Array.from({ length: orderCount }, () => {
       lottoNumberList.push(generateLottoNumbers());
     });
@@ -37,15 +33,6 @@ export function LottoRandomComponent() {
     setLottoNumberList(lottoNumberList);
     setIsGenerating(false);
   }, [orderCount]);
-
-  // 로또 번호에 따른 색상 클래스 반환
-  const getNumberColor = (num: number): string => {
-    if (num <= 10) return 'bg-red-100 text-red-800';
-    if (num <= 20) return 'bg-blue-100 text-blue-800';
-    if (num <= 30) return 'bg-yellow-100 text-yellow-800';
-    if (num <= 40) return 'bg-gray-100 text-gray-800';
-    return 'bg-green-100 text-green-800';
-  };
 
   return (
     <div className="space-y-6">
@@ -58,44 +45,46 @@ export function LottoRandomComponent() {
             </p>
           </div>
           <div className="flex items-center space-x-4">
-            <CounterComponent
-              value={orderCount}
-              min={1}
-              max={10}
-              onChange={handleOrderCountChange}
-              label="구매 수량"
-              className="w-32"
-            />
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-muted-foreground">구매 수량</span>
+              <CounterComponent
+                value={orderCount}
+                min={1}
+                max={10}
+                onChange={handleOrderCountChange}
+                className="w-32"
+                showLabel={false}
+                showSlider={false}
+              />
+            </div>
             <Button
               onClick={handleRandomLottoNumber}
               disabled={isGenerating}
-              className="min-w-[120px]"
-            >
-              {isGenerating ? (
-                <>
-                  <svg
-                    className="mr-2 h-4 w-4 animate-spin"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  생성 중...
-                </>
-              ) : (
-                '행운의 번호 받기'
+              className={cn(
+                'min-w-[140px] h-12 text-base font-semibold',
+                'bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600',
+                'text-white shadow-lg hover:shadow-xl',
+                'transition-all duration-300 transform hover:scale-105',
+                'relative overflow-hidden group',
+                isGenerating && 'opacity-80 cursor-not-allowed',
+                'active:scale-95' // 버튼 누를 때 약간 작아지는 효과
               )}
+            >
+              <span className="relative z-10 flex items-center justify-center">
+                {isGenerating ? (
+                  <>
+                    <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
+                    <span>생성 중...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="mr-1">🎯</span>
+                    <span>행운의 번호 받기</span>
+                  </>
+                )}
+              </span>
+              {/* 호버 시 움직이는 빛 효과 */}
+              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 group-hover:animate-pulse transition-opacity duration-300"></span>
             </Button>
           </div>
         </div>
@@ -115,16 +104,7 @@ export function LottoRandomComponent() {
                       {index + 1}번
                     </span>
                     <div className="flex flex-wrap items-center gap-2">
-                      {numbers.map((num, i) => (
-                        <span
-                          key={`${index}-${i}`}
-                          className={`flex h-10 w-10 items-center justify-center rounded-full ${getNumberColor(
-                            num
-                          )} font-bold`}
-                        >
-                          {num}
-                        </span>
-                      ))}
+                      <LottoBallComponent numbers={numbers} />
                     </div>
                   </div>
                 </div>

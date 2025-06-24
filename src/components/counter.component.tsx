@@ -26,6 +26,7 @@ type CounterProps = {
   showInput?: boolean;
   sliderStep?: number;
   inputClassName?: string;
+  showLabel?: boolean;
 };
 
 export function CounterComponent({
@@ -42,6 +43,7 @@ export function CounterComponent({
   showInput = true,
   sliderStep = 1,
   inputClassName = '',
+  showLabel = true,
 }: CounterProps) {
   const [inputValue, setInputValue] = useState(propValue.toString());
   const [isFocused, setIsFocused] = useState(false);
@@ -98,9 +100,10 @@ export function CounterComponent({
   return (
     <div className={cn('space-y-2 w-full', className)}>
       <div className="flex items-center gap-2">
-        {label && (
-          <span className="text-sm font-medium whitespace-nowrap">{label}</span>
+        {showLabel && label && (
+          <span className="text-sm text-muted-foreground mb-1">{label}</span>
         )}
+
         <Button
           type="button"
           variant={buttonVariant}

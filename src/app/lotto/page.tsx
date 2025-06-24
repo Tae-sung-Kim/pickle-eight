@@ -1,4 +1,4 @@
-import LottoRandomComponent from './lotto-random.component';
+import { LottoRandomComponent } from './components';
 
 export default function LottoPage() {
   return (
