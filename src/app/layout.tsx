@@ -18,11 +18,9 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
         <HeaderLayout />
         <main className="flex-1 py-8">
-          {' '}
           {/* 상하 패딩 추가 */}
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="space-y-8">
-              {' '}
               {/* 자식 요소들 간의 간격을 일관되게 유지 */}
               {children}
             </div>
