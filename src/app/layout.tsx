@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { FooterLayout, HeaderLayout } from '@/components';
+import { Toaster } from 'sonner';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -27,6 +28,7 @@ export default function RootLayout({
           </div>
         </main>
         <FooterLayout />
+        <Toaster />
       </body>
     </html>
   );

@@ -1,38 +1,38 @@
-// src/app/name-picker/components/name-input.tsx
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useNameRandomStore } from '@/stores';
+import { KeyboardEvent } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-const nameSchema = z.object({
-  names: z.string().min(1, '이름을 입력해주세요'),
-});
+type NameInputComponentProps = {
+  value: string;
+  onChange: (value: string) => void;
+  onAdd: () => void;
+};
 
-export function NameInputComponent() {
-  const { setNames } = useNameRandomStore();
-  const { register, handleSubmit } = useForm({
-    resolver: zodResolver(nameSchema),
-  });
-
-  const onSubmit = (data: { names: string }) => {
-    const nameList = data.names
-      .split('\n')
-      .map((name) => name.trim())
-      .filter(Boolean);
-    setNames(nameList);
+export function NameInputComponent({
+  value,
+  onChange,
+  onAdd,
+}: NameInputComponentProps) {
+  const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onAdd();
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mb-6">
-      <label className="block mb-2">
-        이름을 입력하세요 (한 줄에 하나씩)
-        <textarea
-          {...register('names')}
-          className="w-full p-2 border rounded mt-1 h-40"
-          placeholder="예시:&#10;홍길동&#10;김철수&#10;이영희"
-        />
-      </label>
-    </form>
+    <div className="flex gap-2">
+      <Input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyUp={handleKeyUp}
+        placeholder="이름 입력"
+        className="flex-1 p-2 border rounded"
+      />
+      <Button onClick={onAdd} disabled={!value.trim()}>
+        추가
+      </Button>
+    </div>
   );
 }
 
