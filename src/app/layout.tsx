@@ -12,7 +12,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'Pickle - 랜덤 추첨과 게임의 모든 것',
   description:
-    '이름 추첨, 자리 배정, 사다리 타기, 로또 분석 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
+    '이름 추첨, 자리 배정, 로또 분석 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
 };
 
 export default function RootLayout({

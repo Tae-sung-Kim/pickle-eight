@@ -6,15 +6,20 @@ type NameInputComponentProps = {
   value: string;
   onChange: (value: string) => void;
   onAdd: () => void;
+  placeholder?: string;
+  buttonText?: string;
 };
 
 export function NameInputComponent({
   value,
   onChange,
   onAdd,
+  placeholder = '이름을 입력하세요',
+  buttonText = '추가',
 }: NameInputComponentProps) {
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       onAdd();
     }
   };
@@ -26,14 +31,14 @@ export function NameInputComponent({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyUp={handleKeyUp}
-        placeholder="이름 입력"
-        className="flex-1 p-2 border rounded"
+        placeholder={placeholder}
+        className="flex-1"
       />
-      <Button onClick={onAdd} disabled={!value.trim()}>
-        추가
+      <Button onClick={onAdd} className="whitespace-nowrap">
+        {buttonText}
       </Button>
     </div>
   );
 }
-
+NameInputComponent.displayName = 'NameInputComponent';
 export default NameInputComponent;

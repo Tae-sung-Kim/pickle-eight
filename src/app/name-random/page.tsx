@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { useNameRandom } from '@/hooks';
-import { NameInputComponent, NameListComponent } from './components';
+import { NameInputComponent, NameListComponent } from '@/components';
 
 export default function NameRandomPage() {
   const {
