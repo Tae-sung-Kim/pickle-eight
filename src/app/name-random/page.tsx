@@ -27,10 +27,12 @@ export default function NameRandomPage() {
 
   const handlePickRandom = () => {
     pickRandom();
+    setInputValue('');
   };
 
   const handleReset = () => {
     reset();
+    setInputValue('');
   };
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function NameRandomPage() {
       });
       setDuplicateName(null);
     }
-  }, [duplicateName]);
+  }, [duplicateName, setDuplicateName]);
 
   if (winner) {
     return (
