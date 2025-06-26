@@ -5,7 +5,7 @@ export function LadderComponent({
   names,
   prizes,
 }: LadderComponentPropsType) {
-  const width = 400;
+  const width = 800;
   const height = 600;
   // const cols = ladder.verticals;
   const cols = Math.max(ladder.verticals, 2);

@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { toast } from 'sonner';
 
 export function useNameRandom() {
   // 이름 관리 상태
@@ -41,6 +42,16 @@ export function useNameRandom() {
     setNames([]);
     setWinner('');
   }, []);
+
+  useEffect(() => {
+    if (duplicateName) {
+      toast.error(`${duplicateName}은(는) 이미 추가된 이름입니다.`, {
+        position: 'top-center',
+      });
+
+      setDuplicateName(null);
+    }
+  }, [duplicateName]);
 
   return {
     // 상태

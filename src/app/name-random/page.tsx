@@ -1,22 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNameRandom } from '@/hooks';
 import { NameInputComponent, NameListComponent } from '@/components';
 
 export default function NameRandomPage() {
-  const {
-    names,
-    winner,
-    duplicateName,
-    addName,
-    removeName,
-    pickRandom,
-    reset,
-    setDuplicateName,
-  } = useNameRandom();
+  const { names, winner, addName, removeName, pickRandom, reset } =
+    useNameRandom();
   const [inputValue, setInputValue] = useState('');
 
   const handleAddName = () => {
@@ -34,15 +25,6 @@ export default function NameRandomPage() {
     reset();
     setInputValue('');
   };
-
-  useEffect(() => {
-    if (duplicateName) {
-      toast.error(`${duplicateName}은(는) 이미 추가된 이름입니다.`, {
-        position: 'top-center',
-      });
-      setDuplicateName(null);
-    }
-  }, [duplicateName, setDuplicateName]);
 
   if (winner) {
     return (

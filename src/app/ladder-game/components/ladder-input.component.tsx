@@ -23,8 +23,9 @@ export function LadderInputComponent({
       });
     }
   };
-  const handleRemoveName = (idx: number) =>
+  const handleRemoveName = (idx: number) => {
     setNames(names.filter((_, i) => i !== idx));
+  };
 
   const handleAddPrize = () => {
     if (prizeInput.trim() && !prizes.includes(prizeInput.trim())) {
