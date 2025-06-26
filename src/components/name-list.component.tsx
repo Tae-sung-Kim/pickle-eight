@@ -1,23 +1,25 @@
 import { Button } from '@/components/ui/button';
 
 type NameListComponentProps = {
-  names: string[];
+  list: string[];
   title?: string;
+  unitTitle?: string;
   onRemove: (index: number) => void;
 };
 
 export function NameListComponent({
-  names,
+  list,
   title = '추첨 대상자',
+  unitTitle = '명',
   onRemove,
 }: NameListComponentProps) {
   return (
     <div className="p-4 bg-gray-50 rounded">
       <p className="mb-2">
-        {title} ({names.length}명):
+        {title} ({list.length} {unitTitle}):
       </p>
       <ul className="space-y-1">
-        {names.map((name, i) => (
+        {list.map((name, i) => (
           <li key={i} className="flex justify-between items-center">
             <span>{name}</span>
             <Button

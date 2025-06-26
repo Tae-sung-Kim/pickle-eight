@@ -73,7 +73,7 @@ export default function SeatAssignmentPage() {
           {names.length > 0 && (
             <div className="mt-2">
               <NameListComponent
-                names={names}
+                list={names}
                 title="자리 배정 대상자"
                 onRemove={handleRemoveName}
               />

@@ -71,7 +71,7 @@ export default function NameRandomPage() {
 
       {names.length > 0 && (
         <>
-          <NameListComponent names={names} onRemove={removeName} />
+          <NameListComponent list={names} onRemove={removeName} />
           <div className="flex gap-2">
             <Button onClick={handlePickRandom} className="flex-1">
               추첨하기
