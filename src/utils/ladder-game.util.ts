@@ -1,12 +1,17 @@
-import { Ladder, LadderHorizontal, LadderInput, LadderResult } from '@/types';
+import {
+  LadderType,
+  LadderHorizontalType,
+  LadderInputType,
+  LadderResultType,
+} from '@/types';
 
 /**
  * 랜덤 사다리 구조 생성
  */
 
-export function generateLadder(input: LadderInput, rows = 10): Ladder {
+export function generateLadder(input: LadderInputType, rows = 10): LadderType {
   const cols = input.names.length;
-  const horizontals: LadderHorizontal[] = [];
+  const horizontals: LadderHorizontalType[] = [];
 
   for (let row = 1; row < rows - 1; row++) {
     let lastCol = -2;
@@ -49,10 +54,10 @@ export function generateLadder(input: LadderInput, rows = 10): Ladder {
  * 사다리 타기 결과 계산
  */
 export function getLadderResults(
-  input: LadderInput,
-  ladder: Ladder
-): LadderResult[] {
-  const cols = input.names.length;
+  input: LadderInputType,
+  ladder: LadderType
+): LadderResultType[] {
+  // const cols = input.names.length;
   const rows =
     ladder.horizontals.length > 0
       ? Math.max(...ladder.horizontals.map((h) => h.row)) + 1

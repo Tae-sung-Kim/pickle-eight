@@ -1,19 +1,29 @@
-export type LadderInput = {
+export type LadderInputType = {
   names: string[];
   prizes: string[];
 };
 
-export type Ladder = {
+export type LadderType = {
   verticals: number;
-  horizontals: LadderHorizontal[];
+  horizontals: LadderHorizontalType[];
 };
 
-export type LadderHorizontal = {
+export type LadderHorizontalType = {
   row: number;
   col: number;
 };
 
-export type LadderResult = {
+export type LadderResultType = {
   name: string;
   prize: string;
+};
+
+export type LadderInputComponentPropsType = {
+  onCreateLadder: (data: { names: string[]; prizes: string[] }) => void;
+};
+
+export type LadderComponentPropsType = {
+  ladder: LadderType;
+  names: string[];
+  prizes: string[];
 };

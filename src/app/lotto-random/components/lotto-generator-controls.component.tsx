@@ -2,20 +2,14 @@ import { CounterComponent } from '@/components';
 import { Button } from '@/components/ui/button';
 import { FaSpinner } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
-
-type LottoGeneratorControlsProps = {
-  orderCount: number;
-  isGenerating: boolean;
-  onOrderCountChange: (value: number) => void;
-  onGenerate: () => void;
-};
+import { LottoGeneratorControlsPropsType } from '@/types';
 
 export function LottoGeneratorControlsComponent({
   orderCount,
   isGenerating,
   onOrderCountChange,
   onGenerate,
-}: LottoGeneratorControlsProps) {
+}: LottoGeneratorControlsPropsType) {
   return (
     <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
       <div className="space-y-1">

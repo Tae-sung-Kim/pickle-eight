@@ -2,17 +2,17 @@
 
 import { useState } from 'react';
 import { generateLadder, getLadderResults } from '@/utils/ladder-game.util';
-import { LadderInput, LadderResult } from '@/types';
+import { LadderType, LadderInputType, LadderResultType } from '@/types';
 import { LadderComponent, LadderInputComponent } from './components';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
 export default function LadderGamePage() {
-  const [input, setInput] = useState<LadderInput | null>(null);
-  const [ladder, setLadder] = useState<any>(null);
-  const [results, setResults] = useState<LadderResult[] | null>(null);
+  const [input, setInput] = useState<LadderInputType | null>(null);
+  const [ladder, setLadder] = useState<LadderType | null>(null);
+  const [results, setResults] = useState<LadderResultType[] | null>(null);
 
-  const handleCreateLadder = (data: LadderInput) => {
+  const handleCreateLadder = (data: LadderInputType) => {
     setInput(data);
     const newLadder = generateLadder(data);
     setLadder(newLadder);
@@ -78,7 +78,7 @@ export default function LadderGamePage() {
                   🎉 매칭 결과
                 </h2>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {results?.map((r, idx) => (
+                  {results?.map((r) => (
                     <div
                       key={r.name}
                       className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"

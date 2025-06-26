@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 
-type NavLinkComponentProps = Omit<
+type NavLinkComponentPropsType = Omit<
   React.ComponentProps<typeof Link>,
   'className'
 > & {
@@ -23,7 +23,7 @@ export function NavLinkComponent({
   activeClassName = '',
   inactiveClassName = '',
   ...props
-}: NavLinkComponentProps) {
+}: NavLinkComponentPropsType) {
   const pathname = usePathname();
   const isActive = isActiveProp ?? pathname === href;
 

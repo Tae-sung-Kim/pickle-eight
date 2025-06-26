@@ -1,12 +1,10 @@
-import { Ladder } from '@/types';
+import { LadderComponentPropsType } from '@/types';
 
-type LadderComponent = {
-  ladder: Ladder;
-  names: string[];
-  prizes: string[];
-};
-
-export function LadderComponent({ ladder, names, prizes }: LadderComponent) {
+export function LadderComponent({
+  ladder,
+  names,
+  prizes,
+}: LadderComponentPropsType) {
   const width = 400;
   const height = 600;
   // const cols = ladder.verticals;

@@ -1,4 +1,3 @@
-// page.tsx
 'use client';
 
 import { NameInputComponent, NameListComponent } from '@/components';

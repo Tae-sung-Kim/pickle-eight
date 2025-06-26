@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 
-type NameListComponentProps = {
+type NameListComponentPropsType = {
   list: string[];
   title?: string;
   unitTitle?: string;
@@ -12,7 +12,7 @@ export function NameListComponent({
   title = '추첨 대상자',
   unitTitle = '명',
   onRemove,
-}: NameListComponentProps) {
+}: NameListComponentPropsType) {
   return (
     <div className="p-4 bg-gray-50 rounded">
       <p className="mb-2">

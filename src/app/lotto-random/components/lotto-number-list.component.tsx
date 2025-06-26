@@ -2,16 +2,12 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import LottoBallComponent from './lotto-ball.component';
-
-type LottoNumberListProps = {
-  numbersList: number[][];
-  title?: string;
-};
+import { LottoNumberListPropsType } from '@/types';
 
 export function LottoNumberListComponent({
   numbersList,
   title = '생성된 로또 번호',
-}: LottoNumberListProps) {
+}: LottoNumberListPropsType) {
   if (numbersList.length === 0) return null;
 
   return (

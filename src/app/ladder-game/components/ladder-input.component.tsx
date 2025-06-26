@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { NameInputComponent, NameListComponent } from '@/components';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { LadderInputComponentPropsType } from '@/types';
 
-type Props = {
-  onCreateLadder: (data: { names: string[]; prizes: string[] }) => void;
-};
-
-export function LadderInputComponent({ onCreateLadder }: Props) {
+export function LadderInputComponent({
+  onCreateLadder,
+}: LadderInputComponentPropsType) {
   const [names, setNames] = useState<string[]>([]);
   const [nameInput, setNameInput] = useState('');
   const [prizes, setPrizes] = useState<string[]>([]);

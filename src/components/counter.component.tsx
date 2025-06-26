@@ -6,7 +6,7 @@ import { Slider } from './ui/slider';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 
-type CounterProps = {
+type CounterPropsType = {
   value: number;
   min?: number;
   max?: number;
@@ -44,7 +44,7 @@ export function CounterComponent({
   sliderStep = 1,
   inputClassName = '',
   showLabel = true,
-}: CounterProps) {
+}: CounterPropsType) {
   const [inputValue, setInputValue] = useState(propValue.toString());
   const [isFocused, setIsFocused] = useState(false);
 

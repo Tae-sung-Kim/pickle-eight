@@ -2,7 +2,7 @@ import { KeyboardEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-type NameInputComponentProps = {
+type NameInputComponentPropsType = {
   value: string;
   onChange: (value: string) => void;
   onAdd: () => void;
@@ -16,7 +16,7 @@ export function NameInputComponent({
   onAdd,
   placeholder = '이름을 입력하세요',
   buttonText = '추가',
-}: NameInputComponentProps) {
+}: NameInputComponentPropsType) {
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
