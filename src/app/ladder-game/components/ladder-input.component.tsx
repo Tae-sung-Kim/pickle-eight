@@ -3,42 +3,48 @@ import { NameInputComponent, NameListComponent } from '@/components';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { LadderInputComponentPropsType } from '@/types';
+import { useNameManager } from '@/hooks';
 
 export function LadderInputComponent({
   onCreateLadder,
 }: LadderInputComponentPropsType) {
-  const [names, setNames] = useState<string[]>([]);
+  const { names, addName, removeName } = useNameManager();
   const [nameInput, setNameInput] = useState('');
+
   const [prizes, setPrizes] = useState<string[]>([]);
   const [prizeInput, setPrizeInput] = useState('');
   const [error, setError] = useState('');
 
   const handleAddName = () => {
-    if (nameInput.trim() && !names.includes(nameInput.trim())) {
-      setNames([...names, nameInput.trim()]);
+    if (addName(nameInput.trim())) {
       setNameInput('');
-    } else {
-      toast.error(`${nameInput.trim()}은(는) 이미 추가된 이름입니다.`, {
-        position: 'top-center',
-      });
     }
   };
   const handleRemoveName = (idx: number) => {
-    setNames(names.filter((_, i) => i !== idx));
+    removeName(idx);
   };
 
+  // 상품 / 결과 추가
   const handleAddPrize = () => {
-    if (prizeInput.trim() && !prizes.includes(prizeInput.trim())) {
-      setPrizes([...prizes, prizeInput.trim()]);
+    const trimmedPrize = prizeInput.trim();
+
+    if (!trimmedPrize) {
+      return;
+    }
+
+    if (!prizes.includes(trimmedPrize)) {
+      setPrizes([...prizes, trimmedPrize]);
       setPrizeInput('');
     } else {
-      toast.error(`${prizeInput.trim()}은(는) 이미 추가된 상품(결과)입니다.`, {
+      toast.error(`${trimmedPrize}은(는) 이미 추가된 상품(결과)입니다.`, {
         position: 'top-center',
       });
     }
   };
-  const handleRemovePrize = (idx: number) =>
+
+  const handleRemovePrize = (idx: number) => {
     setPrizes(prizes.filter((_, i) => i !== idx));
+  };
 
   const handleCreateLadder = () => {
     if (names.length < 2 || prizes.length < 2) {

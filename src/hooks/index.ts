@@ -1,1 +1,1 @@
-export * from './useNameRandom';
+export * from './useNameManager';

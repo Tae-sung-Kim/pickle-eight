@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useNameRandom } from '@/hooks';
+import { useNameManager } from '@/hooks';
 import { NameInputComponent, NameListComponent } from '@/components';
 
 export default function NameRandomPage() {
-  const { names, winner, addName, removeName, pickRandom, reset } =
-    useNameRandom();
+  const { names, addName, removeName, reset } = useNameManager();
+
+  const [winner, setWinner] = useState('');
   const [inputValue, setInputValue] = useState('');
 
   const handleAddName = () => {
@@ -17,12 +18,17 @@ export default function NameRandomPage() {
   };
 
   const handlePickRandom = () => {
-    pickRandom();
+    if (names.length === 0) return '';
+    const randomIndex = Math.floor(Math.random() * names.length);
+    const picked = names[randomIndex];
+    setWinner(picked);
     setInputValue('');
+    return picked;
   };
 
   const handleReset = () => {
     reset();
+    setWinner('');
     setInputValue('');
   };
 

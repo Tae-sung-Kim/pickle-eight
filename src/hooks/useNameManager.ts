@@ -1,11 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 
-export function useNameRandom() {
+export function useNameManager() {
   // 이름 관리 상태
   const [names, setNames] = useState<string[]>([]);
   const [duplicateName, setDuplicateName] = useState<string | null>(null);
-  const [winner, setWinner] = useState('');
 
   // 이름 추가
   const addName = useCallback(
@@ -28,19 +27,9 @@ export function useNameRandom() {
     setNames((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  // 랜덤 추첨
-  const pickRandom = useCallback(() => {
-    if (names.length === 0) return '';
-    const randomIndex = Math.floor(Math.random() * names.length);
-    const picked = names[randomIndex];
-    setWinner(picked);
-    return picked;
-  }, [names]);
-
   // 초기화
   const reset = useCallback(() => {
     setNames([]);
-    setWinner('');
   }, []);
 
   useEffect(() => {
@@ -56,14 +45,14 @@ export function useNameRandom() {
   return {
     // 상태
     names,
-    winner,
     duplicateName,
 
     // 액션
     addName,
     removeName,
-    pickRandom,
     reset,
     setDuplicateName,
   };
 }
+
+export default useNameManager;

@@ -3,19 +3,19 @@
 import { NameInputComponent, NameListComponent } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useNameManager } from '@/hooks';
 import { ChangeEvent, useState } from 'react';
 
 export default function SeatAssignmentPage() {
+  const { names, addName, removeName, reset } = useNameManager();
   const [nameInput, setNameInput] = useState('');
-  const [names, setNames] = useState<string[]>([]);
   const [seatCount, setSeatCount] = useState('');
   const [assignedSeats, setAssignedSeats] = useState<Record<number, string>>(
     {}
   );
 
   const handleAddName = () => {
-    if (nameInput.trim()) {
-      setNames([...names, nameInput.trim()]);
+    if (addName(nameInput)) {
       setNameInput('');
     }
   };
@@ -28,7 +28,7 @@ export default function SeatAssignmentPage() {
   };
 
   const handleRemoveName = (index: number) => {
-    setNames(names.filter((_, i) => i !== index));
+    removeName(index);
   };
 
   const handleAssign = () => {
@@ -51,7 +51,7 @@ export default function SeatAssignmentPage() {
 
   const handleReset = () => {
     setAssignedSeats({});
-    setNames([]);
+    reset();
     setNameInput('');
     setSeatCount('');
   };

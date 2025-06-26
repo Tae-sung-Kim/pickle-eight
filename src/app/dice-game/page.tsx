@@ -5,11 +5,11 @@ import { DiceComponent } from './components/dice.component';
 import { Button } from '@/components/ui/button';
 import DiceInputComponent from './components/dice-input.component';
 import { getRandomValue, getWinnerIndexes } from '@/utils';
-import { useNameRandom } from '@/hooks';
+import { useNameManager } from '@/hooks';
 import { X } from 'lucide-react';
 
 export default function DiceGamePage() {
-  const { names, addName, removeName } = useNameRandom();
+  const { names, addName, removeName } = useNameManager();
 
   const [diceValues, setDiceValues] = useState<number[][]>([]);
 
