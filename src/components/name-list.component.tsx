@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 type NameListComponentPropsType = {
   list: string[];
   title?: string;
   unitTitle?: string;
+  className?: string;
   onRemove: (index: number) => void;
 };
 
@@ -11,10 +13,11 @@ export function NameListComponent({
   list,
   title = '추첨 대상자',
   unitTitle = '명',
+  className = '',
   onRemove,
 }: NameListComponentPropsType) {
   return (
-    <div className="p-4 bg-gray-50 rounded">
+    <div className={cn('p-4 bg-gray-50 rounded', className)}>
       <p className="mb-2">
         {title} ({list.length} {unitTitle}):
       </p>

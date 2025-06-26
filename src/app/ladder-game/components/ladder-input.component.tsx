@@ -1,135 +1,163 @@
-import { useState } from 'react';
-import { NameInputComponent, NameListComponent } from '@/components';
+'use client';
+
+import { motion } from 'framer-motion';
+import { Plus, X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { LadderInputComponentPropsType } from '@/types';
 import { useNameManager } from '@/hooks';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { LadderInputComponentPropsType } from '@/types';
 
 export function LadderInputComponent({
   onCreateLadder,
 }: LadderInputComponentPropsType) {
   const { names, addName, removeName } = useNameManager();
   const [nameInput, setNameInput] = useState('');
-
   const [prizes, setPrizes] = useState<string[]>([]);
   const [prizeInput, setPrizeInput] = useState('');
-  const [error, setError] = useState('');
 
   const handleAddName = () => {
-    if (addName(nameInput.trim())) {
+    if (nameInput.trim() && addName(nameInput.trim())) {
       setNameInput('');
     }
   };
-  const handleRemoveName = (idx: number) => {
-    removeName(idx);
-  };
 
-  // 상품 / 결과 추가
   const handleAddPrize = () => {
     const trimmedPrize = prizeInput.trim();
-
-    if (!trimmedPrize) {
-      return;
-    }
-
-    if (!prizes.includes(trimmedPrize)) {
+    if (trimmedPrize && !prizes.includes(trimmedPrize)) {
       setPrizes([...prizes, trimmedPrize]);
       setPrizeInput('');
-    } else {
-      toast.error(`${trimmedPrize}은(는) 이미 추가된 상품(결과)입니다.`, {
+    }
+  };
+
+  const handleCreate = () => {
+    if (names.length < 2 || prizes.length < 2) {
+      toast.error('참가자와 상품은 각각 2명/개 이상 필요해요!', {
         position: 'top-center',
       });
-    }
-  };
-
-  const handleRemovePrize = (idx: number) => {
-    setPrizes(prizes.filter((_, i) => i !== idx));
-  };
-
-  const handleCreateLadder = () => {
-    if (names.length < 2 || prizes.length < 2) {
-      setError('이름과 상품을 2개 이상 입력하세요.');
       return;
     }
-    if (names.length !== prizes.length) {
-      setError('이름과 상품 수가 같아야 합니다.');
-      return;
-    }
-    setError('');
     onCreateLadder({ names, prizes });
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        사다리 게임 만들기
-      </h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {/* 참가자 이름 섹션 */}
-        <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700">
-            참가자 이름
-          </label>
-          <NameInputComponent
-            value={nameInput}
-            onChange={setNameInput}
-            onAdd={handleAddName}
-            placeholder="이름 입력 후 Enter 또는 추가 버튼"
-            buttonText="추가"
-          />
-          <div className="border rounded-lg p-3 bg-gray-50 min-h-[200px]">
-            <NameListComponent
-              list={names}
-              onRemove={handleRemoveName}
-              title="참가자 목록"
-              unitTitle="명"
-            />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-8 p-6"
+    >
+      <div className="grid gap-8 md:grid-cols-2">
+        {/* 참가자 입력 섹션 */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-medium">참가자 추가</h3>
+            <span className="text-sm text-muted-foreground">
+              {names.length}명 추가됨
+            </span>
           </div>
+          <div className="flex gap-2">
+            <Input
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAddName()}
+              placeholder="이름 입력"
+              className="flex-1"
+            />
+            <Button
+              onClick={handleAddName}
+              disabled={!nameInput.trim()}
+              size="icon"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+          {names.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {names.map((name, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center bg-muted px-3 py-1 rounded-full text-sm"
+                >
+                  <span>{name}</span>
+                  <button
+                    onClick={() => removeName(idx)}
+                    className="ml-1 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* 상품 섹션 */}
-        <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700">
-            상품/결과
-          </label>
-          <NameInputComponent
-            value={prizeInput}
-            onChange={setPrizeInput}
-            onAdd={handleAddPrize}
-            placeholder="상품 입력 후 Enter 또는 추가 버튼"
-            buttonText="추가"
-          />
-          <div className="border rounded-lg p-3 bg-gray-50 min-h-[200px]">
-            <NameListComponent
-              list={prizes}
-              onRemove={handleRemovePrize}
-              title="상품 목록"
-              unitTitle="개"
-            />
+        {/* 상품 입력 섹션 */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-medium">상품/결과 추가</h3>
+            <span className="text-sm text-muted-foreground">
+              {prizes.length}개 추가됨
+            </span>
           </div>
+          <div className="flex gap-2">
+            <Input
+              value={prizeInput}
+              onChange={(e) => setPrizeInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAddPrize()}
+              placeholder="상품 또는 결과 입력"
+              className="flex-1"
+            />
+            <Button
+              onClick={handleAddPrize}
+              disabled={!prizeInput.trim()}
+              size="icon"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+          {prizes.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {prizes.map((prize, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center bg-amber-50 text-amber-800 px-3 py-1 rounded-full text-sm"
+                >
+                  <span>{prize}</span>
+                  <button
+                    onClick={() =>
+                      setPrizes(prizes.filter((_, i) => i !== idx))
+                    }
+                    className="ml-1 text-amber-600 hover:text-amber-800"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {error && (
-        <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-md text-sm">
-          {error}
-        </div>
-      )}
-
-      <div className="flex flex-col items-center space-y-3 pt-4 border-t">
+      <div className="pt-4">
         <Button
-          onClick={handleCreateLadder}
-          className="w-full max-w-xs bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-          disabled={names.length === 0 || prizes.length === 0}
+          onClick={handleCreate}
+          disabled={names.length < 2 || prizes.length < 2}
+          size="lg"
+          className={cn(
+            'w-full py-6 text-base font-bold',
+            'bg-gradient-to-r from-indigo-500 to-purple-600',
+            'hover:from-indigo-600 hover:to-purple-700',
+            'shadow-lg hover:shadow-xl',
+            (names.length < 2 || prizes.length < 2) && 'opacity-70'
+          )}
         >
+          <Sparkles className="mr-2 h-5 w-5" />
           사다리 생성하기
         </Button>
-        <p className="text-xs text-gray-500 text-center">
-          {names.length}명의 참가자와 {prizes.length}개의 상품이 등록되었습니다.
-        </p>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -1,4 +1,4 @@
-export type LadderInputType = {
+export type LadderConfigType = {
   names: string[];
   prizes: string[];
 };
@@ -26,4 +26,16 @@ export type LadderComponentPropsType = {
   ladder: LadderType;
   names: string[];
   prizes: string[];
+};
+
+export type LadderGameSectionComponentPropsType = {
+  ladder: LadderType;
+  config: LadderConfigType;
+  onReset: () => void;
+  results: LadderResultType[];
+};
+
+export type LadderHeaderComponentPropsType = {
+  title: string;
+  description: string;
 };

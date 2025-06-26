@@ -9,3 +9,9 @@ export type LottoNumberListPropsType = {
   numbersList: number[][];
   title?: string;
 };
+
+export type LottoBallPropsType = {
+  number: number;
+  index: number;
+  isBonus?: boolean;
+};

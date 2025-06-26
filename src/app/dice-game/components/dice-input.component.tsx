@@ -2,13 +2,10 @@ import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
+import { DiceInputComponentPropsType } from '@/types';
 
-interface DiceInputComponentProps {
-  addName: (name: string) => boolean;
-}
-
-const DiceInputComponent = ({ addName }: DiceInputComponentProps) => {
+const DiceInputComponent = ({ addName }: DiceInputComponentPropsType) => {
   const [inputValue, setInputValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
@@ -19,14 +16,22 @@ const DiceInputComponent = ({ addName }: DiceInputComponentProps) => {
     }
   };
 
+  const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddName(e);
+    }
+  };
+
   return (
-    <form onSubmit={handleAddName} className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto">
       <div className="relative flex items-center">
         <Input
           type="text"
           placeholder="이름을 입력하세요"
           className="pr-12 text-base"
           value={inputValue}
+          onKeyUp={handleKeyUp}
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
@@ -41,6 +46,7 @@ const DiceInputComponent = ({ addName }: DiceInputComponentProps) => {
             size="icon"
             disabled={!inputValue.trim()}
             className="h-8 w-8 rounded-full"
+            onClick={handleAddName}
           >
             <Plus className="h-4 w-4" />
           </Button>
@@ -55,7 +61,7 @@ const DiceInputComponent = ({ addName }: DiceInputComponentProps) => {
           엔터 키를 눌러 추가할 수 있습니다
         </motion.p>
       )}
-    </form>
+    </div>
   );
 };
 

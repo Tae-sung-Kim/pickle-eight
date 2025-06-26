@@ -1,7 +1,7 @@
 import {
   LadderType,
   LadderHorizontalType,
-  LadderInputType,
+  LadderConfigType,
   LadderResultType,
 } from '@/types';
 
@@ -9,7 +9,7 @@ import {
  * 랜덤 사다리 구조 생성
  */
 
-export function generateLadder(input: LadderInputType, rows = 10): LadderType {
+export function generateLadder(input: LadderConfigType, rows = 10): LadderType {
   const cols = input.names.length;
   const horizontals: LadderHorizontalType[] = [];
 
@@ -54,7 +54,7 @@ export function generateLadder(input: LadderInputType, rows = 10): LadderType {
  * 사다리 타기 결과 계산
  */
 export function getLadderResults(
-  input: LadderInputType,
+  input: LadderConfigType,
   ladder: LadderType
 ): LadderResultType[] {
   // const cols = input.names.length;

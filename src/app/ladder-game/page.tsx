@@ -1,102 +1,57 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { generateLadder, getLadderResults } from '@/utils/ladder-game.util';
-import { LadderType, LadderInputType, LadderResultType } from '@/types';
-import { LadderComponent, LadderInputComponent } from './components';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { LadderType, LadderConfigType, LadderResultType } from '@/types';
+import { LadderGameSectionComponent } from './components/ladder-game-section.component';
+import { LadderInputComponent } from './components/ladder-input.component';
+import { LadderHeaderComponent } from './components/ladder-header.component';
 
 export default function LadderGamePage() {
-  const [input, setInput] = useState<LadderInputType | null>(null);
+  const [config, setConfig] = useState<LadderConfigType | null>(null);
   const [ladder, setLadder] = useState<LadderType | null>(null);
   const [results, setResults] = useState<LadderResultType[] | null>(null);
 
-  const handleCreateLadder = (data: LadderInputType) => {
-    setInput(data);
+  const handleCreateLadder = (data: LadderConfigType) => {
+    setConfig(data);
     const newLadder = generateLadder(data);
     setLadder(newLadder);
     setResults(getLadderResults(data, newLadder));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleReset = () => {
     setLadder(null);
-    setInput(null);
+    setConfig(null);
     setResults(null);
   };
 
   return (
-    <div className="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-muted/40 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            사다리 타기 게임
-          </h1>
-          <p className="mt-3 text-xl text-gray-500">
-            참가자와 상품을 매칭해보세요
-          </p>
-        </div>
+        <LadderHeaderComponent
+          title="사다리 타기 게임"
+          description="참가자와 상품을 매칭해보세요"
+        />
 
-        {!ladder ? (
-          <div className="bg-white rounded-xl shadow-md overflow-hidden max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="bg-background rounded-2xl shadow-sm border overflow-hidden"
+        >
+          {!ladder ? (
             <LadderInputComponent onCreateLadder={handleCreateLadder} />
-          </div>
-        ) : (
-          <div className="space-y-8">
-            <div className="flex justify-between items-center">
-              <Button
-                onClick={handleReset}
-                variant="ghost"
-                className="text-gray-600 hover:bg-gray-100"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                다시 만들기
-              </Button>
-              <div className="text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
-                총 {input?.names.length}명 참가
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-md overflow-hidden p-6 h-[600px]">
-              <div className="w-full overflow-x-auto h-full">
-                <div
-                  className="mx-auto"
-                  style={{ width: 'fit-content', height: '100%' }}
-                >
-                  <LadderComponent
-                    ladder={ladder}
-                    names={input?.names || []}
-                    prizes={input?.prizes || []}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-md overflow-hidden">
-              <div className="p-6">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b">
-                  🎉 매칭 결과
-                </h2>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {results?.map((r) => (
-                    <div
-                      key={r.name}
-                      className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                    >
-                      <div className="font-medium text-gray-900">{r.name}</div>
-                      <div className="flex items-center mt-1">
-                        <span className="text-gray-500 mr-2">→</span>
-                        <span className="text-blue-600 font-medium">
-                          {r.prize}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+          ) : (
+            <LadderGameSectionComponent
+              ladder={ladder}
+              config={config!}
+              onReset={handleReset}
+              results={results!}
+            />
+          )}
+        </motion.div>
       </div>
     </div>
   );
