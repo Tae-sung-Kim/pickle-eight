@@ -68,14 +68,14 @@ export default function SeatAssignmentPage() {
   const assignedSeatCount = Object.keys(assignedSeats).length;
 
   return (
-    <div className="container mx-auto min-h-screen p-4">
+    <div className="bg-sky-50 container mx-auto p-4">
       <div className="max-w-4xl mx-auto space-y-8 py-8">
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className="space-y-2 text-center"
         >
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold tracking-tight text-sky-600">
             자리 배정기
           </h1>
           <p className="text-muted-foreground">
@@ -90,14 +90,15 @@ export default function SeatAssignmentPage() {
             transition={{ delay: 0.2 }}
             className="space-y-6"
           >
-            <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <div className="rounded-2xl border bg-white p-6 shadow-sm border-sky-100">
               <div className="space-y-4">
                 <NameInputComponent
                   value={nameInput}
+                  disabled={nameInput.length < 1}
                   onChange={setNameInput}
                   onAdd={handleAddName}
+                  isIcon={true}
                   placeholder="이름 입력 후 엔터 또는 추가 버튼"
-                  buttonText="추가"
                 />
 
                 {names.length > 0 && (
@@ -131,7 +132,7 @@ export default function SeatAssignmentPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <div className="rounded-2xl border bg-white p-6 shadow-sm border-sky-100">
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">
@@ -194,7 +195,7 @@ export default function SeatAssignmentPage() {
             transition={{ delay: 0.3 }}
             className="space-y-4"
           >
-            <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <div className="rounded-2xl border bg-white p-6 shadow-sm border-sky-100">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium">자리 배정 결과</h3>
                 {assignedSeatCount > 0 && (
@@ -212,15 +213,13 @@ export default function SeatAssignmentPage() {
                       initial={{ scale: 0.9, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       className={cn(
-                        'rounded-lg border p-4 text-center',
-                        'bg-gradient-to-br from-indigo-50 to-purple-50',
-                        'border-indigo-100'
+                        'rounded-lg border p-4 text-center bg-sky-50 border-sky-100'
                       )}
                     >
-                      <div className="text-sm font-medium text-indigo-900">
+                      <div className="text-sm font-medium text-sky-600">
                         {name}
                       </div>
-                      <div className="mt-1 text-xs text-indigo-500">
+                      <div className="mt-1 text-xs text-sky-500">
                         {seat}번 자리
                       </div>
                     </motion.div>

@@ -41,7 +41,7 @@ export default function NameRandomPage() {
 
   if (winner) {
     return (
-      <div className="container mx-auto min-h-screen flex items-center justify-center p-4">
+      <div className="bg-gray-50 container mx-auto h-fit flex items-center justify-center p-4">
         <div className="w-full max-w-md space-y-8 text-center">
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -87,7 +87,7 @@ export default function NameRandomPage() {
   }
 
   return (
-    <div className="container mx-auto min-h-screen p-4">
+    <div className="bg-gradient-to-b from-amber-50 to-yellow-50 container mx-auto h-fit p-4">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -99,7 +99,7 @@ export default function NameRandomPage() {
           transition={{ delay: 0.1 }}
           className="space-y-2 text-center"
         >
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-amber-500 to-yellow-500 bg-clip-text text-transparent">
             이름 추첨기
           </h1>
           <p className="text-muted-foreground">
@@ -116,10 +116,11 @@ export default function NameRandomPage() {
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
             <NameInputComponent
               value={inputValue}
+              disabled={inputValue.length < 1}
               onChange={setInputValue}
               onAdd={handleAddName}
+              isIcon={true}
               placeholder="이름 입력 후 엔터 또는 추가 버튼"
-              buttonText="추가"
             />
 
             {names.length > 0 && (

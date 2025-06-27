@@ -45,7 +45,7 @@ export function LottoGeneratorControlsComponent({
             max={10}
             step={1}
             onValueChange={(value) => onOrderCountChange(value[0])}
-            className="py-4"
+            className="[&_[data-slot=slider-track]]:bg-gray-300 [&_[data-slot=slider-track]]:cursor-pointer [&_[data-slot=slider-range]]:bg-pink-600 [&_[data-slot=slider-thumb]]:cursor-pointer"
           />
         </div>
       </div>

@@ -1,14 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Plus, X, Sparkles } from 'lucide-react';
+import { X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { useNameManager } from '@/hooks';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { LadderInputComponentPropsType } from '@/types';
+import { NameInputComponent } from '@/components';
 
 export function LadderInputComponent({
   onCreateLadder,
@@ -58,20 +58,15 @@ export function LadderInputComponent({
             </span>
           </div>
           <div className="flex gap-2">
-            <Input
+            <NameInputComponent
               value={nameInput}
-              onChange={(e) => setNameInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleAddName()}
-              placeholder="이름 입력"
               className="flex-1"
+              disabled={nameInput.length < 1}
+              onChange={setNameInput}
+              onAdd={handleAddName}
+              isIcon={true}
+              placeholder="이름 입력 후 엔터 또는 추가 버튼"
             />
-            <Button
-              onClick={handleAddName}
-              disabled={!nameInput.trim()}
-              size="icon"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
           </div>
           {names.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-2">
@@ -102,20 +97,15 @@ export function LadderInputComponent({
             </span>
           </div>
           <div className="flex gap-2">
-            <Input
+            <NameInputComponent
               value={prizeInput}
-              onChange={(e) => setPrizeInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleAddPrize()}
-              placeholder="상품 또는 결과 입력"
+              onChange={(e) => setPrizeInput(e)}
+              onAdd={handleAddPrize}
+              isIcon={true}
               className="flex-1"
+              disabled={prizeInput.length < 1}
+              placeholder="상품 또는 결과 입력"
             />
-            <Button
-              onClick={handleAddPrize}
-              disabled={!prizeInput.trim()}
-              size="icon"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
           </div>
           {prizes.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-2">

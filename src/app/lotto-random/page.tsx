@@ -34,11 +34,11 @@ export default function LottoPage() {
   }, [orderCount]);
 
   return (
-    <div className="container py-8">
+    <div className="bg-gradient-to-b from-pink-50/30 to-rose-50/30 py-12 px-4 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="mx-auto max-w-4xl space-y-8"
+        className="mx-auto max-w-4xl"
       >
         <motion.div
           initial={{ y: -20, opacity: 0 }}
@@ -49,7 +49,7 @@ export default function LottoPage() {
           <h1 className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-4xl font-bold tracking-tight text-transparent">
             로또 번호 생성기
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-muted-foreground mb-3">
             AI가 추천하는 행운의 번호로 당첨의 기회를 잡아보세요!
           </p>
         </motion.div>
