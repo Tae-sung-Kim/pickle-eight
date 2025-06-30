@@ -13,6 +13,8 @@ type NameInputComponentPropsType = {
   disabled?: boolean;
   placeholder?: string;
   buttonText?: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
 };
 
 export function NameInputComponent({
@@ -24,6 +26,7 @@ export function NameInputComponent({
   isIcon = false,
   placeholder = '이름을 입력하세요',
   buttonText = '추가',
+  ...props
 }: NameInputComponentPropsType) {
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -40,6 +43,7 @@ export function NameInputComponent({
         onChange={(e) => onChange(e.target.value)}
         onKeyUp={handleKeyUp}
         placeholder={placeholder}
+        {...props}
       />
 
       {isIcon ? (

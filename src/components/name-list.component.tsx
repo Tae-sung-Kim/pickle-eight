@@ -6,6 +6,7 @@ type NameListComponentPropsType = {
   title?: string;
   unitTitle?: string;
   className?: string;
+  itemClassName?: string;
   onRemove: (index: number) => void;
 };
 
@@ -15,6 +16,7 @@ export function NameListComponent({
   unitTitle = '명',
   className = '',
   onRemove,
+  itemClassName,
 }: NameListComponentPropsType) {
   return (
     <div className={cn('p-4 bg-gray-50 rounded', className)}>
@@ -23,7 +25,10 @@ export function NameListComponent({
       </p>
       <ul className="space-y-1">
         {list.map((name, i) => (
-          <li key={i} className="flex justify-between items-center">
+          <li
+            key={i}
+            className={cn('flex justify-between items-center', itemClassName)}
+          >
             <span>{name}</span>
             <Button
               onClick={() => onRemove(i)}
