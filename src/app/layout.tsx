@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className="h-full">
-      <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
+      <body className="flex flex-col bg-background text-foreground antialiased">
         <HeaderLayout />
         <main className="flex-1 py-8">
           {/* 상하 패딩 추가 */}
