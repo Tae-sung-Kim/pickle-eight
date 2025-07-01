@@ -26,3 +26,12 @@ export type InputListSectionPropsType = {
   onAdd: (value: string) => void;
   onRemove: (idx: number) => void;
 };
+
+export type ParticipantType = {
+  id: string;
+  name: string;
+};
+export type RevealedResultType = {
+  participantId: string;
+  order: number;
+};
