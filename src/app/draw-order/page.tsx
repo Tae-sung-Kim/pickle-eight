@@ -89,10 +89,10 @@ export default function DrawOrderPage() {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-4xl font-extrabold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-500">
-              순서 추첨하기
+              랜덤 매칭 추첨하기
             </h1>
             <p className="text-gray-600 max-w-md mx-auto">
-              참가자와 상품을 등록하고 공정한 순서 추첨을 진행해보세요.
+              참가자와 상품을 등록하고 공정한 랜덤 매칭 추첨을 진행해보세요.
             </p>
           </motion.div>
 

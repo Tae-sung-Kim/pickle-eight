@@ -11,7 +11,7 @@ export default function HomePage() {
       <div className="grid gap-6 md:grid-cols-2">
         <HomeIntroCard
           title="이 홈페이지란?"
-          description="다양한 랜덤 추첨, 게임 기능을 한 곳에서 제공합니다. 로또 번호 생성, 자리 배정, 이름 추첨, 사다리 타기 등 재미있고 유용한 도구를 경험해보세요!"
+          description="다양한 랜덤 추첨, 게임 기능을 한 곳에서 제공합니다. 로또 번호 생성, 자리 배정, 항목 추첨, 사다리 타기 등 재미있고 유용한 도구를 경험해보세요!"
           icon={<Sparkles className="text-yellow-500" />}
         />
         <HomeIntroCard

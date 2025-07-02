@@ -100,10 +100,10 @@ export default function NameRandomPage() {
           className="space-y-2 text-center"
         >
           <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-amber-500 to-yellow-500 bg-clip-text text-transparent">
-            이름 추첨기
+            항목 랜덤 추첨기
           </h1>
           <p className="text-muted-foreground">
-            추첨할 이름을 추가하고 행운의 당첨자를 뽑아보세요
+            추첨할 항목을 추가하고 행운의 당첨자를 뽑아보세요
           </p>
         </motion.div>
 
@@ -120,7 +120,7 @@ export default function NameRandomPage() {
               onChange={setInputValue}
               onAdd={handleAddName}
               isIcon={true}
-              placeholder="이름 입력 후 엔터 또는 추가 버튼"
+              placeholder="추첨할 항목 입력 후 엔터 또는 추가 버튼"
             />
 
             {names.length > 0 && (

@@ -18,7 +18,7 @@ export default function SeatAssignmentPage() {
   );
   const [isAssigning, setIsAssigning] = useState(false);
 
-  const handleAddName = () => {
+  const handleAddName: () => void = () => {
     if (addName(nameInput)) {
       setNameInput('');
     }

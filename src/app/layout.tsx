@@ -10,10 +10,58 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
+// export const metadata: Metadata = {
+//   title: 'Pickle - 랜덤 추첨과 게임의 모든 것',
+//   description:
+//     '이름 추첨, 자리 배정, 로또 분석 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
+// };
+
 export const metadata: Metadata = {
   title: 'Pickle - 랜덤 추첨과 게임의 모든 것',
   description:
-    '이름 추첨, 자리 배정, 로또 분석 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
+    '항목 추첨, 자리 배정, 사다리 게임, 주사위 게임, 로또 번호 추천 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
+  keywords: [
+    '이름',
+    '상품',
+    '랜덤',
+    '추첨',
+    '로또',
+    '자리배정',
+    '사다리',
+    '게임',
+    '점심',
+    '저녁',
+    '메뉴',
+    '주사위',
+    '운세',
+    'Pickle',
+  ],
+  alternates: {
+    canonical: 'https://pickle.vercel.app',
+  },
+  openGraph: {
+    title: 'Pickle - 랜덤 추첨과 게임의 모든 것',
+    description:
+      '이름(상품) 추첨, 자리 배정, 사다리 게임, 주사위 게임, 로또 번호 추천 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
+    url: 'https://pickle.vercel.app',
+    siteName: 'Pickle',
+    // images: [
+    //   {
+    //     url: 'https://your-domain.com/og-image.png',
+    //     width: 1200,
+    //     height: 630,
+    //   },
+    // ],
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pickle - 랜덤 추첨과 게임의 모든 것',
+    description:
+      '이름 추첨, 자리 배정, 로또 분석 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
+    // images: ['https://your-domain.com/og-image.png'],
+  },
 };
 
 export default function RootLayout({
@@ -23,6 +71,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className="h-full">
+      <head>
+        <meta
+          name="naver-site-verification"
+          content="3b2951ae643e0dd91af8ba5dedd85cb450a7018a"
+        />
+      </head>
       <body className="min-h-screen flex flex-col bg-background text-foreground antialiased">
         <HeaderLayout />
         <main className="flex-1 py-8">
