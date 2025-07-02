@@ -17,7 +17,10 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
  * Analytics 인스턴스를 클라이언트에서만 안전하게 반환
  */
 export const getAnalyticsClient = async (): Promise<Analytics | null> => {
-  if (typeof window === 'undefined') return null;
+  // 개발일때는 안 타게
+  if (typeof window === 'undefined' || process.env.NODE_ENV === 'development') {
+    return null;
+  }
   const supported = await isSupported();
   if (!supported) return null;
   return getAnalytics(app);

@@ -36,6 +36,7 @@ export default function RootLayout({
         </main>
         <FooterLayout />
         <Toaster />
+        {/* firebase 하루 유입량 */}
         <AnalyticsClientComponent />
       </body>
     </html>
