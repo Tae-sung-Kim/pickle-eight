@@ -130,13 +130,13 @@ export function LadderInputComponent({
         </div>
       </div>
 
-      <div className="pt-4">
+      <div className="pt-4 w-full flex justify-center">
         <Button
           onClick={handleCreate}
           disabled={names.length < 2 || prizes.length < 2}
           size="lg"
           className={cn(
-            'w-full py-6 text-base font-bold',
+            'w-full max-w-md mx-auto py-4 text-base font-bold',
             'bg-gradient-to-r from-indigo-500 to-purple-600',
             'hover:from-indigo-600 hover:to-purple-700',
             'shadow-lg hover:shadow-xl',
