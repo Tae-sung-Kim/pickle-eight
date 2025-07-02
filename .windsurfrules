@@ -64,7 +64,7 @@
 
 # Data Handling
 
-- Avoid excessive use of primitive types; encapsulate data in composite types.
+- Avoid excessive use of primitive types, encapsulate data in composite types.
 - Avoid placing validation inside functions—use classes with internal validation instead.
 - Prefer immutability for data:
 - Use readonly for immutable properties.
