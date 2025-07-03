@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://pickle.vercel.app/</loc>
+    <loc>https://pickle-eight.vercel.app/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://pickle.vercel.app/lotto-random</loc>
+    <loc>https://pickle-eight.vercel.app/lotto-random</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickle.vercel.app/ladder-game</loc>
+    <loc>https://pickle-eight.vercel.app/ladder-game</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickle.vercel.app/dice-game</loc>
+    <loc>https://pickle-eight.vercel.app/dice-game</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickle.vercel.app/draw-order</loc>
+    <loc>https://pickle-eight.vercel.app/draw-order</loc> 
     <priority>0.8</priority>
   </url>
   <!-- 주요 페이지를 여기에 추가 -->

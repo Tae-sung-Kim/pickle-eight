@@ -76,6 +76,10 @@ export default function RootLayout({
           name="naver-site-verification"
           content="3b2951ae643e0dd91af8ba5dedd85cb450a7018a"
         />
+        <meta
+          name="google-site-verification"
+          content="GriA50nFO1IDBuetooOWR6mLwK6HtmFcwURDYgz6AbI"
+        />
       </head>
       <body className="min-h-screen flex flex-col bg-background text-foreground antialiased">
         <HeaderLayout />
