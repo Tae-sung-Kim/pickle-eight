@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pickle-eight.vercel.app/sitemap.xml
+Sitemap: https://pickle-eight.vercel.app/sitemap-v3.xml

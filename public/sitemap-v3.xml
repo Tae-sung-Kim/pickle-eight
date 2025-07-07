@@ -9,6 +9,14 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://pickle-eight.vercel.app/name-random</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickle-eight.vercel.app/seat-assignment</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://pickle-eight.vercel.app/ladder-game</loc>
     <priority>0.8</priority>
   </url>
