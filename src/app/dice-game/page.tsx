@@ -61,7 +61,7 @@ export default function DiceGamePage() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-indigo-900 mb-2 flex items-center justify-center gap-2">
             <Dice5 className="w-10 h-10 text-indigo-600" />
-            주사위 게임
+            주사위 굴리기
           </h1>
           <p className="text-lg text-indigo-400 max-w-2xl mx-auto">
             참가자들을 추가하고 주사위를 굴려 승자를 가려보세요!

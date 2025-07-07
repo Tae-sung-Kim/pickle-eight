@@ -17,9 +17,9 @@ export const viewport: Viewport = {
 // };
 
 export const metadata: Metadata = {
-  title: 'Pickle - 랜덤 추첨과 게임의 모든 것',
+  title: 'Pickle-eight : 랜덤 추첨과 게임의 모든 것',
   description:
-    '항목 추첨, 자리 배정, 사다리 게임, 주사위 게임, 로또 번호 추천 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
+    '항목 추첨, 자리 배정, 사다리 타기, 주사위 굴리기, 로또 번호 추천 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
   keywords: [
     '이름',
     '상품',
@@ -37,14 +37,14 @@ export const metadata: Metadata = {
     'Pickle',
   ],
   alternates: {
-    canonical: 'https://pickle.vercel.app',
+    canonical: 'https://pickle-eight.vercel.app',
   },
   openGraph: {
-    title: 'Pickle - 랜덤 추첨과 게임의 모든 것',
+    title: 'Pickle-eight : 랜덤 추첨과 게임의 모든 것',
     description:
-      '이름(상품) 추첨, 자리 배정, 사다리 게임, 주사위 게임, 로또 번호 추천 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
-    url: 'https://pickle.vercel.app',
-    siteName: 'Pickle',
+      '이름(상품) 추첨, 자리 배정, 사다리 타기, 주사위 굴리기, 로또 번호 추천 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
+    url: 'https://pickle-eight.vercel.app',
+    siteName: 'Pickle-eight',
     // images: [
     //   {
     //     url: 'https://your-domain.com/og-image.png',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pickle - 랜덤 추첨과 게임의 모든 것',
+    title: 'Pickle-eight : 랜덤 추첨과 게임의 모든 것',
     description:
       '이름 추첨, 자리 배정, 로또 분석 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요!',
     // images: ['https://your-domain.com/og-image.png'],

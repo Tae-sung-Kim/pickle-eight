@@ -12,7 +12,7 @@ export function HeaderLayout() {
         <div className="flex-1">
           <Link href="/" className="flex items-center space-x-2 w-fit">
             <Home className="h-6 w-6" />
-            <span className="text-xl font-bold">Pickle</span>
+            <span className="text-xl font-bold">Pickle-eight</span>
           </Link>
         </div>
 
