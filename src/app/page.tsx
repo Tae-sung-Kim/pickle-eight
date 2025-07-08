@@ -1,8 +1,10 @@
-'use client';
-
 import { Sparkles, Users, CalendarHeart } from 'lucide-react';
-import { HeroBanner, HeroMenuGridComponent, HomeIntroCard } from './(home)';
-import HeroTodayMessageComponent from './(home)/hero-today-message.component';
+import {
+  HeroBanner,
+  HeroMenuGridComponent,
+  HeroTodayMessageComponent,
+  HomeIntroCard,
+} from './(home)';
 
 /**
  * 메인 홈 페이지 - 더 감각적으로 리팩토링

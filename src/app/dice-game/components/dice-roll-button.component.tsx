@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Dice5 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { FaSpinner } from 'react-icons/fa';
+import { Loader2 } from 'lucide-react';
 import { DiceRollButtonPropsType } from '@/types';
 
 export const DiceRollButtonComponent = ({
@@ -42,7 +42,7 @@ export const DiceRollButtonComponent = ({
             exit={{ opacity: 0, y: -10 }}
             className="flex items-center justify-center"
           >
-            <FaSpinner className="mr-3 h-5 w-5 animate-spin" />
+            <Loader2 className="mr-3 h-5 w-5 animate-spin" />
             <span>굴리는 중...</span>
           </motion.span>
         ) : (
