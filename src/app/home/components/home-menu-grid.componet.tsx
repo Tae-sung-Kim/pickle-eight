@@ -31,7 +31,7 @@ const icons = [
   },
 ];
 
-export function HeroMenuGridComponent() {
+export function HomeMenuGridComponent() {
   return (
     <section className="max-w-5xl mx-auto py-12 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {MENU_LIST.map((menu) => (
@@ -60,4 +60,4 @@ export function HeroMenuGridComponent() {
   );
 }
 
-export default HeroMenuGridComponent;
+export default HomeMenuGridComponent;
