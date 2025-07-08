@@ -2,6 +2,7 @@
 
 import { Sparkles, Users, CalendarHeart } from 'lucide-react';
 import { HeroBanner, HeroMenuGridComponent, HomeIntroCard } from './(home)';
+import HeroTodayMessageComponent from './(home)/hero-today-message.component';
 
 /**
  * 메인 홈 페이지 - 더 감각적으로 리팩토링
@@ -11,6 +12,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50 flex flex-col">
       <div className="max-w-5xl mx-auto w-full px-4 py-10">
         <HeroBanner />
+        <HeroTodayMessageComponent />
         <HeroMenuGridComponent />
         <div className="grid gap-6 md:grid-cols-2 mt-12">
           <HomeIntroCard

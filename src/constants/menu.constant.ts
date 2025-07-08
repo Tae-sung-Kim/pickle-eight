@@ -8,7 +8,7 @@ export const MENU_LIST = [
   {
     href: '/name-random',
     label: '항목 뽑기',
-    description: '여러 명(상품, 번호) 중에서 무작위로 하나를 뽑아요.',
+    description: '여러 명(상품, 번호, 메뉴) 중에서 무작위로 하나를 뽑아요.',
     example: '예: 경품 당첨자 선정, 점심 메뉴 결정 등',
   },
   {
