@@ -1,12 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useGptTodayMessageService } from '@/services/use-gpt-today-message.service';
 import { MessageStateType, TodayMessageType } from '@/types';
 import { Sun, Smile } from 'lucide-react';
+import { useGptTodayMessageService } from '@/services';
 
 const getTodayKey = (type: TodayMessageType) => {
-  const today = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const today = `${yyyy}-${mm}-${dd}`;
+
   return `today-message:${type}:${today}`;
 };
 
@@ -22,21 +27,45 @@ export function HeroTodayMessageComponent() {
   useEffect(() => {
     (['cheer', 'fortune'] as TodayMessageType[]).forEach((type) => {
       const key = getTodayKey(type);
-      const saved =
-        typeof window !== 'undefined' ? localStorage.getItem(key) : null;
+      if (typeof window === 'undefined') return;
+
+      const saved = localStorage.getItem(key);
+      let needFetch = false;
+
       if (saved) {
-        setMessages((prev) => ({ ...prev, [type]: saved }));
+        try {
+          const { msg, expires } = JSON.parse(saved);
+          if (new Date() < new Date(expires)) {
+            setMessages((prev) => ({ ...prev, [type]: msg }));
+          } else {
+            localStorage.removeItem(key);
+            needFetch = true;
+          }
+        } catch {
+          localStorage.removeItem(key);
+          needFetch = true;
+        }
       } else {
+        needFetch = true;
+      }
+
+      if (needFetch) {
         const mutation = type === 'cheer' ? cheerMutation : fortuneMutation;
         mutation.mutate(undefined, {
           onSuccess: (msg) => {
             setMessages((prev) => ({ ...prev, [type]: msg }));
-            localStorage.setItem(key, msg);
+            const expires = new Date();
+            expires.setUTCHours(0, 0, 0, 0);
+            expires.setUTCDate(expires.getUTCDate() + 1);
+            const value = JSON.stringify({
+              msg,
+              expires: expires.toISOString(),
+            });
+            localStorage.setItem(key, value);
           },
         });
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

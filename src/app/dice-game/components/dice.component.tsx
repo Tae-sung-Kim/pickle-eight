@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DiceComponentPropsType } from '@/types/dice-game.type';
-import { DOT_POSITIONS } from '@/constants/dice-game.constant';
+import { DOT_POSITIONS } from '@/constants';
 
 const getDiceDots = (value: number) => {
   return Array.from({ length: value }, (_, i) => ({

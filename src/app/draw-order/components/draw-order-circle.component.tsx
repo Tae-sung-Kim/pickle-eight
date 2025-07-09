@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ParticipantType } from '@/types/draw-order.type';
+import { ParticipantType } from '@/types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RotateCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';

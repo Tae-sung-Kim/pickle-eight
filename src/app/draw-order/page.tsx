@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import {
+  DrawOrderCircleComponent,
   DrawOrderGuideComponent,
   DrawOrderInputListComponent,
 } from './components';
@@ -9,7 +10,6 @@ import { useNameManager } from '@/hooks';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { DrawOrderCircleComponent } from './components/draw-order-circle.component';
 import { shuffle } from '@/utils';
 
 export default function DrawOrderPage() {

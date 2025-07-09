@@ -6,7 +6,8 @@ export function FooterLayout() {
       <div className="px-4 sm:px-6">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Pickle-eight. All rights reserved.
+            © {new Date().getFullYear()} {process.env.NEXT_PUBLIC_SITE_NAME}.
+            All rights reserved.
           </p>
           <div className="flex items-center space-x-4">
             <Link

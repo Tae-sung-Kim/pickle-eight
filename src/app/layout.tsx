@@ -12,9 +12,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Pickle-eight : 랜덤 추첨과 게임의 모든 것',
-  description:
-    '온라인에서 쉽고 빠르게 이름, 상품, 자리, 메뉴, 사다리, 주사위 등 다양한 항목을 랜덤으로 추첨하고 결과를 공유하세요. 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천, 빈칸 채우기 퀴즈, 숫자 맞추기 게임 등 다양한 랜덤 도구와 재미있는 게임을 Pickle-eight에서 무료로 즐겨보세요!',
+  title: `${process.env.NEXT_PUBLIC_SITE_NAME} : 랜덤 추첨과 게임의 모든 것`,
+  description: `온라인에서 쉽고 빠르게 이름, 상품, 자리, 메뉴, 사다리, 주사위 등 다양한 항목을 랜덤으로 추첨하고 결과를 공유하세요. 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천, 빈칸 채우기 퀴즈, 숫자 맞추기 게임 등 다양한 랜덤 도구와 재미있는 게임을 ${process.env.NEXT_PUBLIC_SITE_NAME}에서 무료로 즐겨보세요!`,
   keywords: [
     '이름',
     '상품',
@@ -95,11 +94,11 @@ export const metadata: Metadata = {
     canonical: 'https://pickle-eight.vercel.app',
   },
   openGraph: {
-    title: 'Pickle-eight : 랜덤 추첨과 게임의 모든 것',
+    title: `${process.env.NEXT_PUBLIC_SITE_NAME} : 랜덤 추첨과 게임의 모든 것`,
     description:
       '이름(상품) 추첨, 자리 배정, 사다리 타기, 주사위 굴리기, 로또 번호 추천 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요! 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천 등 다양한 기능 제공.',
     url: 'https://pickle-eight.vercel.app',
-    siteName: 'Pickle-eight',
+    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     // images: [
     //   {
     //     url: 'https://pickle-eight.vercel.app/og-image.png',
@@ -113,12 +112,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pickle-eight : 랜덤 추첨과 게임의 모든 것',
+    title: `${process.env.NEXT_PUBLIC_SITE_NAME} : 랜덤 추첨과 게임의 모든 것`,
     description:
       '온라인에서 쉽고 빠르게 이름, 상품, 자리, 메뉴, 사다리, 주사위 등 다양한 항목을 랜덤으로 추첨하고 결과를 공유하세요.',
     // images: ['https://pickle-eight.vercel.app/og-image.png'],
   },
-  authors: [{ name: 'Pickle-eight Team' }],
+  authors: [{ name: process.env.NEXT_PUBLIC_SITE_NAME + ' Team' }],
   robots: 'index,follow',
   category: '게임, 엔터테인먼트, 추첨, 도구',
 };
@@ -139,10 +138,13 @@ export default function RootLayout({
           name="google-site-verification"
           content="GriA50nFO1IDBuetooOWR6mLwK6HtmFcwURDYgz6AbI"
         />
-        <meta name="author" content="Pickle-eight Team" />
+        <meta
+          name="author"
+          content={process.env.NEXT_PUBLIC_SITE_NAME + ' Team'}
+        />
         <meta name="robots" content="index,follow" />
         <meta name="subject" content="랜덤 추첨 및 게임 플랫폼" />
-        <meta name="copyright" content="Pickle-eight" />
+        <meta name="copyright" content={process.env.NEXT_PUBLIC_SITE_NAME} />
         <meta name="rating" content="general" />
         <meta name="category" content="게임, 엔터테인먼트, 추첨, 도구" />
         <meta property="og:locale:alternate" content="en_US" />
