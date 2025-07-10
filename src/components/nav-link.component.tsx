@@ -9,8 +9,6 @@ type NavLinkComponentPropsType = Omit<
   'className'
 > & {
   isActive?: boolean;
-  activeClassName?: string;
-  inactiveClassName?: string;
   children: React.ReactNode;
   className?: string | ((props: { isActive: boolean }) => string);
 };
@@ -20,8 +18,6 @@ export function NavLinkComponent({
   href,
   children,
   isActive: isActiveProp,
-  activeClassName = '',
-  inactiveClassName = '',
   ...props
 }: NavLinkComponentPropsType) {
   const pathname = usePathname();
