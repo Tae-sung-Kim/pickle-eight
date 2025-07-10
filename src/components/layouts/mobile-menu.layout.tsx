@@ -1,6 +1,7 @@
+'use client';
 import { NavLinkComponent } from '@/components';
 import { MENU_LIST } from '@/constants';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronRight } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -10,8 +11,10 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
 export function MobileMenuLayout() {
+  const pathname = usePathname();
   return (
     <div className="md:hidden">
       <Sheet>
@@ -19,60 +22,69 @@ export function MobileMenuLayout() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-foreground hover:bg-accent/50"
+            className="h-14 w-14 bg-primary/10 rounded-full text-primary shadow-lg hover:bg-primary/20 transition-all"
+            aria-label="메뉴 열기"
           >
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">메뉴 열기</span>
+            <Menu className="h-10 w-10" />
           </Button>
         </SheetTrigger>
         <SheetContent
           side="right"
           hideCloseButton={true}
-          className="w-[85%] max-w-sm p-0 bg-background/95 backdrop-blur-sm [&>button:first-child]:hidden"
+          className={cn(
+            // 부드러운 fade+slide 애니메이션, 플랫한 카드 느낌
+            'w-[90%] max-w-xs p-0 bg-white/95 backdrop-blur-2xl shadow-2xl border-none',
+            'flex flex-col animate-in fade-in-0 slide-in-from-right-10 duration-300'
+          )}
         >
-          <div className="relative">
-            <div className="px-6 pt-6 pb-4 border-b flex justify-between items-center">
-              <SheetTitle className="text-lg font-semibold">메뉴</SheetTitle>
-              <SheetClose asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 -mr-2 text-muted-foreground hover:text-foreground"
-                >
-                  <X className="h-5 w-5" />
-                  <span className="sr-only">닫기</span>
-                </Button>
-              </SheetClose>
-            </div>
+          {/* 상단 헤더 */}
+          <div className="sticky top-0 z-10 flex items-center justify-between px-6 pt-6 pb-4 bg-white/90 backdrop-blur shadow-sm">
+            <SheetTitle className="text-xl font-extrabold tracking-tight text-primary">
+              메뉴
+            </SheetTitle>
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-12 w-12 bg-primary/10 text-primary rounded-full shadow hover:bg-primary/20 transition-all"
+                aria-label="닫기"
+              >
+                <X className="h-7 w-7" />
+              </Button>
+            </SheetClose>
           </div>
-
-          <nav className="flex flex-col p-4">
-            {MENU_LIST.map((item) => (
-              <SheetTrigger key={item.href} asChild>
-                <NavLinkComponent
-                  href={item.href}
-                  className={({ isActive }) =>
-                    cn(
-                      'px-4 py-3 rounded-lg text-base font-medium transition-colors',
-                      'hover:bg-accent hover:text-accent-foreground',
+          {/* 메뉴 리스트 */}
+          <nav className="flex flex-col gap-1 px-2 py-4">
+            {MENU_LIST.map((item) => {
+              const isActive = pathname.startsWith(item.href);
+              return (
+                <SheetTrigger key={item.href} asChild>
+                  <NavLinkComponent
+                    href={item.href}
+                    isActive={isActive}
+                    className={cn(
+                      'flex items-center w-full px-5 py-3 rounded-lg text-base font-medium transition-all duration-200 group relative',
                       isActive
-                        ? 'bg-accent text-accent-foreground font-semibold'
-                        : 'text-foreground/90'
-                    )
-                  }
-                >
-                  {item.label}
-                </NavLinkComponent>
-              </SheetTrigger>
-            ))}
+                        ? 'bg-primary/10 text-primary font-bold border border-primary/20 shadow-md'
+                        : 'text-foreground bg-white',
+                      'hover:bg-primary/10 hover:text-primary hover:scale-[1.01] active:scale-[0.98]',
+                      'focus-visible:ring-2 focus-visible:ring-primary/30'
+                    )}
+                  >
+                    {item.label}
+                    <ChevronRight
+                      className={cn(
+                        'ml-auto h-5 w-5 transition-all',
+                        isActive
+                          ? 'text-primary opacity-80'
+                          : 'opacity-30 group-hover:opacity-80'
+                      )}
+                    />
+                  </NavLinkComponent>
+                </SheetTrigger>
+              );
+            })}
           </nav>
-
-          {/* 로그인은 나중에 */}
-          {/* <div className="sticky bottom-0 left-0 right-0 p-4 border-t bg-background/80 backdrop-blur-sm">
-            <Button className="w-full" variant="outline">
-              로그인
-            </Button>
-          </div> */}
         </SheetContent>
       </Sheet>
     </div>

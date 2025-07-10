@@ -7,32 +7,32 @@ import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-  navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import NavLinkComponent from '../nav-link.component';
 
 export function PcMenuLayout() {
-  const pathname = usePathname();
+  const pathname: string = usePathname();
 
   return (
-    <div className="hidden md:flex flex-1 justify-center">
-      <div className="hidden border-b md:block">
-        <div className="container">
-          <NavigationMenu className="h-16">
-            <NavigationMenuList className="h-full">
+    <div className="hidden md:flex w-full border-b border-border bg-white z-20">
+      <nav className="w-full flex justify-center">
+        <div className="flex items-center h-14 w-full max-w-screen-xl">
+          <NavigationMenu className="w-full">
+            <NavigationMenuList className="flex flex-row h-full items-center justify-center w-full">
               {MENU_LIST.map((item) => {
-                const isActive = pathname.startsWith(item.href);
+                const isActive: boolean = pathname.startsWith(item.href);
                 return (
                   <NavigationMenuItem key={item.href} className="h-full">
                     <NavLinkComponent
                       href={item.href}
                       isActive={isActive}
                       className={cn(
-                        navigationMenuTriggerStyle(),
-                        'h-full rounded-none border-b-2 border-transparent hover:bg-transparent hover:text-foreground',
+                        // 더 좁은 패딩, 더 작은 폰트까지 반영
+                        'flex items-center h-14 px-0.5 xs:px-1 sm:px-1.5 md:px-2 lg:px-3 xl:px-4 text-[11px] xs:text-xs sm:text-sm md:text-base font-medium whitespace-nowrap border-b-2 transition-colors duration-150',
                         isActive
-                          ? 'border-primary bg-transparent text-foreground'
-                          : 'text-muted-foreground'
+                          ? 'border-primary text-primary font-bold'
+                          : 'border-transparent text-muted-foreground hover:text-foreground',
+                        'hover:border-primary/70'
                       )}
                     >
                       {item.label}
@@ -43,7 +43,9 @@ export function PcMenuLayout() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-      </div>
+      </nav>
     </div>
   );
 }
+
+export default PcMenuLayout;

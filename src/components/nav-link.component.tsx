@@ -35,10 +35,7 @@ export function NavLinkComponent({
     <Link
       href={href}
       className={cn(
-        'inline-flex items-center px-4 py-2 rounded-md transition-colors',
-        isActive
-          ? `bg-accent text-accent-foreground font-medium ${activeClassName}`
-          : `text-muted-foreground hover:bg-accent hover:text-accent-foreground ${inactiveClassName}`,
+        'inline-flex items-center transition-colors', // px, py 등은 외부에서!
         computedClassName
       )}
       {...props}
