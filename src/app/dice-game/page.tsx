@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNameManager } from '@/hooks';
 import { getRandomValue, getWinnerIndexes } from '@/utils';
 import { Card, CardContent } from '@/components/ui/card';
-import { Trophy, Dice5 } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import DiceInputComponent from './components/dice-input.component';
 import DicePlayerListComponent from './components/dice-player-list.component';
 import { DiceRollButtonComponent } from './components';
@@ -60,7 +60,6 @@ export default function DiceGamePage() {
       >
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-indigo-900 mb-2 flex items-center justify-center gap-2">
-            <Dice5 className="w-10 h-10 text-indigo-600" />
             주사위 굴리기
           </h1>
           <p className="text-lg text-indigo-400 max-w-2xl mx-auto">

@@ -20,7 +20,7 @@ export const MENU_LIST = [
   {
     href: '/team-assignment',
     label: '팀 배정',
-    description: '인원과 팀 크기를 입력하면 랜덤하게 팀을 배정합니다.',
+    description: '인원과 팀 개수를 입력하면 랜덤하게 팀을 배정합니다.',
     example: '예: 워크숍 조 편성, 모임 팀 배정 등',
   },
   {
