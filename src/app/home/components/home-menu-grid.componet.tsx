@@ -1,25 +1,37 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Dice5, User, Users, ListChecks, Award, BarChart } from 'lucide-react';
+import {
+  Dice5,
+  Wand2,
+  Group,
+  SlidersHorizontal,
+  Ticket,
+  Layout,
+  Shuffle,
+} from 'lucide-react';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants';
 
 const icons = [
   {
     href: '/lotto-random',
-    icon: <BarChart className="w-8 h-8 text-indigo-500" />,
+    icon: <Ticket className="w-8 h-8 text-indigo-500" />,
   },
   {
     href: '/name-random',
-    icon: <User className="w-8 h-8 text-pink-500" />,
+    icon: <Wand2 className="w-8 h-8 text-pink-500" />,
   },
   {
     href: '/seat-assignment',
-    icon: <Users className="w-8 h-8 text-blue-500" />,
+    icon: <Layout className="w-8 h-8 text-orange-500" />, // 자리 배정: 좌석, 주황색
+  },
+  {
+    href: '/team-assignment',
+    icon: <Group className="w-8 h-8 text-violet-500" />, // 팀 배정: 여러 명, 보라색
   },
   {
     href: '/ladder-game',
-    icon: <ListChecks className="w-8 h-8 text-green-500" />,
+    icon: <SlidersHorizontal className="w-8 h-8 text-green-500" />,
   },
   {
     href: '/dice-game',
@@ -27,7 +39,7 @@ const icons = [
   },
   {
     href: '/draw-order',
-    icon: <Award className="w-8 h-8 text-orange-500" />,
+    icon: <Shuffle className="w-8 h-8 text-orange-500" />,
   },
 ];
 

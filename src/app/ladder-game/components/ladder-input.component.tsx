@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { LadderInputComponentPropsType } from '@/types';
 import { NameInputComponent } from '@/components';
+import NameBadgeComponent from '@/components/name-badge.component';
 
 export function LadderInputComponent({
   onCreateLadder,
@@ -69,22 +70,7 @@ export function LadderInputComponent({
             />
           </div>
           {names.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {names.map((name, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center bg-muted px-3 py-1 rounded-full text-sm"
-                >
-                  <span>{name}</span>
-                  <button
-                    onClick={() => removeName(idx)}
-                    className="ml-1 text-muted-foreground hover:text-foreground"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
-            </div>
+            <NameBadgeComponent list={names} onRemove={removeName} />
           )}
         </div>
 
@@ -133,14 +119,21 @@ export function LadderInputComponent({
       <div className="pt-4 w-full flex justify-center">
         <Button
           onClick={handleCreate}
-          disabled={names.length < 2 || prizes.length < 2}
+          disabled={
+            names.length < 2 ||
+            prizes.length < 2 ||
+            names.length !== prizes.length
+          }
           size="lg"
           className={cn(
             'w-full max-w-md mx-auto py-4 text-base font-bold',
             'bg-gradient-to-r from-indigo-500 to-purple-600',
             'hover:from-indigo-600 hover:to-purple-700',
             'shadow-lg hover:shadow-xl',
-            (names.length < 2 || prizes.length < 2) && 'opacity-70'
+            (names.length < 2 ||
+              prizes.length < 2 ||
+              names.length !== prizes.length) &&
+              'opacity-70'
           )}
         >
           <Sparkles className="mr-2 h-5 w-5" />

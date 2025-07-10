@@ -15,7 +15,13 @@ export const MENU_LIST = [
     href: '/seat-assignment',
     label: '자리 배정',
     description: '참가자와 좌석 수를 입력하면 랜덤하게 자리를 배정합니다.',
-    example: '예: 모임 자리 배치, 시험 좌석 배정, 워크숍 조 편성 등',
+    example: '예: 모임 자리 배치, 시험 좌석 배정 등',
+  },
+  {
+    href: '/team-assignment',
+    label: '팀 배정',
+    description: '인원과 팀 크기를 입력하면 랜덤하게 팀을 배정합니다.',
+    example: '예: 워크숍 조 편성, 모임 팀 배정 등',
   },
   {
     href: '/ladder-game',
