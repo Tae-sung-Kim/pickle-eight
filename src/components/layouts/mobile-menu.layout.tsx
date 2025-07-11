@@ -1,13 +1,14 @@
 'use client';
 import { NavLinkComponent } from '@/components';
 import { MENU_LIST } from '@/constants';
-import { Menu, X, ChevronRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger,
   SheetClose,
+  SheetDescription,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -32,11 +33,13 @@ export function MobileMenuLayout() {
           side="right"
           hideCloseButton={true}
           className={cn(
-            // 부드러운 fade+slide 애니메이션, 플랫한 카드 느낌
             'w-[90%] max-w-xs p-0 bg-white/95 backdrop-blur-2xl shadow-2xl border-none',
             'flex flex-col animate-in fade-in-0 slide-in-from-right-10 duration-300'
           )}
         >
+          <SheetDescription className="sr-only">
+            원하는 메뉴를 선택하세요.
+          </SheetDescription>
           {/* 상단 헤더 */}
           <div className="sticky top-0 z-10 flex items-center justify-between px-6 pt-6 pb-4 bg-white/90 backdrop-blur shadow-sm">
             <SheetTitle className="text-xl font-extrabold tracking-tight text-primary">
@@ -54,36 +57,44 @@ export function MobileMenuLayout() {
             </SheetClose>
           </div>
           {/* 메뉴 리스트 */}
-          <nav className="flex flex-col gap-1 px-2 py-4">
-            {MENU_LIST.map((item) => {
-              const isActive = pathname.startsWith(item.href);
-              return (
-                <SheetTrigger key={item.href} asChild>
-                  <NavLinkComponent
-                    href={item.href}
-                    isActive={isActive}
-                    className={cn(
-                      'flex items-center w-full px-5 py-3 rounded-lg text-base font-medium transition-all duration-200 group relative',
-                      isActive
-                        ? 'bg-primary/10 text-primary font-bold border border-primary/20 shadow-md'
-                        : 'text-foreground bg-white',
-                      'hover:bg-primary/10 hover:text-primary hover:scale-[1.01] active:scale-[0.98]',
-                      'focus-visible:ring-2 focus-visible:ring-primary/30'
-                    )}
-                  >
-                    {item.label}
-                    <ChevronRight
-                      className={cn(
-                        'ml-auto h-5 w-5 transition-all',
-                        isActive
-                          ? 'text-primary opacity-80'
-                          : 'opacity-30 group-hover:opacity-80'
-                      )}
-                    />
-                  </NavLinkComponent>
-                </SheetTrigger>
-              );
-            })}
+          <nav className="flex flex-col gap-2 px-2 py-4">
+            {MENU_LIST.map((group) => (
+              <div key={group.group} className="mb-4">
+                <div className="flex items-center gap-2 px-2 pb-1">
+                  {/* 이모지 or 아이콘 */}
+                  {group.group === 'random' && (
+                    <span className="text-lg">🎲</span>
+                  )}
+                  {group.group === 'ai' && <span className="text-lg">🤖</span>}
+                  {/* 필요시 다른 그룹도 추가 */}
+                  <span className="text-[15px] font-bold text-primary/90">
+                    {group.label}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1 mt-1">
+                  {group.items.map((item) => {
+                    const isActive = pathname.startsWith(item.href);
+                    return (
+                      <NavLinkComponent
+                        key={item.href}
+                        href={item.href}
+                        isActive={isActive}
+                        className={cn(
+                          'flex items-center w-full px-5 py-3 rounded-lg text-base font-medium transition-all duration-200 group relative',
+                          isActive
+                            ? 'bg-primary/10 text-primary font-bold border border-primary/20 shadow-md'
+                            : 'text-foreground bg-white',
+                          'hover:bg-primary/10 hover:text-primary hover:scale-[1.01] active:scale-[0.98]',
+                          'focus-visible:ring-2 focus-visible:ring-primary/30'
+                        )}
+                      >
+                        {item.label}
+                      </NavLinkComponent>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
         </SheetContent>
       </Sheet>

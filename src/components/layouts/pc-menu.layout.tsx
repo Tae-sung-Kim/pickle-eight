@@ -7,44 +7,54 @@ import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
 import NavLinkComponent from '../nav-link.component';
 
 export function PcMenuLayout() {
-  const pathname: string = usePathname();
+  const pathname = usePathname();
 
   return (
-    <div className="hidden md:flex w-full border-b border-border bg-white z-20">
-      <nav className="w-full flex justify-center">
-        <div className="flex items-center h-14 w-full max-w-screen-xl">
-          <NavigationMenu className="w-full">
-            <NavigationMenuList className="flex flex-row h-full items-center justify-center w-full">
-              {MENU_LIST.map((item) => {
-                const isActive: boolean = pathname.startsWith(item.href);
-                return (
-                  <NavigationMenuItem key={item.href} className="h-full">
-                    <NavLinkComponent
-                      href={item.href}
-                      isActive={isActive}
-                      className={cn(
-                        // 더 좁은 패딩, 더 작은 폰트까지 반영
-                        'flex items-center h-14 px-0.5 xs:px-1 sm:px-1.5 md:px-2 lg:px-3 xl:px-4 text-[11px] xs:text-xs sm:text-sm md:text-base font-medium whitespace-nowrap border-b-2 transition-colors duration-150',
-                        isActive
-                          ? 'border-primary text-primary font-bold'
-                          : 'border-transparent text-muted-foreground hover:text-foreground',
-                        'hover:border-primary/70'
-                      )}
-                    >
-                      {item.label}
-                    </NavLinkComponent>
-                  </NavigationMenuItem>
-                );
-              })}
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-      </nav>
-    </div>
+    <NavigationMenu viewport={false}>
+      <NavigationMenuList>
+        {MENU_LIST.map((group) => (
+          <NavigationMenuItem key={group.group}>
+            <NavigationMenuTrigger className="px-4 text-base font-semibold flex items-center gap-2">
+              {group.group === 'random' && <span className="text-xl">🎲</span>}
+              {group.group === 'ai' && <span className="text-xl">🤖</span>}
+              {group.label}
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="flex flex-col min-w-[180px] py-2">
+                {group.items.map((item) => {
+                  const isActive = pathname.startsWith(item.href);
+                  return (
+                    <li key={item.href}>
+                      <NavigationMenuLink asChild>
+                        <NavLinkComponent
+                          href={item.href}
+                          isActive={isActive}
+                          className={cn(
+                            'flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors',
+                            isActive
+                              ? 'bg-primary/10 text-primary font-bold'
+                              : 'text-foreground hover:bg-primary/10 hover:text-primary'
+                          )}
+                        >
+                          {item.label}
+                        </NavLinkComponent>
+                      </NavigationMenuLink>
+                    </li>
+                  );
+                })}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 }
 

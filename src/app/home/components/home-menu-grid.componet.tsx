@@ -1,5 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import {
   Dice5,
   Wand2,
@@ -8,9 +6,11 @@ import {
   Ticket,
   Layout,
   Shuffle,
+  Sparkles,
 } from 'lucide-react';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants';
+import { cn } from '@/lib/utils';
 
 const icons = [
   {
@@ -23,11 +23,11 @@ const icons = [
   },
   {
     href: '/seat-assignment',
-    icon: <Layout className="w-8 h-8 text-orange-500" />, // 자리 배정: 좌석, 주황색
+    icon: <Layout className="w-8 h-8 text-orange-500" />,
   },
   {
     href: '/team-assignment',
-    icon: <Group className="w-8 h-8 text-violet-500" />, // 팀 배정: 여러 명, 보라색
+    icon: <Group className="w-8 h-8 text-violet-500" />,
   },
   {
     href: '/ladder-game',
@@ -41,33 +41,61 @@ const icons = [
     href: '/draw-order',
     icon: <Shuffle className="w-8 h-8 text-orange-500" />,
   },
+  {
+    href: '/knowledge',
+    icon: <Sparkles className="w-8 h-8 text-blue-500" />,
+  },
 ];
 
 export function HomeMenuGridComponent() {
   return (
-    <section className="max-w-5xl mx-auto py-12 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      {MENU_LIST.map((menu) => (
-        <Card
-          key={menu.label}
-          className="flex flex-col h-full shadow-md hover:shadow-xl transition-shadow"
-        >
-          <CardHeader className="flex flex-col items-center gap-2">
-            {icons.find((icon) => icon.href === menu.href)?.icon}
-            <CardTitle className="text-xl text-center">{menu.label}</CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 flex flex-col justify-between">
-            <div>
-              <p className="text-gray-700 mb-2">{menu.description}</p>
-              <p className="text-xs text-gray-500 italic">💡 {menu.example}</p>
+    <section className="max-w-4xl mx-auto py-10 px-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {MENU_LIST.map((group) => (
+          <div key={group.group}>
+            <div className="flex items-center gap-2 mb-3 px-2">
+              {group.group === 'random' && <span className="text-xl">🎲</span>}
+              {group.group === 'ai' && <span className="text-xl">🤖</span>}
+              <span className="text-base font-bold text-primary/90">
+                {group.label}
+              </span>
             </div>
-            <Link href={menu.href} className="mt-4 block" tabIndex={-1}>
-              <Button className="w-full" variant="outline">
-                바로가기
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      ))}
+            <ul className="flex flex-col gap-2">
+              {group.items.map((menu) => (
+                <li key={menu.href}>
+                  <Link
+                    href={menu.href}
+                    className={cn(
+                      'flex items-start gap-3 rounded-lg px-4 py-3 bg-white shadow-sm border border-border transition hover:bg-primary/5 hover:shadow-md',
+                      'focus-visible:ring-2 focus-visible:ring-primary/30'
+                    )}
+                  >
+                    {icons.find((icon) => icon.href === menu.href)?.icon}
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-[16px] text-foreground truncate">
+                        {menu.label}
+                      </div>
+                      {menu.description && (
+                        <div className="text-xs text-muted-foreground truncate">
+                          {menu.description}
+                        </div>
+                      )}
+                      {menu.example && (
+                        <div className="text-[11px] text-muted-foreground italic truncate mt-0.5">
+                          💡 {menu.example}
+                        </div>
+                      )}
+                    </div>
+                    <span className="ml-2 text-primary/60 text-lg flex-shrink-0">
+                      {'>'}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
