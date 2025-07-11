@@ -62,7 +62,7 @@ export const MENU_LIST: {
     label: 'AI 퀴즈/게임',
     items: [
       {
-        href: '/knowledge',
+        href: '/quiz',
         label: '상식/지식 퀴즈',
         description: '원하는 주제의 지식 및 상식 퀴즈를 풀어보세요.',
       },

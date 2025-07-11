@@ -3,3 +3,4 @@ export * from './lotto-random.type';
 export * from './dice-game.type';
 export * from './draw-order.type';
 export * from './openai-api-type';
+export * from './quiz.type';

@@ -12,7 +12,7 @@ const getTodayKey = (type: TodayMessageType) => {
   const dd = String(now.getDate()).padStart(2, '0');
   const today = `${yyyy}-${mm}-${dd}`;
 
-  return `today-message:${type}:${today}`;
+  return `${process.env.NEXT_PUBLIC_SITE_NAME}-today-message:${type}:${today}`;
 };
 
 export function HeroTodayMessageComponent() {

@@ -150,7 +150,7 @@ export default function RootLayout({
         <meta name="category" content="게임, 엔터테인먼트, 추첨, 도구" />
         <meta property="og:locale:alternate" content="en_US" />
       </head>
-      <body className="min-h-screen flex flex-col bg-background text-foreground antialiased">
+      <body className="flex flex-col bg-background text-foreground antialiased">
         <QueryClientProviderWrapper>
           <HeaderLayout />
           <main className="flex-1 py-8">
