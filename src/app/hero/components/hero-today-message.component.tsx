@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { MessageStateType, TodayMessageType } from '@/types';
 import { Sun, Smile } from 'lucide-react';
-import { useGptTodayMessageService } from '@/services';
+import { useGptTodayMessageQuery } from '@/queries';
 
 const getTodayKey = (type: TodayMessageType) => {
   const now = new Date();
@@ -21,8 +21,8 @@ export function HeroTodayMessageComponent() {
     fortune: null,
   });
 
-  const cheerMutation = useGptTodayMessageService('cheer');
-  const fortuneMutation = useGptTodayMessageService('fortune');
+  const cheerMutation = useGptTodayMessageQuery();
+  const fortuneMutation = useGptTodayMessageQuery();
 
   useEffect(() => {
     (['cheer', 'fortune'] as TodayMessageType[]).forEach((type) => {
@@ -51,19 +51,22 @@ export function HeroTodayMessageComponent() {
 
       if (needFetch) {
         const mutation = type === 'cheer' ? cheerMutation : fortuneMutation;
-        mutation.mutate(undefined, {
-          onSuccess: (msg) => {
-            setMessages((prev) => ({ ...prev, [type]: msg }));
-            const expires = new Date();
-            expires.setUTCHours(0, 0, 0, 0);
-            expires.setUTCDate(expires.getUTCDate() + 1);
-            const value = JSON.stringify({
-              msg,
-              expires: expires.toISOString(),
-            });
-            localStorage.setItem(key, value);
-          },
-        });
+        mutation.mutate(
+          { type },
+          {
+            onSuccess: (msg) => {
+              setMessages((prev) => ({ ...prev, [type]: msg }));
+              const expires = new Date();
+              expires.setHours(0, 0, 0, 0);
+              expires.setDate(expires.getDate() + 1);
+              const value = JSON.stringify({
+                msg,
+                expires: expires.toISOString(),
+              });
+              localStorage.setItem(key, value);
+            },
+          }
+        );
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

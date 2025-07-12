@@ -1,2 +1,2 @@
 export * from './axios-instance';
-export * from './use-gpt-today-message.service';
+export * from './openai.service';

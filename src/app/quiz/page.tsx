@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useDailyLimit, useQuizStore } from '@/hooks';
 import { QuizCategoryType, QuizDifficultyType } from '@/types';
 import { QuizFormComponent, QuizQuestionCardComponent } from './components';
-import { useGptQuizService } from '@/services/use-gpt-quiz.service';
+import { useGptQuizQuery } from '@/queries';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,7 +17,7 @@ export default function QuizPage() {
   const { questions, results, currentIdx, addQuestion, answer } =
     useQuizStore();
   const [answeredId, setAnsweredId] = useState<string | undefined>(undefined);
-  const { mutate: generateQuiz, isPending, error } = useGptQuizService();
+  const { mutate: generateQuiz, isPending, error } = useGptQuizQuery();
   const {
     register,
     handleSubmit,
@@ -187,6 +187,7 @@ export default function QuizPage() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.97 }}
             transition={{ duration: 0.4 }}
+            className="w-full max-w-lg mx-auto"
           >
             <QuizFormComponent
               onSubmit={handleStart}

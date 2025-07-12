@@ -1,4 +1,4 @@
-import { callOpenAI } from '@/utils';
+import { callOpenAI } from '@/services';
 import {
   QuizCategoryType,
   QuizDifficultyType,

@@ -3,5 +3,4 @@ export * from './ladder-game.util';
 export * from './dice-game.util';
 export * from './draw-order.util';
 export * from './team-assignment';
-export * from './openai';
 export * from './quiz.util';

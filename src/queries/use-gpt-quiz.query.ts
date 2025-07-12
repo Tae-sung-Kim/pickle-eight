@@ -4,12 +4,12 @@ import {
   QuizDifficultyType,
   QuizQuestionType,
 } from '@/types';
-import { apiInstance } from './axios-instance';
+import { apiInstance } from '@/services';
 
 /**
  * GPT 기반 퀴즈 생성 API를 호출하는 서비스 훅
  */
-export function useGptQuizService() {
+export function useGptQuizQuery() {
   return useMutation<
     QuizQuestionType,
     Error,
