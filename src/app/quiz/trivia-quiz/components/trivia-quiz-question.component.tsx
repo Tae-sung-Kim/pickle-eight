@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { QuizQuestionType } from '@/types';
+import { TriviaQuizQuestionType } from '@/types';
 
-type QuizQuestionCardComponentType = {
-  question: QuizQuestionType;
+type TriviaQuizQuestionCardComponentType = {
+  question: TriviaQuizQuestionType;
   onAnswer: (selectedId: string) => void;
   onNext: () => void;
   disabled?: boolean;
@@ -15,13 +15,13 @@ type QuizQuestionCardComponentType = {
 /**
  * 퀴즈 문제/정답/해설 컴포넌트 (motion/styling 적용)
  */
-export function QuizQuestionCardComponent({
+export function TriviaQuizQuestionCardComponent({
   question,
   onAnswer,
   onNext,
   disabled,
   answeredId,
-}: QuizQuestionCardComponentType) {
+}: TriviaQuizQuestionCardComponentType) {
   const [selected, setSelected] = useState<string>('');
 
   const handleSelect = (id: string) => {
@@ -200,4 +200,4 @@ export function QuizQuestionCardComponent({
   );
 }
 
-export default QuizQuestionCardComponent;
+export default TriviaQuizQuestionCardComponent;

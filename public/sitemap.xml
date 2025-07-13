@@ -5,27 +5,27 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://pickle-eight.vercel.app/lotto-random</loc>
+    <loc>https://pickle-eight.vercel.app/lotto/lotto-number</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickle-eight.vercel.app/name-random</loc>
+    <loc>https://pickle-eight.vercel.app/random-picker/name-random</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickle-eight.vercel.app/seat-assignment</loc>
+    <loc>https://pickle-eight.vercel.app/random-picker/seat-assignment</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickle-eight.vercel.app/ladder-game</loc>
+    <loc>https://pickle-eight.vercel.app/random-picker/ladder-game</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickle-eight.vercel.app/dice-game</loc>
+    <loc>https://pickle-eight.vercel.app/random-picker/dice-game</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickle-eight.vercel.app/draw-order</loc> 
+    <loc>https://pickle-eight.vercel.app/random-picker/draw-order</loc> 
     <priority>0.8</priority>
   </url>
   <!-- 주요 페이지를 여기에 추가 -->

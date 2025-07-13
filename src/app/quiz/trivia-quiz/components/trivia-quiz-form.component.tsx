@@ -10,7 +10,7 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { QUIZ_CATEGORIES, QUIZ_DIFFICULTIES } from '@/constants';
+import { TRIVIA_QUIZ_CATEGORIES, TRIVIA_QUIZ_DIFFICULTIES } from '@/constants';
 import type {
   UseFormRegister,
   UseFormHandleSubmit,
@@ -18,26 +18,26 @@ import type {
   UseFormSetValue,
   FieldErrors,
 } from 'react-hook-form';
-import { QuizFormValuesType } from '@/types';
+import { TriviaQuizFormValuesType } from '@/types';
 
-type QuizFormComponentPropsType = {
-  onSubmit: (data: QuizFormValuesType) => void;
-  register: UseFormRegister<QuizFormValuesType>;
-  handleSubmit: UseFormHandleSubmit<QuizFormValuesType>;
-  errors: FieldErrors<QuizFormValuesType>;
-  watch: UseFormWatch<QuizFormValuesType>;
-  setValue: UseFormSetValue<QuizFormValuesType>;
+type TriviaQuizFormComponentPropsType = {
+  onSubmit: (data: TriviaQuizFormValuesType) => void;
+  register: UseFormRegister<TriviaQuizFormValuesType>;
+  handleSubmit: UseFormHandleSubmit<TriviaQuizFormValuesType>;
+  errors: FieldErrors<TriviaQuizFormValuesType>;
+  watch: UseFormWatch<TriviaQuizFormValuesType>;
+  setValue: UseFormSetValue<TriviaQuizFormValuesType>;
   disabled?: boolean;
 };
 
-export function QuizFormComponent({
+export function TriviaQuizFormComponent({
   onSubmit,
   handleSubmit,
   errors,
   watch,
   setValue,
   disabled,
-}: QuizFormComponentPropsType) {
+}: TriviaQuizFormComponentPropsType) {
   return (
     <motion.form
       className="flex flex-col gap-8 w-full max-w-lg mx-auto bg-white/80 rounded-2xl p-10 shadow-2xl border"
@@ -53,7 +53,10 @@ export function QuizFormComponent({
           <Select
             value={watch('category')}
             onValueChange={(val) =>
-              setValue('category', val as (typeof QUIZ_CATEGORIES)[number])
+              setValue(
+                'category',
+                val as (typeof TRIVIA_QUIZ_CATEGORIES)[number]
+              )
             }
             disabled={disabled}
           >
@@ -61,7 +64,7 @@ export function QuizFormComponent({
               <SelectValue placeholder="분야 선택" />
             </SelectTrigger>
             <SelectContent>
-              {QUIZ_CATEGORIES.map((cat) => (
+              {TRIVIA_QUIZ_CATEGORIES.map((cat) => (
                 <SelectItem key={cat} value={cat}>
                   {cat}
                 </SelectItem>
@@ -86,7 +89,10 @@ export function QuizFormComponent({
           <Select
             value={watch('difficulty')}
             onValueChange={(val) =>
-              setValue('difficulty', val as (typeof QUIZ_DIFFICULTIES)[number])
+              setValue(
+                'difficulty',
+                val as (typeof TRIVIA_QUIZ_DIFFICULTIES)[number]
+              )
             }
             disabled={disabled}
           >
@@ -94,7 +100,7 @@ export function QuizFormComponent({
               <SelectValue placeholder="난이도 선택" />
             </SelectTrigger>
             <SelectContent>
-              {QUIZ_DIFFICULTIES.map((dif) => (
+              {TRIVIA_QUIZ_DIFFICULTIES.map((dif) => (
                 <SelectItem key={dif} value={dif}>
                   {dif}
                 </SelectItem>
@@ -136,4 +142,4 @@ export function QuizFormComponent({
   );
 }
 
-export default QuizFormComponent;
+export default TriviaQuizFormComponent;

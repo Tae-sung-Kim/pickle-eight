@@ -1,31 +1,34 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDailyLimit, useQuizStore } from '@/hooks';
-import { QuizCategoryType, QuizDifficultyType } from '@/types';
-import { QuizFormComponent, QuizQuestionCardComponent } from './components';
-import { useGptQuizQuery } from '@/queries';
+import { useDailyLimit, useTriviaQuizStore } from '@/hooks';
+import { TriviaQuizCategoryType, TriviaQuizDifficultyType } from '@/types';
+import {
+  TriviaQuizFormComponent,
+  TriviaQuizQuestionCardComponent,
+} from './components';
+import { useGptTriviaQuizQuery } from '@/queries';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { quizFormSchema, QuizFormValuesType } from '@/types';
+import { TriviaQuizFormSchema, TriviaQuizFormValuesType } from '@/types';
 
-export default function QuizPage() {
+export default function TriviaQuizPage() {
   const [mounted, setMounted] = useState(false);
 
   const { limit, used, canUse, useOne: callUseOne } = useDailyLimit();
   const { questions, results, currentIdx, addQuestion, answer } =
-    useQuizStore();
+    useTriviaQuizStore();
   const [answeredId, setAnsweredId] = useState<string | undefined>(undefined);
-  const { mutate: generateQuiz, isPending, error } = useGptQuizQuery();
+  const { mutate: generateQuiz, isPending, error } = useGptTriviaQuizQuery();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
     setValue,
-  } = useForm<QuizFormValuesType>({
-    resolver: zodResolver(quizFormSchema),
+  } = useForm<TriviaQuizFormValuesType>({
+    resolver: zodResolver(TriviaQuizFormSchema),
     defaultValues: { category: '상식', difficulty: '하' },
   });
 
@@ -38,8 +41,8 @@ export default function QuizPage() {
       category,
       difficulty,
     }: {
-      category: QuizCategoryType;
-      difficulty: QuizDifficultyType;
+      category: TriviaQuizCategoryType;
+      difficulty: TriviaQuizDifficultyType;
     },
     retryCount = 0
   ) => {
@@ -189,7 +192,7 @@ export default function QuizPage() {
             transition={{ duration: 0.4 }}
             className="w-full max-w-lg mx-auto"
           >
-            <QuizFormComponent
+            <TriviaQuizFormComponent
               onSubmit={handleStart}
               disabled={!canUse}
               register={register}
@@ -207,7 +210,7 @@ export default function QuizPage() {
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.4 }}
           >
-            <QuizQuestionCardComponent
+            <TriviaQuizQuestionCardComponent
               question={questions[currentIdx]}
               onAnswer={handleAnswer}
               onNext={handleNext}

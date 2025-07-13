@@ -9,48 +9,54 @@ export const MENU_LIST: {
   }[];
 }[] = [
   {
+    group: 'lotto',
+    label: '로또',
+    items: [
+      {
+        href: '/lotto/lotto-number',
+        label: '로또 번호 추천',
+        description: '로또 번호를 무작위로 추천해드립니다.',
+        example: '예: 로또 구매 전, 재미로 번호 조합이 필요할 때',
+      },
+    ],
+  },
+  {
     group: 'random',
     label: '랜덤 도구',
     items: [
       {
-        href: '/lotto-random',
-        label: '로또 번호',
-        description: '로또 번호를 무작위로 추천해드립니다.',
-        example: '예: 로또 구매 전, 재미로 번호 조합이 필요할 때',
-      },
-      {
-        href: '/name-random',
+        href: '/random-picker/name-random',
         label: '항목 뽑기',
         description: '여러 명(상품, 번호, 메뉴) 중에서 무작위로 하나를 뽑아요.',
         example: '예: 경품 당첨자 선정, 점심 메뉴 결정 등',
       },
       {
-        href: '/seat-assignment',
+        href: '/random-picker/seat-assignment',
         label: '자리 배정',
         description: '참가자와 좌석 수를 입력하면 랜덤하게 자리를 배정합니다.',
         example: '예: 모임 자리 배치, 시험 좌석 배정 등',
       },
       {
-        href: '/team-assignment',
+        href: '/random-picker/team-assignment',
         label: '팀 배정',
         description: '인원과 팀 개수를 입력하면 랜덤하게 팀을 배정합니다.',
         example: '예: 워크숍 조 편성, 모임 팀 배정 등',
       },
       {
-        href: '/ladder-game',
+        href: '/random-picker/ladder-game',
         label: '사다리 타기',
         description:
           '참가자와 결과를 입력하면 랜덤하게 사다리 타기 결과를 보여줍니다.',
         example: '예: 점심 메뉴 결정, 벌칙 정하기, 역할 분배 등',
       },
       {
-        href: '/dice-game',
+        href: '/random-picker/dice-game',
         label: '주사위 굴리기',
         description: '가상 주사위를 굴려서 결과를 확인하세요.',
         example: '예: 순서 정하기, 게임 진행, 벌칙 정하기 등',
       },
       {
-        href: '/draw-order',
+        href: '/random-picker/draw-order',
         label: '랜덤 매칭',
         description: '참가자들을 랜덤하게 순서로 정렬합니다.',
         example: '예: 발표 순서, 게임 순서, 줄 서기 등',
@@ -58,11 +64,11 @@ export const MENU_LIST: {
     ],
   },
   {
-    group: 'ai',
+    group: 'quiz',
     label: 'AI 퀴즈/게임',
     items: [
       {
-        href: '/quiz',
+        href: '/quiz/trivia-quiz',
         label: '상식/지식 퀴즈',
         description: '원하는 주제의 지식 및 상식 퀴즈를 풀어보세요.',
       },

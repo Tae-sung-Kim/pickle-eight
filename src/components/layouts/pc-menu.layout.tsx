@@ -22,8 +22,9 @@ export function PcMenuLayout() {
         {MENU_LIST.map((group) => (
           <NavigationMenuItem key={group.group}>
             <NavigationMenuTrigger className="px-4 text-base font-semibold flex items-center gap-2">
+              {group.group === 'lotto' && <span className="text-xl">🎱</span>}
               {group.group === 'random' && <span className="text-xl">🎲</span>}
-              {group.group === 'ai' && <span className="text-xl">🤖</span>}
+              {group.group === 'quiz' && <span className="text-xl">🤖</span>}
               {group.label}
             </NavigationMenuTrigger>
             <NavigationMenuContent>

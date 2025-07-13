@@ -14,35 +14,35 @@ import { cn } from '@/lib/utils';
 
 const icons = [
   {
-    href: '/lotto-random',
+    href: '/lotto/lotto-number',
     icon: <Ticket className="w-8 h-8 text-indigo-500" />,
   },
   {
-    href: '/name-random',
+    href: '/random-picker/name-random',
     icon: <Wand2 className="w-8 h-8 text-pink-500" />,
   },
   {
-    href: '/seat-assignment',
+    href: '/random-picker/seat-assignment',
     icon: <Layout className="w-8 h-8 text-orange-500" />,
   },
   {
-    href: '/team-assignment',
+    href: '/random-picker/team-assignment',
     icon: <Group className="w-8 h-8 text-violet-500" />,
   },
   {
-    href: '/ladder-game',
+    href: '/random-picker/ladder-game',
     icon: <SlidersHorizontal className="w-8 h-8 text-green-500" />,
   },
   {
-    href: '/dice-game',
+    href: '/random-picker/dice-game',
     icon: <Dice5 className="w-8 h-8 text-yellow-500" />,
   },
   {
-    href: '/draw-order',
+    href: '/random-picker/draw-order',
     icon: <Shuffle className="w-8 h-8 text-orange-500" />,
   },
   {
-    href: '/knowledge',
+    href: '/quiz/trivia-quiz',
     icon: <Sparkles className="w-8 h-8 text-blue-500" />,
   },
 ];
@@ -50,12 +50,13 @@ const icons = [
 export function HomeMenuGridComponent() {
   return (
     <section className="max-w-4xl mx-auto py-10 px-2">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {MENU_LIST.map((group) => (
           <div key={group.group}>
             <div className="flex items-center gap-2 mb-3 px-2">
+              {group.group === 'lotto' && <span className="text-xl">🎱</span>}
               {group.group === 'random' && <span className="text-xl">🎲</span>}
-              {group.group === 'ai' && <span className="text-xl">🤖</span>}
+              {group.group === 'quiz' && <span className="text-xl">🤖</span>}
               <span className="text-base font-bold text-primary/90">
                 {group.label}
               </span>

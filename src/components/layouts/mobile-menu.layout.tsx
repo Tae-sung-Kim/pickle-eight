@@ -61,11 +61,15 @@ export function MobileMenuLayout() {
             {MENU_LIST.map((group) => (
               <div key={group.group} className="mb-4">
                 <div className="flex items-center gap-2 px-2 pb-1">
-                  {/* 이모지 or 아이콘 */}
-                  {group.group === 'random' && (
-                    <span className="text-lg">🎲</span>
+                  {group.group === 'lotto' && (
+                    <span className="text-xl">🎱</span>
                   )}
-                  {group.group === 'ai' && <span className="text-lg">🤖</span>}
+                  {group.group === 'random' && (
+                    <span className="text-xl">🎲</span>
+                  )}
+                  {group.group === 'quiz' && (
+                    <span className="text-xl">🤖</span>
+                  )}
                   {/* 필요시 다른 그룹도 추가 */}
                   <span className="text-[15px] font-bold text-primary/90">
                     {group.label}

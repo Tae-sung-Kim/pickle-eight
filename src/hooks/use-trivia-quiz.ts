@@ -1,11 +1,11 @@
-import { QUIZ_CATEGORIES, QUIZ_DIFFICULTIES } from '@/constants';
-import { QuizStoreStateType } from '@/types';
+import { TRIVIA_QUIZ_CATEGORIES, TRIVIA_QUIZ_DIFFICULTIES } from '@/constants';
+import { TriviaQuizStoreStateType } from '@/types';
 import { create } from 'zustand';
 
 /**
  * zustand를 이용한 퀴즈 상태 관리 훅
  */
-export const useQuizStore = create<QuizStoreStateType>((set) => ({
+export const useTriviaQuizStore = create<TriviaQuizStoreStateType>((set) => ({
   questions: [],
   results: [],
   currentIdx: 0,
@@ -21,6 +21,7 @@ export const useQuizStore = create<QuizStoreStateType>((set) => ({
   reset: () => set({ questions: [], results: [], currentIdx: 0 }),
 }));
 
-export type QuizCategoryType = (typeof QUIZ_CATEGORIES)[number];
+export type TriviaQuizCategoryType = (typeof TRIVIA_QUIZ_CATEGORIES)[number];
 
-export type QuizDifficultyType = (typeof QUIZ_DIFFICULTIES)[number];
+export type TriviaQuizDifficultyType =
+  (typeof TRIVIA_QUIZ_DIFFICULTIES)[number];
