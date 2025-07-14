@@ -11,41 +11,18 @@ import {
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants';
 import { cn } from '@/lib/utils';
+import MenuTooltipComponent from './menu-tooltip.component';
 
-const icons = [
-  {
-    href: '/lotto/lotto-number',
-    icon: <Ticket className="w-8 h-8 text-indigo-500" />,
-  },
-  {
-    href: '/random-picker/name-random',
-    icon: <Wand2 className="w-8 h-8 text-pink-500" />,
-  },
-  {
-    href: '/random-picker/seat-assignment',
-    icon: <Layout className="w-8 h-8 text-orange-500" />,
-  },
-  {
-    href: '/random-picker/team-assignment',
-    icon: <Group className="w-8 h-8 text-violet-500" />,
-  },
-  {
-    href: '/random-picker/ladder-game',
-    icon: <SlidersHorizontal className="w-8 h-8 text-green-500" />,
-  },
-  {
-    href: '/random-picker/dice-game',
-    icon: <Dice5 className="w-8 h-8 text-yellow-500" />,
-  },
-  {
-    href: '/random-picker/draw-order',
-    icon: <Shuffle className="w-8 h-8 text-orange-500" />,
-  },
-  {
-    href: '/quiz/trivia-quiz',
-    icon: <Sparkles className="w-8 h-8 text-blue-500" />,
-  },
-];
+const ICONS = {
+  Ticket,
+  Wand2,
+  Layout,
+  Group,
+  SlidersHorizontal,
+  Dice5,
+  Shuffle,
+  Sparkles,
+};
 
 export function HomeMenuGridComponent() {
   return (
@@ -62,37 +39,35 @@ export function HomeMenuGridComponent() {
               </span>
             </div>
             <ul className="flex flex-col gap-2">
-              {group.items.map((menu) => (
-                <li key={menu.href}>
-                  <Link
-                    href={menu.href}
-                    className={cn(
-                      'flex items-start gap-3 rounded-lg px-4 py-3 bg-white shadow-sm border border-border transition hover:bg-primary/5 hover:shadow-md',
-                      'focus-visible:ring-2 focus-visible:ring-primary/30'
-                    )}
-                  >
-                    {icons.find((icon) => icon.href === menu.href)?.icon}
-                    <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-[16px] text-foreground truncate">
-                        {menu.label}
+              {group.items.map((menu) => {
+                const Icon = ICONS[menu.icon as keyof typeof ICONS];
+
+                return (
+                  <li key={menu.href}>
+                    <Link
+                      href={menu.href}
+                      className={cn(
+                        'flex items-center gap-3 rounded-lg px-4 py-3 bg-white shadow-sm border border-border transition hover:bg-primary/5 hover:shadow-md',
+                        'focus-visible:ring-2 focus-visible:ring-primary/30'
+                      )}
+                    >
+                      <Icon className={cn('w-8 h-8', menu.colorClass)} />
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-[16px] text-foreground truncate">
+                          {menu.label}
+                        </div>
+                        <MenuTooltipComponent
+                          description={menu.description}
+                          example={menu.example}
+                        />
                       </div>
-                      {menu.description && (
-                        <div className="text-xs text-muted-foreground truncate">
-                          {menu.description}
-                        </div>
-                      )}
-                      {menu.example && (
-                        <div className="text-[11px] text-muted-foreground italic truncate mt-0.5">
-                          💡 {menu.example}
-                        </div>
-                      )}
-                    </div>
-                    <span className="ml-2 text-primary/60 text-lg flex-shrink-0">
-                      {'>'}
-                    </span>
-                  </Link>
-                </li>
-              ))}
+                      <span className="ml-2 text-primary/60 text-lg flex-shrink-0">
+                        {'>'}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}

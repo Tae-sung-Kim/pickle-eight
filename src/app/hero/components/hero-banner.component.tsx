@@ -1,5 +1,3 @@
-'use client';
-
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { HERO_BADGE_LIST, HERO_FEATURE_LIST } from '@/constants';
 import { Sparkles } from 'lucide-react';
@@ -16,14 +14,12 @@ export function HeroBanner() {
           <span className="ml-2 animate-bounce">🎉</span>
         </AlertTitle>
         <AlertDescription className="text-base text-gray-700 leading-relaxed">
-          <span className="font-semibold text-pink-500">
-            {process.env.NEXT_PUBLIC_SITE_NAME}는?
-          </span>
-          누구나 쉽고 재미있게 사용할 수 있는{' '}
-          <span className="font-semibold">랜덤 추첨 & 게임 플랫폼입니다.</span>
           <span className="block text-sm text-gray-600 mt-1">
-            모임, 행사, 파티, 회식, 학교, 회사 등 다양한 상황에서 활용할 수 있는
-            여러 가지 추첨/게임 기능을 제공합니다.
+            누구나 쉽고 재미있게 사용할 수 있는{' '}
+            <span className="font-semibold">
+              랜덤 추첨·게임 & AI 퀴즈 플랫폼
+            </span>
+            입니다.
           </span>
           <ul className="list-disc pl-6 mt-3 space-y-1 text-sm text-gray-700">
             {HERO_FEATURE_LIST.map((item, idx) => (
