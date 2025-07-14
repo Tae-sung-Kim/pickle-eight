@@ -4,61 +4,86 @@ const DAILY_LIMIT = 5;
 const STORAGE_KEY = `${process.env.NEXT_PUBLIC_SITE_NAME}_quiz_daily_limit`;
 
 type DailyLimitStateType = {
-  date: string; // YYYY-MM-DD
+  date: string;
   count: number;
 };
 
-/**
- * 오늘 날짜(로컬 기준) 반환
- */
+type DailyLimitStorageType = {
+  [quizType: string]: DailyLimitStateType;
+};
+
 function getToday(): string {
-  const now = new Date();
-  return now.toISOString().slice(0, 10);
+  return new Date().toISOString().slice(0, 10);
 }
 
 /**
- * 일일 퀴즈 제한 관리 훅
- * @returns {limit, used, canUse, useOne, reset}
+ * 일일 퀴즈 제한 관리 훅 (localStorage 키 하나에 여러 퀴즈 타입의 제한을 관리)
  */
-export function useDailyLimit(): {
-  limit: number;
-  used: number;
-  canUse: boolean;
-  useOne: () => void;
-  reset: () => void;
-} {
-  const [state, setState] = useState<DailyLimitStateType>(() => {
-    if (typeof window === 'undefined') return { date: getToday(), count: 0 };
+export function useDailyLimit() {
+  const [storage, setStorage] = useState<DailyLimitStorageType>(() => {
+    if (typeof window === 'undefined') return {};
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { date: getToday(), count: 0 };
+    if (!raw) return {};
     try {
-      const parsed = JSON.parse(raw) as DailyLimitStateType;
-      if (parsed.date !== getToday()) return { date: getToday(), count: 0 };
-      return parsed;
+      return JSON.parse(raw);
     } catch {
-      return { date: getToday(), count: 0 };
+      return {};
     }
   });
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }, [state]);
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+  }, [storage]);
 
-  const useOne = useCallback(() => {
-    if (state.count < DAILY_LIMIT) {
-      setState((prev) => ({ ...prev, count: prev.count + 1 }));
-    }
-  }, [state.count]);
+  const getDailyLimitState = useCallback(
+    (quizType: string) => {
+      const entry = storage[quizType];
+      if (!entry || entry.date !== getToday())
+        return { date: getToday(), count: 0 };
+      return entry;
+    },
+    [storage]
+  );
 
-  const reset = useCallback(() => {
-    setState({ date: getToday(), count: 0 });
+  /**
+   * 일일 제한 카운트 1 증가
+   */
+  const addOne = useCallback(
+    (quizType: string) => {
+      const entry = getDailyLimitState(quizType);
+      if (entry.count < DAILY_LIMIT) {
+        setStorage((prev) => ({
+          ...prev,
+          [quizType]: { ...entry, count: entry.count + 1 },
+        }));
+      }
+    },
+    [getDailyLimitState]
+  );
+
+  const reset = useCallback((quizType: string) => {
+    setStorage((prev) => ({
+      ...prev,
+      [quizType]: { date: getToday(), count: 0 },
+    }));
   }, []);
 
+  const getDailyLimitInfo = useCallback(
+    (quizType: string) => {
+      const entry = getDailyLimitState(quizType);
+      return {
+        limit: DAILY_LIMIT,
+        used: entry.count,
+        canUse: entry.count < DAILY_LIMIT,
+      };
+    },
+    [getDailyLimitState]
+  );
+
   return {
-    limit: DAILY_LIMIT,
-    used: state.count,
-    canUse: state.count < DAILY_LIMIT,
-    useOne,
+    addOne,
     reset,
+    getDailyLimitInfo,
   };
 }

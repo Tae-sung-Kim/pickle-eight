@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDailyLimit, useTriviaQuizStore } from '@/hooks';
+import { useDailyLimit } from '@/hooks/use-daily-limit';
+import { useTriviaQuizStore } from '@/hooks';
 import { TriviaQuizCategoryType, TriviaQuizDifficultyType } from '@/types';
 import {
   TriviaQuizFormComponent,
@@ -16,7 +17,8 @@ import { TriviaQuizFormSchema, TriviaQuizFormValuesType } from '@/types';
 export default function TriviaQuizPage() {
   const [mounted, setMounted] = useState(false);
 
-  const { limit, used, canUse, useOne: callUseOne } = useDailyLimit();
+  const { getDailyLimitInfo, addOne } = useDailyLimit();
+  const { canUse, limit, used } = getDailyLimitInfo('trivia-quiz');
   const { questions, results, currentIdx, addQuestion, answer } =
     useTriviaQuizStore();
   const [answeredId, setAnsweredId] = useState<string | undefined>(undefined);
@@ -66,7 +68,7 @@ export default function TriviaQuizPage() {
             return;
           }
           addQuestion(quiz);
-          callUseOne();
+          addOne('trivia-quiz');
         },
         onError: (e) => {
           toast.error(e.message);

@@ -81,6 +81,13 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-blue-500',
         description: '원하는 주제의 지식 및 상식 퀴즈를 풀어보세요.',
       },
+      {
+        href: '/quiz/four-idiom-quiz',
+        label: '사자성어 맞추기',
+        icon: 'BookOpen',
+        colorClass: 'text-blue-500',
+        description: '사자성어를 맞추는 퀴즈를 풀어보세요.',
+      },
     ],
   },
   // {

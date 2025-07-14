@@ -1,18 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MessageStateType, TodayMessageType } from '@/types';
+import { MessageStateType } from '@/types';
 import { Sun, Smile } from 'lucide-react';
 import { useGptTodayMessageQuery } from '@/queries';
 
-const getTodayKey = (type: TodayMessageType) => {
+const getTodayKey = () => {
   const now = new Date();
   const yyyy = now.getFullYear();
   const mm = String(now.getMonth() + 1).padStart(2, '0');
   const dd = String(now.getDate()).padStart(2, '0');
   const today = `${yyyy}-${mm}-${dd}`;
-
-  return `${process.env.NEXT_PUBLIC_SITE_NAME}-today-message:${type}:${today}`;
+  return `${process.env.NEXT_PUBLIC_SITE_NAME}-today-message:${today}`;
 };
 
 export function HeroTodayMessageComponent() {
@@ -25,50 +24,79 @@ export function HeroTodayMessageComponent() {
   const fortuneMutation = useGptTodayMessageQuery();
 
   useEffect(() => {
-    (['cheer', 'fortune'] as TodayMessageType[]).forEach((type) => {
-      const key = getTodayKey(type);
-      if (typeof window === 'undefined') return;
+    // hero-today-message 관련 만료된 localStorage 자동 삭제 및 메시지 관리
+    const key = getTodayKey();
+    if (typeof window === 'undefined') return;
+    const saved = localStorage.getItem(key);
+    let cache: { cheer?: string; fortune?: string; expires?: string } = {};
+    let needFetchCheer = false;
+    let needFetchFortune = false;
 
-      const saved = localStorage.getItem(key);
-      let needFetch = false;
-
-      if (saved) {
-        try {
-          const { msg, expires } = JSON.parse(saved);
-          if (new Date() < new Date(expires)) {
-            setMessages((prev) => ({ ...prev, [type]: msg }));
-          } else {
-            localStorage.removeItem(key);
-            needFetch = true;
-          }
-        } catch {
+    if (saved) {
+      try {
+        cache = JSON.parse(saved);
+        if (cache.expires && new Date(cache.expires) < new Date()) {
           localStorage.removeItem(key);
-          needFetch = true;
+          cache = {};
+          needFetchCheer = true;
+          needFetchFortune = true;
         }
-      } else {
-        needFetch = true;
+      } catch {
+        localStorage.removeItem(key);
+        cache = {};
+        needFetchCheer = true;
+        needFetchFortune = true;
       }
+    } else {
+      needFetchCheer = true;
+      needFetchFortune = true;
+    }
 
-      if (needFetch) {
-        const mutation = type === 'cheer' ? cheerMutation : fortuneMutation;
-        mutation.mutate(
-          { type },
-          {
-            onSuccess: (msg) => {
-              setMessages((prev) => ({ ...prev, [type]: msg }));
-              const expires = new Date();
-              expires.setHours(0, 0, 0, 0);
-              expires.setDate(expires.getDate() + 1);
-              const value = JSON.stringify({
-                msg,
-                expires: expires.toISOString(),
-              });
-              localStorage.setItem(key, value);
-            },
-          }
-        );
-      }
-    });
+    // 캐시가 남아있으면 메시지 세팅
+    if (cache.cheer) setMessages((prev) => ({ ...prev, cheer: cache.cheer! }));
+    if (cache.fortune)
+      setMessages((prev) => ({ ...prev, fortune: cache.fortune! }));
+
+    // 각각 필요한 것만 fetch
+    const expires = new Date();
+    expires.setHours(0, 0, 0, 0);
+    expires.setDate(expires.getDate() + 1);
+    const expiresStr = expires.toISOString();
+
+    if (needFetchCheer) {
+      cheerMutation.mutate(
+        { type: 'cheer' },
+        {
+          onSuccess: (msg) => {
+            setMessages((prev) => ({ ...prev, cheer: msg }));
+            const newCache = {
+              ...cache,
+              cheer: msg,
+              expires: expiresStr,
+            };
+            localStorage.setItem(key, JSON.stringify(newCache));
+            cache = newCache;
+          },
+        }
+      );
+    }
+    if (needFetchFortune) {
+      fortuneMutation.mutate(
+        { type: 'fortune' },
+        {
+          onSuccess: (msg) => {
+            setMessages((prev) => ({ ...prev, fortune: msg }));
+            const newCache = {
+              ...cache,
+              fortune: msg,
+              expires: expiresStr,
+            };
+            localStorage.setItem(key, JSON.stringify(newCache));
+            cache = newCache;
+          },
+        }
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -81,7 +109,7 @@ export function HeroTodayMessageComponent() {
             <Smile className="w-7 h-7 text-lime-500" />
           </div>
           <div className="mt-6 text-lg font-bold text-emerald-700 tracking-tight">
-            오늘의 응원 문구
+            오늘의 응원
           </div>
           <div className="mt-2 text-base text-gray-800 text-center font-medium min-h-[32px]">
             {messages.cheer ||

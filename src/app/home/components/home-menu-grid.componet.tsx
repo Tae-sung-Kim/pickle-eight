@@ -7,6 +7,7 @@ import {
   Layout,
   Shuffle,
   Sparkles,
+  BookOpen,
 } from 'lucide-react';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants';
@@ -22,6 +23,7 @@ const ICONS = {
   Dice5,
   Shuffle,
   Sparkles,
+  BookOpen,
 };
 
 export function HomeMenuGridComponent() {
