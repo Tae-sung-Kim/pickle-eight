@@ -17,6 +17,7 @@ export default function FourIdiomQuizPage() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const { getDailyLimitInfo, addOne, isInitialized } = useDailyLimit();
   const { canUse, limit, used } = getDailyLimitInfo('four-idiom-quiz');
+  const [difficultyDisabled, setDifficultyDisabled] = useState(false);
   const [difficulty, setDifficulty] = useState<
     'easy' | 'normal' | 'hard' | null
   >(null);
@@ -47,6 +48,19 @@ export default function FourIdiomQuizPage() {
     },
   });
 
+  const resetQuiz = () => {
+    setShowAnswer(false);
+    setIsCorrect(null);
+    resetForm();
+    resetMutation();
+  };
+
+  const handleDifficuly = (value: 'easy' | 'normal' | 'hard') => {
+    if (!canUse) return;
+    resetQuiz();
+    setDifficulty(value);
+  };
+
   useEffect(() => {
     if (isInitialized && canUse && difficulty) {
       mutate({ difficulty });
@@ -55,12 +69,10 @@ export default function FourIdiomQuizPage() {
 
   const handleNewQuiz = () => {
     if (!canUse || !difficulty) return;
-    setShowAnswer(false);
-    setIsCorrect(null);
-    resetForm();
-    resetMutation();
-    mutate({ difficulty });
+    resetQuiz();
     addOne('four-idiom-quiz');
+    setDifficultyDisabled(false);
+    mutate({ difficulty });
   };
 
   const onSubmit = (values: FormValues) => {
@@ -68,6 +80,7 @@ export default function FourIdiomQuizPage() {
     const isAns = values.answer.trim() === data.answer.trim();
     setIsCorrect(isAns);
     setShowAnswer(true);
+    setDifficultyDisabled(true);
   };
 
   const [showHint, setShowHint] = useState(false);
@@ -101,8 +114,8 @@ export default function FourIdiomQuizPage() {
             size="sm"
             variant={difficulty === 'easy' ? 'secondary' : 'outline'}
             className="text-xs px-3 py-1"
-            onClick={() => setDifficulty('easy')}
-            disabled={isPending}
+            onClick={() => handleDifficuly('easy')}
+            disabled={isPending || difficultyDisabled}
           >
             쉬움
           </Button>
@@ -111,8 +124,8 @@ export default function FourIdiomQuizPage() {
             size="sm"
             variant={difficulty === 'normal' ? 'secondary' : 'outline'}
             className="text-xs px-3 py-1"
-            onClick={() => setDifficulty('normal')}
-            disabled={isPending}
+            onClick={() => handleDifficuly('normal')}
+            disabled={isPending || difficultyDisabled}
           >
             보통
           </Button>
@@ -121,8 +134,8 @@ export default function FourIdiomQuizPage() {
             size="sm"
             variant={difficulty === 'hard' ? 'secondary' : 'outline'}
             className="text-xs px-3 py-1"
-            onClick={() => setDifficulty('hard')}
-            disabled={isPending}
+            onClick={() => handleDifficuly('hard')}
+            disabled={isPending || difficultyDisabled}
           >
             어려움
           </Button>
