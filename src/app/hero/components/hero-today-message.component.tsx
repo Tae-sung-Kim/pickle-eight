@@ -4,101 +4,90 @@ import { useEffect, useState } from 'react';
 import { MessageStateType } from '@/types';
 import { Sun, Smile } from 'lucide-react';
 import { useGptTodayMessageQuery } from '@/queries';
+import { getTodayString } from '@/utils/common';
 
-const getTodayKey = () => {
-  const now = new Date();
-  const yyyy = now.getFullYear();
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  const today = `${yyyy}-${mm}-${dd}`;
-  return `${process.env.NEXT_PUBLIC_SITE_NAME}-today-message:${today}`;
-};
+const STORAGE_KEY = `${
+  process.env.NEXT_PUBLIC_SITE_NAME
+}_today_message:${getTodayString()}`;
 
 export function HeroTodayMessageComponent() {
   const [messages, setMessages] = useState<MessageStateType>({
     cheer: null,
     fortune: null,
   });
-
   const cheerMutation = useGptTodayMessageQuery();
   const fortuneMutation = useGptTodayMessageQuery();
 
-  useEffect(() => {
-    // hero-today-message 관련 만료된 localStorage 자동 삭제 및 메시지 관리
-    const key = getTodayKey();
-    if (typeof window === 'undefined') return;
-    const saved = localStorage.getItem(key);
-    let cache: { cheer?: string; fortune?: string; expires?: string } = {};
-    let needFetchCheer = false;
-    let needFetchFortune = false;
+  const todayKey = STORAGE_KEY;
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // Clear old cache entries
+    Object.keys(localStorage).forEach((key) => {
+      if (
+        key.startsWith(`${process.env.NEXT_PUBLIC_SITE_NAME}_today_message:`) &&
+        key !== todayKey
+      ) {
+        localStorage.removeItem(key);
+      }
+    });
+
+    // Check for valid cache for the current day
+    const saved = localStorage.getItem(todayKey);
     if (saved) {
       try {
-        cache = JSON.parse(saved);
-        if (cache.expires && new Date(cache.expires) < new Date()) {
-          localStorage.removeItem(key);
-          cache = {};
-          needFetchCheer = true;
-          needFetchFortune = true;
+        const cache = JSON.parse(saved);
+        if (cache.expires && new Date(cache.expires) > new Date()) {
+          setMessages({ cheer: cache.cheer, fortune: cache.fortune });
+          return; // Valid cache found, no need to fetch
         }
       } catch {
-        localStorage.removeItem(key);
-        cache = {};
-        needFetchCheer = true;
-        needFetchFortune = true;
+        localStorage.removeItem(todayKey); // Remove corrupted cache
       }
-    } else {
-      needFetchCheer = true;
-      needFetchFortune = true;
     }
 
-    // 캐시가 남아있으면 메시지 세팅
-    if (cache.cheer) setMessages((prev) => ({ ...prev, cheer: cache.cheer! }));
-    if (cache.fortune)
-      setMessages((prev) => ({ ...prev, fortune: cache.fortune! }));
+    // Fetch new messages if no valid cache is found
+    const fetchAndCacheMessages = async () => {
+      try {
+        const cheerMsg = await cheerMutation.mutateAsync({ type: 'cheer' });
+        const fortuneMsg = await fortuneMutation.mutateAsync({
+          type: 'fortune',
+        });
 
-    // 각각 필요한 것만 fetch
-    const expires = new Date();
-    expires.setHours(0, 0, 0, 0);
-    expires.setDate(expires.getDate() + 1);
-    const expiresStr = expires.toISOString();
+        setMessages({ cheer: cheerMsg, fortune: fortuneMsg });
 
-    if (needFetchCheer) {
-      cheerMutation.mutate(
-        { type: 'cheer' },
-        {
-          onSuccess: (msg) => {
-            setMessages((prev) => ({ ...prev, cheer: msg }));
-            const newCache = {
-              ...cache,
-              cheer: msg,
-              expires: expiresStr,
-            };
-            localStorage.setItem(key, JSON.stringify(newCache));
-            cache = newCache;
-          },
-        }
-      );
-    }
-    if (needFetchFortune) {
-      fortuneMutation.mutate(
-        { type: 'fortune' },
-        {
-          onSuccess: (msg) => {
-            setMessages((prev) => ({ ...prev, fortune: msg }));
-            const newCache = {
-              ...cache,
-              fortune: msg,
-              expires: expiresStr,
-            };
-            localStorage.setItem(key, JSON.stringify(newCache));
-            cache = newCache;
-          },
-        }
-      );
-    }
+        // Set expiration to the next day at midnight
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 1);
+        expires.setHours(0, 0, 0, 0);
+
+        const newCache = {
+          cheer: cheerMsg,
+          fortune: fortuneMsg,
+          expires: expires.toISOString(),
+        };
+        localStorage.setItem(todayKey, JSON.stringify(newCache));
+      } catch (error) {
+        console.error('Failed to fetch messages:', error);
+      }
+    };
+
+    fetchAndCacheMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [todayKey]);
+
+  const getCheerMessage = () => {
+    if (messages.cheer) return messages.cheer;
+    if (cheerMutation.isPending) return '로딩 중...';
+    return '응원 메시지를 불러올 수 없습니다.';
+  };
+
+  const getFortuneMessage = () => {
+    if (messages.fortune) return messages.fortune;
+    if (fortuneMutation.isPending) return '로딩 중...';
+    return '오늘의 행운을 불러올 수 없습니다.';
+  };
 
   return (
     <section className="w-full max-w-3xl mx-auto mt-8 mb-6">
@@ -112,25 +101,20 @@ export function HeroTodayMessageComponent() {
             오늘의 응원
           </div>
           <div className="mt-2 text-base text-gray-800 text-center font-medium min-h-[32px]">
-            {messages.cheer ||
-              (cheerMutation.isPending
-                ? '로딩 중...'
-                : '문구를 불러올 수 없습니다.')}
+            {getCheerMessage()}
           </div>
         </div>
+
         {/* Fortune Message */}
         <div className="relative bg-gradient-to-br from-sky-100 via-cyan-100 to-indigo-100 rounded-xl shadow-lg p-6 flex flex-col items-center min-h-[120px] border border-sky-200">
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-2 border border-sky-200">
             <Sun className="w-7 h-7 text-sky-500" />
           </div>
-          <div className="mt-6 text-lg font-bold text-sky-700 tracking-tight">
-            오늘의 운세
+          <div className="mt-6 text-lg font-bold text-cyan-700 tracking-tight">
+            오늘의 행운
           </div>
           <div className="mt-2 text-base text-gray-800 text-center font-medium min-h-[32px]">
-            {messages.fortune ||
-              (fortuneMutation.isPending
-                ? '로딩 중...'
-                : '운세를 불러올 수 없습니다.')}
+            {getFortuneMessage()}
           </div>
         </div>
       </div>

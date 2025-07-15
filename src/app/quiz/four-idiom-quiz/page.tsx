@@ -15,11 +15,11 @@ type FormValues = { answer: string };
 export default function FourIdiomQuizPage() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const { getDailyLimitInfo, addOne } = useDailyLimit();
+  const { getDailyLimitInfo, addOne, isInitialized } = useDailyLimit();
   const { canUse, limit, used } = getDailyLimitInfo('four-idiom-quiz');
-  const [difficulty, setDifficulty] = useState<'easy' | 'normal' | 'hard'>(
-    'easy'
-  );
+  const [difficulty, setDifficulty] = useState<
+    'easy' | 'normal' | 'hard' | null
+  >(null);
   const {
     mutate,
     data,
@@ -48,19 +48,19 @@ export default function FourIdiomQuizPage() {
   });
 
   useEffect(() => {
-    if (canUse) {
+    if (isInitialized && canUse && difficulty) {
       mutate({ difficulty });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [difficulty, canUse]);
+  }, [difficulty, canUse, isInitialized, mutate]);
 
   const handleNewQuiz = () => {
-    if (!canUse) return;
+    if (!canUse || !difficulty) return;
     setShowAnswer(false);
     setIsCorrect(null);
     resetForm();
     resetMutation();
     mutate({ difficulty });
+    addOne('four-idiom-quiz');
   };
 
   const onSubmit = (values: FormValues) => {
@@ -68,7 +68,6 @@ export default function FourIdiomQuizPage() {
     const isAns = values.answer.trim() === data.answer.trim();
     setIsCorrect(isAns);
     setShowAnswer(true);
-    addOne('four-idiom-quiz');
   };
 
   const [showHint, setShowHint] = useState(false);

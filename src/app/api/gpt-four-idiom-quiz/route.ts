@@ -1,67 +1,72 @@
 import { NextResponse } from 'next/server';
 import { callOpenAI } from '@/services';
-
-export const runtime = 'edge';
-
-// 4글자 한자어(사자성어)인지 검사
-function isValidFourIdiom(answer: string): boolean {
-  // 4글자 + 모두 한자(유니코드 범위)로 제한
-  return (
-    typeof answer === 'string' &&
-    answer.length === 4 &&
-    /^[\u4e00-\u9fff]{4}$/.test(answer)
-  );
-}
+import { fourIdiomsByDifficulty } from '@/data/four-idioms';
 
 export async function POST(req: Request) {
-  const { difficulty = 'normal' } = await req.json();
-  let difficultyText = '';
-  if (difficulty === 'easy')
-    difficultyText =
-      '\n- 쉬운 난이도: 초등학생도 맞힐 수 있을 정도로 쉬운 사자성어로 출제해줘.';
-  if (difficulty === 'hard')
-    difficultyText =
-      '\n- 어려운 난이도: 평소 잘 쓰지 않는, 난이도 높은 사자성어로 출제해줘.';
+  const { difficulty = 'normal' }: { difficulty: 'easy' | 'normal' | 'hard' } =
+    await req.json();
 
-  const prompt = `다음 형식으로 한국어 사자성어 퀴즈를 만들어주세요.
-- 문제는 반드시 4글자 한자어(사자성어)로 출제해 주세요. 정답이 4글자가 아니면 절대 출제하지 마세요.
-- "question": 사자성어의 뜻(설명)만, 사자성어 단어는 절대 포함하지 마.
-- "answer": 정답 사자성어 (네 글자)
-- "hint": 정답을 유추할 수 있는 힌트 (예: 첫 글자, 유사 사자성어, 관련 단어, 한자 구성 등)
-${difficultyText}
-JSON으로만 응답해줘.
+  // 1. 사용자가 선택한 난이도의 사자성어 목록을 가져옴
+  const targetIdioms = fourIdiomsByDifficulty[difficulty];
 
-예시:
-{ "question": "매우 어려운 상황에서도 굳건하게 버티는 모습을 비유적으로 이르는 말", "answer": "백절불굴", "hint": "첫 글자는 '백', 네 글자 모두 한자" }
+  // 2. 해당 목록에서 무작위로 정답 선택
+  const question =
+    targetIdioms[Math.floor(Math.random() * targetIdioms.length)];
+
+  let difficultyText = '일반적인 상황에 빗대어 알기 쉽게 설명해줘.'; // normal
+  if (difficulty === 'easy') {
+    difficultyText = '초등학생도 이해할 수 있도록 쉬운 예시를 들어 설명해줘.';
+  }
+  if (difficulty === 'hard') {
+    difficultyText = '정답의 의미와 유래를 포함하여 깊이 있게 설명해줘.';
+  }
+
+  // 3. AI에게 문제, 힌트, 그리고 '정답'까지 생성하도록 요청
+  const prompt = `당신은 한국어 사자성어 퀴즈 출제 전문가입니다.
+정답 단어 '${question.answer}'에 대한 퀴즈를 아래 JSON 형식에 맞춰 생성해주세요.
+
+[규칙]
+1.  **문제(question)**: '${
+    question.meaning
+  }'를 활용해서 뜻을 설명하는 문제를 내주세요. 설명에 정답 단어가 포함되면 안 됩니다.
+2.  **힌트(hint)**: 정답을 유추할 수 있는 결정적인 힌트를 하나만 제시해주세요. (예: 첫 글자는 '백')
+3.  **정답(answer)**: 반드시 '${question.answer}'를 그대로 반환해야 합니다.
+4.  **난이도**: ${difficultyText || '일반적인 난이도로 설명해주세요.'}
+
+[출제 형식]
+{ "question": "(문제 설명)", "answer": "${question.answer}", "hint": "(힌트)" }
 `;
 
-  // 4글자 한자어가 나올 때까지 최대 3회 재시도
-  let lastError = null;
   for (let i = 0; i < 3; i++) {
     try {
       const data = await callOpenAI({
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 200,
-        temperature: 0.8,
+        temperature: 0.5,
       });
       const text = data ?? '{}';
       const json = JSON.parse(text);
 
-      if (isValidFourIdiom(json.answer)) {
+      // 4. AI가 반환한 정답이 우리가 요청한 정답과 일치하는지 확인
+      if (json.answer === question.answer) {
         return NextResponse.json(json);
-      } else {
-        lastError = `정답이 4글자 한자어가 아님: ${json.answer}`;
       }
+      // 일치하지 않으면 재시도
     } catch (e) {
-      lastError = e;
+      // 파싱 오류 등 발생 시 재시도. 에러를 로그에 남겨 디버깅에 활용합니다.
+      console.error(
+        `Four-idiom quiz generation failed on attempt ${i + 1}:`,
+        e
+      );
     }
   }
 
-  // 3회 실패 시 fallback 메시지
-  return NextResponse.json({
-    question: '문제 생성에 실패했습니다.',
-    answer: '',
-    hint: '',
-    error: lastError ? String(lastError) : undefined,
-  });
+  // 3회 실패 시 에러 반환
+  return NextResponse.json(
+    {
+      error:
+        '문제 생성에 실패했습니다. AI가 유효한 응답을 생성하지 못했습니다.',
+    },
+    { status: 500 }
+  );
 }

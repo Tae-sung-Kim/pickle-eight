@@ -11,11 +11,11 @@ export const HERO_FEATURE_LIST = [
     suffix: '도 한 곳에서!',
   },
   {
-    highlight: 'AI 퀴즈·상식 게임',
+    highlight: '퀴즈·상식 게임을 AI가 ',
     description:
       '챗GPT 기반 상식/영단어/사자성어/속담 퀴즈와 빈칸 채우기, 오늘의 운세, 추천 메뉴 등 ',
     color: 'text-indigo-500',
-    suffix: 'AI가 매일 새로운 문제와 추천을 제공합니다.',
+    suffix: '매일 새로운 문제와 추천을 제공합니다.',
   },
   {
     highlight: '',
@@ -29,12 +29,12 @@ export const HERO_BADGE_LIST = [
     text: '🚀 새로운 기능이 계속 추가되고 있어요!',
     className: 'bg-pink-200 text-pink-800',
   },
+  // {
+  //   text: '여러분의 피드백과 아이디어를 언제나 환영합니다.',
+  //   className: 'bg-yellow-200 text-yellow-800',
+  // },
   {
-    text: '여러분의 피드백과 아이디어를 언제나 환영합니다.',
-    className: 'bg-yellow-200 text-yellow-800',
-  },
-  {
-    text: '✨ AI 퀴즈와 운세는 매일 새롭게!',
+    text: '✨ AI로 퀴즈와 운세는 매일 새롭게!',
     className: 'bg-indigo-200 text-indigo-800',
   },
 ];

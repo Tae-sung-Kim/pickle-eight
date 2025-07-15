@@ -18,8 +18,11 @@ export interface FourIdiomQuizRequest {
 
 export function useGptFourIdiomQuizQuery() {
   return useMutation<FourIdiomQuiz, Error, FourIdiomQuizRequest>({
-    mutationFn: async (params) => {
-      const res = await apiInstance.post<FourIdiomQuiz>('/gpt-four-idiom-quiz', params);
+    mutationFn: async (data) => {
+      const res = await apiInstance.post<FourIdiomQuiz>(
+        '/gpt-four-idiom-quiz',
+        { ...data }
+      );
       if (!res.data) {
         throw new Error('사자성어 퀴즈 생성 실패');
       }
