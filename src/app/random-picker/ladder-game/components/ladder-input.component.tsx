@@ -5,7 +5,7 @@ import { X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useNameManager } from '@/hooks';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import { useState } from 'react';
 import { LadderInputComponentPropsType } from '@/types';
 import { NameInputComponent } from '@/components';

@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import MenuTooltipComponent from './menu-tooltip.component';
 
 const ICONS = {

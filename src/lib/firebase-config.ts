@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAnalytics, isSupported, type Analytics } from 'firebase/analytics';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,6 +13,7 @@ const firebaseConfig = {
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const db = getFirestore(app);
 
 /**
  * Analytics 인스턴스를 클라이언트에서만 안전하게 반환
@@ -26,4 +28,4 @@ export const getAnalyticsClient = async (): Promise<Analytics | null> => {
   return getAnalytics(app);
 };
 
-export { app };
+export { app, db };

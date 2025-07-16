@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useNameManager } from '@/hooks';
 import { NameInputComponent, NameListComponent } from '@/components';
 import { Sparkles, Users, RefreshCw } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 
 export default function NameRandomPage() {
   const { names, addName, removeName, reset } = useNameManager();

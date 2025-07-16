@@ -11,7 +11,7 @@ import {
   SheetDescription,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import { usePathname } from 'next/navigation';
 
 export function MobileMenuLayout() {

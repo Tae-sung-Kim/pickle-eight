@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { useGptFourIdiomQuizQuery } from '@/queries';
 import { CheckCircle2, XCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 
 const schema = z.object({ answer: z.string().length(4, '정확히 4글자!') });
 type FormValues = { answer: string };

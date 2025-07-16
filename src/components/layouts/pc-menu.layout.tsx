@@ -2,7 +2,7 @@
 
 import { MENU_LIST } from '@/constants';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import {
   NavigationMenu,
   NavigationMenuItem,

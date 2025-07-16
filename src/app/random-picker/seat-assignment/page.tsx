@@ -7,7 +7,7 @@ import { NameInputComponent, NameListComponent } from '@/components';
 import { useNameManager } from '@/hooks';
 import { ChangeEvent, useState } from 'react';
 import { Users, RefreshCw, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 
 export default function SeatAssignmentPage() {
   const { names, addName, removeName, reset } = useNameManager();

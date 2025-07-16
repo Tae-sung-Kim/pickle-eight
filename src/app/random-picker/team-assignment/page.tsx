@@ -6,7 +6,7 @@ import { Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNameManager } from '@/hooks';
 import { NameInputComponent } from '@/components';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import { generateTeams } from '@/utils/team-assignment';
 import NameBadgeComponent from '@/components/name-badge.component';
 import { TeamCountInputComponent, TeamResultListComponent } from './components';

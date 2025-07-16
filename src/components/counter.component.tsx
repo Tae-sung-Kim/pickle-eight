@@ -3,7 +3,7 @@
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Slider } from './ui/slider';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import { useState, useEffect } from 'react';
 
 type CounterPropsType = {

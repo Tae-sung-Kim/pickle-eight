@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DiceComponentPropsType } from '@/types/dice-game.type';
 import { DOT_POSITIONS } from '@/constants';
