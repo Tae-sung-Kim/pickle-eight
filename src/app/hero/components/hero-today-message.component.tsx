@@ -42,7 +42,7 @@ export function HeroTodayMessageComponent() {
           return; // Valid cache found, no need to fetch
         }
       } catch {
-        localStorage.removeItem(todayKey); // Remove corrupted cache
+        localStorage.removeItem(todayKey);
       }
     }
 
@@ -70,8 +70,7 @@ export function HeroTodayMessageComponent() {
     };
 
     fetchAndCacheMessages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todayKey]);
+  }, [todayKey, mutateAsync]);
 
   const getCheerMessage = () => {
     if (messages.cheer) return messages.cheer;
