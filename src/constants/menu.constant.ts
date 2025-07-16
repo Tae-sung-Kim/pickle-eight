@@ -75,17 +75,24 @@ export const MENU_LIST: MenuGroupType[] = [
     label: 'AI 퀴즈/게임',
     items: [
       {
+        href: '/quiz/english-word-quiz',
+        label: '영어 단어 퀴즈',
+        icon: 'SpellCheck',
+        colorClass: 'text-green-500',
+        description: '단어의 뜻을 보고 알맞은 영어 단어를 맞춰보세요.',
+      },
+      {
         href: '/quiz/trivia-quiz',
         label: '상식/지식 퀴즈',
-        icon: 'Sparkles',
-        colorClass: 'text-blue-500',
+        icon: 'Brain',
+        colorClass: 'text-purple-500',
         description: '원하는 주제의 지식 및 상식 퀴즈를 풀어보세요.',
       },
       {
         href: '/quiz/four-idiom-quiz',
         label: '사자성어 맞추기',
-        icon: 'BookOpen',
-        colorClass: 'text-blue-500',
+        icon: 'ScrollText',
+        colorClass: 'text-amber-500',
         description: '사자성어를 맞추는 퀴즈를 풀어보세요.',
       },
     ],

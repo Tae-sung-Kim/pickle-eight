@@ -8,6 +8,9 @@ import {
   Shuffle,
   Sparkles,
   BookOpen,
+  SpellCheck,
+  Brain,
+  ScrollText,
 } from 'lucide-react';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants';
@@ -24,6 +27,9 @@ const ICONS = {
   Shuffle,
   Sparkles,
   BookOpen,
+  SpellCheck,
+  Brain,
+  ScrollText,
 };
 
 export function HomeMenuGridComponent() {
