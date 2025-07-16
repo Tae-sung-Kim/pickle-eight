@@ -1,4 +1,4 @@
-export type TodayMessageType = 'cheer' | 'fortune';
+export type TodayMessageType = 'fortune' | 'cheer';
 
 export type MessageStateType = {
   cheer: string | null;
@@ -17,4 +17,9 @@ export type OpenAIResponseType = {
       content: string;
     };
   }[];
+};
+
+export type GptTodayMessageResponse = {
+  fortune: string;
+  cheer: string;
 };

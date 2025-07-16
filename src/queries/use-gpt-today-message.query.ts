@@ -1,21 +1,20 @@
 import { useMutation } from '@tanstack/react-query';
-import { TodayMessageType } from '@/types';
+import { GptTodayMessageResponse } from '@/types';
 import { apiInstance } from '@/services';
 
 /**
  * GPT 오늘의 문구/운세 요청 훅
  */
 export function useGptTodayMessageQuery() {
-  return useMutation<string, Error, { type: TodayMessageType }>({
-    mutationFn: async ({ type }) => {
-      const res = await apiInstance.post<{ message: string }>(
-        '/gpt-today-message',
-        { type }
+  return useMutation<GptTodayMessageResponse, Error, void>({
+    mutationFn: async () => {
+      const res = await apiInstance.post<GptTodayMessageResponse>(
+        '/gpt-today-message'
       );
-      if (!res.data?.message) {
+      if (!res.data?.fortune || !res.data?.cheer) {
         throw new Error('오늘의 메시지 생성 실패');
       }
-      return res.data.message;
+      return res.data;
     },
   });
 }

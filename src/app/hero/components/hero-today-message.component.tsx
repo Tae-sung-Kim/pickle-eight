@@ -15,8 +15,7 @@ export function HeroTodayMessageComponent() {
     cheer: null,
     fortune: null,
   });
-  const cheerMutation = useGptTodayMessageQuery();
-  const fortuneMutation = useGptTodayMessageQuery();
+  const { mutateAsync, isPending } = useGptTodayMessageQuery();
 
   const todayKey = STORAGE_KEY;
 
@@ -50,12 +49,9 @@ export function HeroTodayMessageComponent() {
     // Fetch new messages if no valid cache is found
     const fetchAndCacheMessages = async () => {
       try {
-        const cheerMsg = await cheerMutation.mutateAsync({ type: 'cheer' });
-        const fortuneMsg = await fortuneMutation.mutateAsync({
-          type: 'fortune',
-        });
+        const { cheer, fortune } = await mutateAsync();
 
-        setMessages({ cheer: cheerMsg, fortune: fortuneMsg });
+        setMessages({ cheer, fortune });
 
         // Set expiration to the next day at midnight
         const expires = new Date();
@@ -63,8 +59,8 @@ export function HeroTodayMessageComponent() {
         expires.setHours(0, 0, 0, 0);
 
         const newCache = {
-          cheer: cheerMsg,
-          fortune: fortuneMsg,
+          cheer,
+          fortune,
           expires: expires.toISOString(),
         };
         localStorage.setItem(todayKey, JSON.stringify(newCache));
@@ -79,13 +75,13 @@ export function HeroTodayMessageComponent() {
 
   const getCheerMessage = () => {
     if (messages.cheer) return messages.cheer;
-    if (cheerMutation.isPending) return '로딩 중...';
+    if (isPending) return '로딩 중...';
     return '응원 메시지를 불러올 수 없습니다.';
   };
 
   const getFortuneMessage = () => {
     if (messages.fortune) return messages.fortune;
-    if (fortuneMutation.isPending) return '로딩 중...';
+    if (isPending) return '로딩 중...';
     return '오늘의 행운을 불러올 수 없습니다.';
   };
 
