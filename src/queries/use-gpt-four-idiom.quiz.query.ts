@@ -1,25 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import { apiInstance } from '@/services';
-
-export type FourIdiomQuiz = {
-  question: string;
-  answer: string;
-  hint: string;
-};
-
-/**
- * GPT 기반 사자성어 퀴즈 생성 API를 호출하는 서비스 훅
- */
-export type FourIdiomQuizDifficulty = 'easy' | 'normal' | 'hard';
+import { FourIdiomQuizDifficultyType, FourIdiomType } from '@/types';
 
 export interface FourIdiomQuizRequest {
-  difficulty: FourIdiomQuizDifficulty;
+  difficulty: FourIdiomQuizDifficultyType;
 }
 
 export function useGptFourIdiomQuizQuery() {
-  return useMutation<FourIdiomQuiz, Error, FourIdiomQuizRequest>({
+  return useMutation<FourIdiomType, Error, FourIdiomQuizRequest>({
     mutationFn: async (data) => {
-      const res = await apiInstance.post<FourIdiomQuiz>(
+      const res = await apiInstance.post<FourIdiomType>(
         '/gpt-four-idiom-quiz',
         { ...data }
       );
