@@ -1,8 +1,7 @@
 import { where } from 'firebase/firestore';
 import { queryDocuments } from './firebase.service';
 import { FourIdiomType } from '@/types';
-
-const FOUR_IDIOMS_COLLECTION = 'four-idiom-quiz';
+import { FOUR_IDIOMS_COLLECTION } from '@/constants/four-idiom-quiz.constant';
 
 /**
  * 난이도에 맞는 사자성어 목록을 가져옵니다.

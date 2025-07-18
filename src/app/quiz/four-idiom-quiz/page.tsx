@@ -8,6 +8,7 @@ import { useGptFourIdiomQuizQuery } from '@/queries';
 import { CheckCircle2, XCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib';
+import { FOUR_IDIOMS_COLLECTION } from '@/constants/four-idiom-quiz.constant';
 
 const schema = z.object({ answer: z.string().length(4, '정확히 4글자!') });
 type FormValues = { answer: string };
@@ -16,7 +17,7 @@ export default function FourIdiomQuizPage() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const { getDailyLimitInfo, addOne, isInitialized } = useDailyLimit();
-  const { canUse, limit, used } = getDailyLimitInfo('four-idiom-quiz');
+  const { canUse, limit, used } = getDailyLimitInfo(FOUR_IDIOMS_COLLECTION);
   const [difficultyDisabled, setDifficultyDisabled] = useState(false);
   const [difficulty, setDifficulty] = useState<
     'easy' | 'normal' | 'hard' | null
@@ -70,7 +71,7 @@ export default function FourIdiomQuizPage() {
   const handleNewQuiz = () => {
     if (!canUse || !difficulty) return;
     resetQuiz();
-    addOne('four-idiom-quiz');
+    addOne(FOUR_IDIOMS_COLLECTION);
     setDifficultyDisabled(false);
     mutate({ difficulty });
   };
