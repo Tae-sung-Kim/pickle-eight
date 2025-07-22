@@ -1,3 +1,5 @@
+'use client';
+
 import { NameInputComponent, NameListComponent } from '@/components';
 import { InputListSectionPropsType } from '@/types';
 import { useState } from 'react';

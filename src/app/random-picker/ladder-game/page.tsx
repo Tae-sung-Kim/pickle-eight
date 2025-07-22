@@ -1,58 +1,56 @@
-'use client';
+import { LadderGameComponent } from './components';
+import { Metadata } from 'next';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { generateLadder, getLadderResults } from '@/utils/ladder-game.util';
-import { LadderType, LadderConfigType, LadderResultType } from '@/types';
-import { LadderGameSectionComponent } from './components/ladder-game-section.component';
-import { LadderInputComponent } from './components/ladder-input.component';
-import { LadderHeaderComponent } from './components/ladder-header.component';
+export const metadata: Metadata = {
+  title: '사다리 타기 게임 - 랜덤 결과 추첨기',
+  description:
+    '참가자와 상품을 입력하면, 사다리 타기를 통해 랜덤하게 결과를 추첨합니다. 애니메이션, 실시간 결과 공개, 재시도 등 다양한 기능 제공!',
+  keywords: [
+    '사다리타기',
+    '사다리게임',
+    '랜덤추첨',
+    '사다리추첨',
+    '결과추첨',
+    '사다리랜덤',
+    '모임게임',
+    '파티게임',
+    '사다리타기추첨',
+    '사다리매칭',
+    '사다리결과',
+    '사다리애니메이션',
+    '랜덤매칭',
+    '경품추첨',
+    '상품추첨',
+  ],
+  openGraph: {
+    title: '사다리 타기 게임 - 랜덤 결과 추첨기',
+    description:
+      '참가자와 상품을 입력하면, 사다리 타기를 통해 랜덤하게 결과를 추첨합니다. 애니메이션, 실시간 결과 공개, 재시도 등 다양한 기능 제공!',
+    url: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/ladder-game',
+    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
+    locale: 'ko_KR',
+    type: 'website',
+    // images: [
+    //   {
+    //     url: 'https://yourdomain.com/images/ladder-game-og.jpg',
+    //     width: 1200,
+    //     height: 630,
+    //     alt: '사다리 타기 게임',
+    //   },
+    // ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '사다리 타기 게임 - 랜덤 결과 추첨기',
+    description:
+      '참가자와 상품을 입력하면, 사다리 타기를 통해 랜덤하게 결과를 추첨합니다. 애니메이션, 실시간 결과 공개, 재시도 등 다양한 기능 제공!',
+    // images: ['https://yourdomain.com/images/ladder-game-twitter.jpg'],
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/ladder-game',
+  },
+};
 
 export default function LadderGamePage() {
-  const [config, setConfig] = useState<LadderConfigType | null>(null);
-  const [ladder, setLadder] = useState<LadderType | null>(null);
-  const [results, setResults] = useState<LadderResultType[] | null>(null);
-
-  const handleCreateLadder = (data: LadderConfigType) => {
-    setConfig(data);
-    const newLadder = generateLadder(data);
-    setLadder(newLadder);
-    setResults(getLadderResults(data, newLadder));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleReset = () => {
-    setLadder(null);
-    setConfig(null);
-    setResults(null);
-  };
-
-  return (
-    <div className="bg-gradient-to-b from-violet-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <LadderHeaderComponent
-          title="사다리 타기 게임"
-          description="참가자와 상품을 매칭해보세요"
-        />
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="bg-background rounded-2xl shadow-sm border overflow-hidden"
-        >
-          {!ladder ? (
-            <LadderInputComponent onCreateLadder={handleCreateLadder} />
-          ) : (
-            <LadderGameSectionComponent
-              ladder={ladder}
-              config={config!}
-              onReset={handleReset}
-              results={results!}
-            />
-          )}
-        </motion.div>
-      </div>
-    </div>
-  );
+  return <LadderGameComponent />;
 }

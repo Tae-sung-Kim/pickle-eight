@@ -1,3 +1,5 @@
+'use client';
+
 import { LadderHeaderComponentPropsType } from '@/types';
 import { motion } from 'framer-motion';
 

@@ -3,3 +3,4 @@ export * from './dice.component';
 export * from './dice-player.component';
 export * from './dice-player-list.component';
 export * from './dice-roll-button.component';
+export * from './dice-game.component';

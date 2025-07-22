@@ -1,84 +1,44 @@
-'use client';
+import { Metadata } from 'next';
+import { LottoNumberComponent } from './components';
 
-import { useCallback, useState } from 'react';
-import { motion } from 'framer-motion';
-import {
-  LottoGeneratorControlsComponent,
-  LottoNumberListComponent,
-} from './components';
-import { generateLottoNumbers } from '@/utils';
+export const metadata: Metadata = {
+  title: '로또 번호 생성기 - 추천하는 행운의 번호',
+  description:
+    '추천하는 행운의 로또 번호로 당첨의 기회를 잡아보세요! 무작위 생성 및 통계 기반 추천 번호를 제공합니다.',
+  keywords: [
+    '로또',
+    '로또번호생성',
+    '로또추첨',
+    '로또번호추천',
+    '무료로또번호',
+  ],
+  openGraph: {
+    title: '로또 번호 생성기 - 추천하는 행운의 번호',
+    description: '추천하는 행운의 로또 번호로 당첨의 기회를 잡아보세요!',
+    url: process.env.NEXT_PUBLIC_SITE_URL,
+    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
+    // images: [
+    //   {
+    //     url: 'https://yourdomain.com/images/lotto-og-image.jpg',
+    //     width: 1200,
+    //     height: 630,
+    //     alt: '로또 번호 생성기',
+    //   },
+    // ],
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '로또 번호 생성기 - 추천하는 행운의 번호',
+    description: '추천하는 행운의 로또 번호로 당첨의 기회를 잡아보세요!',
+    // images: ['https://yourdomain.com/images/lotto-twitter-card.jpg'],
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL,
+  },
+};
 
 export default function LottoPage() {
-  const [orderCount, setOrderCount] = useState(1);
-  const [lottoNumberList, setLottoNumberList] = useState<number[][]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  const handleOrderCountChange = (newValue: number) => {
-    setOrderCount(newValue);
-  };
-
-  const handleRandomLottoNumber = useCallback(async () => {
-    setIsGenerating(true);
-
-    // 시뮬레이션을 위한 약간의 지연
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    const newLottoNumberList: number[][] = [];
-
-    Array.from({ length: orderCount }, () => {
-      newLottoNumberList.push(generateLottoNumbers());
-    });
-
-    setLottoNumberList(newLottoNumberList);
-    setIsGenerating(false);
-  }, [orderCount]);
-
-  return (
-    <div className="bg-gradient-to-b from-pink-50/30 to-rose-50/30 py-12 px-4 sm:px-6 lg:px-8">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mx-auto max-w-4xl"
-      >
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="space-y-2 text-center"
-        >
-          <h1 className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-4xl font-bold tracking-tight text-transparent">
-            로또 번호 생성기
-          </h1>
-          <p className="text-lg text-muted-foreground mb-3">
-            AI가 추천하는 행운의 번호로 당첨의 기회를 잡아보세요!
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="space-y-6"
-        >
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <div className="space-y-6">
-              <div className="rounded-xl bg-gradient-to-r from-pink-50 to-rose-50 p-6">
-                <LottoGeneratorControlsComponent
-                  orderCount={orderCount}
-                  isGenerating={isGenerating}
-                  onOrderCountChange={handleOrderCountChange}
-                  onGenerate={handleRandomLottoNumber}
-                />
-              </div>
-
-              <LottoNumberListComponent
-                numbersList={lottoNumberList}
-                title="생성된 로또 번호"
-              />
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    </div>
-  );
+  return <LottoNumberComponent />;
 }

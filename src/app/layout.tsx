@@ -99,7 +99,7 @@ export const metadata: Metadata = {
     '빈칸 채우기 챌린지',
   ],
   alternates: {
-    canonical: 'https://pickle-eight.vercel.app',
+    canonical: process.env.NEXT_PUBLIC_SITE_URL,
   },
   openGraph: {
     title: {
@@ -108,7 +108,7 @@ export const metadata: Metadata = {
     },
     description:
       '이름(상품) 추첨, 자리 배정, 사다리 타기, 주사위 굴리기, 로또 번호 추천 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요! 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천 등 다양한 기능 제공.',
-    url: 'https://pickle-eight.vercel.app',
+    url: process.env.NEXT_PUBLIC_SITE_URL,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     // images: [
     //   {
@@ -152,16 +152,6 @@ export default function RootLayout({
           name="google-site-verification"
           content="GriA50nFO1IDBuetooOWR6mLwK6HtmFcwURDYgz6AbI"
         />
-        <meta
-          name="author"
-          content={process.env.NEXT_PUBLIC_SITE_NAME + ' Team'}
-        />
-        <meta name="robots" content="index,follow" />
-        <meta name="subject" content="랜덤 추첨 및 게임 플랫폼" />
-        <meta name="copyright" content={process.env.NEXT_PUBLIC_SITE_NAME} />
-        <meta name="rating" content="general" />
-        <meta name="category" content="게임, 엔터테인먼트, 추첨, 도구" />
-        <meta property="og:locale:alternate" content="en_US" />
       </head>
       <body className="flex flex-col bg-background text-foreground antialiased">
         <QueryClientProviderWrapper>

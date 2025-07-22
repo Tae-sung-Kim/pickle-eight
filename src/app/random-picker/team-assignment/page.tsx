@@ -1,109 +1,57 @@
-'use client';
+import { TeamAssignmentComponent } from './components';
+import { Metadata } from 'next';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useNameManager } from '@/hooks';
-import { NameInputComponent } from '@/components';
-import { cn } from '@/lib';
-import { generateTeams } from '@/utils/team-assignment';
-import NameBadgeComponent from '@/components/name-badge.component';
-import { TeamCountInputComponent, TeamResultListComponent } from './components';
+export const metadata: Metadata = {
+  title: '팀 배정기 - 랜덤 팀 나누기/조 편성',
+  description:
+    '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 모임, 수업, 워크샵, 게임 등에서 공정하게 팀을 나눠보세요.',
+  keywords: [
+    '팀배정',
+    '랜덤팀',
+    '팀나누기',
+    '조편성',
+    '랜덤조',
+    '팀분배',
+    '팀추첨',
+    '팀랜덤',
+    '조추첨',
+    '모임팀',
+    '워크샵팀',
+    '수업조',
+    '게임팀',
+    '공정팀배정',
+    '랜덤분배',
+  ],
+  openGraph: {
+    title: '팀 배정기 - 랜덤 팀 나누기/조 편성',
+    description:
+      '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 모임, 수업, 워크샵, 게임 등에서 공정하게 팀을 나눠보세요.',
+    url: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/team-assignment',
+    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
+    locale: 'ko_KR',
+    type: 'website',
+    // images: [
+    //   {
+    //     url: 'https://yourdomain.com/images/team-assignment-og.jpg',
+    //     width: 1200,
+    //     height: 630,
+    //     alt: '팀 배정기',
+    //   },
+    // ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '팀 배정기 - 랜덤 팀 나누기/조 편성',
+    description:
+      '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 모임, 수업, 워크샵, 게임 등에서 공정하게 팀을 나눠보세요.',
+    // images: ['https://yourdomain.com/images/team-assignment-twitter.jpg'],
+  },
+  alternates: {
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/team-assignment',
+  },
+};
 
-/**
- * 팀 배정 페이지
- */
 export default function TeamAssignmentPage() {
-  const { names, addName, removeName } = useNameManager();
-  const [teamCount, setTeamCount] = useState<number>(2);
-  const [teams, setTeams] = useState<string[][]>([]);
-  const [nameInput, setNameInput] = useState<string>('');
-
-  /** 참가자 추가 */
-  const handleAddName = (): void => {
-    if (nameInput.trim() && addName(nameInput.trim())) {
-      setNameInput('');
-    }
-  };
-
-  /** 팀 배정 실행 */
-  const handleGenerateTeams = (): void => {
-    generateTeams({
-      names,
-      teamCount,
-      setTeams,
-    });
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-10 px-6 bg-orange-50"
-    >
-      {/* 타이틀/설명: 카드 바깥, 최상단 */}
-      <div className="mb-10 w-full flex flex-col items-center">
-        <h1 className="text-3xl font-bold mb-2 text-orange-600">팀 배정</h1>
-        <p className="text-muted-foreground text-base text-center max-w-xl">
-          참가자 명단을 입력하고, 원하는 팀 개수를 설정한 뒤 <b>팀 배정하기</b>{' '}
-          버튼을 누르세요.
-          <br />
-          참가자들은 무작위로 팀에 배정됩니다.
-        </p>
-      </div>
-      <div className="w-full bg-white rounded-2xl shadow-lg p-8 space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end mb-4">
-          {/* 왼쪽: 참가자 추가 + n명 + 입력창 */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-medium">참가자 추가</h3>
-              <span className="text-sm text-muted-foreground">
-                {names.length}명 추가됨
-              </span>
-            </div>
-            <NameInputComponent
-              value={nameInput}
-              onChange={setNameInput}
-              placeholder="이름 입력 후 엔터 또는 추가 버튼"
-              onAdd={handleAddName}
-              isIcon
-              className="w-full"
-            />
-            {names.length > 0 && (
-              <div className="mt-3">
-                <NameBadgeComponent list={names} onRemove={removeName} />
-              </div>
-            )}
-          </div>
-          {/* 오른쪽: 팀 개수 설정 */}
-          <div>
-            <TeamCountInputComponent
-              value={teamCount}
-              onChange={setTeamCount}
-            />
-          </div>
-        </div>
-        {/* 팀 배정 버튼 */}
-        <div className="w-full flex justify-center">
-          <Button
-            onClick={handleGenerateTeams}
-            disabled={names.length < teamCount}
-            size="lg"
-            className={cn(
-              'w-full max-w-md mx-auto py-4 text-base font-bold',
-              'bg-gradient-to-r from-indigo-500 to-purple-600',
-              'hover:from-indigo-600 hover:to-purple-700',
-              'shadow-lg hover:shadow-xl',
-              names.length < teamCount && 'opacity-70'
-            )}
-          >
-            <Sparkles className="mr-2 h-5 w-5" />팀 배정하기
-          </Button>
-        </div>
-        {/* 결과 출력 */}
-        {teams.length > 0 && <TeamResultListComponent teams={teams} />}
-      </div>
-    </motion.div>
-  );
+  return <TeamAssignmentComponent />;
 }

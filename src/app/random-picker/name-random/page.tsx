@@ -1,176 +1,56 @@
-'use client';
+import { Metadata } from 'next';
+import { NameRandomComponent } from './components';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { useNameManager } from '@/hooks';
-import { NameInputComponent, NameListComponent } from '@/components';
-import { Sparkles, Users, RefreshCw } from 'lucide-react';
-import { cn } from '@/lib';
+export const metadata: Metadata = {
+  title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
+  description:
+    '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
+  keywords: [
+    '랜덤추첨',
+    '이름추첨',
+    '항목추첨',
+    '랜덤뽑기',
+    '이름뽑기',
+    '메뉴뽑기',
+    '경품추첨',
+    '아이템추첨',
+    '랜덤선택',
+    '파티게임',
+    '모임게임',
+    '추첨기',
+    '랜덤이벤트',
+    '랜덤추천',
+    '공정추첨',
+  ],
+  openGraph: {
+    title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
+    description:
+      '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
+    url: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/name-random',
+    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
+    locale: 'ko_KR',
+    type: 'website',
+    // images: [
+    //   {
+    //     url: 'https://yourdomain.com/images/name-random-og.jpg',
+    //     width: 1200,
+    //     height: 630,
+    //     alt: '항목 랜덤 추첨기',
+    //   },
+    // ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
+    description:
+      '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
+    // images: ['https://yourdomain.com/images/name-random-twitter.jpg'],
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/name-random',
+  },
+};
 
 export default function NameRandomPage() {
-  const { names, addName, removeName, reset } = useNameManager();
-  const [winner, setWinner] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const [isPicking, setIsPicking] = useState(false);
-
-  const handleAddName = () => {
-    if (addName(inputValue)) {
-      setInputValue('');
-    }
-  };
-
-  const handlePickRandom = async () => {
-    if (names.length === 0) return;
-    setIsPicking(true);
-
-    // Add some suspense with a small delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const randomIndex = Math.floor(Math.random() * names.length);
-    const picked = names[randomIndex];
-    setWinner(picked);
-    setIsPicking(false);
-  };
-
-  const handleReset = () => {
-    reset();
-    setWinner('');
-    setInputValue('');
-  };
-
-  if (winner) {
-    return (
-      <div className="bg-gray-50 container mx-auto h-fit flex items-center justify-center p-4">
-        <div className="w-full max-w-md space-y-8 text-center">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="space-y-6"
-          >
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight">
-                축하합니다! 🎉
-              </h1>
-              <p className="text-muted-foreground">당첨자를 발표합니다</p>
-            </div>
-
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className={cn(
-                'relative p-8 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100',
-                'border border-amber-200 shadow-lg'
-              )}
-            >
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                당첨자
-              </div>
-              <div className="text-4xl font-bold text-amber-600 py-4">
-                {winner}
-              </div>
-            </motion.div>
-
-            <Button
-              onClick={handleReset}
-              size="lg"
-              className="w-full max-w-xs mx-auto"
-            >
-              <RefreshCw className="mr-2 h-4 w-4" />
-              다시 추첨하기
-            </Button>
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bg-gradient-to-b from-amber-50 to-yellow-50 container mx-auto h-fit p-4">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="max-w-md mx-auto space-y-8 py-12"
-      >
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="space-y-2 text-center"
-        >
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-amber-500 to-yellow-500 bg-clip-text text-transparent">
-            항목 랜덤 추첨기
-          </h1>
-          <p className="text-muted-foreground">
-            추첨할 항목을 추가하고 행운의 당첨자를 뽑아보세요
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="space-y-6"
-        >
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <NameInputComponent
-              value={inputValue}
-              disabled={inputValue.length < 1}
-              onChange={setInputValue}
-              onAdd={handleAddName}
-              isIcon={true}
-              placeholder="추첨할 항목 입력 후 엔터 또는 추가 버튼"
-            />
-
-            {names.length > 0 && (
-              <div className="mt-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Users className="h-5 w-5 text-muted-foreground" />
-                    <h3 className="font-medium">
-                      참가자 목록 ({names.length}명)
-                    </h3>
-                  </div>
-                  <Button
-                    onClick={handleReset}
-                    variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground"
-                  >
-                    모두 지우기
-                  </Button>
-                </div>
-
-                <NameListComponent
-                  list={names}
-                  onRemove={removeName}
-                  className="max-h-60 overflow-y-auto"
-                />
-
-                <Button
-                  onClick={handlePickRandom}
-                  disabled={isPicking || names.length === 0}
-                  size="lg"
-                  className="w-full mt-4"
-                >
-                  {isPicking ? (
-                    <>
-                      <Sparkles className="mr-2 h-4 w-4 animate-pulse" />
-                      추첨 중...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="mr-2 h-4 w-4" />
-                      추첨하기
-                    </>
-                  )}
-                </Button>
-              </div>
-            )}
-          </div>
-        </motion.div>
-      </motion.div>
-    </div>
-  );
+  return <NameRandomComponent />;
 }
