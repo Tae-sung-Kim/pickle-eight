@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDailyLimit } from '@/hooks/use-daily-limit';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useGptFourIdiomQuizQuery } from '@/queries';
-import { CheckCircle2, XCircle, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib';
 import { FOUR_IDIOMS_COLLECTION } from '@/constants/four-idiom-quiz.constant';
 import { FourIdiomQuizDifficultyType } from '@/types';
 import FourIdiomQuizDifficultyComponent from './four-idiom-quiz-difficulty.component';
+import FourIdiomQuizAnswerComponent from './four-idiom-quiz-answer.component';
+import FourIdiomQuizFormComponent from './four-idiom-quiz-form.component';
 
 const schema = z.object({ answer: z.string().length(4, '정확히 4글자!') });
 type FormValues = { answer: string };
@@ -23,6 +24,14 @@ export function FourIdiomQuizComponent() {
   const [difficultyDisabled, setDifficultyDisabled] = useState(false);
   const [difficulty, setDifficulty] =
     useState<FourIdiomQuizDifficultyType | null>(null);
+
+  const [isQuizEnd, setIsQuizEnd] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // 카운트와 사용 여부를 확인하여 모든 도전이 끝났는지 확인
+  const isAllUsed = useMemo(() => !canUse && !isQuizEnd, [canUse, isQuizEnd]);
+
   const {
     mutate,
     data,
@@ -72,7 +81,6 @@ export function FourIdiomQuizComponent() {
   const handleNewQuiz = () => {
     if (!canUse || !difficulty) return;
     resetQuiz();
-    addOne(FOUR_IDIOMS_COLLECTION);
     setDifficultyDisabled(false);
     mutate({ difficulty });
   };
@@ -83,11 +91,15 @@ export function FourIdiomQuizComponent() {
     setIsCorrect(isAns);
     setShowAnswer(true);
     setDifficultyDisabled(true);
+
+    addOne(FOUR_IDIOMS_COLLECTION);
+
+    // 마지막 문제에서 정답 제출 시 엔드 플래그
+    if (used + 1 >= limit) {
+      setIsQuizEnd(true);
+    }
   };
 
-  const [showHint, setShowHint] = useState(false);
-
-  const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -114,7 +126,7 @@ export function FourIdiomQuizComponent() {
         difficultyDisabled={difficultyDisabled}
         onDifficuly={handleDifficuly}
       />
-      {canUse ? (
+      {!isAllUsed ? (
         <>
           <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-violet-50 to-pink-50 border border-violet-100 text-gray-800 font-medium shadow-inner">
             <span className="text-violet-700 font-semibold">문제:</span>{' '}
@@ -141,81 +153,23 @@ export function FourIdiomQuizComponent() {
               )}
             </div>
           </div>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex gap-2 mb-2"
-            autoComplete="off"
-          >
-            <input
-              {...register('answer')}
-              className={cn(
-                'border border-gray-300 px-4 py-2 rounded-lg w-36 text-lg font-semibold focus:ring-2 focus:ring-violet-300 transition',
-                showAnswer || isPending ? 'bg-gray-100' : 'bg-white'
-              )}
-              placeholder="정답(4글자)"
-              disabled={showAnswer || isPending}
-              maxLength={4}
+          <FourIdiomQuizFormComponent
+            showAnswer={showAnswer}
+            isPending={isPending}
+            register={register}
+            formState={formState}
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+          />
+          {data && (
+            <FourIdiomQuizAnswerComponent
+              isPending={isPending}
+              showAnswer={showAnswer}
+              isCorrect={isCorrect}
+              data={data}
+              canUse={canUse}
+              onNewQuiz={handleNewQuiz}
             />
-            <Button
-              type="submit"
-              size="lg"
-              className="bg-gradient-to-r from-pink-500 to-violet-500 text-white font-bold shadow"
-              disabled={showAnswer || isPending}
-            >
-              정답 확인
-            </Button>
-          </form>
-          {formState.errors.answer && (
-            <div className="text-red-500 text-sm mb-3 font-semibold">
-              {formState.errors.answer.message}
-            </div>
-          )}
-          {showAnswer && (
-            <div
-              className={cn(
-                'mt-4 flex items-center gap-3 px-5 py-4 rounded-xl border text-lg font-bold shadow transition-all duration-300',
-                isCorrect
-                  ? 'bg-green-50 border-green-400 text-green-700 animate-in fade-in'
-                  : 'bg-red-50 border-red-400 text-red-700 animate-in fade-in'
-              )}
-            >
-              {isCorrect ? (
-                <>
-                  <CheckCircle2 className="w-8 h-8 text-green-500 animate-bounce" />
-                  <span>정답입니다!</span>
-                </>
-              ) : (
-                <>
-                  <XCircle className="w-8 h-8 text-red-500 animate-shake" />
-                  <span>틀렸습니다.</span>
-                </>
-              )}
-              <span className="ml-4 text-gray-700 font-normal">
-                <b>정답:</b>{' '}
-                <span className="text-primary font-bold">{data?.answer}</span>
-              </span>
-              {canUse && (
-                <Button
-                  className="ml-4 text-xs text-blue-500 underline"
-                  variant="ghost"
-                  onClick={handleNewQuiz}
-                  type="button"
-                >
-                  새 문제
-                </Button>
-              )}
-            </div>
-          )}
-          {!showAnswer && (
-            <Button
-              className="mt-4 text-xs text-gray-500 underline"
-              variant="ghost"
-              onClick={handleNewQuiz}
-              type="button"
-              disabled={isPending}
-            >
-              문제 새로고침
-            </Button>
           )}
         </>
       ) : (

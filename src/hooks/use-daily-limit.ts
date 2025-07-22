@@ -6,13 +6,11 @@ const STORAGE_KEY = `${
   process.env.NEXT_PUBLIC_SITE_NAME
 }_quiz_daily_limit:${getTodayString()}`;
 
-type DailyLimitStateType = {
-  date: string;
-  count: number;
-};
-
 type DailyLimitStorageType = {
-  [quizType: string]: DailyLimitStateType;
+  [quizType: string]: {
+    date: string;
+    count: number;
+  };
 };
 
 function getToday(): string {
@@ -74,24 +72,21 @@ export function useDailyLimit() {
   /**
    * 일일 제한 카운트 1 증가
    */
-  const addOne = useCallback(
-    (quizType: string) => {
-      setStorage((prev) => {
-        const today = getToday();
-        const entry = prev[quizType];
-        const newCount = !entry || entry.date !== today ? 1 : entry.count + 1;
+  const addOne = useCallback((quizType: string) => {
+    setStorage((prev) => {
+      const today = getToday();
+      const entry = prev[quizType];
+      const newCount = !entry || entry.date !== today ? 1 : entry.count + 1;
 
-        if (newCount <= DAILY_LIMIT) {
-          return {
-            ...prev,
-            [quizType]: { date: today, count: newCount },
-          };
-        }
-        return prev; // 제한 초과 시 상태 변경 없음
-      });
-    },
-    [] // 의존성 배열에서 storage 제거
-  );
+      if (newCount <= DAILY_LIMIT) {
+        return {
+          ...prev,
+          [quizType]: { date: today, count: newCount },
+        };
+      }
+      return prev; // 제한 초과 시 상태 변경 없음
+    });
+  }, []);
 
   const reset = useCallback((quizType: string) => {
     setStorage((prev) => ({
