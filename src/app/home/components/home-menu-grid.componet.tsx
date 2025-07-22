@@ -36,18 +36,18 @@ export function HomeMenuGridComponent() {
   return (
     <section className="max-w-4xl mx-auto py-10 px-2">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {MENU_LIST.map((group) => (
-          <div key={group.group}>
+        {MENU_LIST.map((data) => (
+          <div key={data.group}>
             <div className="flex items-center gap-2 mb-3 px-2">
-              {group.group === 'lotto' && <span className="text-xl">🎱</span>}
-              {group.group === 'random' && <span className="text-xl">🎲</span>}
-              {group.group === 'quiz' && <span className="text-xl">🤖</span>}
+              {data.group === 'lotto' && <span className="text-xl">🎱</span>}
+              {data.group === 'random' && <span className="text-xl">🎲</span>}
+              {data.group === 'quiz' && <span className="text-xl">🤖</span>}
               <span className="text-base font-bold text-primary/90">
-                {group.label}
+                {data.label}
               </span>
             </div>
             <ul className="flex flex-col gap-2">
-              {group.items.map((menu) => {
+              {data.items.map((menu) => {
                 const Icon = ICONS[menu.icon as keyof typeof ICONS];
 
                 return (

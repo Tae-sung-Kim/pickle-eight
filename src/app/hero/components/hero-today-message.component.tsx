@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { MessageStateType } from '@/types';
 import { Sun, Smile } from 'lucide-react';
 import { useGptTodayMessageQuery } from '@/queries';
-import { getTodayString } from '@/utils/common';
+import { getTodayString } from '@/utils';
 
 const STORAGE_KEY = `${
   process.env.NEXT_PUBLIC_SITE_NAME

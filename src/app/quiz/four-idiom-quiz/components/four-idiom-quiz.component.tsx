@@ -9,6 +9,8 @@ import { CheckCircle2, XCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib';
 import { FOUR_IDIOMS_COLLECTION } from '@/constants/four-idiom-quiz.constant';
+import { FourIdiomQuizDifficultyType } from '@/types';
+import FourIdiomQuizDifficultyComponent from './four-idiom-quiz-difficulty.component';
 
 const schema = z.object({ answer: z.string().length(4, '정확히 4글자!') });
 type FormValues = { answer: string };
@@ -19,9 +21,8 @@ export function FourIdiomQuizComponent() {
   const { getDailyLimitInfo, addOne, isInitialized } = useDailyLimit();
   const { canUse, limit, used } = getDailyLimitInfo(FOUR_IDIOMS_COLLECTION);
   const [difficultyDisabled, setDifficultyDisabled] = useState(false);
-  const [difficulty, setDifficulty] = useState<
-    'easy' | 'normal' | 'hard' | null
-  >(null);
+  const [difficulty, setDifficulty] =
+    useState<FourIdiomQuizDifficultyType | null>(null);
   const {
     mutate,
     data,
@@ -56,7 +57,7 @@ export function FourIdiomQuizComponent() {
     resetMutation();
   };
 
-  const handleDifficuly = (value: 'easy' | 'normal' | 'hard') => {
+  const handleDifficuly = (value: FourIdiomQuizDifficultyType) => {
     if (!canUse) return;
     resetQuiz();
     setDifficulty(value);
@@ -107,39 +108,12 @@ export function FourIdiomQuizComponent() {
         </span>
       </div>
       {/* 난이도 선택 */}
-      <div className="mb-3 flex gap-2 items-center">
-        <span className="text-xs font-semibold text-gray-500">난이도:</span>
-        <Button
-          type="button"
-          size="sm"
-          variant={difficulty === 'easy' ? 'secondary' : 'outline'}
-          className="text-xs px-3 py-1"
-          onClick={() => handleDifficuly('easy')}
-          disabled={isPending || difficultyDisabled}
-        >
-          쉬움
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={difficulty === 'normal' ? 'secondary' : 'outline'}
-          className="text-xs px-3 py-1"
-          onClick={() => handleDifficuly('normal')}
-          disabled={isPending || difficultyDisabled}
-        >
-          보통
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={difficulty === 'hard' ? 'secondary' : 'outline'}
-          className="text-xs px-3 py-1"
-          onClick={() => handleDifficuly('hard')}
-          disabled={isPending || difficultyDisabled}
-        >
-          어려움
-        </Button>
-      </div>
+      <FourIdiomQuizDifficultyComponent
+        difficulty={difficulty}
+        isPending={isPending}
+        difficultyDisabled={difficultyDisabled}
+        onDifficuly={handleDifficuly}
+      />
       {canUse ? (
         <>
           <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-violet-50 to-pink-50 border border-violet-100 text-gray-800 font-medium shadow-inner">

@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, Lightbulb, RefreshCw } from 'lucide-react';
 import { useDailyLimit } from '@/hooks';
+import { EnglishWordQuizOptionsComponent } from './english-word-quiz-options';
+import EnglishWordQuizStatusComponent from './english-word-quiz-status';
 
 export function EnglishWordQuizComponent() {
   const [quiz, setQuiz] = useState<GptEnglishWordQuizResponse | null>(null);
@@ -44,49 +46,23 @@ export function EnglishWordQuizComponent() {
     setIsRevealed(true);
   };
 
+  let status: 'loading' | 'error' | 'limit' | 'none' = 'none';
   if (!isInitialized || (isPending && !quiz)) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
-        <p className="ml-4 text-lg text-gray-600">
-          {isInitialized ? '퀴즈를 만들고 있어요...' : '초기화 중...'}
-        </p>
-      </div>
-    );
+    status = 'loading';
+  } else if (error) {
+    status = 'error';
+  } else if (!canUse && !quiz) {
+    status = 'limit';
+  } else if (!quiz) {
+    status = 'none';
   }
-
-  if (error) {
-    return (
-      <Alert variant="destructive">
-        <AlertTitle>오류 발생</AlertTitle>
-        <AlertDescription>
-          퀴즈를 불러오는 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.
-        </AlertDescription>
-      </Alert>
-    );
-  }
-
-  if (!canUse && !quiz) {
-    return (
-      <Alert>
-        <AlertTitle>오늘의 퀴즈를 모두 풀었어요!</AlertTitle>
-        <AlertDescription>
-          내일 다시 새로운 퀴즈에 도전해보세요. (매일 5회 제공)
-        </AlertDescription>
-      </Alert>
-    );
+  if (status !== 'none') {
+    return <EnglishWordQuizStatusComponent status={status} />;
   }
 
   if (!quiz) {
     return null;
   }
-
-  const getButtonVariant = (option: string) => {
-    if (!isRevealed) return 'outline';
-    if (option === quiz.answer) return 'default';
-    if (option === selectedAnswer) return 'destructive';
-    return 'outline';
-  };
 
   return (
     <Card className="w-full shadow-lg">
@@ -101,19 +77,12 @@ export function EnglishWordQuizComponent() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {quiz.options?.map((option) => (
-            <Button
-              key={option}
-              onClick={() => handleAnswerSelect(option)}
-              variant={getButtonVariant(option)}
-              className="h-14 text-lg transition-all duration-300 transform hover:scale-105"
-              disabled={isRevealed}
-            >
-              {option}
-            </Button>
-          ))}
-        </div>
+        <EnglishWordQuizOptionsComponent
+          quiz={quiz}
+          isRevealed={isRevealed}
+          selectedAnswer={selectedAnswer}
+          onAnswerSelect={handleAnswerSelect}
+        />
 
         {isRevealed && (
           <Alert className="mt-6 bg-yellow-50 border-yellow-300">

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useNameManager } from '@/hooks';
 import { NameInputComponent } from '@/components';
 import { cn } from '@/lib';
-import { generateTeams } from '@/utils/team-assignment';
+import { generateTeams } from '@/utils/team-assignment.util';
 import NameBadgeComponent from '@/components/name-badge.component';
 import TeamResultListComponent from './team-result-list.component';
 import TeamCountInputComponent from './team-count-input.component';
