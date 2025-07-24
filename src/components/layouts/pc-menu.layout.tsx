@@ -28,7 +28,7 @@ export function PcMenuLayout() {
               {group.label}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="flex flex-col min-w-[180px] py-2">
+              <ul className="w-[200px] p-1.5">
                 {group.items.map((item) => {
                   const isActive = pathname.startsWith(item.href);
                   return (
@@ -38,10 +38,10 @@ export function PcMenuLayout() {
                           href={item.href}
                           isActive={isActive}
                           className={cn(
-                            'flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors',
+                            'block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors',
                             isActive
-                              ? 'bg-primary/10 text-primary font-bold'
-                              : 'text-foreground hover:bg-primary/10 hover:text-primary'
+                              ? 'bg-gray-100 text-primary font-semibold'
+                              : 'text-gray-700 hover:bg-gray-50'
                           )}
                         >
                           {item.label}

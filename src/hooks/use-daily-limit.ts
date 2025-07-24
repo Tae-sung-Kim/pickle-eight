@@ -13,10 +13,6 @@ type DailyLimitStorageType = {
   };
 };
 
-function getToday(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
 /**
  * 일일 퀴즈 제한 관리 훅 (localStorage 키 하나에 여러 퀴즈 타입의 제한을 관리)
  */
@@ -29,7 +25,7 @@ export function useDailyLimit() {
     if (typeof window === 'undefined') return;
 
     // --- 오래된 데이터 정리 로직 ---
-    const today = getToday();
+    const today = getTodayString();
     const prefix = `${process.env.NEXT_PUBLIC_SITE_NAME}_quiz_daily_limit:`;
 
     for (let i = 0; i < localStorage.length; i++) {
@@ -74,7 +70,7 @@ export function useDailyLimit() {
    */
   const addOne = useCallback((quizType: string) => {
     setStorage((prev) => {
-      const today = getToday();
+      const today = getTodayString();
       const entry = prev[quizType];
       const newCount = !entry || entry.date !== today ? 1 : entry.count + 1;
 
@@ -91,14 +87,14 @@ export function useDailyLimit() {
   const reset = useCallback((quizType: string) => {
     setStorage((prev) => ({
       ...prev,
-      [quizType]: { date: getToday(), count: 0 },
+      [quizType]: { date: getTodayString(), count: 0 },
     }));
   }, []);
 
   const getDailyLimitInfo = useCallback(
     (quizType: string) => {
       const entry = storage[quizType];
-      const today = getToday();
+      const today = getTodayString();
 
       if (!entry || entry.date !== today) {
         return {

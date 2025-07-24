@@ -31,7 +31,7 @@ export const DicePlayerComponent = ({
   >
     {isWinner && (
       <div className="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs font-bold px-2 py-0.5 rounded-full z-10">
-        승리!
+        당첨!
       </div>
     )}
 
