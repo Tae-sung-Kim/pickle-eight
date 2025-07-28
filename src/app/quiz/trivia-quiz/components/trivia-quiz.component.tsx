@@ -119,21 +119,7 @@ export function TriviaQuizComponent() {
   const allDone = used >= limit && results.length >= limit;
 
   return (
-    <motion.section
-      className="flex flex-col items-center justify-start py-10 bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50"
-      initial={{ opacity: 0, y: 32 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 32 }}
-      transition={{ duration: 0.7, type: 'spring' }}
-    >
-      <motion.h1
-        className="text-3xl font-bold mb-2 bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent"
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-      >
-        상식/지식 퀴즈
-      </motion.h1>
+    <>
       <motion.div
         className="mb-6 text-gray-700"
         initial={{ opacity: 0, y: -8 }}
@@ -233,7 +219,7 @@ export function TriviaQuizComponent() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.section>
+    </>
   );
 }
 

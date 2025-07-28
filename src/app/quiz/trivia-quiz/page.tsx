@@ -51,5 +51,12 @@ export const metadata: Metadata = {
 };
 
 export default function TriviaQuizPage() {
-  return <TriviaQuizComponent />;
+  return (
+    <section className="flex flex-col items-center justify-start py-10 bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50">
+      <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
+        상식/지식 퀴즈
+      </h1>
+      <TriviaQuizComponent />
+    </section>
+  );
 }
