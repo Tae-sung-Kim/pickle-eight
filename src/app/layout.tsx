@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { FooterLayout, HeaderLayout } from '@/components';
+import { FooterLayout, HeaderLayout, LoadingComponent } from '@/components';
 import { Toaster } from 'sonner';
 import './globals.css';
 import AnalyticsClientComponent from '@/components/analytics-client.component';
@@ -142,7 +142,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className="h-full">
+    <html lang="ko" suppressHydrationWarning>
       <head>
         <meta
           name="naver-site-verification"
@@ -164,6 +164,7 @@ export default function RootLayout({
           <FooterLayout />
           <Toaster />
           <AnalyticsClientComponent />
+          <LoadingComponent />
         </QueryClientProviderWrapper>
       </body>
     </html>

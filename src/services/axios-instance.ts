@@ -7,6 +7,7 @@ import axios, {
   AxiosError,
   InternalAxiosRequestConfig,
 } from 'axios';
+import { useLoadingStore } from '@/stores';
 
 /**
  * 인증 토큰을 가져오는 함수 (나중에 구현)
@@ -30,10 +31,11 @@ export const apiInstance: AxiosInstance = axios.create({
 });
 
 /**
- * 요청 인터셉터: 인증 토큰 자동 첨부
+ * 요청 인터셉터: 인증 토큰 자동 첨부 및 로딩 시작
  */
 apiInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
+    useLoadingStore.getState().showLoading();
     const token = await getAuthToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -46,11 +48,15 @@ apiInstance.interceptors.request.use(
 );
 
 /**
- * 응답 인터셉터: 에러 공통 처리
+ * 응답 인터셉터: 에러 공통 처리 및 로딩 종료
  */
 apiInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    useLoadingStore.getState().hideLoading();
+    return response;
+  },
   (error: AxiosError) => {
+    useLoadingStore.getState().hideLoading();
     // 예: 401 에러 시 자동 로그아웃, 알림 등 처리 가능
     if (error.response?.status === 401) {
       // TODO: 로그아웃 처리, 토스트 알림 등
