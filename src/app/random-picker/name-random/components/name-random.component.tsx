@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { useNameManager } from '@/hooks';
+import { useCapture, useNameManager } from '@/hooks';
 import { NameInputComponent, NameListComponent } from '@/components';
-import { Sparkles, Users, RefreshCw } from 'lucide-react';
+import { Sparkles, Users, RefreshCw, Share2 } from 'lucide-react';
 import { cn } from '@/lib';
 
 export function NameRandomComponent() {
@@ -13,6 +13,10 @@ export function NameRandomComponent() {
   const [winner, setWinner] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [isPicking, setIsPicking] = useState(false);
+
+  const { onCapture } = useCapture();
+
+  const winnerRef = useRef<HTMLDivElement>(null);
 
   const handleAddName = () => {
     if (addName(inputValue)) {
@@ -39,6 +43,16 @@ export function NameRandomComponent() {
     setInputValue('');
   };
 
+  const onShare = useCallback(async () => {
+    if (!winnerRef.current) return;
+
+    onCapture(winnerRef as React.RefObject<HTMLElement>, {
+      fileName: 'winner.png',
+      shareTitle: '축하합니다! 🎉',
+      shareText: `축하합니다! ${winner}님이 당첨되었습니다!`,
+    });
+  }, [onCapture, winner]);
+
   if (winner) {
     return (
       <div className="bg-gray-50 container mx-auto h-fit flex items-center justify-center p-4">
@@ -48,38 +62,75 @@ export function NameRandomComponent() {
             animate={{ scale: 1, opacity: 1 }}
             className="space-y-6"
           >
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight">
-                축하합니다! 🎉
-              </h1>
-              <p className="text-muted-foreground">당첨자를 발표합니다</p>
+            <div ref={winnerRef} className="p-4 bg-gray-50">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold tracking-tight">
+                  축하합니다! 🎉
+                </h1>
+                <p className="text-muted-foreground">당첨자를 발표합니다</p>
+              </div>
+
+              {/* 추첨 대상자 목록 추가 */}
+              <div className="my-4">
+                <div className="font-semibold mb-2 text-sm text-gray-500">
+                  추첨 대상자 ({names.length}명)
+                </div>
+                <div className="rounded-xl bg-white/90 shadow border border-amber-100 px-4 py-3 flex flex-wrap gap-x-3 gap-y-2 items-center text-base">
+                  {names.map((name, idx) => (
+                    <span
+                      key={idx}
+                      className={cn(
+                        name === winner
+                          ? 'text-amber-600 font-bold'
+                          : 'text-gray-700'
+                      )}
+                    >
+                      {name}
+                      {idx < names.length - 1 && (
+                        <span className="mx-1 text-gray-300">·</span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className={cn(
+                  'relative p-8 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100',
+                  'border border-amber-200 shadow-lg mt-4'
+                )}
+              >
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                  당첨자
+                </div>
+                <div className="text-4xl font-bold text-amber-600 py-4">
+                  {winner}
+                </div>
+              </motion.div>
             </div>
 
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className={cn(
-                'relative p-8 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100',
-                'border border-amber-200 shadow-lg'
-              )}
-            >
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                당첨자
-              </div>
-              <div className="text-4xl font-bold text-amber-600 py-4">
-                {winner}
-              </div>
-            </motion.div>
-
-            <Button
-              onClick={handleReset}
-              size="lg"
-              className="w-full max-w-xs mx-auto"
-            >
-              <RefreshCw className="mr-2 h-4 w-4" />
-              다시 추첨하기
-            </Button>
+            <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
+              <Button
+                onClick={handleReset}
+                size="lg"
+                className="w-full sm:w-auto max-w-xs mx-auto"
+              >
+                <RefreshCw className="mr-2 h-4 w-4" />
+                다시 추첨하기
+              </Button>
+              <Button
+                onClick={onShare}
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto max-w-xs mx-auto"
+              >
+                <Share2 className="mr-2 h-4 w-4" />
+                결과 공유하기
+              </Button>
+            </div>
           </motion.div>
         </div>
       </div>
