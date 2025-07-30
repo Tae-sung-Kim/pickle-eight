@@ -32,4 +32,5 @@ export type DiceRollButtonPropsType = {
   disabled: boolean;
   isRolling: boolean;
   showReset?: boolean;
+  onShare?: () => void;
 };

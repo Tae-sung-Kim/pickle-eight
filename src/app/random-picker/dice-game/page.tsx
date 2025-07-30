@@ -50,5 +50,9 @@ export const metadata: Metadata = {
 };
 
 export default function DiceGamePage() {
-  return <DiceGameComponent />;
+  return (
+    <div className="bg-gradient-to-b from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+      <DiceGameComponent />
+    </div>
+  );
 }

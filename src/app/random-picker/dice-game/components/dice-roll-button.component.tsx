@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Dice5 } from 'lucide-react';
+import { RefreshCw, Dice5, Share2 } from 'lucide-react';
 import { cn } from '@/lib';
 import { Loader2 } from 'lucide-react';
 import { DiceRollButtonPropsType } from '@/types';
@@ -13,6 +13,7 @@ export const DiceRollButtonComponent = ({
   isRolling,
   showReset,
   onReset,
+  onShare,
 }: DiceRollButtonPropsType) => (
   <motion.div
     className="flex flex-col sm:flex-row gap-4 mt-8 w-full max-w-md mx-auto"
@@ -86,6 +87,23 @@ export const DiceRollButtonComponent = ({
           >
             <RefreshCw className="w-5 h-5 mr-2" />
             <span>초기화</span>
+          </Button>
+
+          <Button
+            onClick={onShare}
+            size="lg"
+            variant="outline"
+            className={cn(
+              'w-full sm:w-auto px-8 py-7 text-lg font-medium',
+              'border-2 border-indigo-200 hover:bg-indigo-50',
+              'text-indigo-600 hover:text-indigo-800',
+              'transition-all duration-200',
+              'min-h-[60px]',
+              'ml-4' // 초기화 버튼과 간격
+            )}
+          >
+            <Share2 className="mr-2 h-4 w-4" />
+            결과 공유하기
           </Button>
         </motion.div>
       )}

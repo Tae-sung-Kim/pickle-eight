@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNameManager } from '@/hooks';
+import { useCapture, useNameManager } from '@/hooks';
 import { getRandomValue, getWinnerIndexes } from '@/utils';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trophy } from 'lucide-react';
@@ -15,7 +15,11 @@ export function DiceGameComponent() {
   const [diceValues, setDiceValues] = useState<number[][]>([]);
   const [isRolling, setIsRolling] = useState(false);
   const [winnerIndexes, setWinnerIndexes] = useState<number[]>([]);
+  const { onCapture } = useCapture();
 
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  // 주사위 굴리기
   const rollDice = () => {
     if (names.length < 2) return;
 
@@ -35,6 +39,14 @@ export function DiceGameComponent() {
     }, 500);
   };
 
+  // 결과 갭쳐
+  const handleCapture = () => {
+    onCapture(resultRef as React.RefObject<HTMLElement>, {
+      fileName: 'result.png',
+      shareTitle: '축하합니다! 🎉',
+    });
+  };
+
   const handleRemoveDice = (index: number) => {
     setDiceValues((prev) => {
       const newValues = [...prev];
@@ -52,23 +64,22 @@ export function DiceGameComponent() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="container mx-auto max-w-4xl"
-      >
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-indigo-900 mb-2 flex items-center justify-center gap-2">
-            주사위 굴리기
-          </h1>
-          <p className="text-lg text-indigo-400 max-w-2xl mx-auto">
-            참가자들을 추가하고 주사위를 굴려 승자를 가려보세요!
-          </p>
-        </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="container mx-auto max-w-4xl"
+    >
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-indigo-900 mb-2 flex items-center justify-center gap-2">
+          주사위 굴리기
+        </h1>
+        <p className="text-lg text-indigo-400 max-w-2xl mx-auto">
+          참가자들을 추가하고 주사위를 굴려 승자를 가려보세요!
+        </p>
+      </div>
 
-        <Card className="shadow-xl border-0 rounded-2xl overflow-hidden bg-white/90 backdrop-blur-sm">
-          {/* <CardHeader className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
+      <Card className="shadow-xl border-0 rounded-2xl overflow-hidden bg-white/90 backdrop-blur-sm">
+        {/* <CardHeader className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-2xl font-bold flex items-center gap-2">
@@ -90,11 +101,12 @@ export function DiceGameComponent() {
               )}
             </div>
           </CardHeader> */}
-          <CardContent className="p-6">
-            <div className="mb-8">
-              <DiceInputComponent addName={addName} />
-            </div>
+        <CardContent className="p-6">
+          <div className="mb-8">
+            <DiceInputComponent addName={addName} />
+          </div>
 
+          <div ref={resultRef}>
             <DicePlayerListComponent
               names={names}
               diceValues={diceValues}
@@ -122,22 +134,23 @@ export function DiceGameComponent() {
                 </motion.div>
               )}
             </AnimatePresence>
+          </div>
 
-            {names.length > 0 && (
-              <div className="mt-8 flex justify-center">
-                <DiceRollButtonComponent
-                  onClick={rollDice}
-                  disabled={isRolling || names.length < 2}
-                  isRolling={isRolling}
-                  showReset={winnerIndexes.length > 0}
-                  onReset={resetGame}
-                />
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </motion.div>
-    </div>
+          {names.length > 0 && (
+            <div className="mt-8 flex justify-center">
+              <DiceRollButtonComponent
+                onClick={rollDice}
+                disabled={isRolling || names.length < 2}
+                isRolling={isRolling}
+                showReset={winnerIndexes.length > 0}
+                onReset={resetGame}
+                onShare={handleCapture}
+              />
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
 
