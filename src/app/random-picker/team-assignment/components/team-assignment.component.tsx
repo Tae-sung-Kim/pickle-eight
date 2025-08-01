@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
+import { Share2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useNameManager } from '@/hooks';
+import { useCapture, useNameManager } from '@/hooks';
 import { NameInputComponent } from '@/components';
 import { cn } from '@/lib';
 import { generateTeams } from '@/utils/team-assignment.util';
@@ -21,6 +21,9 @@ export function TeamAssignmentComponent() {
   const [teams, setTeams] = useState<string[][]>([]);
   const [nameInput, setNameInput] = useState<string>('');
 
+  const { onCapture } = useCapture();
+  const resultRef = useRef<HTMLDivElement>(null);
+
   /** 참가자 추가 */
   const handleAddName = (): void => {
     if (nameInput.trim() && addName(nameInput.trim())) {
@@ -34,6 +37,14 @@ export function TeamAssignmentComponent() {
       names,
       teamCount,
       setTeams,
+    });
+  };
+
+  /** 결과 공유 */
+  const handleShare = () => {
+    onCapture(resultRef as React.RefObject<HTMLElement>, {
+      fileName: 'result.png',
+      shareTitle: '팀 배정 결과',
     });
   };
 
@@ -53,7 +64,10 @@ export function TeamAssignmentComponent() {
           참가자들은 무작위로 팀에 배정됩니다.
         </p>
       </div>
-      <div className="w-full bg-white rounded-2xl shadow-lg p-8 space-y-8">
+      <div
+        className="w-full bg-white rounded-2xl shadow-lg p-8 space-y-8"
+        ref={resultRef}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end mb-4">
           {/* 왼쪽: 참가자 추가 + n명 + 입력창 */}
           <div>
@@ -86,7 +100,7 @@ export function TeamAssignmentComponent() {
           </div>
         </div>
         {/* 팀 배정 버튼 */}
-        <div className="w-full flex justify-center">
+        <div className="w-full grid grid-cols-2 gap-4">
           <Button
             onClick={handleGenerateTeams}
             disabled={names.length < teamCount}
@@ -100,6 +114,22 @@ export function TeamAssignmentComponent() {
             )}
           >
             <Sparkles className="mr-2 h-5 w-5" />팀 배정하기
+          </Button>
+
+          <Button
+            onClick={handleShare}
+            disabled={!teams.length}
+            size="lg"
+            className={cn(
+              'w-full max-w-md mx-auto py-4 text-base font-bold',
+              'bg-gradient-to-r from-orange-400 to-yellow-400',
+              'hover:from-orange-500 hover:to-yellow-500',
+              'shadow-lg hover:shadow-xl',
+              names.length < teamCount && 'opacity-70'
+            )}
+          >
+            <Share2 className="mr-2 h-5 w-5" />
+            공유하기
           </Button>
         </div>
         {/* 결과 출력 */}

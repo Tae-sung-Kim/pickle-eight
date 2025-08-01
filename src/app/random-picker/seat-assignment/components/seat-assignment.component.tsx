@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { NameInputComponent, NameListComponent } from '@/components';
-import { useNameManager } from '@/hooks';
-import { ChangeEvent, useState } from 'react';
-import { Users, RefreshCw, ArrowRight } from 'lucide-react';
+import { useCapture, useNameManager } from '@/hooks';
+import { ChangeEvent, useRef, useState } from 'react';
+import { Users, RefreshCw, ArrowRight, Share2 } from 'lucide-react';
 import { cn } from '@/lib';
 
 export function SeatAssignmentComponent() {
@@ -16,7 +16,18 @@ export function SeatAssignmentComponent() {
   const [assignedSeats, setAssignedSeats] = useState<Record<number, string>>(
     {}
   );
+
+  const { onCapture } = useCapture();
+  const resultRef = useRef<HTMLDivElement>(null);
+
   const [isAssigning, setIsAssigning] = useState(false);
+
+  const handleShare = () => {
+    onCapture(resultRef as React.RefObject<HTMLElement>, {
+      fileName: 'result.png',
+      shareTitle: '자리 배정 결과',
+    });
+  };
 
   const handleAddName: () => void = () => {
     if (addName(nameInput)) {
@@ -83,7 +94,7 @@ export function SeatAssignmentComponent() {
           </p>
         </motion.div>
 
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2" ref={resultRef}>
           <motion.div
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -176,15 +187,26 @@ export function SeatAssignmentComponent() {
                     )}
                 </div>
 
-                <Button
-                  onClick={handleReset}
-                  variant="outline"
-                  className="w-full"
-                  disabled={!names.length && !assignedSeatCount}
-                >
-                  <RefreshCw className="mr-2 h-4 w-4" />
-                  초기화
-                </Button>
+                <div className="grid grid-cols-2 gap-4">
+                  <Button
+                    onClick={handleReset}
+                    variant="outline"
+                    className="w-full"
+                    disabled={!names.length && !assignedSeatCount}
+                  >
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    초기화
+                  </Button>
+                  <Button
+                    onClick={handleShare}
+                    variant="outline"
+                    className="w-full"
+                    disabled={!assignedSeatCount}
+                  >
+                    <Share2 className="mr-2 h-4 w-4" />
+                    공유하기
+                  </Button>
+                </div>
               </div>
             </div>
           </motion.div>

@@ -15,8 +15,8 @@ export function DiceGameComponent() {
   const [diceValues, setDiceValues] = useState<number[][]>([]);
   const [isRolling, setIsRolling] = useState(false);
   const [winnerIndexes, setWinnerIndexes] = useState<number[]>([]);
-  const { onCapture } = useCapture();
 
+  const { onCapture } = useCapture();
   const resultRef = useRef<HTMLDivElement>(null);
 
   // 주사위 굴리기

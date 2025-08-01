@@ -4,11 +4,26 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LottoBallComponent } from './lotto-ball.component';
 import { LottoNumberListPropsType } from '@/types';
+import { useCapture } from '@/hooks';
+import { useRef } from 'react';
+import { Share2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export function LottoNumberListComponent({
   numbersList,
   title = '생성된 로또 번호',
 }: LottoNumberListPropsType) {
+  const { onCapture } = useCapture();
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  // 공유하기
+  const handleShare = () => {
+    onCapture(resultRef as React.RefObject<HTMLElement>, {
+      fileName: 'result.png',
+      shareTitle: '로또 번호 추첨 결과',
+    });
+  };
+
   if (numbersList.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-muted">
@@ -19,13 +34,21 @@ export function LottoNumberListComponent({
 
   return (
     <Card className="overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-pink-50 to-rose-50">
+      <CardHeader className="bg-gradient-to-r from-pink-50 to-rose-50 flex flex-row items-center justify-between gap-2">
         <CardTitle className="text-xl font-bold text-pink-600">
           {title}
         </CardTitle>
+        <Button
+          type="button"
+          onClick={handleShare}
+          className="flex items-center gap-1 px-4 py-2 rounded-lg shadow bg-white/80 hover:bg-white transition z-10 text-pink-600 border border-pink-100"
+        >
+          <Share2 className="w-5 h-5" />
+          공유하기
+        </Button>
       </CardHeader>
       <CardContent className="p-6">
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2" ref={resultRef}>
           {numbersList.map((numbers, index) => (
             <motion.div
               key={index}

@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ParticipantType } from '@/types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RotateCw } from 'lucide-react';
+import { RotateCw, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useCapture } from '@/hooks';
 
 type DrawOrderCircleComponentPropsType = {
   participants: ParticipantType[];
@@ -25,6 +26,9 @@ export function DrawOrderCircleComponent({
   const [spinningId, setSpinningId] = useState<string | null>(null);
   const [revealingId, setRevealingId] = useState<string | null>(null);
 
+  const { onCapture } = useCapture();
+  const resultRef = useRef<HTMLDivElement>(null);
+
   const handleClick = (id: string, revealed: boolean) => {
     if (revealed || spinningId || revealingId) return;
     setSpinningId(id);
@@ -34,6 +38,14 @@ export function DrawOrderCircleComponent({
       onReveal(id);
       setTimeout(() => setRevealingId(null), 100);
     }, 900); // 회전 애니메이션 시간
+  };
+
+  // 공유하기
+  const handleShare = () => {
+    onCapture(resultRef as React.RefObject<HTMLElement>, {
+      fileName: 'result.png',
+      shareTitle: '랜덤 매칭 추첨 결과',
+    });
   };
 
   return (
@@ -50,10 +62,20 @@ export function DrawOrderCircleComponent({
         </Button>
       )}
 
+      <Button
+        type="button"
+        onClick={handleShare}
+        className="absolute m-3 right-0 top-0 flex items-center gap-1 px-4 py-2 rounded-lg shadow bg-white/80 hover:bg-white transition z-10 text-gray-700"
+      >
+        <Share2 className="w-5 h-5 text-gray-700" />
+        공유하기
+      </Button>
+
       <div
         className={`grid ${
           participants.length > 4 ? 'grid-cols-3' : 'grid-cols-2'
         } gap-8 justify-items-center items-center w-full min-h-[500px] bg-gradient-to-br from-indigo-50 to-purple-100 rounded-2xl p-8`}
+        ref={resultRef}
       >
         {participants.map((p, idx) => {
           const revealed = !!revealedResults[p.id];
