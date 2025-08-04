@@ -153,7 +153,7 @@ export default function RootLayout({
           content="GriA50nFO1IDBuetooOWR6mLwK6HtmFcwURDYgz6AbI"
         />
       </head>
-      <body className="flex flex-col bg-background text-foreground antialiased">
+      <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
         <QueryClientProviderWrapper>
           <HeaderLayout />
           <main className="flex-1 py-8">
