@@ -11,7 +11,7 @@ export function useGptTodayMessageQuery() {
       const res = await apiInstance.post<GptTodayMessageResponse>(
         '/gpt-today-message'
       );
-      if (!res.data?.fortune || !res.data?.cheer) {
+      if (!res.data?.fortune || !res.data?.cheer || !res.data?.todo) {
         throw new Error('오늘의 메시지 생성 실패');
       }
       return res.data;

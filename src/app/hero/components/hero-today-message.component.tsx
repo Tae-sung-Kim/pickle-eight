@@ -14,6 +14,7 @@ export function HeroTodayMessageComponent() {
   const [messages, setMessages] = useState<MessageStateType>({
     cheer: null,
     fortune: null,
+    todo: null,
   });
   const { mutateAsync, isPending } = useGptTodayMessageQuery();
 
@@ -38,7 +39,11 @@ export function HeroTodayMessageComponent() {
       try {
         const cache = JSON.parse(saved);
         if (cache.expires && new Date(cache.expires) > new Date()) {
-          setMessages({ cheer: cache.cheer, fortune: cache.fortune });
+          setMessages({
+            cheer: cache.cheer,
+            fortune: cache.fortune,
+            todo: cache.todo,
+          });
           return; // Valid cache found, no need to fetch
         }
       } catch {
@@ -49,9 +54,9 @@ export function HeroTodayMessageComponent() {
     // Fetch new messages if no valid cache is found
     const fetchAndCacheMessages = async () => {
       try {
-        const { cheer, fortune } = await mutateAsync();
+        const { cheer, fortune, todo } = await mutateAsync();
 
-        setMessages({ cheer, fortune });
+        setMessages({ cheer, fortune, todo });
 
         // Set expiration to the next day at midnight
         const expires = new Date();
@@ -61,6 +66,7 @@ export function HeroTodayMessageComponent() {
         const newCache = {
           cheer,
           fortune,
+          todo,
           expires: expires.toISOString(),
         };
         localStorage.setItem(todayKey, JSON.stringify(newCache));
@@ -84,9 +90,15 @@ export function HeroTodayMessageComponent() {
     return '오늘의 행운을 불러올 수 없습니다.';
   };
 
+  const getTodoMessage = () => {
+    if (messages.todo) return messages.todo;
+    if (isPending) return '로딩 중...';
+    return '오늘의 할 일을 불러올 수 없습니다.';
+  };
+
   return (
     <section className="w-full max-w-3xl mx-auto mt-8 mb-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Cheer Message */}
         <div className="relative bg-gradient-to-br from-lime-100 via-emerald-100 to-yellow-100 rounded-xl shadow-lg p-6 flex flex-col items-center min-h-[120px] border border-lime-200">
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-2 border border-lime-200">
@@ -110,6 +122,19 @@ export function HeroTodayMessageComponent() {
           </div>
           <div className="mt-2 text-base text-gray-800 text-center font-medium min-h-[32px]">
             {getFortuneMessage()}
+          </div>
+        </div>
+
+        {/* Todo Message */}
+        <div className="relative bg-gradient-to-br from-orange-100 via-amber-100 to-yellow-100 rounded-xl shadow-lg p-6 flex flex-col items-center min-h-[120px] border border-orange-200">
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-2 border border-orange-200">
+            <Sun className="w-7 h-7 text-orange-500" />
+          </div>
+          <div className="mt-6 text-lg font-bold text-amber-700 tracking-tight">
+            오늘의 할 일
+          </div>
+          <div className="mt-2 text-base text-gray-800 text-center font-medium min-h-[32px]">
+            {getTodoMessage()}
           </div>
         </div>
       </div>
