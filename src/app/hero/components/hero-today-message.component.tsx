@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { MessageStateType } from '@/types';
 import { Smile, Sparkles, ListChecks, UtensilsCrossed } from 'lucide-react';
 import { useGptTodayMessageQuery } from '@/queries';
-import { getTodayString, getTimeSlot } from '@/utils';
+import { getTodayString, getTimeSlot, getKoreaTime } from '@/utils';
 
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? 'pickle-eight';
 
@@ -69,7 +69,7 @@ export function HeroTodayMessageComponent() {
       }
     });
 
-    const now = new Date();
+    const now = getKoreaTime();
     const dateStr = getTodayString();
     const slot = getTimeSlot(now.getHours());
 
@@ -179,7 +179,7 @@ export function HeroTodayMessageComponent() {
             <ListChecks className="w-8 h-8 text-yellow-500" />
           </div>
           <h3 className="mt-6 text-lg font-bold text-yellow-700 text-center tracking-tight">
-            {mealType} 할 일
+            지금 할 일
           </h3>
           <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.todo)}

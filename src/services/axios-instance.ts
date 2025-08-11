@@ -24,7 +24,7 @@ async function getAuthToken(): Promise<string | null> {
  */
 export const apiInstance: AxiosInstance = axios.create({
   baseURL: '/api', // Next.js API Route 기준
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },

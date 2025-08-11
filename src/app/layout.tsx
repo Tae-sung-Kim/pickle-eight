@@ -139,7 +139,7 @@ export const metadata: Metadata = {
   },
   authors: [{ name: process.env.NEXT_PUBLIC_SITE_NAME + ' Team' }],
   robots: 'index,follow',
-  category: '게임, 엔터테인먼트, 추첨, 도구',
+  category: '게임, 엔터테인먼트, 추첨, 도구, 할일, 메뉴',
 };
 
 export default function RootLayout({

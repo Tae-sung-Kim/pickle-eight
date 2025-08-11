@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TriviaQuizFormSchema, TriviaQuizFormValuesType } from '@/types';
 import TriviaQuizFormComponent from './trivia-quiz-form.component';
 import TriviaQuizQuestionCardComponent from './trivia-quiz-question.component';
+import { getKoreaTime } from '@/utils';
 
 export function TriviaQuizComponent() {
   const [mounted, setMounted] = useState(false);
@@ -97,7 +98,7 @@ export function TriviaQuizComponent() {
       questionId: questions[currentIdx].id,
       selectedId: answeredId,
       correct: isCorrect,
-      answeredAt: new Date().toISOString(),
+      answeredAt: getKoreaTime().toISOString(),
     });
     setAnsweredId(undefined);
   };
