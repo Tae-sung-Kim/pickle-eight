@@ -1,9 +1,8 @@
-export type TodayMessageType = 'fortune' | 'cheer' | 'todo';
-
 export type MessageStateType = {
   cheer: string | null;
   fortune: string | null;
   todo: string | null;
+  menu: string | null;
 };
 
 export interface OpenAIRequestType {
@@ -27,6 +26,7 @@ export type GptTodayMessageResponse = {
   fortune: string;
   cheer: string;
   todo: string;
+  menu: string;
 };
 
 export type GptEnglishWordQuizResponse = {
