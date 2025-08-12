@@ -89,20 +89,12 @@ export const metadata: Metadata = {
     '영어문장',
     '상식퀴즈',
     '속담퀴즈',
-    // '로또 번호 분석',
-    // '로또 당첨 번호 통계',
     '랜덤 자리 배정',
     '랜덤 팀 나누기',
     '사다리 타기 결과 공유',
     '추첨 결과 캡처',
     '메뉴 랜덤 추천',
     '챗GPT 연동 게임',
-    // '모바일 추첨',
-    // '광고 없는 프리미엄',
-    // '커스텀 테마',
-    // '유저 랭킹',
-    // '점수 기반 게임',
-    // '빈칸 채우기 챌린지',
   ],
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL,
@@ -116,14 +108,14 @@ export const metadata: Metadata = {
       '이름(상품) 추첨, 자리 배정, 사다리 타기, 주사위 굴리기, 로또 번호 추천 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요! 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천, 시간대별 추천 메뉴, 할일, 시간대별 할일 등 다양한 기능 제공.',
     url: process.env.NEXT_PUBLIC_SITE_URL,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
-    // images: [
-    //   {
-    //     url: 'https://pickle-eight.vercel.app/og-image.png',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: 'Pickle-eight 대표 이미지',
-    //   },
-    // ],
+    images: [
+      {
+        url: 'https://pickle-eight.vercel.app/og-image.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Pickle-eight 대표 이미지',
+      },
+    ],
     locale: 'ko_KR',
     type: 'website',
   },
@@ -135,9 +127,14 @@ export const metadata: Metadata = {
     },
     description:
       '온라인에서 쉽고 빠르게 이름, 상품, 자리, 사다리, 주사위, 할일, 행운, 응원, 메뉴 등 다양한 항목을 랜덤으로 추첨하고 결과를 공유하세요.',
-    // images: ['https://pickle-eight.vercel.app/og-image.png'],
+    images: ['https://pickle-eight.vercel.app/og-image.svg'],
   },
-  authors: [{ name: process.env.NEXT_PUBLIC_SITE_NAME + ' Team' }],
+  authors: [
+    {
+      name: 'Tae-sung-Kim',
+      url: 'https://github.com/Tae-sung-Kim',
+    },
+  ],
   robots: 'index,follow',
   category: '게임, 엔터테인먼트, 추첨, 도구, 할일, 메뉴',
 };
@@ -153,10 +150,6 @@ export default function RootLayout({
         <meta
           name="naver-site-verification"
           content="3b2951ae643e0dd91af8ba5dedd85cb450a7018a"
-        />
-        <meta
-          name="google-site-verification"
-          content="GriA50nFO1IDBuetooOWR6mLwK6HtmFcwURDYgz6AbI"
         />
       </head>
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">

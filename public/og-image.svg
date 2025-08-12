@@ -1,0 +1,28 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F3F4F6;" />
+      <stop offset="100%" style="stop-color:#E5E7EB;" />
+    </linearGradient>
+    <style>
+      .title {
+        font-family: 'CalSans-SemiBold', 'Inter', sans-serif;
+        font-size: 90px;
+        font-weight: 600;
+        fill: #111827;
+      }
+      .subtitle {
+        font-family: 'Inter', sans-serif;
+        font-size: 45px;
+        fill: #4B5563;
+      }
+    </style>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bgGradient)" />
+  <g transform="translate(600, 280)">
+    <text text-anchor="middle" class="title">Pickle Eight</text>
+  </g>
+  <g transform="translate(600, 360)">
+    <text text-anchor="middle" class="subtitle">랜덤 추첨과 게임의 모든 것</text>
+  </g>
+</svg>
