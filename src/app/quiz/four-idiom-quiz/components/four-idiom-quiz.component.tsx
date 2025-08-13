@@ -113,7 +113,7 @@ export function FourIdiomQuizComponent() {
       <div className="flex items-center gap-2 mb-2">
         <BookOpen className="w-7 h-7 text-violet-500" />
         <h2 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent">
-          사자성어 맞추기
+          사자성어 퀴즈
         </h2>
         <span className="ml-auto inline-flex items-center gap-1 bg-blue-100 text-blue-600 rounded-full px-3 py-1 text-xs font-semibold">
           남은 기회 {limit - used} / {limit}

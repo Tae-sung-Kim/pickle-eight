@@ -2,14 +2,14 @@ import { Metadata } from 'next';
 import { FourIdiomQuizComponent } from './components';
 
 export const metadata: Metadata = {
-  title: '사자성어 퀴즈 - AI 사자성어 맞추기 게임',
+  title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
   description:
     'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요. 난이도 선택, 힌트, 일일 제한 등 다양한 기능으로 재미있게 도전할 수 있습니다.',
   keywords: [
     '사자성어',
     '사자성어퀴즈',
     '사자성어게임',
-    '사자성어맞추기',
+    '사자성어퀴즈',
     'AI퀴즈',
     'AI사자성어',
     '사자성어학습',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     '사자성어퀴즈게임',
   ],
   openGraph: {
-    title: '사자성어 퀴즈 - AI 사자성어 맞추기 게임',
+    title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
     description:
       'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요. 난이도, 힌트, 일일 제한 등 다양한 기능 제공!',
     url: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/four-idiom-quiz',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '사자성어 퀴즈 - AI 사자성어 맞추기 게임',
+    title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
     description:
       'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요.',
     // images: ['https://yourdomain.com/images/four-idiom-quiz-twitter.jpg'],
