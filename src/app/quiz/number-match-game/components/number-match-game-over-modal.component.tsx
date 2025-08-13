@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -15,13 +17,23 @@ interface GameOverModalProps {
   moves: number;
 }
 
-export function GameOverModal({
+export function NumberMatchGameOverModalComponent({
   isOpen,
   onRestart,
   moves,
 }: GameOverModalProps) {
+  const [open, setOpen] = useState(isOpen);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    setOpen(isOpen);
+  }, [isOpen]);
+
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>🎉 축하합니다! 🎉</DialogTitle>
@@ -31,10 +43,11 @@ export function GameOverModal({
         </DialogHeader>
         <DialogFooter>
           <Button onClick={onRestart}>다시하기</Button>
+          <Button onClick={handleClose}>닫기</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
 
-export default GameOverModal;
+export default NumberMatchGameOverModalComponent;

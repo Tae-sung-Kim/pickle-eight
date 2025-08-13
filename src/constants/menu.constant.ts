@@ -98,8 +98,8 @@ export const MENU_LIST: MenuGroupType[] = [
       {
         href: '/quiz/number-match-game',
         label: '숫자 매칭 게임',
-        icon: 'ScrollText',
-        colorClass: 'text-amber-500',
+        icon: 'SquareStack',
+        colorClass: 'text-sky-500',
         description: '같은 숫자를 찾는 게임을 해보세요.',
       },
     ],

@@ -11,6 +11,7 @@ import {
   SpellCheck,
   Brain,
   ScrollText,
+  SquareStack,
 } from 'lucide-react';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants';
@@ -30,6 +31,7 @@ const ICONS = {
   SpellCheck,
   Brain,
   ScrollText,
+  SquareStack,
 };
 
 export function HomeMenuGridComponent() {

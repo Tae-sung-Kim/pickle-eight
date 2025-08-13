@@ -5,10 +5,19 @@ import { useNameManager } from '@/hooks';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { shuffle } from '@/utils';
 import { DrawOrderCircleComponent } from './draw-order-circle.component';
 import { DrawOrderGuideComponent } from './draw-order-guide.component';
 import DrawOrderInputListComponent from './draw-order-input-list.component';
+
+// 결과값 섞기
+export function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 export function DrawOrderComponent() {
   const [started, setStarted] = useState(false);

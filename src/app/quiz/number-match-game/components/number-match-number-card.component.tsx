@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { NumberMatchCardType, NumberMatchCardStatusType } from '@/types';
@@ -32,7 +34,11 @@ const cardVariants = {
   },
 };
 
-export function NumberCard({ card, onClick, status }: NumberCardProps) {
+export function NumberMatchNumberCardComponent({
+  card,
+  onClick,
+  status,
+}: NumberCardProps) {
   const handleClick = () => {
     if (status !== 'matched' && status !== 'visible' && status !== 'selected') {
       onClick(card.id);
@@ -41,7 +47,7 @@ export function NumberCard({ card, onClick, status }: NumberCardProps) {
 
   return (
     <div
-      className="perspective-[1000px] h-20 w-20 cursor-pointer"
+      className="perspective-[1000px] h-12 w-8 sm:h-14 sm:w-10 md:h-16 md:w-14 lg:h-20 lg:w-16 xl:h-24 xl:w-20 cursor-pointer"
       onClick={handleClick}
     >
       <motion.div
@@ -52,12 +58,12 @@ export function NumberCard({ card, onClick, status }: NumberCardProps) {
         transition={{ duration: 0.4 }}
       >
         {/* Front */}
-        <div className="absolute flex h-full w-full items-center justify-center backface-hidden text-2xl font-bold">
-          ?
-        </div>
+        <div className="absolute flex h-full w-full items-center justify-center backface-hidden text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold"></div>
         {/* Back */}
         <div
-          className="absolute flex h-full w-full items-center justify-center backface-hidden text-2xl font-bold"
+          className={`absolute flex h-full w-full items-center justify-center ${
+            status !== 'hidden' ? '' : 'backface-hidden'
+          } text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold`}
           style={{ transform: 'rotateY(180deg)' }}
         >
           {card.value}
@@ -67,4 +73,4 @@ export function NumberCard({ card, onClick, status }: NumberCardProps) {
   );
 }
 
-export default NumberCard;
+export default NumberMatchNumberCardComponent;

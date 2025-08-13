@@ -1,6 +1,6 @@
 import React from 'react';
 import { NumberMatchCardType, NumberMatchCardStatusType } from '@/types';
-import { NumberCard } from './number-card';
+import NumberMatchNumberCardComponent from './number-match-number-card.component';
 
 interface GameBoardProps {
   cards: NumberMatchCardType[];
@@ -10,12 +10,13 @@ interface GameBoardProps {
 }
 
 const gridColsMap: { [key: number]: string } = {
-  4: 'grid-cols-4',
   6: 'grid-cols-6',
   8: 'grid-cols-8',
+  9: 'grid-cols-9',
+  10: 'grid-cols-10',
 };
 
-export function GameBoard({
+export function NumberMatchGameBoardComponent({
   cards,
   onCardClick,
   mapSize,
@@ -24,9 +25,9 @@ export function GameBoard({
   const gridClass = gridColsMap[mapSize] || 'grid-cols-6';
 
   return (
-    <div className={`grid ${gridClass} gap-4`}>
+    <div className={`grid ${gridClass} gap-2 sm:gap-3 md:gap-4`}>
       {cards.map((card) => (
-        <NumberCard
+        <NumberMatchNumberCardComponent
           key={card.id}
           card={card}
           onClick={onCardClick}
@@ -37,4 +38,4 @@ export function GameBoard({
   );
 }
 
-export default GameBoard;
+export default NumberMatchGameBoardComponent;
