@@ -8,20 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-interface GameControlsProps {
-  matchCount: number;
-  setMatchCount: (count: number) => void;
-  mapSize: number;
-  setMapSize: (size: number) => void;
-  onStartGame: () => void;
-  isGameActive: boolean;
-}
-
-const MAP_SIZE_OPTIONS: { [key: number]: number[] } = {
-  2: [6, 8, 10],
-  3: [6, 9],
-};
+import { NUMBER_MATCH_GAME_MAP_SIZE_OPTIONS } from '@/constants';
+import { NumberMatchGameControlsType } from '@/types';
 
 export function NumberMatchGameControlsComponent({
   matchCount,
@@ -30,11 +18,11 @@ export function NumberMatchGameControlsComponent({
   setMapSize,
   onStartGame,
   isGameActive,
-}: GameControlsProps) {
+}: NumberMatchGameControlsType) {
   const handleMatchCountChange = (value: string) => {
     const newMatchCount = parseInt(value, 10);
     setMatchCount(newMatchCount);
-    setMapSize(MAP_SIZE_OPTIONS[newMatchCount][0]);
+    setMapSize(NUMBER_MATCH_GAME_MAP_SIZE_OPTIONS[newMatchCount][0]);
   };
 
   return (
@@ -75,7 +63,7 @@ export function NumberMatchGameControlsComponent({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {MAP_SIZE_OPTIONS[matchCount].map((size) => (
+              {NUMBER_MATCH_GAME_MAP_SIZE_OPTIONS[matchCount].map((size) => (
                 <SelectItem key={size} value={String(size)}>
                   {size} x {size}
                 </SelectItem>

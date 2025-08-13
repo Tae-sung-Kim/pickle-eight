@@ -14,7 +14,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: {
     template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME}`,
-    default: `${process.env.NEXT_PUBLIC_SITE_NAME} : 랜덤 추첨과 게임의 모든 것`,
+    default: `${process.env.NEXT_PUBLIC_SITE_NAME} : 랜덤(Random) 추첨과 게임의 모든 것`,
   },
   description: `온라인에서 쉽고 빠르게 이름, 상품, 자리, 메뉴, 사다리, 주사위 등 다양한 항목을 랜덤으로 추첨하고 결과를 공유하세요. 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천, 빈칸 채우기 퀴즈, 숫자 맞추기 게임 등 다양한 랜덤 도구와 재미있는 게임을 ${process.env.NEXT_PUBLIC_SITE_NAME}에서 무료로 즐겨보세요!`,
   keywords: [
@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     '운세',
     'Pickle',
     'random',
+    'pickle',
+    '피클',
+    '피클랜덤',
     'picke-random',
     '추첨기',
     '추첨도구',

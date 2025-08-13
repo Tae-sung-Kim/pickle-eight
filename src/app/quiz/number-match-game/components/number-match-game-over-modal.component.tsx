@@ -10,18 +10,13 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-
-interface GameOverModalProps {
-  isOpen: boolean;
-  onRestart: () => void;
-  moves: number;
-}
+import { NumberMatchGameOverModalType } from '@/types';
 
 export function NumberMatchGameOverModalComponent({
   isOpen,
   onRestart,
   moves,
-}: GameOverModalProps) {
+}: NumberMatchGameOverModalType) {
   const [open, setOpen] = useState(isOpen);
 
   const handleClose = () => {

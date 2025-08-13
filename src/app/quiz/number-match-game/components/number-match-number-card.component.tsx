@@ -2,57 +2,52 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { NumberMatchCardType, NumberMatchCardStatusType } from '@/types';
-
-interface NumberCardProps {
-  card: NumberMatchCardType;
-  onClick: (cardId: number) => void;
-  status: NumberMatchCardStatusType;
-}
-
-const cardVariants = {
-  hidden: {
-    rotateY: 0,
-    backgroundColor: 'hsl(var(--secondary))',
-    color: 'hsl(var(--secondary-foreground))',
-  },
-  visible: {
-    rotateY: 180,
-    backgroundColor: 'hsl(var(--primary))',
-    color: 'hsl(var(--primary-foreground))',
-  },
-  selected: {
-    rotateY: 180,
-    backgroundColor: 'hsl(var(--ring))',
-    color: 'hsl(var(--primary-foreground))',
-  },
-  matched: {
-    rotateY: 180,
-    backgroundColor: '#4ade80', // green-400
-    color: 'white',
-    opacity: 0.6,
-  },
-};
+import { NumberMatchGameCardType } from '@/types';
+import { NUMBER_MATCH_GAME_CARD_STATUS } from '@/constants';
 
 export function NumberMatchNumberCardComponent({
   card,
   onClick,
   status,
-}: NumberCardProps) {
+}: NumberMatchGameCardType) {
   const handleClick = () => {
-    if (status !== 'matched' && status !== 'visible' && status !== 'selected') {
+    if (
+      status !== NUMBER_MATCH_GAME_CARD_STATUS.MATCHED &&
+      status !== NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE &&
+      status !== NUMBER_MATCH_GAME_CARD_STATUS.SELECTED
+    ) {
       onClick(card.id);
     }
   };
 
   return (
     <div
-      className="perspective-[1000px] h-12 w-8 sm:h-14 sm:w-10 md:h-16 md:w-14 lg:h-20 lg:w-16 xl:h-24 xl:w-20 cursor-pointer"
+      className="perspective-[1000px] h-10 w-6 sm:h-12 sm:w-8 md:h-14 md:w-10 lg:h-16 lg:w-12 xl:h-20 xl:w-16 cursor-pointer"
       onClick={handleClick}
     >
       <motion.div
-        className="relative h-full w-full rounded-lg border-2 transform-style-3d"
-        variants={cardVariants}
+        className={`
+    relative h-full w-full rounded-lg border-2 transform-style-3d ${
+      status === 'selected' ? 'bg-ring text-primary-foreground' : ''
+    } ${
+          status === NUMBER_MATCH_GAME_CARD_STATUS.MATCHED
+            ? 'bg-green-400 text-white opacity-60'
+            : ''
+        } ${
+          status === NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE
+            ? 'bg-primary text-primary-foreground'
+            : ''
+        } ${
+          status === NUMBER_MATCH_GAME_CARD_STATUS.HIDDEN
+            ? 'bg-secondary text-secondary-foreground'
+            : ''
+        }`}
+        variants={{
+          hidden: { rotateY: 0 },
+          visible: { rotateY: 180 },
+          selected: { rotateY: 180 },
+          matched: { rotateY: 180 },
+        }}
         initial="hidden"
         animate={status}
         transition={{ duration: 0.4 }}

@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { NumberMatchCardType, NumberMatchCardStatusType } from '@/types';
+import { NUMBER_MATCH_GAME_CARD_STATUS } from '@/constants';
 
 const shuffleArray = <T>(array: T[]): T[] => {
   return array.sort(() => Math.random() - 0.5);
@@ -28,7 +29,11 @@ export function useNumberMatchGame(
     const newCards: NumberMatchCardType[] = [];
     for (let i = 0; i < uniqueNumbers; i++) {
       for (let j = 0; j < matchCount; j++) {
-        newCards.push({ id: newCards.length, value: i + 1, status: 'hidden' });
+        newCards.push({
+          id: newCards.length,
+          value: i + 1,
+          status: NUMBER_MATCH_GAME_CARD_STATUS.HIDDEN,
+        });
       }
     }
     setCards(shuffleArray(newCards));
@@ -48,7 +53,7 @@ export function useNumberMatchGame(
     if (
       isGameActive &&
       cards.length > 0 &&
-      cards.every((c) => c.status === 'matched')
+      cards.every((c) => c.status === NUMBER_MATCH_GAME_CARD_STATUS.MATCHED)
     ) {
       setIsGameOver(true);
     }
@@ -67,14 +72,18 @@ export function useNumberMatchGame(
     if (allMatch) {
       setCards((prev) =>
         prev.map((c) =>
-          selectedCards.includes(c.id) ? { ...c, status: 'matched' } : c
+          selectedCards.includes(c.id)
+            ? { ...c, status: NUMBER_MATCH_GAME_CARD_STATUS.MATCHED }
+            : c
         )
       );
     } else {
       setTimeout(() => {
         setCards((prev) =>
           prev.map((c) =>
-            selectedCards.includes(c.id) ? { ...c, status: 'hidden' } : c
+            selectedCards.includes(c.id)
+              ? { ...c, status: NUMBER_MATCH_GAME_CARD_STATUS.HIDDEN }
+              : c
           )
         );
       }, 1000);
@@ -84,33 +93,59 @@ export function useNumberMatchGame(
     setMoves((prev) => prev + 1);
   }, [selectedCards, cards, matchCount]);
 
-  const handleCardClick = (cardId: number) => {
-    const card = cards.find((c) => c.id === cardId);
-    if (
-      isRevealing ||
-      !card ||
-      card.status !== 'hidden' ||
-      selectedCards.length >= matchCount
-    ) {
-      return;
-    }
+  const handleCardClick = useCallback(
+    (cardId: number) => {
+      setCards((prev) => {
+        // 이미 선택된 카드이거나, 매치된 카드이면 무시
+        const card = prev.find((c) => c.id === cardId);
+        if (
+          !card ||
+          card.status === NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE ||
+          card.status === NUMBER_MATCH_GAME_CARD_STATUS.MATCHED ||
+          card.status === NUMBER_MATCH_GAME_CARD_STATUS.SELECTED
+        ) {
+          return prev;
+        }
 
-    setCards((prev) =>
-      prev.map((c) => (c.id === cardId ? { ...c, status: 'visible' } : c))
-    );
-    setSelectedCards((prev) => [...prev, cardId]);
-  };
+        // 현재 선택된 카드 수 확인
+        const selectedCount = prev.filter(
+          (c) => c.status === NUMBER_MATCH_GAME_CARD_STATUS.SELECTED
+        ).length;
+
+        // 이미 matchCount만큼 선택된 경우 더 이상 선택 불가
+        if (selectedCount >= matchCount) {
+          return prev;
+        }
+
+        // 카드 상태 업데이트
+        return prev.map((c) =>
+          c.id === cardId
+            ? { ...c, status: NUMBER_MATCH_GAME_CARD_STATUS.SELECTED }
+            : c
+        );
+      });
+    },
+    [matchCount]
+  );
+
+  // 카드 클릭 시 selectedCards 상태 업데이트
+  useEffect(() => {
+    const selected = cards
+      .filter((card) => card.status === NUMBER_MATCH_GAME_CARD_STATUS.SELECTED)
+      .map((card) => card.id);
+    setSelectedCards(selected);
+  }, [cards]);
 
   const getCardStatus = (
     card: NumberMatchCardType
   ): NumberMatchCardStatusType => {
-    if (isRevealing) return 'visible';
+    if (isRevealing) return NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE;
     if (
-      card.status === 'visible' &&
+      card.status === NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE &&
       selectedCards[0] === card.id &&
       selectedCards.length < matchCount
     ) {
-      return 'selected';
+      return NUMBER_MATCH_GAME_CARD_STATUS.SELECTED;
     }
     return card.status;
   };
