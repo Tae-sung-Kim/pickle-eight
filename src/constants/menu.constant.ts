@@ -95,6 +95,13 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-amber-500',
         description: '사자성어를 맞추는 퀴즈를 풀어보세요.',
       },
+      {
+        href: '/quiz/number-match-game',
+        label: '숫자 매칭 게임',
+        icon: 'ScrollText',
+        colorClass: 'text-amber-500',
+        description: '같은 숫자를 찾는 게임을 해보세요.',
+      },
     ],
   },
   // {
