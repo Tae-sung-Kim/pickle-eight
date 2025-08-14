@@ -1,3 +1,4 @@
+import { generateOgImageUrl } from '@/utils';
 import { SeatAssignmentComponent } from './components';
 import { Metadata } from 'next';
 
@@ -30,21 +31,26 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
-    // images: [
-    //   {
-    //     url: 'https://yourdomain.com/images/seat-assignment-og.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '자리 배정기',
-    //   },
-    // ],
+    images: [
+      generateOgImageUrl(
+        '자리 배정기 - 랜덤 좌석/자리 배정',
+        '참가자와 자리 수를 입력하면, 랜덤으로 좌석을 배정해주는 자리 배정기! 모임, 파티, 행사 등에서 공정하게 자리를 정하세요.',
+        '자리 배정기'
+      ),
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '자리 배정기 - 랜덤 좌석/자리 배정',
     description:
       '참가자와 자리 수를 입력하면, 랜덤으로 좌석을 배정해주는 자리 배정기! 모임, 파티, 행사 등에서 공정하게 자리를 정하세요.',
-    // images: ['https://yourdomain.com/images/seat-assignment-twitter.jpg'],
+    images: [
+      generateOgImageUrl(
+        '자리 배정기 - 랜덤 좌석/자리 배정',
+        '참가자와 자리 수를 입력하면, 랜덤으로 좌석을 배정해주는 자리 배정기! 모임, 파티, 행사 등에서 공정하게 자리를 정하세요.',
+        '자리 배정기'
+      ),
+    ],
   },
   alternates: {
     canonical:

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { FourIdiomQuizComponent } from './components';
+import { generateOgImageUrl } from '@/utils';
 
 export const metadata: Metadata = {
   title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
@@ -29,21 +30,26 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
-    // images: [
-    //   {
-    //     url: 'https://yourdomain.com/images/four-idiom-quiz-og.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '사자성어 퀴즈',
-    //   },
-    // ],
+    images: [
+      generateOgImageUrl(
+        '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
+        'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요. 난이도, 힌트, 일일 제한 등 다양한 기능 제공!',
+        '사자성어 퀴즈'
+      ),
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
     description:
       'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요.',
-    // images: ['https://yourdomain.com/images/four-idiom-quiz-twitter.jpg'],
+    images: [
+      generateOgImageUrl(
+        '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
+        'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요. 난이도, 힌트, 일일 제한 등 다양한 기능 제공!',
+        '사자성어 퀴즈'
+      ),
+    ],
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/four-idiom-quiz',

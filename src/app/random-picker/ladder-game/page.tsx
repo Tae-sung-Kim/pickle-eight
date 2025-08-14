@@ -1,3 +1,4 @@
+import { generateOgImageUrl } from '@/utils';
 import { LadderGameComponent } from './components';
 import { Metadata } from 'next';
 
@@ -30,21 +31,26 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
-    // images: [
-    //   {
-    //     url: 'https://yourdomain.com/images/ladder-game-og.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '사다리 타기 게임',
-    //   },
-    // ],
+    images: [
+      generateOgImageUrl(
+        '사다리 타기 게임 - 랜덤 결과 추첨기',
+        '참가자와 상품을 입력하면, 사다리 타기를 통해 랜덤하게 결과를 추첨합니다. 애니메이션, 실시간 결과 공개, 재시도 등 다양한 기능 제공!',
+        '사다리 타기 게임'
+      ),
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '사다리 타기 게임 - 랜덤 결과 추첨기',
     description:
       '참가자와 상품을 입력하면, 사다리 타기를 통해 랜덤하게 결과를 추첨합니다. 애니메이션, 실시간 결과 공개, 재시도 등 다양한 기능 제공!',
-    // images: ['https://yourdomain.com/images/ladder-game-twitter.jpg'],
+    images: [
+      generateOgImageUrl(
+        '사다리 타기 게임 - 랜덤 결과 추첨기',
+        '참가자와 상품을 입력하면, 사다리 타기를 통해 랜덤하게 결과를 추첨합니다. 애니메이션, 실시간 결과 공개, 재시도 등 다양한 기능 제공!',
+        '사다리 타기 게임'
+      ),
+    ],
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/ladder-game',

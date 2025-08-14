@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { TriviaQuizComponent } from './components';
+import { generateOgImageUrl } from '@/utils';
 
 export const metadata: Metadata = {
   title: '상식 퀴즈 - AI 상식/지식 문제 풀기',
@@ -29,21 +30,26 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
-    // images: [
-    //   {
-    //     url: 'https://yourdomain.com/images/trivia-quiz-og.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '상식 퀴즈',
-    //   },
-    // ],
+    images: [
+      generateOgImageUrl(
+        '상식 퀴즈 - AI 상식/지식 문제 풀기',
+        'AI가 출제하는 상식/지식 퀴즈! 다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요.',
+        '상식 퀴즈'
+      ),
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '상식 퀴즈 - AI 상식/지식 문제 풀기',
     description:
       'AI가 출제하는 상식/지식 퀴즈! 다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요.',
-    // images: ['https://yourdomain.com/images/trivia-quiz-twitter.jpg'],
+    images: [
+      generateOgImageUrl(
+        '상식 퀴즈 - AI 상식/지식 문제 풀기',
+        'AI가 출제하는 상식/지식 퀴즈! 다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요.',
+        '상식 퀴즈'
+      ),
+    ],
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/trivia-quiz',

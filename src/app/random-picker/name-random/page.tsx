@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { NameRandomComponent } from './components';
+import { generateOgImageUrl } from '@/utils';
 
 export const metadata: Metadata = {
   title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
@@ -30,21 +31,26 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
-    // images: [
-    //   {
-    //     url: 'https://yourdomain.com/images/name-random-og.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '항목 랜덤 추첨기',
-    //   },
-    // ],
+    images: [
+      generateOgImageUrl(
+        '항목 랜덤 추첨기 - 이름/아이템 뽑기',
+        '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
+        '항목 랜덤 추첨기'
+      ),
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
     description:
       '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
-    // images: ['https://yourdomain.com/images/name-random-twitter.jpg'],
+    images: [
+      generateOgImageUrl(
+        '항목 랜덤 추첨기 - 이름/아이템 뽑기',
+        '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
+        '항목 랜덤 추첨기'
+      ),
+    ],
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/name-random',

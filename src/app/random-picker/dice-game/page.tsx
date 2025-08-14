@@ -1,3 +1,4 @@
+import { generateOgImageUrl } from '@/utils';
 import { DiceGameComponent } from './components';
 import { Metadata } from 'next';
 
@@ -28,21 +29,26 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
-    // images: [
-    //   {
-    //     url: 'https://yourdomain.com/images/dice-game-og.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '주사위 게임',
-    //   },
-    // ],
+    images: [
+      generateOgImageUrl(
+        '주사위 게임 - 랜덤 주사위 추첨기',
+        '여러 명이 함께 즐기는 랜덤 주사위 게임! 참가자 추가, 애니메이션 주사위 굴리기, 더블 효과, 공동 우승 등 재미있는 기능을 제공합니다.',
+        '주사위 게임'
+      ),
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '주사위 게임 - 랜덤 주사위 추첨기',
     description:
       '여러 명이 함께 즐기는 랜덤 주사위 게임! 참가자 추가, 애니메이션 주사위 굴리기, 더블 효과, 공동 우승 등 재미있는 기능을 제공합니다.',
-    // images: ['https://yourdomain.com/images/dice-game-twitter.jpg'],
+    images: [
+      generateOgImageUrl(
+        '주사위 게임 - 랜덤 주사위 추첨기',
+        '여러 명이 함께 즐기는 랜덤 주사위 게임! 참가자 추가, 애니메이션 주사위 굴리기, 더블 효과, 공동 우승 등 재미있는 기능을 제공합니다.',
+        '주사위 게임'
+      ),
+    ],
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/dice-game',

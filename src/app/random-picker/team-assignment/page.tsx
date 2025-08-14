@@ -1,3 +1,4 @@
+import { generateOgImageUrl } from '@/utils';
 import { TeamAssignmentComponent } from './components';
 import { Metadata } from 'next';
 
@@ -30,21 +31,26 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
-    // images: [
-    //   {
-    //     url: 'https://yourdomain.com/images/team-assignment-og.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '팀 배정기',
-    //   },
-    // ],
+    images: [
+      generateOgImageUrl(
+        '팀 배정기 - 랜덤 팀 나누기/조 편성',
+        '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 모임, 수업, 워크샵, 게임 등에서 공정하게 팀을 나눠보세요.',
+        '팀 배정기'
+      ),
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '팀 배정기 - 랜덤 팀 나누기/조 편성',
     description:
       '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 모임, 수업, 워크샵, 게임 등에서 공정하게 팀을 나눠보세요.',
-    // images: ['https://yourdomain.com/images/team-assignment-twitter.jpg'],
+    images: [
+      generateOgImageUrl(
+        '팀 배정기 - 랜덤 팀 나누기/조 편성',
+        '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 모임, 수업, 워크샵, 게임 등에서 공정하게 팀을 나눠보세요.',
+        '팀 배정기'
+      ),
+    ],
   },
   alternates: {
     canonical:

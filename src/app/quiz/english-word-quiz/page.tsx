@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { EnglishWordQuizComponent } from './components';
+import { generateOgImageUrl } from '@/utils';
 
 export const metadata: Metadata = {
   title: 'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
@@ -25,21 +26,26 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
-    // images: [
-    //   {
-    //     url: 'https://yourdomain.com/images/english-word-quiz-og.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '영어 단어 퀴즈',
-    //   },
-    // ],
+    images: [
+      generateOgImageUrl(
+        'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
+        '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
+        'AI 영어 단어 퀴즈'
+      ),
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
     description:
       '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
-    // images: ['https://yourdomain.com/images/english-word-quiz-twitter.jpg'],
+    images: [
+      generateOgImageUrl(
+        'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
+        '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
+        'AI 영어 단어 퀴즈'
+      ),
+    ],
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/english-word-quiz',

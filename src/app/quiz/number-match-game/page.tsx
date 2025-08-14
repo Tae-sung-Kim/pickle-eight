@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { NumberMatchGameComponent } from './components';
+import { generateOgImageUrl } from '@/utils';
 
 export const metadata: Metadata = {
   title: '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
@@ -29,21 +30,26 @@ export const metadata: Metadata = {
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
-    // images: [
-    //   {
-    //     url: 'https://yourdomain.com/images/number-match-game-og.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '숫자 매칭 게임',
-    //   },
-    // ],
+    images: [
+      generateOgImageUrl(
+        '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
+        '숫자 카드 매칭 게임으로 두뇌 트레이닝을 해보세요! 기억력과 집중력을 향상시켜보세요!',
+        '숫자 매칭 게임'
+      ),
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
     description:
       '숫자 카드 매칭 게임으로 두뇌 트레이닝을 해보세요! 기억력과 집중력을 향상시켜보세요!',
-    // images: ['https://yourdomain.com/images/number-match-game-twitter.jpg'],
+    images: [
+      generateOgImageUrl(
+        '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
+        '숫자 카드 매칭 게임으로 두뇌 트레이닝을 해보세요! 기억력과 집중력을 향상시켜보세요!',
+        '숫자 매칭 게임'
+      ),
+    ],
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/number-match-game',

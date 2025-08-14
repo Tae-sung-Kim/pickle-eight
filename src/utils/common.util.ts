@@ -35,3 +35,22 @@ export function getKoreanTimeString(date: Date): string {
   }
   return `${hour}시 ${minute}분`;
 }
+
+// SEC og 이미지 생성
+export function generateOgImageUrl(
+  title: string,
+  description: string,
+  alt: string
+) {
+  return {
+    url: `${
+      process.env.NEXT_PUBLIC_SITE_URL
+    }/api/og-image?${new URLSearchParams({
+      title,
+      subtitle: description,
+    })}`,
+    width: 1200,
+    height: 630,
+    alt,
+  };
+}
