@@ -14,7 +14,6 @@ import { NumberMatchGameOverModalType } from '@/types';
 
 export function NumberMatchGameOverModalComponent({
   isOpen,
-  onRestart,
   moves,
 }: NumberMatchGameOverModalType) {
   const [open, setOpen] = useState(isOpen);
@@ -37,7 +36,6 @@ export function NumberMatchGameOverModalComponent({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={onRestart}>다시하기</Button>
           <Button onClick={handleClose}>닫기</Button>
         </DialogFooter>
       </DialogContent>

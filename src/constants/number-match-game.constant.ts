@@ -5,7 +5,7 @@ export const NUMBER_MATCH_GAME_GRID_COLS_MAP: { [key: number]: string } = {
   10: 'grid-cols-10',
 };
 export const NUMBER_MATCH_GAME_MAP_SIZE_OPTIONS: { [key: number]: number[] } = {
-  2: [6, 8, 10],
+  2: [2, 6, 8, 10],
   3: [6, 9],
 };
 

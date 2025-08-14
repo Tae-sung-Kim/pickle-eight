@@ -49,6 +49,15 @@ export function useNumberMatchGame(
     setTimeout(() => setIsRevealing(false), 2000);
   }, [createCards]);
 
+  // 초기화
+  const resetGame = useCallback(() => {
+    setCards([]);
+    setSelectedCards([]);
+    setIsGameActive(false);
+    setIsGameOver(false);
+    setMoves(0);
+  }, []);
+
   useEffect(() => {
     if (
       isGameActive &&
@@ -162,5 +171,6 @@ export function useNumberMatchGame(
     startGame,
     handleCardClick,
     getCardStatus,
+    resetGame,
   };
 }

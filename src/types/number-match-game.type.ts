@@ -24,15 +24,15 @@ export type NumberMatchGameCardType = {
 
 export type NumberMatchGameControlsType = {
   matchCount: number;
-  setMatchCount: (count: number) => void;
+  isGameActive: boolean;
   mapSize: number;
+  setMatchCount: (count: number) => void;
   setMapSize: (size: number) => void;
   onStartGame: () => void;
-  isGameActive: boolean;
+  onReset: () => void;
 };
 
 export type NumberMatchGameOverModalType = {
   isOpen: boolean;
-  onRestart: () => void;
   moves: number;
 };

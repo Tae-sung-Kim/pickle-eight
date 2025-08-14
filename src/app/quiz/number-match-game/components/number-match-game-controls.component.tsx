@@ -13,11 +13,12 @@ import { NumberMatchGameControlsType } from '@/types';
 
 export function NumberMatchGameControlsComponent({
   matchCount,
-  setMatchCount,
   mapSize,
+  isGameActive,
+  setMatchCount,
   setMapSize,
   onStartGame,
-  isGameActive,
+  onReset,
 }: NumberMatchGameControlsType) {
   const handleMatchCountChange = (value: string) => {
     const newMatchCount = parseInt(value, 10);
@@ -41,7 +42,7 @@ export function NumberMatchGameControlsComponent({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {[2, 3].map((count) => (
+              {Object.keys(NUMBER_MATCH_GAME_MAP_SIZE_OPTIONS).map((count) => (
                 <SelectItem key={count} value={String(count)}>
                   {count}개
                 </SelectItem>
@@ -80,6 +81,16 @@ export function NumberMatchGameControlsComponent({
         >
           {isGameActive ? '다시하기' : '게임 시작'}
         </Button>
+        {isGameActive && (
+          <Button
+            onClick={onReset} // 새로 추가한 초기화 함수
+            variant="outline"
+            size="sm"
+            className="whitespace-nowrap text-sm px-4"
+          >
+            초기화
+          </Button>
+        )}
       </div>
     </div>
   );

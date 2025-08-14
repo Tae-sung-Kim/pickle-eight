@@ -19,17 +19,19 @@ export function NumberMatchGameComponent() {
     startGame,
     handleCardClick,
     getCardStatus,
+    resetGame,
   } = useNumberMatchGame(6, 2); // Initial map size 6x6, match count 2
 
   return (
     <>
       <NumberMatchGameControlsComponent
         matchCount={matchCount}
-        setMatchCount={setMatchCount}
         mapSize={mapSize}
+        isGameActive={isGameActive}
+        setMatchCount={setMatchCount}
         setMapSize={setMapSize}
         onStartGame={startGame}
-        isGameActive={isGameActive}
+        onReset={resetGame}
       />
 
       {isGameActive && (
@@ -46,11 +48,7 @@ export function NumberMatchGameComponent() {
         </div>
       )}
 
-      <NumberMatchGameOverModalComponent
-        isOpen={isGameOver}
-        onRestart={startGame}
-        moves={moves}
-      />
+      <NumberMatchGameOverModalComponent isOpen={isGameOver} moves={moves} />
     </>
   );
 }
