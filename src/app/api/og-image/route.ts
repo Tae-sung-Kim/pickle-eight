@@ -1,12 +1,10 @@
-// src/app/api/og-image/route.ts
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const title = encodeURIComponent(searchParams.get('title') || '기본 제목');
-  const subtitle = encodeURIComponent(
-    searchParams.get('subtitle') || '랜덤 추첨, 게임, AI 퀴즈의 모든 것'
-  );
+  const title = searchParams.get('title') || '기본 제목';
+  const subtitle =
+    searchParams.get('subtitle') || '랜덤 추첨, 게임, AI 퀴즈의 모든 것';
 
   const svg = `
     <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
