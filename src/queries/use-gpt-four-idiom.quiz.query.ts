@@ -10,7 +10,7 @@ export function useGptFourIdiomQuizQuery() {
   return useMutation<FourIdiomType, Error, FourIdiomQuizRequest>({
     mutationFn: async (data) => {
       const res = await apiInstance.post<FourIdiomType>(
-        '/gpt-four-idiom-quiz',
+        '/gpt/four-idiom-quiz',
         { ...data }
       );
       if (!res.data) {

@@ -6,7 +6,7 @@ export const useGptEnglishWordQuizQuery = () => {
   return useMutation<GptEnglishWordQuizResponse, Error, void>({
     mutationFn: async () => {
       const res = await apiInstance.post<GptEnglishWordQuizResponse>(
-        '/gpt-english-word-quiz'
+        '/gpt/english-word-quiz'
       );
 
       if (!res.data) {

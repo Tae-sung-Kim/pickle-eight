@@ -16,7 +16,7 @@ export function useGptTriviaQuizQuery() {
     { category: TriviaQuizCategoryType; difficulty: TriviaQuizDifficultyType }
   >({
     mutationFn: async ({ category, difficulty }) => {
-      const res = await apiInstance.post('/gpt-trivia-quiz', {
+      const res = await apiInstance.post('/gpt/trivia-quiz', {
         category,
         difficulty,
       });
