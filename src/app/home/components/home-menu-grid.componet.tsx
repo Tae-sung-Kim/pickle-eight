@@ -12,13 +12,18 @@ import {
   Brain,
   ScrollText,
   SquareStack,
+  CalendarSearch,
+  BarChart2,
+  CheckCircle2,
+  PlayCircle,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants';
 import { cn } from '@/lib';
 import MenuTooltipComponent from './menu-tooltip.component';
 
-const ICONS = {
+const ICONS: Record<string, LucideIcon> = {
   Ticket,
   Wand2,
   Layout,
@@ -32,6 +37,10 @@ const ICONS = {
   Brain,
   ScrollText,
   SquareStack,
+  CalendarSearch,
+  BarChart2,
+  CheckCircle2,
+  PlayCircle,
 };
 
 export function HomeMenuGridComponent() {
@@ -50,7 +59,7 @@ export function HomeMenuGridComponent() {
             </div>
             <ul className="flex flex-col gap-2">
               {data.items.map((menu) => {
-                const Icon = ICONS[menu.icon as keyof typeof ICONS];
+                const Icon = ICONS[menu.icon as keyof typeof ICONS] ?? Sparkles;
 
                 return (
                   <li key={menu.href}>
