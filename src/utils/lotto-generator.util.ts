@@ -58,19 +58,22 @@ function passesFilters(
   filters?: GenerateFilters
 ): boolean {
   if (!filters) return true;
+  const isComplete = nums.length === 6;
   const sum = nums.reduce((a, b) => a + b, 0);
-  if (filters.sumMin !== undefined && sum < filters.sumMin) return false;
-  if (filters.sumMax !== undefined && sum > filters.sumMax) return false;
+  if (isComplete && filters.sumMin !== undefined && sum < filters.sumMin)
+    return false;
+  if (isComplete && filters.sumMax !== undefined && sum > filters.sumMax)
+    return false;
   if (
     filters.maxConsecutive !== undefined &&
     hasTooLongConsecutive(nums, filters.maxConsecutive)
   )
     return false;
-  if (filters.desiredOddCount !== undefined) {
+  if (isComplete && filters.desiredOddCount !== undefined) {
     const odd = nums.filter((n) => n % 2 === 1).length;
     if (odd !== filters.desiredOddCount) return false;
   }
-  if (filters.minBucketSpread !== undefined) {
+  if (isComplete && filters.minBucketSpread !== undefined) {
     const s = new Set(nums.map((n) => bucketOf(n)));
     if (s.size < filters.minBucketSpread) return false;
   }
@@ -113,8 +116,24 @@ function generateOne(
   const pool: number[] = [];
   for (let n = 1; n <= 45; n += 1) pool.push(n);
   const selected: number[] = [];
+  const MAX_ATTEMPTS = 5000;
+  let attempts = 0;
 
   while (selected.length < 6) {
+    attempts += 1;
+    if (attempts > MAX_ATTEMPTS) {
+      const remain = pool.filter(
+        (n) =>
+          !selected.includes(n) && !filters?.excludeRecentNumbers?.includes(n)
+      );
+      while (selected.length < 6 && remain.length > 0) {
+        const idx = Math.floor(Math.random() * remain.length);
+        const pick = remain.splice(idx, 1)[0]!;
+        selected.push(pick);
+        selected.sort((a, b) => a - b);
+      }
+      break;
+    }
     const remain = pool.filter((n) => !selected.includes(n));
     const pick = weightedSample(
       remain,

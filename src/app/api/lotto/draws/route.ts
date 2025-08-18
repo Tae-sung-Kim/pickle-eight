@@ -52,12 +52,58 @@ async function fetchDhDraw(drwNo: number): Promise<LottoDraw> {
   return mapToLottoDraw(json);
 }
 
+async function existsDhDraw(drwNo: number): Promise<boolean> {
+  try {
+    const url = `${DH_LOTTO_ENDPOINT}&drwNo=${encodeURIComponent(
+      String(drwNo)
+    )}`;
+    const res = await fetch(url, { next: { revalidate: REVALIDATE_SECONDS } });
+    if (!res.ok) return false;
+    const json = (await res.json()) as DhLottoApiResponse;
+    return json.returnValue === 'success';
+  } catch {
+    return false;
+  }
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const drwNoParam = searchParams.get('drwNo');
     const fromParam = searchParams.get('from');
     const toParam = searchParams.get('to');
+    const latestParam = searchParams.get('latest');
+
+    if (latestParam) {
+      // Find latest draw number using exponential search to find upper bound, then binary search.
+      // Start from 1 and grow until fail to establish [lo, hi) where hi is first missing.
+      let lo = 1;
+      let hi = 1;
+      // eslint-disable-next-line no-await-in-loop
+      while (await existsDhDraw(hi)) {
+        lo = hi;
+        hi *= 2; // 1,2,4,8,... exponential growth
+        if (hi > 100000) break; // hard safety
+      }
+      // Binary search in (lo, hi) for last existing
+      let left = lo;
+      let right = hi - 1;
+      let best = lo;
+      while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        // eslint-disable-next-line no-await-in-loop
+        if (await existsDhDraw(mid)) {
+          best = mid;
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+      }
+      return NextResponse.json(
+        { data: { lastDrawNumber: best }, meta: { type: 'latest' } },
+        { status: 200 }
+      );
+    }
 
     if (drwNoParam) {
       const drwNo = Number(drwNoParam);
@@ -99,7 +145,7 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json(
-      { error: 'Provide drwNo or from/to' },
+      { error: 'Provide drwNo or from/to or latest' },
       { status: 400 }
     );
   } catch (err) {

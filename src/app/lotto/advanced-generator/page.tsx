@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { LottoDraw } from '@/types/lotto';
 import {
@@ -23,6 +23,20 @@ function fetchDraws(from: number, to: number): Promise<LottoDraw[]> {
   });
 }
 
+// Fetch latest draw number from API
+function fetchLatestDrawNumber(): Promise<number> {
+  return fetch('/api/lotto/draws?latest=1').then(async (res) => {
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({} as Record<string, unknown>));
+      throw new Error(
+        (err as { error?: string }).error ?? 'Failed to load latest'
+      );
+    }
+    const json = (await res.json()) as { data: { lastDrawNumber: number } };
+    return json.data.lastDrawNumber;
+  });
+}
+
 function Ball({ n }: { n: number }) {
   return (
     <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-secondary-foreground text-sm">
@@ -42,6 +56,27 @@ export default function Page() {
   const [from, setFrom] = useState<number>(1);
   const [to, setTo] = useState<number>(50);
   const [excludeLatest, setExcludeLatest] = useState<boolean>(false);
+
+  // Initialize range using latest draw (set to latest, from to last 50 draws)
+  useEffect(() => {
+    let mounted = true;
+    fetchLatestDrawNumber()
+      .then((latest) => {
+        if (!mounted) return;
+        const nextTo = latest;
+        const nextFrom = Math.max(1, latest - 49);
+        setFrom(nextFrom);
+        setTo(nextTo);
+      })
+      .catch((e: unknown) => {
+        // Silent fail; keep defaults
+        // eslint-disable-next-line no-console
+        console.warn('[advanced-generator] latest init failed:', e);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const enabled = useMemo(
     () =>
