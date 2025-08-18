@@ -1,9 +1,16 @@
 import type { Metadata, Viewport } from 'next';
-import { FooterLayout, HeaderLayout, LoadingComponent } from '@/components';
+import { LoadingComponent } from '@/components';
 import { Toaster } from 'sonner';
 import './globals.css';
 import AnalyticsClientComponent from '@/components/analytics-client.component';
 import { QueryClientProviderWrapper } from '@/providers/query-client.provider';
+import {
+  AgeGateModal,
+  CookieConsent,
+  FooterLayout,
+  HeaderLayout,
+} from '@/components/layouts';
+import { ConsentProvider } from '@/providers/consent.provider';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -157,16 +164,20 @@ export default function RootLayout({
       </head>
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
         <QueryClientProviderWrapper>
-          <HeaderLayout />
-          <main className="flex-1 py-8">
-            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-              {children}
-            </div>
-          </main>
-          <FooterLayout />
-          <Toaster />
-          <AnalyticsClientComponent />
-          <LoadingComponent />
+          <ConsentProvider>
+            <HeaderLayout />
+            <main className="flex-1 py-8">
+              <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                {children}
+              </div>
+            </main>
+            <FooterLayout />
+            <Toaster />
+            <AnalyticsClientComponent />
+            <LoadingComponent />
+            <AgeGateModal />
+            <CookieConsent />
+          </ConsentProvider>
         </QueryClientProviderWrapper>
       </body>
     </html>

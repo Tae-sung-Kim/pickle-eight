@@ -5,6 +5,28 @@ const DH_LOTTO_ENDPOINT =
   'https://www.dhlottery.co.kr/common.do?method=getLottoNumber';
 const REVALIDATE_SECONDS = 60 * 60 * 24; // 1 day
 const MAX_RANGE = 200; // safety guard
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
+const RATE_LIMIT_MAX = 60; // max requests per IP per window
+const rateMap = new Map<string, { count: number; resetAt: number }>();
+
+function getClientIp(req: Request): string {
+  const xf = req.headers.get('x-forwarded-for') || '';
+  const ip = xf.split(',')[0]?.trim();
+  return ip || req.headers.get('x-real-ip') || 'unknown';
+}
+
+function checkRate(req: Request): boolean {
+  const ip = getClientIp(req);
+  const now = Date.now();
+  const rec = rateMap.get(ip);
+  if (!rec || now > rec.resetAt) {
+    rateMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+  if (rec.count >= RATE_LIMIT_MAX) return false;
+  rec.count += 1;
+  return true;
+}
 
 /**
  * Map DH Lottery API response to LottoDraw. Throws on invalid payload.
@@ -68,6 +90,13 @@ async function existsDhDraw(drwNo: number): Promise<boolean> {
 
 export async function GET(request: Request) {
   try {
+    // Basic per-IP rate limiting
+    if (!checkRate(request)) {
+      return NextResponse.json(
+        { error: 'Too Many Requests' },
+        { status: 429, headers: { 'Retry-After': '60' } }
+      );
+    }
     const { searchParams } = new URL(request.url);
     const drwNoParam = searchParams.get('drwNo');
     const fromParam = searchParams.get('from');
