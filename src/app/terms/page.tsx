@@ -92,9 +92,67 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">11. 문의</h2>
+          <p className="break-all">문의: contact.tskim@gmail.com</p>
           <p>
-            문의처: 서비스 내 문의 채널 또는 관리자 이메일(예:
-            support@example.com).
+            텔레그램:{' '}
+            <a
+              href="https://t.me/PickleEight"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline"
+            >
+              PickleEight
+            </a>
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            12. 데이터 출처 및 API 사용
+          </h2>
+          <p>
+            본 서비스는 공공 웹사이트/공개 API 등 외부 데이터 소스를 참조할 수
+            있습니다. 데이터 호출은 각 소스의 이용약관·로봇 배제 정책·호출
+            제한(Rate Limit)을 준수하며, 상업적 이용 가능 범위를 확인하여
+            운영합니다. 당사는 데이터 출처의 변경/중단/지연에 대해 통제하지
+            않으며, 필요한 경우 캐싱/백오프/요청 제한을 적용합니다.
+          </p>
+          <p className="mt-2">
+            특정 소스(예: 동행복권 웹사이트/공개 인터페이스)를 통해 제공되는
+            정보는 해당 소유자의 권리에 귀속됩니다. 당사는 비제휴·비공식 정보를
+            안내 목적으로 표기하며, 이용자는 원 출처의 최신 정보와 약관을
+            확인해야 합니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            13. 비제휴·비보증 고지
+          </h2>
+          <p>
+            본 서비스는 정부기관/공공기관/복권 운영사 등과 제휴·후원·승인을 받은
+            공식 서비스가 아닙니다. 표기된 상표·로고·명칭은 각 소유자의
+            자산이며, 식별·설명 목적의 사용입니다. 제3자 데이터/서비스의
+            정확성·가용성·지속성에 대해 당사는 보증하지 않습니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            14. 광고·수익화 및 쿠키
+          </h2>
+          <p>
+            서비스는 광고(배너/네이티브/제휴 링크 등)를 게재할 수 있으며, 광고는
+            자발적 이용을 전제로 합니다. 핵심 기능 접근을 광고 시청으로 강제하지
+            않습니다. 광고/개인화·분석 등 비필수 기능은 이용자의 동의에 따라
+            실행되며, 자세한 내용은 개인정보처리방침을 따릅니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            15. 책임 있는 이용 안내
+          </h2>
+          <p>
+            본 서비스의 로또 관련 기능은 오락/정보 제공 목적입니다. 과도한
+            기대나 금전적 의사결정의 근거로 삼지 마시고, 책임 있는 이용을
+            권장합니다. 관련 법령과 연령 제한을 준수하여 이용해 주세요.
           </p>
         </section>
         <p className="text-xs">

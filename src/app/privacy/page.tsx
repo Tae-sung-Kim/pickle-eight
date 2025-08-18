@@ -98,9 +98,17 @@ export default function PrivacyPolicyPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">12. 문의</h2>
+          <p className="break-all">문의: contact.tskim@gmail.com</p>
           <p>
-            개인정보 관련 문의: 서비스 내 문의 채널 또는 관리자 이메일(예:
-            privacy@example.com).
+            텔레그램:{' '}
+            <a
+              href="https://t.me/PickleEight"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline"
+            >
+              PickleEight
+            </a>
           </p>
         </section>
         <p className="text-xs">
