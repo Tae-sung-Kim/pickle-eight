@@ -3,16 +3,18 @@
 import React from 'react';
 import { usePageView } from '@/hooks';
 import { usePathname } from 'next/navigation';
-import { useConsent } from '@/providers/consent.provider';
+import { useConsentContext } from '@/providers';
 
 function AnalyticsRunner({ pathname }: { pathname: string }) {
   usePageView(pathname);
   return null;
 }
 
-export default function AnalyticsClientComponent() {
+export function AnalyticsClientComponent() {
   const pathname = usePathname();
-  const { state } = useConsent();
+  const { state } = useConsentContext();
   if (state !== 'accepted') return null;
   return <AnalyticsRunner pathname={pathname} />;
 }
+
+export default AnalyticsClientComponent;

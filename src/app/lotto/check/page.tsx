@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { LottoDraw } from '@/types/lotto';
+import type { LottoDrawType } from '@/types/lotto.type';
 import { LottoUtils } from '@/utils/lotto.util';
 
 const schema = z
@@ -30,7 +30,7 @@ const schema = z
 
 type FormValues = z.infer<typeof schema>;
 
-async function fetchDraw(drwNo: number): Promise<LottoDraw> {
+async function fetchDraw(drwNo: number): Promise<LottoDrawType> {
   const res = await fetch(
     `/api/lotto/draws?drwNo=${encodeURIComponent(String(drwNo))}`
   );
@@ -38,7 +38,7 @@ async function fetchDraw(drwNo: number): Promise<LottoDraw> {
     const err = await res.json().catch(() => ({}));
     throw new Error(err?.error ?? '회차 정보를 불러오지 못했습니다.');
   }
-  const json = (await res.json()) as { data: LottoDraw };
+  const json = (await res.json()) as { data: LottoDrawType };
   return json.data;
 }
 
@@ -67,7 +67,7 @@ function RankBadge({ rank }: { rank: 0 | 1 | 2 | 3 | 4 | 5 }) {
 
 export default function Page() {
   const [result, setResult] = useState<{
-    draw?: LottoDraw;
+    draw?: LottoDrawType;
     matches?: ReturnType<typeof LottoUtils.checkTicket>;
     error?: string;
   } | null>(null);

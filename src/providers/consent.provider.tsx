@@ -14,10 +14,10 @@ type ConsentState = 'unknown' | 'accepted' | 'declined';
 interface ConsentContextValue {
   readonly state: ConsentState;
   readonly visible: boolean;
-  accept: () => void;
-  decline: () => void;
-  open: () => void;
-  close: () => void;
+  onAccept: () => void;
+  onDecline: () => void;
+  onOpen: () => void;
+  onClose: () => void;
 }
 
 const ConsentContext = createContext<ConsentContextValue | null>(null);
@@ -43,7 +43,7 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const accept = useCallback(() => {
+  const onAccept = useCallback(() => {
     try {
       localStorage.setItem(STORAGE_KEY, 'accepted');
     } catch {
@@ -53,7 +53,7 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     setVisible(false);
   }, []);
 
-  const decline = useCallback(() => {
+  const onDecline = useCallback(() => {
     try {
       localStorage.setItem(STORAGE_KEY, 'declined');
     } catch {
@@ -63,12 +63,12 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     setVisible(false);
   }, []);
 
-  const open = useCallback(() => setVisible(true), []);
-  const close = useCallback(() => setVisible(false), []);
+  const onOpen = useCallback(() => setVisible(true), []);
+  const onClose = useCallback(() => setVisible(false), []);
 
   const value = useMemo<ConsentContextValue>(
-    () => ({ state, visible, accept, decline, open, close }),
-    [state, visible, accept, decline, open, close]
+    () => ({ state, visible, onAccept, onDecline, onOpen, onClose }),
+    [state, visible, onAccept, onDecline, onOpen, onClose]
   );
 
   return (
@@ -76,8 +76,9 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useConsent(): ConsentContextValue {
+export function useConsentContext(): ConsentContextValue {
   const ctx = useContext(ConsentContext);
-  if (!ctx) throw new Error('useConsent must be used within ConsentProvider');
+  if (!ctx)
+    throw new Error('useConsentContext must be used within ConsentProvider');
   return ctx;
 }

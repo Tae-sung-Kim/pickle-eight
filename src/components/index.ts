@@ -5,4 +5,5 @@ export * from './name-input.component';
 export * from './name-list.component';
 export * from './analytics-client.component';
 export * from './loading.component';
-export * from './section-title.component';
+// 로또
+export * from './lotto-ball.component';

@@ -3,11 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-
-/**
- * AgeGateModal blocks the UI until user confirms 19+ age.
- * Persists a flag in localStorage to avoid repeated prompts.
- */
+import { Button } from '@/components/ui/button';
 
 const TTL_MS = 1000 * 60 * 60 * 24 * 30; // 30 days
 
@@ -58,24 +54,32 @@ export function AgeGateModal() {
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="mx-4 w-full max-w-md rounded-lg bg-background p-6 shadow-lg">
-        <h2 className="text-lg font-semibold">성인 확인</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3 sm:items-center sm:p-6 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="age-gate-title"
+    >
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl rounded-xl border bg-background/95 p-5 shadow-xl ring-1 ring-border">
+        <h2 id="age-gate-title" className="text-base font-semibold sm:text-lg">
+          성인 확인
+        </h2>
+        <p className="mt-2 text-xs leading-6 text-muted-foreground sm:text-sm">
           본 서비스는 로또 관련 콘텐츠를 포함하며, 대한민국 기준 만 19세 미만의
           이용은 제한됩니다.
         </p>
-        <div className="mt-4 flex justify-end gap-2">
-          <Link href="/" className="rounded-md border px-3 py-2 text-sm">
-            돌아가기
-          </Link>
-          <button
+        <div className="mt-5 flex flex-col-reverse gap-2 sm:mt-6 sm:flex-row sm:justify-end">
+          <Button asChild variant="outline" size="sm">
+            <Link href="/">돌아가기</Link>
+          </Button>
+          <Button
             type="button"
             onClick={confirm}
-            className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground"
+            size="sm"
+            className="bg-emerald-600 text-white hover:bg-emerald-700"
           >
             만 19세 이상입니다
-          </button>
+          </Button>
         </div>
       </div>
     </div>

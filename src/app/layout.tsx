@@ -1,16 +1,14 @@
 import type { Metadata, Viewport } from 'next';
-import { LoadingComponent } from '@/components';
+import { LoadingComponent, AnalyticsClientComponent } from '@/components';
 import { Toaster } from 'sonner';
-import './globals.css';
-import AnalyticsClientComponent from '@/components/analytics-client.component';
-import { QueryClientProviderWrapper } from '@/providers/query-client.provider';
+import { QueryClientProviderWrapper, ConsentProvider } from '@/providers';
 import {
   AgeGateModal,
-  CookieConsent,
+  CookieConsentComponent,
   FooterLayout,
   HeaderLayout,
 } from '@/components/layouts';
-import { ConsentProvider } from '@/providers/consent.provider';
+import './globals.css';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -176,7 +174,7 @@ export default function RootLayout({
             <AnalyticsClientComponent />
             <LoadingComponent />
             <AgeGateModal />
-            <CookieConsent />
+            <CookieConsentComponent />
           </ConsentProvider>
         </QueryClientProviderWrapper>
       </body>

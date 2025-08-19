@@ -1,5 +1,4 @@
 export * from './ladder-game.type';
-export * from './lotto-number.type';
 export * from './dice-game.type';
 export * from './draw-order.type';
 export * from './openai-api-type';
@@ -8,3 +7,4 @@ export * from './menu.type';
 export * from './four-idom.type';
 export * from './today-message.type';
 export * from './number-match-game.type';
+export * from './lotto.type';

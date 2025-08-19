@@ -1,6 +1,6 @@
 import { getKoreaTime } from '@/utils';
 import Link from 'next/link';
-import { CookieSettingsButton } from '@/components/layouts';
+import { CookieSettingsButtonComponent } from '@/components/layouts';
 
 export function FooterLayout() {
   return (
@@ -24,7 +24,7 @@ export function FooterLayout() {
             >
               개인정보처리방침
             </Link>
-            <CookieSettingsButton />
+            <CookieSettingsButtonComponent />
           </div>
         </div>
       </div>

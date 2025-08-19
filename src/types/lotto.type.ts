@@ -1,13 +1,22 @@
-/**
- * Lotto domain types
- *
- * All public types are documented. Keep one export per file rule by exporting a single namespace object.
- */
+export type LottoGeneratorControlsPropsType = {
+  orderCount: number;
+  isGenerating: boolean;
+  onOrderCountChange: (value: number) => void;
+  onGenerate: () => void;
+};
 
-/**
- * A single Lotto draw (회차) normalized from the public API.
- */
-export type LottoDraw = {
+export type LottoNumberListPropsType = {
+  numbersList: number[][];
+  title?: string;
+};
+
+export type LottoBallPropsType = {
+  number: number;
+  index: number;
+  isBonus?: boolean;
+};
+
+export type LottoDrawType = {
   /** 회차 번호 */
   readonly drawNumber: number;
   /** 추첨일(ISO-8601, YYYY-MM-DD) */
@@ -27,7 +36,7 @@ export type LottoDraw = {
 /**
  * Lotto ticket: user-selected 6 numbers.
  */
-export type LottoTicket = {
+export type LottoTicketType = {
   /** 선택한 번호 6개, 오름차순 보장 */
   readonly numbers: readonly [number, number, number, number, number, number];
   /** 저장용 식별자 (옵션) */
@@ -39,7 +48,7 @@ export type LottoTicket = {
 /**
  * Result of checking a ticket against a particular draw.
  */
-export type CheckResult = {
+export type LottoCheckResultType = {
   /** 일치한 번호 개수 */
   readonly matchCount: number;
   /** 보너스 번호 일치 여부 */
@@ -53,7 +62,7 @@ export type CheckResult = {
 /**
  * Aggregated statistics over a set of draws.
  */
-export type LottoStats = {
+export type LottoStatsType = {
   /** 번호(1~45)별 출현 빈도 */
   readonly frequencyByNumber: Readonly<Record<number, number>>;
   /** 구간별(1-10, 11-20, ...) 분포 */
@@ -99,4 +108,10 @@ export const LottoTypes = {
     if (typeof value !== 'number' || !Number.isInteger(value)) return false;
     return value >= min && value <= max;
   },
+};
+
+export type LottoDrawsParamsType = {
+  readonly from: number;
+  readonly to: number;
+  readonly enabled?: boolean;
 };

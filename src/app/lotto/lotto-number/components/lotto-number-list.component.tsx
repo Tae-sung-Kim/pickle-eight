@@ -2,12 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LottoBallComponent } from './lotto-ball.component';
 import { LottoNumberListPropsType } from '@/types';
 import { useCapture } from '@/hooks';
 import { useRef } from 'react';
 import { Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { LottoBallComponent } from '@/components';
 
 export function LottoNumberListComponent({
   numbersList,

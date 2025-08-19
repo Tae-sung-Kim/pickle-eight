@@ -2,10 +2,10 @@
 
 import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import type { LottoDraw } from '@/types/lotto';
+import type { LottoDrawType } from '@/types/lotto.type';
 import { LottoUtils } from '@/utils/lotto.util';
 
-function fetchDraws(from: number, to: number): Promise<LottoDraw[]> {
+function fetchDraws(from: number, to: number): Promise<LottoDrawType[]> {
   const url = `/api/lotto/draws?from=${encodeURIComponent(
     String(from)
   )}&to=${encodeURIComponent(String(to))}`;
@@ -14,7 +14,7 @@ function fetchDraws(from: number, to: number): Promise<LottoDraw[]> {
       const err = await res.json().catch(() => ({}));
       throw new Error(err?.error ?? 'Failed to load draws');
     }
-    const json = (await res.json()) as { data: LottoDraw[] };
+    const json = (await res.json()) as { data: LottoDrawType[] };
     return json.data;
   });
 }

@@ -1,24 +1,13 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import type { LottoDraw } from '@/types/lotto';
+import { useLottoDrawsQuery } from '@/queries';
+import { LottoBallComponent } from '@/components';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
-function fetchDraws(from: number, to: number): Promise<LottoDraw[]> {
-  const url = `/api/lotto/draws?from=${encodeURIComponent(
-    String(from)
-  )}&to=${encodeURIComponent(String(to))}`;
-  return fetch(url).then(async (res) => {
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err?.error ?? 'Failed to load draws');
-    }
-    const json = (await res.json()) as { data: LottoDraw[] };
-    return json.data;
-  });
-}
-
-export default function Page() {
+export default function LottoHistoryPage() {
   const [from, setFrom] = useState<number>(1);
   const [to, setTo] = useState<number>(10);
 
@@ -28,70 +17,76 @@ export default function Page() {
     [from, to]
   );
 
-  const { data, isLoading, isError, error, refetch, isFetching } = useQuery({
-    queryKey: ['lotto-draws', from, to],
-    queryFn: () => fetchDraws(from, to),
+  const { data, isError, error, refetch, isFetching } = useLottoDrawsQuery({
+    from,
+    to,
     enabled,
   });
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="text-2xl font-semibold">로또 당첨 결과 히스토리</h1>
-      <p className="text-sm text-muted-foreground mt-1">
-        회차 범위를 입력해 조회하세요.
-      </p>
+    <div className="mx-auto max-w-6xl px-4 py-8">
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            로또 당첨 결과 히스토리
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            회차 범위를 입력해 조회하세요.
+          </p>
+        </div>
+      </div>
 
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="flex items-center gap-2">
-          <label htmlFor="from" className="w-16 text-sm">
+          <Label htmlFor="from" className="w-16 text-sm">
             From
-          </label>
-          <input
-            id="from"
-            type="number"
+          </Label>
+          <Input
             value={from}
             onChange={(e) => setFrom(Number(e.target.value))}
-            className="w-full rounded-md border px-3 py-2 text-sm"
+            className="w-full text-sm"
             min={1}
           />
         </div>
         <div className="flex items-center gap-2">
-          <label htmlFor="to" className="w-16 text-sm">
+          <Label htmlFor="to" className="w-16 text-sm">
             To
-          </label>
-          <input
-            id="to"
-            type="number"
+          </Label>
+          <Input
             value={to}
             onChange={(e) => setTo(Number(e.target.value))}
-            className="w-full rounded-md border px-3 py-2 text-sm"
+            className="w-full text-sm"
             min={from}
           />
         </div>
         <div className="flex items-end">
-          <button
+          <Button
             type="button"
             onClick={() => refetch()}
             disabled={!enabled || isFetching}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+            variant="secondary"
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
           >
-            {isFetching ? '불러오는 중…' : '조회'}
-          </button>
+            조회
+          </Button>
         </div>
       </div>
 
       <div className="mt-6">
-        {isLoading && <p className="text-sm">불러오는 중…</p>}
         {isError && (
           <p className="text-sm text-red-600">
             오류: {(error as Error).message}
           </p>
         )}
-
+        {data && data.length === 0 && (
+          <p className="text-sm text-muted-foreground">
+            데이터가 없습니다. 범위를 변경해 다시 시도해주세요.
+          </p>
+        )}
         {data && data.length > 0 && (
-          <div className="overflow-x-auto rounded-md border">
+          <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead className="bg-muted/50">
+              <thead>
                 <tr>
                   <th className="px-3 py-2 text-left">회차</th>
                   <th className="px-3 py-2 text-left">추첨일</th>
@@ -106,26 +101,29 @@ export default function Page() {
                   .sort((a, b) => b.drawNumber - a.drawNumber)
                   .map((d) => (
                     <tr key={d.drawNumber} className="border-t">
-                      <td className="px-3 py-2">{d.drawNumber}</td>
-                      <td className="px-3 py-2">{d.drawDate}</td>
-                      <td className="px-3 py-2">
-                        <div className="flex gap-1">
-                          {d.numbers.map((n) => (
-                            <span
+                      <td className="px-3 py-3">{d.drawNumber}</td>
+                      <td className="px-3 py-3 whitespace-nowrap">
+                        {d.drawDate}
+                      </td>
+                      <td className="px-3 py-3">
+                        <div className="flex flex-wrap gap-2">
+                          {d.numbers.map((n, idx) => (
+                            <LottoBallComponent
                               key={n}
-                              className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-secondary text-secondary-foreground"
-                            >
-                              {n}
-                            </span>
+                              number={n}
+                              index={idx}
+                            />
                           ))}
                         </div>
                       </td>
-                      <td className="px-3 py-2">
-                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 text-white">
-                          {d.bonusNumber}
-                        </span>
+                      <td className="px-3 py-3">
+                        <LottoBallComponent
+                          number={d.bonusNumber}
+                          index={0}
+                          isBonus
+                        />
                       </td>
-                      <td className="px-3 py-2">{d.firstWinCount ?? '-'}</td>
+                      <td className="px-3 py-3">{d.firstWinCount ?? '-'}</td>
                     </tr>
                   ))}
               </tbody>
