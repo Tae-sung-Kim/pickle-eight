@@ -1,7 +1,45 @@
-/**
- * PrivacyPolicyPage - Privacy Policy
- * UI copy: Korean, Code: English
- */
+import { Metadata } from 'next';
+import { generateOgImageUrl } from '@/utils';
+
+export const metadata: Metadata = {
+  title: '개인정보처리방침 - Pickle Eight',
+  description:
+    '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
+  keywords: ['개인정보처리방침', '개인정보', '보안', '정책', 'pickle eight'],
+  openGraph: {
+    title: '개인정보처리방침 - Pickle Eight',
+    description:
+      '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
+    url: process.env.NEXT_PUBLIC_SITE_URL + '/privacy',
+    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
+    locale: 'ko_KR',
+    type: 'website',
+    images: [
+      generateOgImageUrl(
+        '개인정보처리방침 - Pickle Eight',
+        '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
+        '개인정보처리방침'
+      ),
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '개인정보처리방침 - Pickle Eight',
+    description:
+      '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
+    images: [
+      generateOgImageUrl(
+        '개인정보처리방침 - Pickle Eight',
+        '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
+        '개인정보처리방침'
+      ),
+    ],
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/privacy',
+  },
+};
+
 export default function PrivacyPolicyPage() {
   const EFFECTIVE_DATE = '2025-08-18' as const;
   return (

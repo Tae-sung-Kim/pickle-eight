@@ -1,7 +1,44 @@
-/**
- * TermsPage - Terms of Service
- * UI copy: Korean, Code: English
- */
+import { Metadata } from 'next';
+import { generateOgImageUrl } from '@/utils';
+
+export const metadata: Metadata = {
+  title: '이용약관 - Pickle Eight',
+  description: '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
+  keywords: ['이용약관', '약관', '서비스 정책', '권리', '의무', 'pickle eight'],
+  openGraph: {
+    title: '이용약관 - Pickle Eight',
+    description:
+      '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
+    url: process.env.NEXT_PUBLIC_SITE_URL + '/terms',
+    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
+    locale: 'ko_KR',
+    type: 'website',
+    images: [
+      generateOgImageUrl(
+        '이용약관 - Pickle Eight',
+        '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
+        '이용약관'
+      ),
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '이용약관 - Pickle Eight',
+    description:
+      '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
+    images: [
+      generateOgImageUrl(
+        '이용약관 - Pickle Eight',
+        '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
+        '이용약관'
+      ),
+    ],
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/terms',
+  },
+};
+
 export default function TermsPage() {
   const EFFECTIVE_DATE = '2025-08-18' as const;
   return (
@@ -143,16 +180,6 @@ export default function TermsPage() {
             자발적 이용을 전제로 합니다. 핵심 기능 접근을 광고 시청으로 강제하지
             않습니다. 광고/개인화·분석 등 비필수 기능은 이용자의 동의에 따라
             실행되며, 자세한 내용은 개인정보처리방침을 따릅니다.
-          </p>
-        </section>
-        <section>
-          <h2 className="font-medium text-foreground">
-            15. 책임 있는 이용 안내
-          </h2>
-          <p>
-            본 서비스의 로또 관련 기능은 오락/정보 제공 목적입니다. 과도한
-            기대나 금전적 의사결정의 근거로 삼지 마시고, 책임 있는 이용을
-            권장합니다. 관련 법령과 연령 제한을 준수하여 이용해 주세요.
           </p>
         </section>
         <p className="text-xs">
