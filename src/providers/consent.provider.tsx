@@ -21,9 +21,9 @@ interface ConsentContextValue {
 }
 
 const ConsentContext = createContext<ConsentContextValue | null>(null);
+const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_cookie_consent_v1';
 
 export function ConsentProvider({ children }: { children: React.ReactNode }) {
-  const STORAGE_KEY = 'cookie_consent_v1' as const;
   const [state, setState] = useState<ConsentState>('unknown');
   const [visible, setVisible] = useState<boolean>(false);
 

@@ -6,9 +6,9 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 const TTL_MS = 1000 * 60 * 60 * 24 * 30; // 30 days
+const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_age_gate_verified_v1';
 
 export function AgeGateModal() {
-  const STORAGE_KEY = 'age_gate_verified_v1' as const;
   const [open, setOpen] = useState<boolean>(false);
   const pathname = usePathname();
 
