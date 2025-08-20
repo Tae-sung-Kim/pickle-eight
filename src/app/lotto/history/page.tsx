@@ -1,6 +1,7 @@
 import { LottoHistoryComponent } from './components';
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
+import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
 
 export const metadata: Metadata = {
   title: '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
@@ -60,6 +61,12 @@ export default function LottoHistoryPage() {
           </p>
         </div>
       </div>
+
+      <LottoWarningAlertComponent
+        className="mt-4"
+        tone="danger"
+        includeAgeNotice
+      />
 
       <LottoHistoryComponent />
     </div>

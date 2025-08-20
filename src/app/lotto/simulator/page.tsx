@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { LottoUtils, LottoGenerator } from '@/utils';
+import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
 
 function Ball({ n }: { n: number }) {
   return (
@@ -123,6 +124,11 @@ export default function Page() {
       <p className="text-sm text-muted-foreground mt-1">
         랜덤 추첨을 다회 실행하여 당첨 분포를 확인합니다.
       </p>
+      <LottoWarningAlertComponent
+        className="mt-4"
+        tone="danger"
+        includeAgeNotice
+      />
 
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="flex items-center gap-2">

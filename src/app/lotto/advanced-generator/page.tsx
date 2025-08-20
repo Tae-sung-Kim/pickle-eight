@@ -8,6 +8,7 @@ import {
   type GenerateFilters,
   type WeightingOptions,
 } from '@/utils';
+import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
 
 function fetchDraws(from: number, to: number): Promise<LottoDrawType[]> {
   const url = `/api/lotto/draws?from=${encodeURIComponent(
@@ -131,6 +132,12 @@ export default function Page() {
       <p className="text-sm text-muted-foreground mt-1">
         필터와 가중치를 사용하여 번호를 생성하세요.
       </p>
+
+      <LottoWarningAlertComponent
+        className="mt-4"
+        tone="danger"
+        includeAgeNotice
+      />
 
       <div className="mt-6 space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

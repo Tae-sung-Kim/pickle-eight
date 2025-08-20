@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { LottoDrawType } from '@/types/lotto.type';
 import { LottoUtils } from '@/utils/lotto.util';
+import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
 
 function fetchDraws(from: number, to: number): Promise<LottoDrawType[]> {
   const url = `/api/lotto/draws?from=${encodeURIComponent(
@@ -70,6 +71,12 @@ export default function Page() {
       <p className="text-sm text-muted-foreground mt-1">
         회차 범위를 선택하여 빈도/패턴을 확인하세요.
       </p>
+
+      <LottoWarningAlertComponent
+        className="mt-4"
+        tone="danger"
+        includeAgeNotice
+      />
 
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="flex items-center gap-2">

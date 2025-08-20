@@ -117,3 +117,5 @@ export type LottoDrawsParamsType = {
   readonly to: number;
   readonly enabled?: boolean;
 };
+
+export type LottoWarningToneType = 'warning' | 'danger' | 'muted';
