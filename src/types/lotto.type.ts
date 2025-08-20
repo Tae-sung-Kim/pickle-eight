@@ -31,6 +31,8 @@ export type LottoDrawType = {
   readonly firstPrizeAmount?: number;
   /** 총 판매금액 (옵션, KRW) */
   readonly totalSalesAmount?: number;
+  /** 마지막 회차 번호 */
+  readonly lastDrawNumber?: number;
 };
 
 /**

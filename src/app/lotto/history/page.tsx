@@ -1,28 +1,53 @@
-'use client';
+import { LottoHistoryComponent } from './components';
+import { Metadata } from 'next';
+import { generateOgImageUrl } from '@/utils';
 
-import React, { useMemo, useState } from 'react';
-import { useLottoDrawsQuery } from '@/queries';
-import { LottoBallComponent } from '@/components';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+export const metadata: Metadata = {
+  title: '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
+  description:
+    '회차별 로또 당첨번호와 보너스 번호, 1등 당첨 인원 등 기록을 범위로 조회하세요. 최신 회차 기준으로 빠르게 확인할 수 있습니다.',
+  keywords: [
+    '로또',
+    '로또히스토리',
+    '로또당첨결과',
+    '로또당첨번호',
+    '로또조회',
+  ],
+  openGraph: {
+    title: '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
+    description:
+      '회차별 로또 당첨번호와 보너스 번호, 1등 당첨 인원 등 기록을 범위로 조회하세요.',
+    url: process.env.NEXT_PUBLIC_SITE_URL + '/lotto/history',
+    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
+    images: [
+      generateOgImageUrl(
+        '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
+        '회차별 로또 당첨번호와 보너스 번호, 1등 당첨 인원 등 기록을 범위로 조회하세요.',
+        '로또 당첨 결과 히스토리'
+      ),
+    ],
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
+    description:
+      '회차별 로또 당첨번호와 보너스 번호, 1등 당첨 인원 등 기록을 범위로 조회하세요.',
+    images: [
+      generateOgImageUrl(
+        '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
+        '회차별 로또 당첨번호와 보너스 번호, 1등 당첨 인원 등 기록을 범위로 조회하세요.',
+        '로또 당첨 결과 히스토리'
+      ),
+    ],
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/lotto/history',
+  },
+};
 
 export default function LottoHistoryPage() {
-  const [from, setFrom] = useState<number>(1);
-  const [to, setTo] = useState<number>(10);
-
-  const enabled = useMemo(
-    () =>
-      Number.isInteger(from) && Number.isInteger(to) && from > 0 && to >= from,
-    [from, to]
-  );
-
-  const { data, isError, error, refetch, isFetching } = useLottoDrawsQuery({
-    from,
-    to,
-    enabled,
-  });
-
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <div className="flex items-end justify-between gap-4">
@@ -36,101 +61,7 @@ export default function LottoHistoryPage() {
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="flex items-center gap-2">
-          <Label htmlFor="from" className="w-16 text-sm">
-            From
-          </Label>
-          <Input
-            value={from}
-            onChange={(e) => setFrom(Number(e.target.value))}
-            className="w-full text-sm"
-            min={1}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <Label htmlFor="to" className="w-16 text-sm">
-            To
-          </Label>
-          <Input
-            value={to}
-            onChange={(e) => setTo(Number(e.target.value))}
-            className="w-full text-sm"
-            min={from}
-          />
-        </div>
-        <div className="flex items-end">
-          <Button
-            type="button"
-            onClick={() => refetch()}
-            disabled={!enabled || isFetching}
-            variant="secondary"
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-          >
-            조회
-          </Button>
-        </div>
-      </div>
-
-      <div className="mt-6">
-        {isError && (
-          <p className="text-sm text-red-600">
-            오류: {(error as Error).message}
-          </p>
-        )}
-        {data && data.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            데이터가 없습니다. 범위를 변경해 다시 시도해주세요.
-          </p>
-        )}
-        {data && data.length > 0 && (
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead>
-                <tr>
-                  <th className="px-3 py-2 text-left">회차</th>
-                  <th className="px-3 py-2 text-left">추첨일</th>
-                  <th className="px-3 py-2 text-left">당첨번호</th>
-                  <th className="px-3 py-2 text-left">보너스</th>
-                  <th className="px-3 py-2 text-left">1등(명)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data
-                  .slice()
-                  .sort((a, b) => b.drawNumber - a.drawNumber)
-                  .map((d) => (
-                    <tr key={d.drawNumber} className="border-t">
-                      <td className="px-3 py-3">{d.drawNumber}</td>
-                      <td className="px-3 py-3 whitespace-nowrap">
-                        {d.drawDate}
-                      </td>
-                      <td className="px-3 py-3">
-                        <div className="flex flex-wrap gap-2">
-                          {d.numbers.map((n, idx) => (
-                            <LottoBallComponent
-                              key={n}
-                              number={n}
-                              index={idx}
-                            />
-                          ))}
-                        </div>
-                      </td>
-                      <td className="px-3 py-3">
-                        <LottoBallComponent
-                          number={d.bonusNumber}
-                          index={0}
-                          isBonus
-                        />
-                      </td>
-                      <td className="px-3 py-3">{d.firstWinCount ?? '-'}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+      <LottoHistoryComponent />
     </div>
   );
 }
