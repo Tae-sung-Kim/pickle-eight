@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type LottoGeneratorControlsPropsType = {
   orderCount: number;
   isGenerating: boolean;
@@ -119,3 +121,22 @@ export type LottoDrawsParamsType = {
 };
 
 export type LottoWarningToneType = 'warning' | 'danger' | 'muted';
+
+export type LottoCheckResultCardType = {
+  readonly draw: LottoDrawType;
+  readonly matchesList: Array<{
+    readonly matchCount: number;
+    readonly bonusMatch: boolean;
+    readonly rank: number | null;
+  }>;
+  readonly tickets: number[][];
+};
+
+export type TicketFieldNameType = 'n1' | 'n2' | 'n3' | 'n4' | 'n5' | 'n6';
+
+export type LottoCheckTicketRowType = {
+  readonly index: number;
+  readonly renderInput: (name: TicketFieldNameType) => ReactNode;
+  readonly canRemove: boolean;
+  readonly onRemove: () => void;
+};
