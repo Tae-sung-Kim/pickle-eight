@@ -52,7 +52,7 @@ export default function LottoCheckPage() {
 
       <LottoWarningAlertComponent
         className="mt-4"
-        tone="warning"
+        tone="danger"
         includeAgeNotice
       />
 

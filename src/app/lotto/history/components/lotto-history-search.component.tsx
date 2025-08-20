@@ -43,7 +43,6 @@ export function LottoHistorySearchComponent({
   };
 
   useEffect(() => {
-    console.log('bbbbbbbbbbb');
     setFromInput(String(initRange.from));
     setToInput(String(initRange.to));
   }, [initRange]);
