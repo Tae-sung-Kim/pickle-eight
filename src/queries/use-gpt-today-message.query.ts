@@ -9,7 +9,7 @@ export function useGptTodayMessageQuery() {
   return useMutation<GptTodayMessageResponse, Error, void>({
     mutationFn: async () => {
       const res = await apiInstance.post<GptTodayMessageResponse>(
-        '/gpt/today-message'
+        '/gpt/today-message?mode=multi'
       );
       if (
         !res.data?.fortune ||

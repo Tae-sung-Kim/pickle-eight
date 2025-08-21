@@ -31,6 +31,12 @@ export function useCapture() {
         const dataUrl = await toPng(elementRef.current, {
           quality: 1,
           backgroundColor: '#f9fafb',
+          filter: (node) => {
+            if (!(node instanceof HTMLElement)) return true;
+            if (node.dataset.capture === 'ignore') return false;
+            if (node.classList.contains('pe-no-capture')) return false;
+            return true;
+          },
         });
         const blob = await (await fetch(dataUrl)).blob();
         const file = new File([blob], options?.fileName || 'capture.png', {

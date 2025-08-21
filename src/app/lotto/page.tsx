@@ -46,18 +46,36 @@ export default function LottoHubPage() {
     MENU_LIST.find((g) => g.group === 'lotto')?.items ?? []
   ).map((it) => ({ href: it.href, label: it.label, desc: it.description }));
 
+  const theme = {
+    ring: 'ring-emerald-200',
+    hoverRing: 'hover:ring-emerald-300',
+    headerBadge: 'bg-emerald-50 text-emerald-700 ring-emerald-100',
+  } as const;
+
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
-      <h1 className="text-2xl font-bold tracking-tight">로또 허브</h1>
+      <div className="flex items-center gap-3">
+        <span
+          className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ring-1 ${theme.headerBadge}`}
+        >
+          <span className="text-lg">🍀</span>
+          로또
+        </span>
+      </div>
+      <h1 className="mt-3 text-2xl font-bold tracking-tight">로또 허브</h1>
       <p className="mt-2 text-sm text-gray-600">원하는 기능을 선택하세요.</p>
-      <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul
+        className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2"
+        role="list"
+        aria-label="로또 기능 목록"
+      >
         {lottoItems.map((it) => (
-          <li
-            key={it.href}
-            className="rounded-xl border p-4 hover:shadow-md transition-shadow"
-          >
-            <Link href={it.href} className="block">
-              <div className="font-semibold">{it.label}</div>
+          <li key={it.href} role="listitem">
+            <Link
+              href={it.href}
+              className={`block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-transparent ${theme.ring} ${theme.hoverRing}`}
+            >
+              <div className="font-semibold text-slate-800">{it.label}</div>
               <div className="mt-1 text-sm text-gray-600">{it.desc}</div>
             </Link>
           </li>

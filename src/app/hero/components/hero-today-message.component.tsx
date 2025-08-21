@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { MessageStateType } from '@/types';
 import { Smile, Sparkles, ListChecks, UtensilsCrossed } from 'lucide-react';
 import { useGptTodayMessageQuery } from '@/queries';
@@ -146,6 +146,16 @@ export function HeroTodayMessageComponent() {
     loadMessages();
   }, [mutateAsync]);
 
+  const handleCapture = useCallback(
+    (
+      elementRef: React.RefObject<HTMLElement>,
+      options?: { fileName?: string; shareTitle?: string; shareText?: string }
+    ) => {
+      onCapture(elementRef, options);
+    },
+    [onCapture]
+  );
+
   const getMessage = (message: string | null): string => {
     if (message) return message;
     return isPending ? '로딩 중...' : '메시지를 불러올 수 없습니다.';
@@ -168,14 +178,14 @@ export function HeroTodayMessageComponent() {
           <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.cheer)}
           </p>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex justify-center" data-capture="ignore">
             <Button
               type="button"
               size="sm"
               variant="secondary"
               aria-label="오늘의 응원 캡처 및 공유"
               onClick={() =>
-                onCapture(cheerRef as React.RefObject<HTMLElement>, {
+                handleCapture(cheerRef as React.RefObject<HTMLElement>, {
                   fileName: `${SITE_NAME}-cheer.png`,
                   shareTitle: '오늘의 응원',
                   shareText: '오늘의 응원을 공유합니다',
@@ -201,14 +211,14 @@ export function HeroTodayMessageComponent() {
           <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.fortune)}
           </p>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex justify-center" data-capture="ignore">
             <Button
               type="button"
               size="sm"
               variant="secondary"
               aria-label="오늘의 행운 캡처 및 공유"
               onClick={() =>
-                onCapture(fortuneRef as React.RefObject<HTMLElement>, {
+                handleCapture(fortuneRef as React.RefObject<HTMLElement>, {
                   fileName: `${SITE_NAME}-fortune.png`,
                   shareTitle: '오늘의 행운',
                   shareText: '오늘의 행운을 공유합니다',
@@ -234,14 +244,14 @@ export function HeroTodayMessageComponent() {
           <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.todo)}
           </p>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex justify-center" data-capture="ignore">
             <Button
               type="button"
               size="sm"
               variant="secondary"
               aria-label="지금 할 일 캡처 및 공유"
               onClick={() =>
-                onCapture(todoRef as React.RefObject<HTMLElement>, {
+                handleCapture(todoRef as React.RefObject<HTMLElement>, {
                   fileName: `${SITE_NAME}-todo.png`,
                   shareTitle: '지금 할 일',
                   shareText: '지금 할 일을 공유합니다',
@@ -267,14 +277,14 @@ export function HeroTodayMessageComponent() {
           <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.menu)}
           </p>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex justify-center" data-capture="ignore">
             <Button
               type="button"
               size="sm"
               variant="secondary"
               aria-label={`${mealType} 추천 메뉴 캡처 및 공유`}
               onClick={() =>
-                onCapture(menuRef as React.RefObject<HTMLElement>, {
+                handleCapture(menuRef as React.RefObject<HTMLElement>, {
                   fileName: `${SITE_NAME}-menu.png`,
                   shareTitle: `${mealType} 추천 메뉴`,
                   shareText: '추천 메뉴를 공유합니다',

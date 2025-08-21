@@ -80,24 +80,42 @@ export default function QuizHubPage() {
     ],
   } as const;
 
+  const theme = {
+    ring: 'ring-violet-200',
+    hoverRing: 'hover:ring-violet-300',
+    headerBadge: 'bg-violet-50 text-violet-700 ring-violet-100',
+  } as const;
+
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJson) }}
       />
-      <h1 className="text-2xl font-bold tracking-tight">퀴즈/게임 허브</h1>
+      <div className="flex items-center gap-3">
+        <span
+          className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ring-1 ${theme.headerBadge}`}
+        >
+          <span className="text-lg">🧠</span>
+          퀴즈/게임
+        </span>
+      </div>
+      <h1 className="mt-3 text-2xl font-bold tracking-tight">퀴즈/게임 허브</h1>
       <p className="mt-2 text-sm text-gray-600">
         원하는 퀴즈/게임을 선택하세요.
       </p>
-      <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul
+        className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2"
+        role="list"
+        aria-label="퀴즈/게임 목록"
+      >
         {quizItems.map((it) => (
-          <li
-            key={it.href}
-            className="rounded-xl border p-4 hover:shadow-md transition-shadow"
-          >
-            <Link href={it.href} className="block">
-              <div className="font-semibold">{it.label}</div>
+          <li key={it.href} role="listitem">
+            <Link
+              href={it.href}
+              className={`block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-transparent ${theme.ring} ${theme.hoverRing}`}
+            >
+              <div className="font-semibold text-slate-800">{it.label}</div>
               <div className="mt-1 text-sm text-gray-600">{it.desc}</div>
             </Link>
           </li>
