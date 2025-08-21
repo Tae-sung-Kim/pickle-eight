@@ -1,18 +1,23 @@
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
+import { JsonLd } from '@/components';
+import {
+  buildMetadata,
+  canonicalUrl,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+} from '@/lib';
 
-export const metadata: Metadata = {
+const baseMeta = buildMetadata({
   title: '이용약관 - Pickle Eight',
   description: '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
-  keywords: ['이용약관', '약관', '서비스 정책', '권리', '의무', 'pickle eight'],
+  pathname: '/terms',
+});
+
+export const metadata: Metadata = {
+  ...baseMeta,
   openGraph: {
-    title: '이용약관 - Pickle Eight',
-    description:
-      '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/terms',
-    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
-    locale: 'ko_KR',
-    type: 'website',
+    ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
         '이용약관 - Pickle Eight',
@@ -22,10 +27,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: '이용약관 - Pickle Eight',
-    description:
-      '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
+    ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
         '이용약관 - Pickle Eight',
@@ -34,15 +36,17 @@ export const metadata: Metadata = {
       ),
     ],
   },
-  alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/terms',
-  },
 };
 
 export default function TermsPage() {
   const EFFECTIVE_DATE = '2025-08-18' as const;
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '이용약관', item: canonicalUrl('/terms') },
+  ]);
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <h1 className="text-2xl font-semibold">이용약관</h1>
       <p className="mt-1 text-xs text-muted-foreground">
         시행일: {EFFECTIVE_DATE}

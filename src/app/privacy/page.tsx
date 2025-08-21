@@ -1,19 +1,24 @@
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
+import { JsonLd } from '@/components';
+import {
+  buildMetadata,
+  canonicalUrl,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+} from '@/lib';
 
-export const metadata: Metadata = {
+const baseMeta = buildMetadata({
   title: '개인정보처리방침 - Pickle Eight',
   description:
     '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
-  keywords: ['개인정보처리방침', '개인정보', '보안', '정책', 'pickle eight'],
+  pathname: '/privacy',
+});
+
+export const metadata: Metadata = {
+  ...baseMeta,
   openGraph: {
-    title: '개인정보처리방침 - Pickle Eight',
-    description:
-      '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/privacy',
-    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
-    locale: 'ko_KR',
-    type: 'website',
+    ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
         '개인정보처리방침 - Pickle Eight',
@@ -23,10 +28,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: '개인정보처리방침 - Pickle Eight',
-    description:
-      '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
+    ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
         '개인정보처리방침 - Pickle Eight',
@@ -35,15 +37,17 @@ export const metadata: Metadata = {
       ),
     ],
   },
-  alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/privacy',
-  },
 };
 
 export default function PrivacyPolicyPage() {
   const EFFECTIVE_DATE = '2025-08-18' as const;
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '개인정보처리방침', item: canonicalUrl('/privacy') },
+  ]);
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <h1 className="text-2xl font-semibold">개인정보처리방침</h1>
       <p className="mt-1 text-xs text-muted-foreground">
         시행일: {EFFECTIVE_DATE}
@@ -123,8 +127,12 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="font-medium text-foreground">10. 어린이의 개인정보</h2>
           <p>
-            서비스는 어린이를 대상으로 하지 않습니다. 법정 대리인의 동의 없이
-            어린이 정보가 수집된 것으로 확인되면 지체 없이 삭제합니다.
+            본 서비스는 전반적으로 어린이를 대상으로 제공되지 않습니다. 특히
+            연령 제한 기능(예: 로또 관련 기능)은 만 19세 이상에게만 제공되며,
+            연령 확인 절차(예: 성인 확인 모달 등)를 통해 접근이 제한됩니다. 다만
+            일반적인 게임/랜덤 추첨 등 비연령제한 기능은 관련 법령이 허용하는
+            범위 내에서 이용할 수 있습니다. 법정 대리인의 동의 없이 어린이의
+            개인정보가 수집된 것으로 확인되면 지체 없이 삭제 조치를 취합니다.
           </p>
         </section>
         <section>

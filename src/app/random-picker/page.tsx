@@ -1,32 +1,29 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants/menu.constant';
+import { JsonLd } from '@/components';
+import {
+  buildMetadata,
+  canonicalUrl,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+} from '@/lib';
 import { generateOgImageUrl, getOgTag } from '@/utils';
 
-export const metadata: Metadata = {
-  title: '랜덤 도구 허브 - 이름 뽑기/자리 배정/사다리/주사위 | Pickle Eight',
+const baseMeta = buildMetadata({
+  title: '랜덤 도구 허브 - 이름 뽑기/자리 배정/사다리/주사위',
   description:
     '이름 뽑기, 자리 배정, 사다리 타기, 주사위 굴리기, 랜덤 순서 정하기 등 다양한 랜덤 도구를 한 곳에서 사용하세요.',
-  keywords: [
-    '랜덤도구',
-    '이름뽑기',
-    '자리배정',
-    '사다리타기',
-    '주사위',
-    '랜덤순서',
-    '팀배정',
-  ],
+  pathname: '/random-picker',
+});
+
+export const metadata: Metadata = {
+  ...baseMeta,
   openGraph: {
-    title: '랜덤 도구 허브 - 이름 뽑기/자리 배정/사다리/주사위 | Pickle Eight',
-    description:
-      '이름 뽑기, 자리 배정, 사다리 타기, 주사위 굴리기, 랜덤 순서 정하기 등 다양한 랜덤 도구를 한 곳에서 사용하세요.',
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/random-picker`,
-    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
-    locale: 'ko_KR',
-    type: 'website',
+    ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
-        '랜덤 도구 허브 - 이름 뽑기/자리 배정/사다리/주사위 | Pickle Eight',
+        '랜덤 도구 허브 - 이름 뽑기/자리 배정/사다리/주사위',
         '이름 뽑기, 자리 배정, 사다리 타기, 주사위 굴리기, 랜덤 순서 정하기 등 다양한 랜덤 도구를 한 곳에서 사용하세요.',
         '랜덤 도구 허브',
         getOgTag({ href: '/random-picker' })
@@ -34,62 +31,71 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: '랜덤 도구 허브 - 이름 뽑기/자리 배정/사다리/주사위 | Pickle Eight',
-    description:
-      '이름 뽑기, 자리 배정, 사다리 타기, 주사위 굴리기, 랜덤 순서 정하기 등 다양한 랜덤 도구를 한 곳에서 사용하세요.',
+    ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
-        '랜덤 도구 허브 - 이름 뽑기/자리 배정/사다리/주사위 | Pickle Eight',
+        '랜덤 도구 허브 - 이름 뽑기/자리 배정/사다리/주사위',
         '이름 뽑기, 자리 배정, 사다리 타기, 주사위 굴리기, 랜덤 순서 정하기 등 다양한 랜덤 도구를 한 곳에서 사용하세요.',
         '랜덤 도구 허브',
         getOgTag({ href: '/random-picker' })
       ),
     ],
   },
-  alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/random-picker`,
-  },
 };
 
+const randomItems = (
+  MENU_LIST.find((g) => g.group === 'random')?.items ?? []
+).map((it) => ({ href: it.href, label: it.label, desc: it.description }));
+
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Pickle Eight';
+const crumbs = jsonLdBreadcrumb([
+  { name: siteName, item: canonicalUrl('/') },
+  { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+]);
+
+const theme = {
+  ring: 'ring-indigo-200',
+  hoverRing: 'hover:ring-indigo-300',
+  headerBadge: 'bg-indigo-50 text-indigo-700 ring-indigo-100',
+} as const;
+
 export default function RandomPickerHubPage() {
-  const randomItems = (
-    MENU_LIST.find((g) => g.group === 'random')?.items ?? []
-  ).map((it) => ({ href: it.href, label: it.label, desc: it.description }));
-
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://pickle-eight.vercel.app';
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Pickle Eight';
-  const ldJson = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: siteName,
-        item: baseUrl,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: '랜덤 도구 허브',
-        item: `${baseUrl}/random-picker`,
-      },
-    ],
-  } as const;
-
-  const theme = {
-    ring: 'ring-indigo-200',
-    hoverRing: 'hover:ring-indigo-300',
-    headerBadge: 'bg-indigo-50 text-indigo-700 ring-indigo-100',
-  } as const;
-
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJson) }}
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLd
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: '이름 추첨은 공정한가요?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '동일 확률의 무작위 방식을 사용합니다. 클릭 시점과 횟수 등의 이벤트는 형평성 확인 목적의 기록을 위해 저장될 수 있습니다.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '자리 배정은 어떻게 이루어지나요?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '입력한 이름과 좌석 수를 기반으로 무작위 배정합니다. 좌석 레이아웃은 시각적으로 확인할 수 있습니다.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '개인정보는 어떻게 처리되나요?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '핵심 기능에 불필요한 개인정보 저장은 최소화하고, 분석/광고 등 비필수 목적은 동의가 있을 때만 실행합니다. 자세한 내용은 개인정보처리방침을 참고하세요.',
+                },
+              },
+            ],
+          },
+        ]}
       />
       <div className="flex items-center gap-3">
         <span

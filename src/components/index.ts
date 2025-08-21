@@ -8,3 +8,6 @@ export * from './loading.component';
 // 로또
 export * from './lotto-ball.component';
 export * from './lotto-warning-alert.component';
+
+// SEO
+export * from './seo/json-ld';

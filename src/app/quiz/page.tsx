@@ -1,30 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants/menu.constant';
+import { JsonLd } from '@/components';
+import {
+  buildMetadata,
+  canonicalUrl,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+} from '@/lib';
 import { generateOgImageUrl, getOgTag } from '@/utils';
 
-export const metadata: Metadata = {
-  title: '퀴즈 허브 - AI 퀴즈/게임 모음 | Pickle Eight',
+const baseMeta = buildMetadata({
+  title: '퀴즈 허브 - AI 퀴즈/게임 모음',
   description:
     'AI 기반 퀴즈와 게임을 한 곳에서: 영어 단어, 상식 퀴즈, 사자성어, 숫자 매칭 등.',
-  keywords: [
-    '퀴즈허브',
-    'AI퀴즈',
-    '퀴즈게임',
-    '영어단어퀴즈',
-    '상식퀴즈',
-    '사자성어퀴즈',
-    '숫자매칭게임',
-    '두뇌트레이닝',
-  ],
+  pathname: '/quiz',
+});
+
+export const metadata: Metadata = {
+  ...baseMeta,
   openGraph: {
-    title: '퀴즈 허브 - AI 퀴즈/게임 모음 | Pickle Eight',
-    description:
-      'AI 기반 퀴즈와 게임을 한 곳에서: 영어 단어, 상식 퀴즈, 사자성어, 숫자 매칭 등.',
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/quiz`,
-    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
-    locale: 'ko_KR',
-    type: 'website',
+    ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
         '퀴즈 허브 - AI 퀴즈/게임 모음 | Pickle Eight',
@@ -35,10 +31,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: '퀴즈 허브 - AI 퀴즈/게임 모음 | Pickle Eight',
-    description:
-      'AI 기반 퀴즈와 게임을 한 곳에서: 영어 단어, 상식 퀴즈, 사자성어, 숫자 매칭 등.',
+    ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
         '퀴즈 허브 - AI 퀴즈/게임 모음 | Pickle Eight',
@@ -48,9 +41,6 @@ export const metadata: Metadata = {
       ),
     ],
   },
-  alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/quiz`,
-  },
 };
 
 export default function QuizHubPage() {
@@ -58,27 +48,10 @@ export default function QuizHubPage() {
     MENU_LIST.find((g) => g.group === 'quiz')?.items ?? []
   ).map((it) => ({ href: it.href, label: it.label, desc: it.description }));
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://pickle-eight.vercel.app';
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Pickle Eight';
-  const ldJson = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: siteName,
-        item: baseUrl,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: '퀴즈 허브',
-        item: `${baseUrl}/quiz`,
-      },
-    ],
-  } as const;
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '퀴즈 허브', item: canonicalUrl('/quiz') },
+  ]);
 
   const theme = {
     ring: 'ring-violet-200',
@@ -88,9 +61,40 @@ export default function QuizHubPage() {
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJson) }}
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLd
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: '퀴즈 점수와 랭킹은 어떻게 계산되나요?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '문항 정답 수와 소요 시간 등을 조합해 점수를 산정할 수 있습니다. 랭킹은 동일 규칙으로 산정된 점수 기준으로 제공됩니다.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '데이터는 어디에 저장되나요?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Firebase 등 클라우드 인프라를 사용할 수 있으며, 개인 식별 정보는 최소화합니다. 상세 내용은 개인정보처리방침을 참고하세요.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '광고나 분석 스크립트는 동의 없이 작동하나요?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '비필수 범주(분석/광고) 스크립트는 사전 동의가 있을 때만 작동합니다. 동의는 언제든지 철회할 수 있습니다.',
+                },
+              },
+            ],
+          },
+        ]}
       />
       <div className="flex items-center gap-3">
         <span

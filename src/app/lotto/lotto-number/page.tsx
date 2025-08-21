@@ -1,25 +1,26 @@
 import { Metadata } from 'next';
 import { LottoNumberComponent } from './components';
 import { generateOgImageUrl } from '@/utils';
-import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
+import { LottoWarningAlertComponent, JsonLd } from '@/components';
 import Link from 'next/link';
+import {
+  buildMetadata,
+  canonicalUrl,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+} from '@/lib';
 
-export const metadata: Metadata = {
+const baseMeta = buildMetadata({
   title: '로또 번호 생성기 - 추천하는 행운의 번호',
   description:
     '추천하는 행운의 로또 번호로 당첨의 기회를 잡아보세요! 무작위 생성 및 통계 기반 추천 번호를 제공합니다.',
-  keywords: [
-    '로또',
-    '로또번호생성',
-    '로또추첨',
-    '로또번호추천',
-    '무료로또번호',
-  ],
+  pathname: '/lotto/lotto-number',
+});
+
+export const metadata: Metadata = {
+  ...baseMeta,
   openGraph: {
-    title: '로또 번호 생성기 - 추천하는 행운의 번호',
-    description: '추천하는 행운의 로또 번호로 당첨의 기회를 잡아보세요!',
-    url: process.env.NEXT_PUBLIC_SITE_URL,
-    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
+    ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
         '로또 번호 생성기 - 추천하는 행운의 번호',
@@ -27,13 +28,9 @@ export const metadata: Metadata = {
         '로또 번호 생성기'
       ),
     ],
-    locale: 'ko_KR',
-    type: 'website',
   },
   twitter: {
-    card: 'summary_large_image',
-    title: '로또 번호 생성기 - 추천하는 행운의 번호',
-    description: '추천하는 행운의 로또 번호로 당첨의 기회를 잡아보세요!',
+    ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
         '로또 번호 생성기 - 추천하는 행운의 번호',
@@ -43,13 +40,20 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL,
+    canonical: canonicalUrl('/lotto/lotto-number'),
   },
 };
 
 export default function LottoPage() {
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '로또 허브', item: canonicalUrl('/lotto') },
+    { name: '로또 번호 생성기', item: canonicalUrl('/lotto/lotto-number') },
+  ]);
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <div className="mb-2">
         <Link
           href="/lotto"
