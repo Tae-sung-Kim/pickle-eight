@@ -6,7 +6,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 정적 페이지 목록
   const staticRoutes = [
     '/',
+    '/lotto',
     '/lotto/lotto-number',
+    // '/lotto/analysis',
+    '/lotto/history',
+    '/lotto/check',
+    // '/lotto/simulator',
+    // '/lotto/advanced-generator',
     '/quiz/english-word-quiz',
     '/quiz/four-idiom-quiz',
     '/quiz/trivia-quiz',
@@ -24,7 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
-    priority: route === '' ? 1 : 0.8,
+    priority: route === '/' ? 1 : 0.8,
   }));
 
   return sitemapEntries;

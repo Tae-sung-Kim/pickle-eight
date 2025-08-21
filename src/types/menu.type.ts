@@ -10,5 +10,6 @@ export type MenuItemType = {
 export type MenuGroupType = {
   group: string;
   label: string;
+  href?: string;
   items: readonly MenuItemType[];
 };

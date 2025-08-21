@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { LottoCheckComponent } from './components';
 import { LottoWarningAlertComponent } from '@/components';
 import { generateOgImageUrl } from '@/utils';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: '로또 번호 채점기 - 당첨 등수 확인',
@@ -45,6 +46,14 @@ export const metadata: Metadata = {
 export default function LottoCheckPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      <div className="mb-2">
+        <Link
+          href="/lotto"
+          className="text-sm text-muted-foreground hover:underline"
+        >
+          &larr; 로또 허브
+        </Link>
+      </div>
       <h1 className="text-2xl font-semibold">로또 번호 채점기</h1>
       <p className="text-sm text-muted-foreground mt-1">
         회차 번호와 선택한 6개 번호를 입력해 당첨 등수를 확인하세요.

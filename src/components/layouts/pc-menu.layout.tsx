@@ -12,6 +12,7 @@ import {
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
 import NavLinkComponent from '../nav-link.component';
+import Link from 'next/link';
 
 export function PcMenuLayout() {
   const pathname = usePathname();
@@ -21,12 +22,45 @@ export function PcMenuLayout() {
       <NavigationMenuList>
         {MENU_LIST.map((group) => (
           <NavigationMenuItem key={group.group}>
-            <NavigationMenuTrigger className="px-4 text-base font-semibold flex items-center gap-2">
-              {group.group === 'lotto' && <span className="text-xl">🎱</span>}
-              {group.group === 'random' && <span className="text-xl">🎲</span>}
-              {group.group === 'quiz' && <span className="text-xl">🤖</span>}
-              {group.label}
-            </NavigationMenuTrigger>
+            <div className="flex items-center">
+              {group.href ? (
+                <Link
+                  href={group.href}
+                  className="px-4 text-base font-semibold flex items-center gap-2 hover:text-primary"
+                >
+                  {group.group === 'lotto' && (
+                    <span className="text-xl">🎱</span>
+                  )}
+                  {group.group === 'random' && (
+                    <span className="text-xl">🎲</span>
+                  )}
+                  {group.group === 'quiz' && (
+                    <span className="text-xl">🤖</span>
+                  )}
+                  {group.label}
+                </Link>
+              ) : (
+                <span className="px-4 text-base font-semibold flex items-center gap-2">
+                  {group.group === 'lotto' && (
+                    <span className="text-xl">🎱</span>
+                  )}
+                  {group.group === 'random' && (
+                    <span className="text-xl">🎲</span>
+                  )}
+                  {group.group === 'quiz' && (
+                    <span className="text-xl">🤖</span>
+                  )}
+                  {group.label}
+                </span>
+              )}
+              <NavigationMenuTrigger
+                aria-label={`${group.label} 메뉴 열기`}
+                className="px-2 h-9"
+                title={`${group.label} 메뉴 열기`}
+              >
+                <span className="sr-only">{group.label} 메뉴 열기</span>
+              </NavigationMenuTrigger>
+            </div>
             <NavigationMenuContent>
               <ul className="w-[200px] p-1.5">
                 {group.items.map((item) => {

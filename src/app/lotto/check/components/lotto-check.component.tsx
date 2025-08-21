@@ -6,7 +6,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { LottoDrawType } from '@/types';
 import { LottoUtils } from '@/utils';
-import { getLottoDrawByNumber, getLatestLottoDraw } from '@/services';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,6 +19,10 @@ import {
 import { LottoCheckTicketRowComponent } from './lotto-check-ticket-row.component';
 import { LottoCheckResultCardComponent } from './lotto-check-result-card.component';
 import { Plus, Sparkles } from 'lucide-react';
+import {
+  useLatestLottoDrawQuery,
+  useLottoDrawByNumberMutation,
+} from '@/queries';
 
 // 문자열(빈 값 포함)을 숫자로 전처리하는 유틸 스키마
 const toNumber = (min: number, max?: number) =>
@@ -107,43 +110,34 @@ export function LottoCheckComponent() {
   //   return new Set(all as number[]);
   // }, [ticketsWatch]);
 
+  const { mutateAsync: fetchDraw } = useLottoDrawByNumberMutation();
+  const { data: latestDraw } = useLatestLottoDrawQuery();
+
   const canSubmit = useMemo(() => formState.isValid, [formState.isValid]);
 
   // 초기 로드 시 최신 회차를 자동 표시
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const latest = await getLatestLottoDraw();
-        if (!mounted) return;
-        setResult({ draw: latest });
-
-        reset({
-          drwNo: latest.lastDrawNumber ?? latest.drawNumber,
-          tickets: [
-            {
-              n1: undefined as unknown as number,
-              n2: undefined as unknown as number,
-              n3: undefined as unknown as number,
-              n4: undefined as unknown as number,
-              n5: undefined as unknown as number,
-              n6: undefined as unknown as number,
-            },
-          ],
-        } as Partial<FormValuesInput>);
-      } catch {
-        // 무시: 최초 로드 실패는 사용자 제출로 대체 가능
-      }
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, [reset]);
+    if (!latestDraw) return; // 쿼리가 아직 로드되지 않음
+    setResult({ draw: latestDraw });
+    reset({
+      drwNo: latestDraw.lastDrawNumber ?? latestDraw.drawNumber,
+      tickets: [
+        {
+          n1: undefined as unknown as number,
+          n2: undefined as unknown as number,
+          n3: undefined as unknown as number,
+          n4: undefined as unknown as number,
+          n5: undefined as unknown as number,
+          n6: undefined as unknown as number,
+        },
+      ],
+    } as Partial<FormValuesInput>);
+  }, [latestDraw, reset]);
 
   const onSubmit = handleSubmit(async (values) => {
     try {
       const parsed = schema.parse(values) as FormValues;
-      const draw = await getLottoDrawByNumber(parsed.drwNo);
+      const draw = await fetchDraw(parsed.drwNo);
       const matchesList = parsed.tickets.map((t) =>
         LottoUtils.checkTicket(
           draw,

@@ -1,4 +1,5 @@
 import { LottoAdvancedGeneratorComponent } from './components';
+import Link from 'next/link';
 // import type { Metadata } from 'next';
 // import { generateOgImageUrl } from '@/utils';
 
@@ -51,5 +52,17 @@ import { LottoAdvancedGeneratorComponent } from './components';
 // };
 
 export default function AdvancedGeneratorPage() {
-  return <LottoAdvancedGeneratorComponent />;
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-8">
+      <div className="mb-2">
+        <Link
+          href="/lotto"
+          className="text-sm text-muted-foreground hover:underline"
+        >
+          &larr; 로또 허브
+        </Link>
+      </div>
+      <LottoAdvancedGeneratorComponent />
+    </div>
+  );
 }

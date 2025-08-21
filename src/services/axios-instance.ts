@@ -9,6 +9,10 @@ import axios, {
 } from 'axios';
 import { useLoadingStore } from '@/stores';
 
+const isServer = typeof window === 'undefined';
+const origin = process.env.NEXT_PUBLIC_SITE_URL;
+const resolvedBaseURL = isServer && origin ? `${origin}/api` : '/api';
+
 /**
  * 인증 토큰을 가져오는 함수 (나중에 구현)
  * 예: Firebase Auth, LocalStorage 등에서 토큰을 가져올 수 있음
@@ -23,7 +27,7 @@ async function getAuthToken(): Promise<string | null> {
  * API 요청에 사용할 Axios 인스턴스
  */
 export const apiInstance: AxiosInstance = axios.create({
-  baseURL: '/api', // Next.js API Route 기준
+  baseURL: resolvedBaseURL, // Next.js API Route 기준 (server에서는 절대 URL 사용)
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -35,7 +39,9 @@ export const apiInstance: AxiosInstance = axios.create({
  */
 apiInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    useLoadingStore.getState().showLoading();
+    if (!isServer) {
+      useLoadingStore.getState().showLoading();
+    }
     const token = await getAuthToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -52,11 +58,15 @@ apiInstance.interceptors.request.use(
  */
 apiInstance.interceptors.response.use(
   (response) => {
-    useLoadingStore.getState().hideLoading();
+    if (!isServer) {
+      useLoadingStore.getState().hideLoading();
+    }
     return response;
   },
   (error: AxiosError) => {
-    useLoadingStore.getState().hideLoading();
+    if (!isServer) {
+      useLoadingStore.getState().hideLoading();
+    }
     // 예: 401 에러 시 자동 로그아웃, 알림 등 처리 가능
     if (error.response?.status === 401) {
       // TODO: 로그아웃 처리, 토스트 알림 등

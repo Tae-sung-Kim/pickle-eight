@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export function MobileMenuLayout() {
   const pathname = usePathname();
@@ -70,9 +71,18 @@ export function MobileMenuLayout() {
                   {group.group === 'quiz' && (
                     <span className="text-xl">🤖</span>
                   )}
-                  <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {group.label}
-                  </span>
+                  {group.href ? (
+                    <Link
+                      href={group.href}
+                      className="text-xs font-medium text-gray-700 uppercase tracking-wider hover:text-primary"
+                    >
+                      {group.label}
+                    </Link>
+                  ) : (
+                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      {group.label}
+                    </span>
+                  )}
                 </div>
                 <div className="space-y-1">
                   {group.items.map((item) => {

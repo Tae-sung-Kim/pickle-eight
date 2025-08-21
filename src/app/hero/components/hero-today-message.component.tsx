@@ -1,10 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { MessageStateType } from '@/types';
 import { Smile, Sparkles, ListChecks, UtensilsCrossed } from 'lucide-react';
 import { useGptTodayMessageQuery } from '@/queries';
 import { getTodayString, getTimeSlot, getKoreaTime } from '@/utils';
+import { useCapture } from '@/hooks/use-capture';
+import { Button } from '@/components/ui/button';
 
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? 'pickle-eight';
 
@@ -56,6 +58,11 @@ export function HeroTodayMessageComponent() {
   });
   const [mealType, setMealType] = useState<string>('지금');
   const { mutateAsync, isPending } = useGptTodayMessageQuery();
+  const { onCapture } = useCapture();
+  const cheerRef = useRef<HTMLDivElement>(null);
+  const fortuneRef = useRef<HTMLDivElement>(null);
+  const todoRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -148,7 +155,10 @@ export function HeroTodayMessageComponent() {
     <section className="w-full max-w-5xl mx-auto mt-12 mb-10 px-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Cheer Message */}
-        <div className="relative bg-gradient-to-br from-green-50 to-cyan-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-green-100 transition-transform duration-300 hover:scale-105">
+        <div
+          ref={cheerRef}
+          className="relative bg-gradient-to-br from-green-50 to-cyan-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-green-100 transition-transform duration-300 hover:scale-105"
+        >
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-3 border border-green-200">
             <Smile className="w-8 h-8 text-green-500" />
           </div>
@@ -158,10 +168,30 @@ export function HeroTodayMessageComponent() {
           <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.cheer)}
           </p>
+          <div className="mt-4 flex justify-center">
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              aria-label="오늘의 응원 캡처 및 공유"
+              onClick={() =>
+                onCapture(cheerRef as React.RefObject<HTMLElement>, {
+                  fileName: `${SITE_NAME}-cheer.png`,
+                  shareTitle: '오늘의 응원',
+                  shareText: '오늘의 응원을 공유합니다',
+                })
+              }
+            >
+              공유/저장
+            </Button>
+          </div>
         </div>
 
         {/* Fortune Message */}
-        <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-blue-100 transition-transform duration-300 hover:scale-105">
+        <div
+          ref={fortuneRef}
+          className="relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-blue-100 transition-transform duration-300 hover:scale-105"
+        >
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-3 border border-blue-200">
             <Sparkles className="w-8 h-8 text-blue-500" />
           </div>
@@ -171,10 +201,30 @@ export function HeroTodayMessageComponent() {
           <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.fortune)}
           </p>
+          <div className="mt-4 flex justify-center">
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              aria-label="오늘의 행운 캡처 및 공유"
+              onClick={() =>
+                onCapture(fortuneRef as React.RefObject<HTMLElement>, {
+                  fileName: `${SITE_NAME}-fortune.png`,
+                  shareTitle: '오늘의 행운',
+                  shareText: '오늘의 행운을 공유합니다',
+                })
+              }
+            >
+              공유/저장
+            </Button>
+          </div>
         </div>
 
         {/* Todo Message */}
-        <div className="relative bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-yellow-100 transition-transform duration-300 hover:scale-105">
+        <div
+          ref={todoRef}
+          className="relative bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-yellow-100 transition-transform duration-300 hover:scale-105"
+        >
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-3 border border-yellow-200">
             <ListChecks className="w-8 h-8 text-yellow-500" />
           </div>
@@ -184,10 +234,30 @@ export function HeroTodayMessageComponent() {
           <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.todo)}
           </p>
+          <div className="mt-4 flex justify-center">
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              aria-label="지금 할 일 캡처 및 공유"
+              onClick={() =>
+                onCapture(todoRef as React.RefObject<HTMLElement>, {
+                  fileName: `${SITE_NAME}-todo.png`,
+                  shareTitle: '지금 할 일',
+                  shareText: '지금 할 일을 공유합니다',
+                })
+              }
+            >
+              공유/저장
+            </Button>
+          </div>
         </div>
 
         {/* Menu Message */}
-        <div className="relative bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-red-100 transition-transform duration-300 hover:scale-105">
+        <div
+          ref={menuRef}
+          className="relative bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-red-100 transition-transform duration-300 hover:scale-105"
+        >
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-3 border border-red-200">
             <UtensilsCrossed className="w-8 h-8 text-red-500" />
           </div>
@@ -197,6 +267,23 @@ export function HeroTodayMessageComponent() {
           <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.menu)}
           </p>
+          <div className="mt-4 flex justify-center">
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              aria-label={`${mealType} 추천 메뉴 캡처 및 공유`}
+              onClick={() =>
+                onCapture(menuRef as React.RefObject<HTMLElement>, {
+                  fileName: `${SITE_NAME}-menu.png`,
+                  shareTitle: `${mealType} 추천 메뉴`,
+                  shareText: '추천 메뉴를 공유합니다',
+                })
+              }
+            >
+              공유/저장
+            </Button>
+          </div>
         </div>
       </div>
     </section>

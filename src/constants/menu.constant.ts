@@ -4,6 +4,7 @@ export const MENU_LIST: MenuGroupType[] = [
   {
     group: 'lotto',
     label: '로또',
+    href: '/lotto',
     items: [
       {
         href: '/lotto/lotto-number',

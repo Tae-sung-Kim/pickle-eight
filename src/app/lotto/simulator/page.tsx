@@ -1,4 +1,6 @@
 import { LottoSimulatorComponent } from './components';
+import Link from 'next/link';
+
 // import type { Metadata } from 'next';
 // import { generateOgImageUrl } from '@/utils';
 
@@ -42,5 +44,17 @@ import { LottoSimulatorComponent } from './components';
 // };
 
 export default function LottoSimulatorPage() {
-  return <LottoSimulatorComponent />;
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-8">
+      <div className="mb-2">
+        <Link
+          href="/lotto"
+          className="text-sm text-muted-foreground hover:underline"
+        >
+          &larr; 로또 허브
+        </Link>
+      </div>
+      <LottoSimulatorComponent />
+    </div>
+  );
 }

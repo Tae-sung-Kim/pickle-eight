@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { LottoNumberComponent } from './components';
 import { generateOgImageUrl } from '@/utils';
 import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: '로또 번호 생성기 - 추천하는 행운의 번호',
@@ -49,6 +50,14 @@ export const metadata: Metadata = {
 export default function LottoPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      <div className="mb-2">
+        <Link
+          href="/lotto"
+          className="text-sm text-muted-foreground hover:underline"
+        >
+          &larr; 로또 허브
+        </Link>
+      </div>
       <LottoWarningAlertComponent tone="danger" includeAgeNotice />
       <div className="mt-4">
         <LottoNumberComponent />

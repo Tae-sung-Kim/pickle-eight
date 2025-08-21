@@ -71,7 +71,6 @@ export function LottoAdvancedGeneratorComponent() {
       })
       .catch((e: unknown) => {
         // Silent fail; keep defaults
-        // eslint-disable-next-line no-console
         console.warn('[advanced-generator] latest init failed:', e);
       });
     return () => {

@@ -2,6 +2,7 @@ import { LottoHistoryComponent } from './components';
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
 import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
@@ -51,6 +52,14 @@ export const metadata: Metadata = {
 export default function LottoHistoryPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
+      <div className="mb-2">
+        <Link
+          href="/lotto"
+          className="text-sm text-muted-foreground hover:underline"
+        >
+          &larr; 로또 허브
+        </Link>
+      </div>
       <div className="flex items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">
