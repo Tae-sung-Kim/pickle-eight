@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { EnglishWordQuizComponent } from './components';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 
 export const metadata: Metadata = {
   title: 'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
@@ -30,7 +30,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
         '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
-        'AI 영어 단어 퀴즈'
+        'AI 영어 단어 퀴즈',
+        getOgTag({ href: '/quiz/english-word-quiz' })
       ),
     ],
   },
@@ -43,7 +44,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
         '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
-        'AI 영어 단어 퀴즈'
+        'AI 영어 단어 퀴즈',
+        getOgTag({ href: '/quiz/english-word-quiz' })
       ),
     ],
   },

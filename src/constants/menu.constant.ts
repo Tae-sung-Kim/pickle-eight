@@ -59,6 +59,7 @@ export const MENU_LIST: MenuGroupType[] = [
   {
     group: 'random',
     label: '랜덤 도구',
+    href: '/random-picker',
     items: [
       {
         href: '/random-picker/name-random',
@@ -114,6 +115,7 @@ export const MENU_LIST: MenuGroupType[] = [
   {
     group: 'quiz',
     label: 'AI 퀴즈/게임',
+    href: '/quiz',
     items: [
       {
         href: '/quiz/english-word-quiz',

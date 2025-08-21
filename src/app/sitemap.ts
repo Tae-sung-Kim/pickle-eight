@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://pickle-eight.vercel.app';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://pickle-eight.vercel.app';
 
   // 정적 페이지 목록
   const staticRoutes = [
@@ -13,9 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/lotto/check',
     // '/lotto/simulator',
     // '/lotto/advanced-generator',
+    '/quiz',
     '/quiz/english-word-quiz',
     '/quiz/four-idiom-quiz',
     '/quiz/trivia-quiz',
+    '/quiz/number-match-game',
     '/random-picker/dice-game',
     '/random-picker/draw-order',
     '/random-picker/ladder-game',

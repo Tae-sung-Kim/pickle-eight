@@ -4,3 +4,4 @@ export * from './ladder-game.util';
 export * from './lotto.util';
 export * from './team-assignment.util';
 export * from './today-message.util';
+export * from './seo.util';

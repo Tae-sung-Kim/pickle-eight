@@ -36,19 +36,26 @@ export function getKoreanTimeString(date: Date): string {
   return `${hour}시 ${minute}분`;
 }
 
-// SEC og 이미지 생성
+/**
+ * Build Open Graph image descriptor used by Next.js Metadata images.
+ * Appends title/subtitle (and optional tag) to `/api/og-image` URL.
+ *
+ * @param {string} title - Main title text.
+ * @param {string} description - Subtitle text.
+ * @param {string} alt - Alternative text for the image.
+ * @param {string} [tag] - Optional short badge text to display.
+ * @returns {{ url: string; width: number; height: number; alt: string }} Image descriptor.
+ */
 export function generateOgImageUrl(
   title: string,
   description: string,
-  alt: string
-) {
+  alt: string,
+  tag?: string
+): { url: string; width: number; height: number; alt: string } {
+  const params = new URLSearchParams({ title, subtitle: description });
+  if (tag) params.set('tag', tag);
   return {
-    url: `${
-      process.env.NEXT_PUBLIC_SITE_URL
-    }/api/og-image?${new URLSearchParams({
-      title,
-      subtitle: description,
-    })}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/og-image?${params}`,
     width: 1200,
     height: 630,
     alt,

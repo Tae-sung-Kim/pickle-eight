@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { TriviaQuizComponent } from './components';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 
 export const metadata: Metadata = {
   title: '상식 퀴즈 - AI 상식/지식 문제 풀기',
@@ -34,7 +34,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '상식 퀴즈 - AI 상식/지식 문제 풀기',
         'AI가 출제하는 상식/지식 퀴즈! 다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요.',
-        '상식 퀴즈'
+        '상식 퀴즈',
+        getOgTag({ href: '/quiz/trivia-quiz' })
       ),
     ],
   },
@@ -47,7 +48,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '상식 퀴즈 - AI 상식/지식 문제 풀기',
         'AI가 출제하는 상식/지식 퀴즈! 다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요.',
-        '상식 퀴즈'
+        '상식 퀴즈',
+        getOgTag({ href: '/quiz/trivia-quiz' })
       ),
     ],
   },

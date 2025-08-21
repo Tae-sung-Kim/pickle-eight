@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { NumberMatchGameComponent } from './components';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 
 export const metadata: Metadata = {
   title: '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
@@ -34,7 +34,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
         '숫자 카드 매칭 게임으로 두뇌 트레이닝을 해보세요! 기억력과 집중력을 향상시켜보세요!',
-        '숫자 매칭 게임'
+        '숫자 매칭 게임',
+        getOgTag({ href: '/quiz/number-match-game' })
       ),
     ],
   },
@@ -47,7 +48,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
         '숫자 카드 매칭 게임으로 두뇌 트레이닝을 해보세요! 기억력과 집중력을 향상시켜보세요!',
-        '숫자 매칭 게임'
+        '숫자 매칭 게임',
+        getOgTag({ href: '/quiz/number-match-game' })
       ),
     ],
   },

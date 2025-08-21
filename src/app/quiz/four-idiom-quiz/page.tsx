@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { FourIdiomQuizComponent } from './components';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 
 export const metadata: Metadata = {
   title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
@@ -34,7 +34,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
         'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요. 난이도, 힌트, 일일 제한 등 다양한 기능 제공!',
-        '사자성어 퀴즈'
+        '사자성어 퀴즈',
+        getOgTag({ href: '/quiz/four-idiom-quiz' })
       ),
     ],
   },
@@ -47,7 +48,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
         'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요. 난이도, 힌트, 일일 제한 등 다양한 기능 제공!',
-        '사자성어 퀴즈'
+        '사자성어 퀴즈',
+        getOgTag({ href: '/quiz/four-idiom-quiz' })
       ),
     ],
   },
