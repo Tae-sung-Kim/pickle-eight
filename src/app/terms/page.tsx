@@ -128,23 +128,8 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">11. 문의</h2>
-          <p className="break-all">문의: contact.tskim@gmail.com</p>
-          <p>
-            텔레그램:{' '}
-            <a
-              href="https://t.me/PickleEight"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline"
-            >
-              PickleEight
-            </a>
-          </p>
-        </section>
-        <section>
           <h2 className="font-medium text-foreground">
-            12. 데이터 출처 및 API 사용
+            11. 데이터 출처 및 API 사용
           </h2>
           <p>
             본 서비스는 공공 웹사이트/공개 API 등 외부 데이터 소스를 참조할 수
@@ -162,7 +147,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            13. 비제휴·비보증 고지
+            12. 비제휴·비보증 고지
           </h2>
           <p>
             본 서비스는 정부기관/공공기관/복권 운영사 등과 제휴·후원·승인을 받은
@@ -173,13 +158,85 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            14. 광고·수익화 및 쿠키
+            13. 광고·수익화 및 쿠키
           </h2>
           <p>
             서비스는 광고(배너/네이티브/제휴 링크 등)를 게재할 수 있으며, 광고는
             자발적 이용을 전제로 합니다. 핵심 기능 접근을 광고 시청으로 강제하지
             않습니다. 광고/개인화·분석 등 비필수 기능은 이용자의 동의에 따라
             실행되며, 자세한 내용은 개인정보처리방침을 따릅니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            14. 상업적 이용 및 수익화
+          </h2>
+          <p>
+            본 서비스는 광고 게재, 제휴(파트너스 링크 포함), 후원 등을 통해
+            상업적으로 운영될 수 있습니다. 광고·제휴는 자발적 이용을 전제로
+            하며, 핵심 기능 접근을 광고 시청으로 강제하지 않습니다. 광고/분석 등
+            비필수 기능은 이용자의 동의가 있는 경우에만 실행됩니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            15. 연령 제한 및 책임 있는 이용
+          </h2>
+          <p>
+            본 서비스는 성인 대상 기능에 대해 연령 확인 및 동의 배너를
+            제공합니다 (2. 연령 및 준수 참조). 과도한 이용을 지양하고 책임 있는
+            사용을 권장합니다. 자세한 면책은 4. 책임 제한을 참조하세요.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            16. 제3자 서비스 장애 및 면책
+          </h2>
+          <p>
+            호스팅, 분석, 광고, 결제/제휴 등 제3자 서비스(예: Firebase, Vercel,
+            광고·제휴 네트워크)의 장애·변경으로 인한 손해에 대하여 당사는 법이
+            허용하는 범위 내에서 책임을 지지 않습니다. 이용자는 제3자 정책을
+            함께 준수해야 합니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">17. 후원/기부 정책</h2>
+          <p>
+            후원은 전적으로 선택 사항이며, 서비스 핵심 기능 이용과 독립적입니다.
+            후원/결제 기능을 도입하는 경우 결제 대행사 정책을 준수하며, 관련
+            고지(수집 항목, 목적, 보관 기간 등)를 별도로 제공합니다. 후원 여부가
+            서비스 품질·결과에 영향을 미치지 않습니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">18. 면책 및 보상</h2>
+          <p>
+            이용자가 약관 위반 또는 불법행위로 인해 제3자와의 분쟁·청구가 발생한
+            경우, 이용자는 당사에 발생한 합리적 손해와 비용(변호사 비용 포함)을
+            배상해야 할 수 있습니다. 이는 법령이 허용하는 범위 내에서
+            적용됩니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">19. 분리가능성</h2>
+          <p>
+            본 약관의 일부 조항이 무효·집행 불능으로 판단되더라도, 나머지 조항의
+            유효성에는 영향을 미치지 않습니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">20. 문의</h2>
+          <p className="break-all">문의: contact.tskim@gmail.com</p>
+          <p>
+            텔레그램:{' '}
+            <a
+              href="https://t.me/PickleEight"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline"
+            >
+              PickleEight
+            </a>
           </p>
         </section>
         <p className="text-xs">

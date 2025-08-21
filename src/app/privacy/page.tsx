@@ -135,7 +135,61 @@ export default function PrivacyPolicyPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">12. 문의</h2>
+          <h2 className="font-medium text-foreground">12. 처리의 법적 근거</h2>
+          <p>
+            개인정보 처리는 다음 법적 근거에 따라 이루어집니다: (1) 이용자 동의,
+            (2) 계약의 체결 및 이행을 위한 필요, (3) 법적 의무의 준수, (4)
+            정당한 이익(서비스 보안, 품질 개선, 통계 분석 등). 개인화 광고/분석
+            등 비필수 목적은 이용자의 사전 동의가 있는 경우에만 실행됩니다.
+          </p>
+        </section>
+        <section>
+          <h2 id="cookies-consent" className="font-medium text-foreground">
+            13. 쿠키 및 동의 관리
+          </h2>
+          <p>
+            서비스는 필수/기능/분석/광고 범주의 쿠키·유사 기술을 사용할 수
+            있습니다. 비필수(기능/분석/광고) 쿠키와 관련 스크립트는 이용자의
+            사전 동의가 있는 경우에만 활성화되며, 동의 거부 시 비필수 쿠키는
+            저장·수집·전송되지 않습니다. 동의는 서비스 내 &quot;쿠키 설정&quot;
+            배너 또는 푸터의 설정 버튼을 통해 언제든지 변경·철회할 수 있습니다.
+            브라우저 설정으로도 쿠키를 차단할 수 있으나 일부 기능이 제한될 수
+            있습니다. 일부 제3자(분석/광고/제휴)의 쿠키에는 해당 제공업체의
+            정책이 함께 적용됩니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            14. 권리 행사 방법 및 기한
+          </h2>
+          <p>
+            이용자는 열람/정정/삭제/처리정지/동의철회를 요청할 수 있으며, 본인
+            확인 후 원칙적으로 30일 이내 처리합니다. 단, 법령상 예외 또는 기술적
+            제한이 있는 경우 지연·불가 사유를 안내합니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">15. 후원 및 제휴 처리</h2>
+          <p>
+            후원은 전적으로 선택 사항이며, 서비스 핵심 기능 이용과 무관합니다.
+            후원/결제가 도입되는 경우 결제 대행사 등 필요한 범위 내에서
+            개인정보가 처리·제공될 수 있으며, 수집 항목과 목적, 보관 기간을 별도
+            고지합니다. 제휴 링크 이용 시 제3자의 추적 파라미터/쿠키가 적용될 수
+            있습니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            16. 광고 식별자 및 추적 정보
+          </h2>
+          <p>
+            광고 노출/성과 측정을 위해 광고 ID, 리퍼러, 캠페인 파라미터 등이
+            수집될 수 있습니다. 개인화 광고는 동의 기반으로만 집행되며, 동의
+            거부 시 비개인화 광고 또는 광고 미표시가 적용될 수 있습니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">17. 문의</h2>
           <p className="break-all">문의: contact.tskim@gmail.com</p>
           <p>
             텔레그램:{' '}

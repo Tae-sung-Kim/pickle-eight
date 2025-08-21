@@ -21,14 +21,6 @@ export const MENU_LIST: MenuGroupType[] = [
         description: '범위를 지정해 과거 당첨 번호를 조회합니다.',
         example: '예: 최근 50회 결과 확인',
       },
-      // {
-      //   href: '/lotto/analysis',
-      //   label: '통계/패턴 분석',
-      //   icon: 'BarChart2',
-      //   colorClass: 'text-emerald-600',
-      //   description: '빈도, 구간, 홀짝, 합계, 연속수 등을 분석합니다.',
-      //   example: '예: 1~200회 빈도 상위/하위 번호',
-      // },
       {
         href: '/lotto/check',
         label: '번호 채점기',
@@ -37,6 +29,14 @@ export const MENU_LIST: MenuGroupType[] = [
         description: '내 번호와 특정 회차를 비교해 등수를 확인합니다.',
         example: '예: 1100회 채점',
       },
+      // {
+      //   href: '/lotto/analysis',
+      //   label: '통계/패턴 분석',
+      //   icon: 'BarChart2',
+      //   colorClass: 'text-emerald-600',
+      //   description: '빈도, 구간, 홀짝, 합계, 연속수 등을 분석합니다.',
+      //   example: '예: 1~200회 빈도 상위/하위 번호',
+      // },
       // {
       //   href: '/lotto/advanced-generator',
       //   label: '고급 번호 생성기',
