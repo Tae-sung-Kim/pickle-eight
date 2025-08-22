@@ -8,3 +8,4 @@ export * from './four-idom.type';
 export * from './today-message.type';
 export * from './number-match-game.type';
 export * from './lotto.type';
+export * from './emoji-translation.type';

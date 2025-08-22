@@ -145,6 +145,13 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-sky-500',
         description: '같은 숫자를 찾는 게임을 해보세요.',
       },
+      {
+        href: '/quiz/emoji-translation',
+        label: '이모지 번역 퀴즈',
+        icon: 'Smile',
+        colorClass: 'text-yellow-600',
+        description: '이모지 힌트만 보고 정답을 맞혀보세요.',
+      },
     ],
   },
   // {

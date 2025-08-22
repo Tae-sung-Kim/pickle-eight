@@ -20,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/quiz/four-idiom-quiz',
     '/quiz/trivia-quiz',
     '/quiz/number-match-game',
+    '/quiz/emoji-translation',
     '/random-picker',
     '/random-picker/dice-game',
     '/random-picker/draw-order',

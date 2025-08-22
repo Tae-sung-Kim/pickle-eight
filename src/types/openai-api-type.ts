@@ -5,14 +5,18 @@ export type MessageStateType = {
   menu: string | null;
 };
 
-export interface OpenAIRequestType {
+export type OpenAIRequestType = {
   messages: { role: 'user' | 'system'; content: string }[];
   max_tokens?: number;
   temperature?: number;
   model?: string;
   json?: boolean;
   response_format?: { type: 'json_object' };
-}
+  // added optional knobs for better control
+  presence_penalty?: number;
+  frequency_penalty?: number;
+  top_p?: number;
+};
 
 export type OpenAIResponseType = {
   choices: {
