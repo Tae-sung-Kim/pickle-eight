@@ -54,9 +54,9 @@ export default function LottoHubPage() {
   ]);
 
   const theme = {
-    ring: 'ring-emerald-200',
-    hoverRing: 'hover:ring-emerald-300',
-    headerBadge: 'bg-emerald-50 text-emerald-700 ring-emerald-100',
+    ring: 'ring-primary/30',
+    hoverRing: 'hover:ring-primary/40',
+    headerBadge: 'bg-primary/10 text-primary ring-primary/20',
   } as const;
 
   return (
@@ -105,7 +105,9 @@ export default function LottoHubPage() {
         </span>
       </div>
       <h1 className="mt-3 text-2xl font-bold tracking-tight">로또 허브</h1>
-      <p className="mt-2 text-sm text-gray-600">원하는 기능을 선택하세요.</p>
+      <p className="mt-2 text-sm text-muted-foreground">
+        원하는 기능을 선택하세요.
+      </p>
       <ul
         className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2"
         role="list"
@@ -115,10 +117,12 @@ export default function LottoHubPage() {
           <li key={it.href} role="listitem">
             <Link
               href={it.href}
-              className={`block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-transparent ${theme.ring} ${theme.hoverRing}`}
+              className={`block rounded-2xl border border-border bg-surface-card p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ${theme.ring} ${theme.hoverRing}`}
             >
-              <div className="font-semibold text-slate-800">{it.label}</div>
-              <div className="mt-1 text-sm text-gray-600">{it.desc}</div>
+              <div className="font-semibold text-foreground">{it.label}</div>
+              <div className="mt-1 text-sm text-muted-foreground">
+                {it.desc}
+              </div>
             </Link>
           </li>
         ))}

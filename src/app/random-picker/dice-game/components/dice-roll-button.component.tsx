@@ -27,8 +27,8 @@ export const DiceRollButtonComponent = ({
       size="lg"
       className={cn(
         'px-8 py-7 text-lg font-bold',
-        'bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700',
-        'text-white shadow-lg hover:shadow-xl active:scale-[0.98]',
+        'bg-primary text-primary-foreground hover:bg-primary/90',
+        'shadow-lg hover:shadow-xl active:scale-[0.98]',
         'transition-all duration-200 transform-gpu',
         'flex-1 min-h-[60px]',
         'group relative overflow-hidden',
@@ -95,8 +95,8 @@ export const DiceRollButtonComponent = ({
             variant="outline"
             className={cn(
               'w-full sm:w-auto px-8 py-7 text-lg font-medium',
-              'border-2 border-indigo-200 hover:bg-indigo-50',
-              'text-indigo-600 hover:text-indigo-800',
+              'border-2 border-primary/30 hover:bg-primary/10',
+              'text-primary hover:text-primary',
               'transition-all duration-200',
               'min-h-[60px]',
               'ml-4' // 초기화 버튼과 간격

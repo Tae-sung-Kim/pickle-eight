@@ -68,10 +68,10 @@ export function EnglishWordQuizComponent() {
     <Card className="w-full shadow-lg">
       <CardHeader>
         <div className="flex justify-between items-center">
-          <CardTitle className="text-2xl text-center text-gray-700 leading-relaxed flex-1">
+          <CardTitle className="text-2xl text-center text-foreground leading-relaxed flex-1">
             {quiz.quiz}
           </CardTitle>
-          <div className="text-sm text-gray-500 whitespace-nowrap">
+          <div className="text-sm text-muted-foreground whitespace-nowrap">
             남은 횟수: {limit - used} / {limit}
           </div>
         </div>
@@ -85,12 +85,12 @@ export function EnglishWordQuizComponent() {
         />
 
         {isRevealed && (
-          <Alert className="mt-6 bg-yellow-50 border-yellow-300">
-            <Lightbulb className="h-5 w-5 text-yellow-500" />
-            <AlertTitle className="font-bold text-yellow-800">
+          <Alert className="mt-6 bg-info/10 border-info/30">
+            <Lightbulb className="h-5 w-5 text-info" />
+            <AlertTitle className="font-bold text-info">
               정답: {quiz.answer}
             </AlertTitle>
-            <AlertDescription className="text-yellow-700 mt-2">
+            <AlertDescription className="text-info mt-2">
               {quiz.explanation}
             </AlertDescription>
           </Alert>
@@ -98,7 +98,7 @@ export function EnglishWordQuizComponent() {
 
         <Button
           onClick={getNewQuiz}
-          className="w-full mt-6 h-12 text-lg font-bold bg-blue-500 hover:bg-blue-600"
+          className="w-full mt-6 h-12 text-lg font-bold bg-primary text-primary-foreground"
           disabled={isPending || !canUse}
         >
           {isPending ? (

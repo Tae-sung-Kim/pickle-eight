@@ -98,14 +98,14 @@ export function LadderInputComponent({
               {prizes.map((prize, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center bg-amber-50 text-amber-800 px-3 py-1 rounded-full text-sm"
+                  className="flex items-center bg-muted text-foreground px-3 py-1 rounded-full text-sm"
                 >
                   <span>{prize}</span>
                   <button
                     onClick={() =>
                       setPrizes(prizes.filter((_, i) => i !== idx))
                     }
-                    className="ml-1 text-amber-600 hover:text-amber-800"
+                    className="ml-1 text-muted-foreground hover:text-foreground"
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -127,8 +127,7 @@ export function LadderInputComponent({
           size="lg"
           className={cn(
             'w-full max-w-md mx-auto py-4 text-base font-bold',
-            'bg-gradient-to-r from-indigo-500 to-purple-600',
-            'hover:from-indigo-600 hover:to-purple-700',
+            'bg-primary text-primary-foreground hover:bg-primary/90',
             'shadow-lg hover:shadow-xl',
             (names.length < 2 ||
               prizes.length < 2 ||

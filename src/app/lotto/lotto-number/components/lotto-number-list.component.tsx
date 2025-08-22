@@ -34,14 +34,14 @@ export function LottoNumberListComponent({
 
   return (
     <Card className="overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-pink-50 to-rose-50 flex flex-row items-center justify-between gap-2">
-        <CardTitle className="text-xl font-bold text-pink-600">
+      <CardHeader className="bg-muted flex flex-row items-center justify-between gap-2">
+        <CardTitle className="text-xl font-bold text-primary">
           {title}
         </CardTitle>
         <Button
           type="button"
           onClick={handleShare}
-          className="flex items-center gap-1 px-4 py-2 rounded-lg shadow bg-white/80 hover:bg-white transition z-10 text-pink-600 border border-pink-100"
+          className="flex items-center gap-1 px-4 py-2 rounded-lg shadow bg-surface-card/80 hover:bg-surface-card transition z-10 text-foreground border border-border"
         >
           <Share2 className="w-5 h-5" />
           공유하기
@@ -55,11 +55,11 @@ export function LottoNumberListComponent({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="rounded-xl border bg-card p-4 shadow-sm hover:shadow-md"
+              className="rounded-xl border bg-surface-card p-4 shadow-sm hover:shadow-md border-border"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-pink-100 text-sm font-medium text-pink-600">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-sm font-medium text-primary">
                     {index + 1}
                   </span>
                   <span className="font-medium text-muted-foreground">

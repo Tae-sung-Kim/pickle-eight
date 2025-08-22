@@ -18,11 +18,11 @@ export const DicePlayerComponent = ({
   <motion.div
     className={cn(
       'group relative flex items-center justify-between p-4 rounded-xl',
-      'bg-white/90 backdrop-blur-sm border border-gray-100',
+      'bg-surface-card backdrop-blur-sm border border-border',
       'shadow-sm hover:shadow-md transition-all duration-200',
       isWinner
-        ? 'ring-2 ring-yellow-400 ring-offset-2 bg-gradient-to-r from-yellow-50 to-amber-50'
-        : 'hover:border-gray-200'
+        ? 'ring-2 ring-success ring-offset-2 bg-success/5'
+        : 'hover:border-border'
     )}
     initial={{ opacity: 0, y: 20, scale: 0.98 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -30,7 +30,7 @@ export const DicePlayerComponent = ({
     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
   >
     {isWinner && (
-      <div className="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs font-bold px-2 py-0.5 rounded-full z-10">
+      <div className="absolute -top-2 -right-2 bg-success text-success-foreground text-xs font-bold px-2 py-0.5 rounded-full z-10">
         당첨!
       </div>
     )}
@@ -39,10 +39,10 @@ export const DicePlayerComponent = ({
       <div
         className={cn(
           'flex items-center justify-center w-10 h-10 rounded-full',
-          'bg-gradient-to-br from-indigo-100 to-blue-100',
-          'text-indigo-700 font-bold text-lg',
+          'bg-muted',
+          'text-primary font-bold text-lg',
           'border-2 border-white shadow-sm',
-          isWinner && 'from-yellow-100 to-amber-100 text-amber-700'
+          isWinner && 'text-success'
         )}
       >
         {index + 1}
@@ -51,8 +51,8 @@ export const DicePlayerComponent = ({
       <div className="flex flex-col">
         <span
           className={cn(
-            'font-semibold text-gray-800',
-            isWinner && 'text-yellow-900'
+            'font-semibold text-foreground',
+            isWinner && 'text-success'
           )}
         >
           {name}
@@ -76,7 +76,7 @@ export const DicePlayerComponent = ({
       onClick={onRemove}
       className="opacity-0 group-hover:opacity-100 transition-opacity"
     >
-      <X className="w-4 h-4 text-gray-400 hover:text-red-500" />
+      <X className="w-4 h-4 text-muted-foreground hover:text-destructive" />
     </Button>
   </motion.div>
 );

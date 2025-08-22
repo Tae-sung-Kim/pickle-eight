@@ -25,28 +25,28 @@ export function FourIdiomQuizAnswerComponent({
           className={cn(
             'mt-4 flex items-center gap-3 px-5 py-4 rounded-xl border text-lg font-bold shadow transition-all duration-300',
             isCorrect
-              ? 'bg-green-50 border-green-400 text-green-700 animate-in fade-in'
-              : 'bg-red-50 border-red-400 text-red-700 animate-in fade-in'
+              ? 'bg-success/10 border-success/40 text-success animate-in fade-in'
+              : 'bg-destructive/10 border-destructive/40 text-destructive animate-in fade-in'
           )}
         >
           {isCorrect ? (
             <>
-              <CheckCircle2 className="w-8 h-8 text-green-500 animate-bounce" />
+              <CheckCircle2 className="w-8 h-8 text-success animate-bounce" />
               <span>정답입니다!</span>
             </>
           ) : (
             <>
-              <XCircle className="w-8 h-8 text-red-500 animate-shake" />
+              <XCircle className="w-8 h-8 text-destructive animate-shake" />
               <span>틀렸습니다.</span>
             </>
           )}
-          <span className="ml-4 text-gray-700 font-normal">
+          <span className="ml-4 text-muted-foreground font-normal">
             <b>정답:</b>{' '}
             <span className="text-primary font-bold">{data?.answer}</span>
           </span>
           {canUse && (
             <Button
-              className="ml-4 text-xs text-blue-500 underline"
+              className="ml-4 text-xs text-primary underline"
               variant="ghost"
               onClick={onNewQuiz}
               type="button"
@@ -58,7 +58,7 @@ export function FourIdiomQuizAnswerComponent({
       )}
       {!showAnswer && (
         <Button
-          className="mt-4 text-xs text-gray-500 underline"
+          className="mt-4 text-xs text-muted-foreground underline"
           variant="ghost"
           onClick={onNewQuiz}
           type="button"

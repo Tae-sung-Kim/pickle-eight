@@ -251,7 +251,7 @@ export function LottoCheckComponent() {
                 />
                 {(formState.touchedFields.drwNo || formState.submitCount > 0) &&
                   formState.errors.drwNo && (
-                    <span className="text-xs text-red-600">
+                    <span className="text-xs text-destructive">
                       {formState.errors.drwNo.message}
                     </span>
                   )}
@@ -260,7 +260,7 @@ export function LottoCheckComponent() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="gap-2 border-green-600 text-green-700 hover:bg-green-50 hover:text-green-800"
+                  className="gap-2 border-primary text-primary hover:bg-primary/10 hover:text-primary"
                   onClick={() =>
                     append({
                       n1: undefined as unknown as number,
@@ -309,7 +309,7 @@ export function LottoCheckComponent() {
               </div>
 
               {formState.errors.tickets && (
-                <p className="mt-1 text-xs text-red-600">
+                <p className="mt-1 text-xs text-destructive">
                   {formState.errors.tickets?.root?.message as string}
                 </p>
               )}
@@ -318,7 +318,7 @@ export function LottoCheckComponent() {
             <Button
               type="submit"
               disabled={!canSubmit}
-              className="w-full gap-2 px-5 sm:w-auto bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-600 disabled:opacity-50 disabled:pointer-events-none"
+              className="w-full gap-2 px-5 sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary disabled:opacity-50 disabled:pointer-events-none"
             >
               <Sparkles className="h-4 w-4" />
               채점하기

@@ -3,14 +3,14 @@ import { Users } from 'lucide-react';
 export function DrawOrderGuideComponent() {
   return (
     <div className="lg:col-span-1">
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100 p-6 h-full">
-        <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+      <div className="bg-surface-card/80 backdrop-blur-sm rounded-xl shadow-sm border border-border p-6 h-full">
+        <h3 className="text-lg font-semibold text-foreground flex items-center">
           <Users className="w-5 h-5 mr-2 text-primary" />
           참가자 안내
         </h3>
-        <div className="space-y-4 text-sm text-gray-600">
-          <div className="p-3 bg-blue-50/50 backdrop-blur-sm rounded-lg">
-            <p className="font-medium text-blue-800">💡 사용 방법</p>
+        <div className="space-y-4 text-sm text-muted-foreground">
+          <div className="p-3 bg-muted backdrop-blur-sm rounded-lg">
+            <p className="font-medium text-foreground">💡 사용 방법</p>
             <ol className="mt-1 space-y-1 list-decimal list-inside">
               <li>
                 참가자 동그라미를 클릭하면, 동그라미가 회전한 뒤 결과가
@@ -25,8 +25,8 @@ export function DrawOrderGuideComponent() {
               </li>
             </ol>
           </div>
-          <div className="p-3 bg-amber-50/50 backdrop-blur-sm rounded-lg">
-            <p className="font-medium text-amber-800">ℹ️ 참고 사항</p>
+          <div className="p-3 bg-muted backdrop-blur-sm rounded-lg">
+            <p className="font-medium text-foreground">ℹ️ 참고 사항</p>
             <ul className="mt-1 space-y-1 list-disc list-inside">
               <li>
                 동그라미 클릭 시 결과는 회전 애니메이션이 끝난 후에만

@@ -16,7 +16,9 @@ export function FourIdiomQuizDifficultyComponent({
 }: FourIdiomQuizDifficultyComponentProps) {
   return (
     <div className="mb-3 flex gap-2 items-center">
-      <span className="text-xs font-semibold text-gray-500">난이도:</span>
+      <span className="text-xs font-semibold text-muted-foreground">
+        난이도:
+      </span>
       <Button
         type="button"
         size="sm"

@@ -32,7 +32,7 @@ export const LadderGameSectionComponent = ({
         <Button
           onClick={onReset}
           variant="outline"
-          className="text-gray-600 hover:bg-gray-100"
+          className="text-foreground hover:bg-muted"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           다시 만들기
@@ -40,18 +40,18 @@ export const LadderGameSectionComponent = ({
         <Button
           onClick={handleShare}
           variant="outline"
-          className="text-gray-600 hover:bg-gray-100"
+          className="text-foreground hover:bg-muted"
         >
           <Share2 className="h-4 w-4 mr-2" />
           공유하기
         </Button>
-        <div className="text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
+        <div className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full">
           {names.length}명 참가 • {prizes.length}개 상품
         </div>
       </div>
 
       <div
-        className="bg-white rounded-xl shadow-sm p-6 overflow-hidden"
+        className="bg-surface-card rounded-xl shadow-sm border border-border p-6 overflow-hidden"
         ref={resultRef}
       >
         <div className="h-[600px]">

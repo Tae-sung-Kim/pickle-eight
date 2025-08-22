@@ -87,7 +87,7 @@ export function DrawOrderComponent() {
 
   if (!started) {
     return (
-      <div className="bg-gradient-to-br from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <motion.div
             className="text-center mb-10"
@@ -95,10 +95,10 @@ export function DrawOrderComponent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-extrabold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-500">
+            <h1 className="text-4xl font-extrabold mb-3 text-primary">
               랜덤 매칭 추첨하기
             </h1>
-            <p className="text-gray-600 max-w-md mx-auto">
+            <p className="text-muted-foreground max-w-md mx-auto">
               참가자와 상품을 등록하고 공정한 랜덤 매칭 추첨을 진행해보세요.
             </p>
           </motion.div>
@@ -138,8 +138,8 @@ export function DrawOrderComponent() {
                 size="lg"
                 className={`w-full py-6 text-lg font-semibold transition-all duration-300 ${
                   !canStart
-                    ? 'opacity-60 cursor-not-allowed bg-gray-200 text-gray-500'
-                    : 'bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:from-purple-700 hover:to-pink-600 hover:shadow-lg hover:scale-[1.02] active:scale-95 transform transition-transform duration-200'
+                    ? 'opacity-60 cursor-not-allowed bg-muted text-muted-foreground'
+                    : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:scale-[1.02] active:scale-95 transform transition-transform duration-200'
                 } rounded-xl`}
               >
                 <span className="flex items-center justify-center gap-2">
@@ -153,7 +153,7 @@ export function DrawOrderComponent() {
               </Button>
 
               {!canStart && (
-                <p className="text-sm text-center text-gray-500 mt-3">
+                <p className="text-sm text-center text-muted-foreground mt-3">
                   {participants.length === 0 && items.length === 0
                     ? '참가자와 상품을 추가해주세요.'
                     : participants.length === 0
@@ -169,7 +169,7 @@ export function DrawOrderComponent() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 flex items-center justify-center min-h-[400px]">
           <DrawOrderCircleComponent

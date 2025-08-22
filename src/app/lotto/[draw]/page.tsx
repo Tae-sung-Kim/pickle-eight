@@ -57,7 +57,7 @@ export default async function LottoDrawPage({
   return (
     <section className="mx-auto max-w-4xl px-4 py-10">
       <div className="mb-4">
-        <Link href="/lotto" className="text-sm text-blue-600 hover:underline">
+        <Link href="/lotto" className="text-sm text-primary hover:underline">
           ← 로또 허브로 돌아가기
         </Link>
       </div>
@@ -68,7 +68,7 @@ export default async function LottoDrawPage({
       {!valid && (
         <>
           <h1 className="text-2xl font-bold tracking-tight">잘못된 회차</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-muted-foreground">
             요청하신 회차 값이 올바르지 않습니다.
           </p>
         </>
@@ -76,13 +76,13 @@ export default async function LottoDrawPage({
       {valid && !data && (
         <>
           <h1 className="text-2xl font-bold tracking-tight">{draw}회차 상세</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-muted-foreground">
             데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.
           </p>
         </>
       )}
       {valid && data && (
-        <Card className="border border-gray-200 shadow-sm">
+        <Card className="border border-border shadow-sm">
           <CardHeader className="pb-3">
             <CardTitle className="text-3xl font-extrabold tracking-tight">
               {data.drawNumber}회차 상세
@@ -96,20 +96,20 @@ export default async function LottoDrawPage({
               {numbers.map((n) => (
                 <span
                   key={n}
-                  className="h-12 w-12 rounded-full bg-yellow-200/60 text-yellow-900 ring-1 ring-yellow-300 flex items-center justify-center font-semibold shadow-sm"
+                  className="h-12 w-12 rounded-full bg-muted text-foreground ring-1 ring-border flex items-center justify-center font-semibold shadow-sm"
                 >
                   {n}
                 </span>
               ))}
               <span className="text-xl text-muted-foreground">+</span>
-              <span className="h-12 w-12 rounded-full bg-blue-200/60 text-blue-900 ring-1 ring-blue-300 flex items-center justify-center font-semibold shadow-sm">
+              <span className="h-12 w-12 rounded-full bg-primary/20 text-primary ring-1 ring-primary/30 flex items-center justify-center font-semibold shadow-sm">
                 {bonus}
               </span>
             </div>
 
             <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {typeof data.firstWinCount === 'number' && (
-                <div className="rounded-md border bg-white p-4">
+                <div className="rounded-md border bg-surface-card p-4 border-border">
                   <div className="text-xs text-muted-foreground">
                     1등 당첨자 수
                   </div>
@@ -119,7 +119,7 @@ export default async function LottoDrawPage({
                 </div>
               )}
               {typeof data.firstPrizeAmount === 'number' && (
-                <div className="rounded-md border bg-white p-4">
+                <div className="rounded-md border bg-surface-card p-4 border-border">
                   <div className="text-xs text-muted-foreground">
                     1등 당첨금
                   </div>
@@ -129,7 +129,7 @@ export default async function LottoDrawPage({
                 </div>
               )}
               {typeof data.totalSalesAmount === 'number' && (
-                <div className="rounded-md border bg-white p-4">
+                <div className="rounded-md border bg-surface-card p-4 border-border">
                   <div className="text-xs text-muted-foreground">
                     총 판매금액
                   </div>

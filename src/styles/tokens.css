@@ -1,0 +1,28 @@
+/* src/styles/tokens.css */
+/* Brand palette (green) and supportive palettes. Use semantic tokens in globals.css. */
+:root {
+  /* Green */
+  --brand-green-50: #f0fdf4;
+  --brand-green-100: #dcfce7;
+  --brand-green-200: #bbf7d0;
+  --brand-green-300: #86efac;
+  --brand-green-400: #4ade80; /* dark primary */
+  --brand-green-500: #22c55e;
+  --brand-green-600: #16a34a; /* light primary */
+  --brand-green-700: #15803d;
+  --brand-green-800: #166534;
+  --brand-green-900: #14532d;
+  /* Warning (yellow) */
+  --brand-yellow-400: #fbbf24; /* dark warning */
+  --brand-yellow-500: #f59e0b; /* light warning */
+  /* Info (sky) */
+  --brand-sky-400: #38bdf8; /* dark info */
+  --brand-sky-600: #0284c7; /* light info */
+  /* Destructive (red) */
+  --brand-red-600: #dc2626;
+}
+
+/* Optional dark-specific helpers */
+.dark {
+  --brand-dark-foreground: #0b1220; /* near slate-950 for contrast */
+}

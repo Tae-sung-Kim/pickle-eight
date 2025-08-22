@@ -5,7 +5,7 @@ import { MessageStateType } from '@/types';
 import { Smile, Sparkles, ListChecks, UtensilsCrossed } from 'lucide-react';
 import { useGptTodayMessageQuery } from '@/queries';
 import { getTodayString, getTimeSlot, getKoreaTime } from '@/utils';
-import { useCapture } from '@/hooks/use-capture';
+import { useCapture } from '@/hooks';
 import { Button } from '@/components/ui/button';
 
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? 'pickle-eight';
@@ -167,15 +167,15 @@ export function HeroTodayMessageComponent() {
         {/* Cheer Message */}
         <div
           ref={cheerRef}
-          className="relative bg-gradient-to-br from-green-50 to-cyan-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-green-100 transition-transform duration-300 hover:scale-105"
+          className="relative surface-card rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] transition-transform duration-300 hover:scale-105"
         >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-3 border border-green-200">
-            <Smile className="w-8 h-8 text-green-500" />
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-success/30">
+            <Smile className="w-8 h-8 text-success" />
           </div>
-          <h3 className="mt-6 text-lg font-bold text-green-700 text-center tracking-tight">
+          <h3 className="mt-6 text-lg font-bold text-success text-center tracking-tight">
             오늘의 응원
           </h3>
-          <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
+          <p className="mt-3 text-sm text-muted-foreground text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.cheer)}
           </p>
           <div className="mt-4 flex justify-center" data-capture="ignore">
@@ -200,15 +200,15 @@ export function HeroTodayMessageComponent() {
         {/* Fortune Message */}
         <div
           ref={fortuneRef}
-          className="relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-blue-100 transition-transform duration-300 hover:scale-105"
+          className="relative surface-card rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] transition-transform duration-300 hover:scale-105"
         >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-3 border border-blue-200">
-            <Sparkles className="w-8 h-8 text-blue-500" />
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-info/30">
+            <Sparkles className="w-8 h-8 text-info" />
           </div>
-          <h3 className="mt-6 text-lg font-bold text-blue-700 text-center tracking-tight">
+          <h3 className="mt-6 text-lg font-bold text-info text-center tracking-tight">
             오늘의 행운
           </h3>
-          <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
+          <p className="mt-3 text-sm text-muted-foreground text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.fortune)}
           </p>
           <div className="mt-4 flex justify-center" data-capture="ignore">
@@ -233,15 +233,15 @@ export function HeroTodayMessageComponent() {
         {/* Todo Message */}
         <div
           ref={todoRef}
-          className="relative bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-yellow-100 transition-transform duration-300 hover:scale-105"
+          className="relative surface-card rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] transition-transform duration-300 hover:scale-105"
         >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-3 border border-yellow-200">
-            <ListChecks className="w-8 h-8 text-yellow-500" />
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-warning/30">
+            <ListChecks className="w-8 h-8 text-warning" />
           </div>
-          <h3 className="mt-6 text-lg font-bold text-yellow-700 text-center tracking-tight">
+          <h3 className="mt-6 text-lg font-bold text-warning text-center tracking-tight">
             지금 할 일
           </h3>
-          <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
+          <p className="mt-3 text-sm text-muted-foreground text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.todo)}
           </p>
           <div className="mt-4 flex justify-center" data-capture="ignore">
@@ -266,15 +266,15 @@ export function HeroTodayMessageComponent() {
         {/* Menu Message */}
         <div
           ref={menuRef}
-          className="relative bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] border border-red-100 transition-transform duration-300 hover:scale-105"
+          className="relative surface-card rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] transition-transform duration-300 hover:scale-105"
         >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full p-3 border border-red-200">
-            <UtensilsCrossed className="w-8 h-8 text-red-500" />
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-primary/30">
+            <UtensilsCrossed className="w-8 h-8 text-primary" />
           </div>
-          <h3 className="mt-6 text-lg font-bold text-red-700 text-center tracking-tight">
+          <h3 className="mt-6 text-lg font-bold text-primary text-center tracking-tight">
             {mealType} 추천 메뉴
           </h3>
-          <p className="mt-3 text-sm text-gray-600 text-center font-medium flex-grow whitespace-pre-line">
+          <p className="mt-3 text-sm text-muted-foreground text-center font-medium flex-grow whitespace-pre-line">
             {getMessage(messages.menu)}
           </p>
           <div className="mt-4 flex justify-center" data-capture="ignore">

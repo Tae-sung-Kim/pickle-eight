@@ -70,15 +70,15 @@ export function DiceGameComponent() {
       className="container mx-auto max-w-4xl"
     >
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-indigo-900 mb-2 flex items-center justify-center gap-2">
+        <h1 className="text-4xl font-bold text-primary mb-2 flex items-center justify-center gap-2">
           주사위 굴리기
         </h1>
-        <p className="text-lg text-indigo-400 max-w-2xl mx-auto">
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           참가자들을 추가하고 주사위를 굴려 승자를 가려보세요!
         </p>
       </div>
 
-      <Card className="shadow-xl border-0 rounded-2xl overflow-hidden bg-white/90 backdrop-blur-sm">
+      <Card className="shadow-xl border-0 rounded-2xl overflow-hidden bg-surface-card backdrop-blur-sm">
         {/* <CardHeader className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
             <div className="flex items-center justify-between">
               <div>
@@ -120,12 +120,12 @@ export function DiceGameComponent() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 p-4 bg-emerald-50 border border-emerald-200 rounded-lg"
+                  className="mt-6 p-4 bg-success/10 border border-success/20 rounded-lg"
                 >
-                  <div className="flex items-center justify-center gap-2 text-emerald-700">
-                    <Trophy className="w-5 h-5 text-yellow-500" />
+                  <div className="flex items-center justify-center gap-2 text-success">
+                    <Trophy className="w-5 h-5 text-success" />
                     <span className="font-bold">🎉 축하합니다! </span>
-                    <span className="font-extrabold text-emerald-800">
+                    <span className="font-extrabold text-success">
                       {winnerIndexes.map((idx) => names[idx]).join(', ')}{' '}
                     </span>
                     님{winnerIndexes.length > 1 ? '들' : ''}이

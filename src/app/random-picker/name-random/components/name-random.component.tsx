@@ -55,14 +55,14 @@ export function NameRandomComponent() {
 
   if (winner) {
     return (
-      <div className="bg-gray-50 container mx-auto h-fit flex items-center justify-center p-4">
+      <div className="bg-muted container mx-auto h-fit flex items-center justify-center p-4">
         <div className="w-full max-w-md space-y-8 text-center">
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             className="space-y-6"
           >
-            <div ref={winnerRef} className="p-4 bg-gray-50">
+            <div ref={winnerRef} className="p-4 bg-muted">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tight">
                   축하합니다! 🎉
@@ -72,22 +72,22 @@ export function NameRandomComponent() {
 
               {/* 추첨 대상자 목록 추가 */}
               <div className="my-4">
-                <div className="font-semibold mb-2 text-sm text-gray-500">
+                <div className="font-semibold mb-2 text-sm text-muted-foreground">
                   추첨 대상자 ({names.length}명)
                 </div>
-                <div className="rounded-xl bg-white/90 shadow border border-amber-100 px-4 py-3 flex flex-wrap gap-x-3 gap-y-2 items-center text-base">
+                <div className="rounded-xl bg-surface-card/90 shadow border border-border px-4 py-3 flex flex-wrap gap-x-3 gap-y-2 items-center text-base">
                   {names.map((name, idx) => (
                     <span
                       key={idx}
                       className={cn(
                         name === winner
-                          ? 'text-amber-600 font-bold'
-                          : 'text-gray-700'
+                          ? 'text-primary font-bold'
+                          : 'text-foreground'
                       )}
                     >
                       {name}
                       {idx < names.length - 1 && (
-                        <span className="mx-1 text-gray-300">·</span>
+                        <span className="mx-1 text-muted-foreground/50">·</span>
                       )}
                     </span>
                   ))}
@@ -99,14 +99,14 @@ export function NameRandomComponent() {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2 }}
                 className={cn(
-                  'relative p-8 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100',
-                  'border border-amber-200 shadow-lg mt-4'
+                  'relative p-8 rounded-2xl bg-muted',
+                  'border border-border shadow-lg mt-4'
                 )}
               >
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-success text-success-foreground px-4 py-1 rounded-full text-sm font-medium">
                   당첨자
                 </div>
-                <div className="text-4xl font-bold text-amber-600 py-4">
+                <div className="text-4xl font-bold text-success py-4">
                   {winner}
                 </div>
               </motion.div>
@@ -138,7 +138,7 @@ export function NameRandomComponent() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-amber-50 to-yellow-50 container mx-auto h-fit p-4">
+    <div className="bg-muted container mx-auto h-fit p-4">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -150,7 +150,7 @@ export function NameRandomComponent() {
           transition={{ delay: 0.1 }}
           className="space-y-2 text-center"
         >
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-amber-500 to-yellow-500 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold tracking-tight text-primary">
             항목 랜덤 추첨기
           </h1>
           <p className="text-muted-foreground">
@@ -164,7 +164,7 @@ export function NameRandomComponent() {
           transition={{ delay: 0.2 }}
           className="space-y-6"
         >
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+          <div className="rounded-2xl border bg-surface-card p-6 shadow-sm border-border">
             <NameInputComponent
               value={inputValue}
               disabled={inputValue.length < 1}

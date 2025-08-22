@@ -52,11 +52,11 @@ export function TeamAssignmentComponent() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-10 px-6 bg-orange-50"
+      className="flex flex-col items-center justify-center py-10 px-6 bg-muted"
     >
       {/* 타이틀/설명: 카드 바깥, 최상단 */}
       <div className="mb-10 w-full flex flex-col items-center">
-        <h1 className="text-3xl font-bold mb-2 text-orange-600">팀 배정</h1>
+        <h1 className="text-3xl font-bold mb-2 text-primary">팀 배정</h1>
         <p className="text-muted-foreground text-base text-center max-w-xl">
           참가자 명단을 입력하고, 원하는 팀 개수를 설정한 뒤 <b>팀 배정하기</b>{' '}
           버튼을 누르세요.
@@ -65,7 +65,7 @@ export function TeamAssignmentComponent() {
         </p>
       </div>
       <div
-        className="w-full bg-white rounded-2xl shadow-lg p-8 space-y-8"
+        className="w-full bg-surface-card rounded-2xl shadow-lg p-8 space-y-8 border border-border"
         ref={resultRef}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end mb-4">
@@ -107,8 +107,7 @@ export function TeamAssignmentComponent() {
             size="lg"
             className={cn(
               'w-full max-w-md mx-auto py-4 text-base font-bold',
-              'bg-gradient-to-r from-indigo-500 to-purple-600',
-              'hover:from-indigo-600 hover:to-purple-700',
+              'bg-primary text-primary-foreground hover:bg-primary/90',
               'shadow-lg hover:shadow-xl',
               names.length < teamCount && 'opacity-70'
             )}
@@ -122,8 +121,7 @@ export function TeamAssignmentComponent() {
             size="lg"
             className={cn(
               'w-full max-w-md mx-auto py-4 text-base font-bold',
-              'bg-gradient-to-r from-orange-400 to-yellow-400',
-              'hover:from-orange-500 hover:to-yellow-500',
+              'bg-primary/10 text-primary hover:bg-primary/20',
               'shadow-lg hover:shadow-xl',
               names.length < teamCount && 'opacity-70'
             )}

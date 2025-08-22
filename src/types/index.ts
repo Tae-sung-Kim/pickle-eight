@@ -9,3 +9,4 @@ export * from './today-message.type';
 export * from './number-match-game.type';
 export * from './lotto.type';
 export * from './emoji-translation.type';
+export * from './theme.type';

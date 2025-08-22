@@ -12,9 +12,7 @@ export const LadderHeaderComponent = ({
     animate={{ y: 0, opacity: 1 }}
     className="text-center mb-12"
   >
-    <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-      {title}
-    </h1>
+    <h1 className="text-4xl font-bold tracking-tight text-primary">{title}</h1>
     <p className="mt-3 text-lg text-muted-foreground">{description}</p>
   </motion.div>
 );

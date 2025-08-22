@@ -31,7 +31,7 @@ export function NumberMatchNumberCardComponent({
       status === 'selected' ? 'bg-ring text-primary-foreground' : ''
     } ${
           status === NUMBER_MATCH_GAME_CARD_STATUS.MATCHED
-            ? 'bg-green-400 text-white opacity-60'
+            ? 'bg-success text-success-foreground opacity-60'
             : ''
         } ${
           status === NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE

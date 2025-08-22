@@ -14,7 +14,7 @@ function TelegramRunner({ pathname }: { pathname: string }) {
   useEffect(() => {
     try {
       const today = new Date().toISOString().slice(0, 10);
-      const storageKey = `${process.env.NEXT_PUBLIC_SITE_NAME}-telegram-notified-date`;
+      const storageKey = `${process.env.NEXT_PUBLIC_SITE_NAME}_telegram-notified-date`;
       const notifiedDate = localStorage.getItem(storageKey);
       if (notifiedDate !== today) {
         fetch('/api/notify-telegram', {

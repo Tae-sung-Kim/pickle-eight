@@ -54,7 +54,7 @@ export function LottoHistoryComponent() {
       {/* 결과 */}
       <div className="mt-6">
         {isError && (
-          <p className="text-sm text-red-600">
+          <p className="text-sm text-destructive">
             오류: {(error as Error).message}
           </p>
         )}

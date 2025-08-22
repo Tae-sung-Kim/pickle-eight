@@ -120,7 +120,7 @@ export function LottoAnalysisComponent() {
       <div className="mt-8 space-y-8">
         {isLoading && <p className="text-sm">불러오는 중…</p>}
         {isError && (
-          <p className="text-sm text-red-600">
+          <p className="text-sm text-destructive">
             오류: {(error as Error).message}
           </p>
         )}

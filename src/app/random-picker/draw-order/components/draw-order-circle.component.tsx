@@ -55,9 +55,9 @@ export function DrawOrderCircleComponent({
         <Button
           type="button"
           onClick={onRetry}
-          className="absolute m-3 left-0 top-0 flex items-center gap-1 px-4 py-2 rounded-lg shadow bg-white/80 hover:bg-white transition z-10 text-gray-700"
+          className="absolute m-3 left-0 top-0 flex items-center gap-1 px-4 py-2 rounded-lg shadow bg-surface-card/80 hover:bg-surface-card transition z-10 text-foreground"
         >
-          <RotateCw className="w-5 h-5 text-gray-700" />
+          <RotateCw className="w-5 h-5 text-foreground" />
           <span className="font-semibold">다시 하기</span>
         </Button>
       )}
@@ -65,16 +65,16 @@ export function DrawOrderCircleComponent({
       <Button
         type="button"
         onClick={handleShare}
-        className="absolute m-3 right-0 top-0 flex items-center gap-1 px-4 py-2 rounded-lg shadow bg-white/80 hover:bg-white transition z-10 text-gray-700"
+        className="absolute m-3 right-0 top-0 flex items-center gap-1 px-4 py-2 rounded-lg shadow bg-surface-card/80 hover:bg-surface-card transition z-10 text-foreground"
       >
-        <Share2 className="w-5 h-5 text-gray-700" />
+        <Share2 className="w-5 h-5 text-foreground" />
         공유하기
       </Button>
 
       <div
         className={`grid ${
           participants.length > 4 ? 'grid-cols-3' : 'grid-cols-2'
-        } gap-8 justify-items-center items-center w-full min-h-[500px] bg-gradient-to-br from-indigo-50 to-purple-100 rounded-2xl p-8`}
+        } gap-8 justify-items-center items-center w-full min-h-[500px] bg-muted rounded-2xl p-8`}
         ref={resultRef}
       >
         {participants.map((p, idx) => {
@@ -102,24 +102,19 @@ export function DrawOrderCircleComponent({
                 border-4
                 ${
                   revealed
-                    ? 'bg-gradient-to-br from-cyan-400 to-blue-600 text-white border-yellow-300 shadow-[0_0_40px_0_rgba(255,215,0,0.6)] animate-pulse'
-                    : 'bg-gradient-to-br from-blue-200 to-indigo-400 text-blue-900 border-blue-300 hover:shadow-2xl'
+                    ? 'bg-success/70 text-foreground border-success/30 ring-4 ring-success/30 animate-pulse'
+                    : 'bg-muted text-foreground border-border hover:shadow-2xl'
                 }
                 ${revealed ? 'cursor-default' : 'hover:scale-105'}
               `}
               onClick={() => handleClick(p.id, revealed)}
               disabled={revealed || spinning || revealing}
               type="button"
-              style={{
-                boxShadow: revealed
-                  ? '0 0 40px 0 rgba(255,215,0,0.5), 0 8px 32px 0 rgba(0,0,0,0.08)'
-                  : undefined,
-                transition: 'box-shadow 0.3s',
-              }}
+              style={{ transition: 'box-shadow 0.3s' }}
             >
               <span
                 className={`transition-all duration-300 ${
-                  revealed ? 'text-white drop-shadow-lg' : ''
+                  revealed ? 'text-primary-foreground drop-shadow-lg' : ''
                 }`}
               >
                 {p.name}
@@ -127,7 +122,7 @@ export function DrawOrderCircleComponent({
               <AnimatePresence>
                 {revealedResults[p.id] && !spinning && !revealing && (
                   <motion.span
-                    className="mt-2 text-2xl font-extrabold tracking-wide bg-yellow-300 text-yellow-900 rounded-xl px-4 py-2 shadow-lg animate-bounce"
+                    className="mt-2 text-2xl font-extrabold tracking-wide bg-primary text-primary-foreground rounded-2xl px-5 py-2.5 shadow-xl drop-shadow-lg ring-2 ring-white/60 animate-bounce"
                     initial={{ opacity: 0, y: 30, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}

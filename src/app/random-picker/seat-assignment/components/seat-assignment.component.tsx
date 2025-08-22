@@ -79,14 +79,14 @@ export function SeatAssignmentComponent() {
   const assignedSeatCount = Object.keys(assignedSeats).length;
 
   return (
-    <div className="bg-sky-50 container mx-auto p-4">
+    <div className="bg-muted container mx-auto p-4">
       <div className="max-w-4xl mx-auto space-y-8 py-8">
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className="space-y-2 text-center"
         >
-          <h1 className="text-3xl font-bold tracking-tight text-sky-600">
+          <h1 className="text-3xl font-bold tracking-tight text-primary">
             자리 배정기
           </h1>
           <p className="text-muted-foreground">
@@ -101,7 +101,7 @@ export function SeatAssignmentComponent() {
             transition={{ delay: 0.2 }}
             className="space-y-6"
           >
-            <div className="rounded-2xl border bg-white p-6 shadow-sm border-sky-100">
+            <div className="rounded-2xl border bg-surface-card p-6 shadow-sm border-border">
               <div className="space-y-4">
                 <NameInputComponent
                   value={nameInput}
@@ -143,7 +143,7 @@ export function SeatAssignmentComponent() {
               </div>
             </div>
 
-            <div className="rounded-2xl border bg-white p-6 shadow-sm border-sky-100">
+            <div className="rounded-2xl border bg-surface-card p-6 shadow-sm border-border">
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">
@@ -181,7 +181,7 @@ export function SeatAssignmentComponent() {
                   </div>
                   {seatCount &&
                     (Number(seatCount) < 1 || Number(seatCount) > 100) && (
-                      <p className="mt-2 text-sm text-red-500">
+                      <p className="mt-2 text-sm text-destructive">
                         1에서 100 사이의 숫자를 입력해주세요.
                       </p>
                     )}
@@ -217,7 +217,7 @@ export function SeatAssignmentComponent() {
             transition={{ delay: 0.3 }}
             className="space-y-4"
           >
-            <div className="rounded-2xl border bg-white p-6 shadow-sm border-sky-100">
+            <div className="rounded-2xl border bg-surface-card p-6 shadow-sm border-border">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium">자리 배정 결과</h3>
                 {assignedSeatCount > 0 && (
@@ -235,13 +235,13 @@ export function SeatAssignmentComponent() {
                       initial={{ scale: 0.9, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       className={cn(
-                        'rounded-lg border p-4 text-center bg-sky-50 border-sky-100'
+                        'rounded-lg border p-4 text-center bg-muted border-border'
                       )}
                     >
-                      <div className="text-sm font-medium text-sky-600">
+                      <div className="text-sm font-medium text-foreground">
                         {name}
                       </div>
-                      <div className="mt-1 text-xs text-sky-500">
+                      <div className="mt-1 text-xs text-muted-foreground">
                         {seat}번 자리
                       </div>
                     </motion.div>

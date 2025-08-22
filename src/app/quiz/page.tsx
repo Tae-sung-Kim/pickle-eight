@@ -54,9 +54,9 @@ export default function QuizHubPage() {
   ]);
 
   const theme = {
-    ring: 'ring-violet-200',
-    hoverRing: 'hover:ring-violet-300',
-    headerBadge: 'bg-violet-50 text-violet-700 ring-violet-100',
+    ring: 'ring-primary/20',
+    hoverRing: 'hover:ring-primary/30',
+    headerBadge: 'bg-primary/10 text-primary ring-primary/20',
   } as const;
 
   return (
@@ -105,7 +105,7 @@ export default function QuizHubPage() {
         </span>
       </div>
       <h1 className="mt-3 text-2xl font-bold tracking-tight">퀴즈/게임 허브</h1>
-      <p className="mt-2 text-sm text-gray-600">
+      <p className="mt-2 text-sm text-muted-foreground">
         원하는 퀴즈/게임을 선택하세요.
       </p>
       <ul
@@ -117,10 +117,12 @@ export default function QuizHubPage() {
           <li key={it.href} role="listitem">
             <Link
               href={it.href}
-              className={`block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-transparent ${theme.ring} ${theme.hoverRing}`}
+              className={`block rounded-2xl border border-border surface-card p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-transparent ${theme.ring} ${theme.hoverRing}`}
             >
-              <div className="font-semibold text-slate-800">{it.label}</div>
-              <div className="mt-1 text-sm text-gray-600">{it.desc}</div>
+              <div className="font-semibold text-foreground">{it.label}</div>
+              <div className="mt-1 text-sm text-muted-foreground">
+                {it.desc}
+              </div>
             </Link>
           </li>
         ))}

@@ -131,3 +131,52 @@ pnpm install
 ```bash
 pnpm run dev
 ```
+
+## Palette -> Token Migration Guide (팔레트 → 의미 토큰 가이드)
+
+The UI now prefers semantic tokens over hardcoded Tailwind palette colors to ensure theme consistency (light/dark) and maintainability.
+
+- **Text**
+  - text-gray-600 → text-muted-foreground
+  - text-slate-800 → text-foreground
+  - text-blue-600 / text-pink-600 → text-primary
+  - text-red-600 → text-destructive
+- **Background / Surface**
+  - bg-white → bg-surface-card (cards, elevated surfaces)
+  - bg-gray-50/100 → bg-muted (muted blocks, panels)
+  - Gradients (from-_, to-_) → prefer solid tokens (bg-muted, bg-surface-card, bg-primary) unless brand-critical
+- **Border / Ring**
+  - border-gray-200 / border-slate-200 → border-border
+  - ring-emerald-200 → ring-primary/30
+  - hover:ring-emerald-300 → hover:ring-primary/40
+- **Buttons**
+  - Solid brand: bg-primary text-primary-foreground hover:bg-primary/90
+  - Outline brand: border-primary text-primary hover:bg-primary/10
+  - Destructive: text-destructive (or use variant if provided by ui library)
+- **Badges / Chips**
+  - Default chip: bg-muted text-foreground ring-1 ring-border
+  - Highlight chip (bonus, selected): bg-primary/20 text-primary ring-1 ring-primary/30
+- **Alerts / Errors**
+  - Error text: text-destructive
+  - Info text: text-muted-foreground
+
+Examples:
+
+```tsx
+// Before
+<p className="text-gray-600">Description</p>
+<div className="border border-gray-200 bg-white" />
+<span className="bg-yellow-200/60 text-yellow-900 ring-1 ring-yellow-300" />
+
+// After
+<p className="text-muted-foreground">Description</p>
+<div className="border border-border bg-surface-card" />
+<span className="bg-muted text-foreground ring-1 ring-border" />
+```
+
+Conventions:
+
+- Prefer semantic tokens first; avoid direct palette classes.
+- Replace gradients with solid semantic backgrounds for consistency.
+- Keep logic/structure unchanged; patches should be minimal and stable.
+- Validate in both light/dark themes.

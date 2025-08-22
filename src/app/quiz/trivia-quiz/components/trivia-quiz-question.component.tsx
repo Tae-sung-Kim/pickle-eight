@@ -38,14 +38,14 @@ export function TriviaQuizQuestionCardComponent({
 
   return (
     <motion.div
-      className="w-full max-w-xl mx-auto bg-white/90 rounded-xl shadow-xl p-8 flex flex-col gap-6 border"
+      className="w-full max-w-xl mx-auto surface-card rounded-xl shadow-xl p-8 flex flex-col gap-6 border"
       initial={{ opacity: 0, y: 32 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 32 }}
       transition={{ duration: 0.6, type: 'spring' }}
     >
       <motion.div
-        className="text-xl font-bold text-gray-800"
+        className="text-xl font-bold text-foreground"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.1 }}
@@ -56,19 +56,19 @@ export function TriviaQuizQuestionCardComponent({
         {question.options.map((opt) => {
           const isSelected = (isAnswered ? answeredId : selected) === opt.id;
           let optionClass =
-            'border rounded-xl px-4 py-3 cursor-pointer font-medium bg-white transition-all flex items-center shadow-sm';
+            'border rounded-xl px-4 py-3 cursor-pointer font-medium surface-card transition-all flex items-center shadow-sm';
           if (isAnswered) {
             if (opt.id === question.answerId)
               optionClass +=
-                ' border-green-500 bg-green-50 text-green-700 ring-2 ring-green-300';
+                ' border-success bg-success/10 text-success ring-2 ring-success/30';
             else if (isSelected)
               optionClass +=
-                ' border-red-500 bg-red-50 text-red-700 ring-2 ring-red-200';
-            else optionClass += ' border-gray-200 text-gray-400';
+                ' border-destructive bg-destructive/10 text-destructive ring-2 ring-destructive/20';
+            else optionClass += ' border-border text-muted-foreground';
           } else {
             optionClass += isSelected
-              ? ' border-violet-500 bg-violet-50 text-violet-700 ring-2 ring-violet-200'
-              : ' border-gray-200 hover:border-violet-400 hover:bg-violet-50';
+              ? ' border-primary bg-primary/10 text-primary ring-2 ring-primary/20'
+              : ' border-border hover:border-primary hover:bg-primary/5';
           }
           return (
             <motion.div
@@ -115,7 +115,7 @@ export function TriviaQuizQuestionCardComponent({
             <motion.button
               onClick={handleSubmit}
               disabled={!selected}
-              className="w-full mt-4 py-3 text-lg font-bold bg-gradient-to-r from-violet-400 to-pink-400 text-white shadow-lg hover:scale-105 active:scale-95 transition-transform rounded"
+              className="w-full mt-4 py-3 text-lg font-bold bg-primary text-primary-foreground shadow-lg hover:scale-105 active:scale-95 transition-transform rounded"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -127,7 +127,7 @@ export function TriviaQuizQuestionCardComponent({
       <AnimatePresence>
         {isAnswered && (
           <motion.div
-            className="mt-4 p-4 rounded-xl bg-gray-50 border flex flex-col gap-4 items-center"
+            className="mt-4 p-4 rounded-xl bg-muted border flex flex-col gap-4 items-center"
             initial={{ opacity: 0, y: 16 }}
             animate={{
               opacity: 1,
@@ -149,8 +149,8 @@ export function TriviaQuizQuestionCardComponent({
             <div
               className={
                 isCorrect
-                  ? 'text-green-600 font-semibold text-lg flex items-center gap-2'
-                  : 'text-red-600 font-semibold text-lg flex items-center gap-2'
+                  ? 'text-success font-semibold text-lg flex items-center gap-2'
+                  : 'text-destructive font-semibold text-lg flex items-center gap-2'
               }
             >
               {isCorrect ? (
@@ -166,7 +166,7 @@ export function TriviaQuizQuestionCardComponent({
             <div className="mt-2 flex flex-col gap-1">
               <span>
                 <span className="font-semibold">내가 고른 답:</span>{' '}
-                <span className="text-violet-600 flex items-center gap-1">
+                <span className="text-primary flex items-center gap-1">
                   {question.options.find((opt) => opt.id === answeredId)
                     ?.text ?? '-'}
                   {!isCorrect && answeredId && <span className="ml-1">❌</span>}
@@ -175,7 +175,7 @@ export function TriviaQuizQuestionCardComponent({
               {!isCorrect && (
                 <span>
                   <span className="font-semibold">정답:</span>{' '}
-                  <span className="text-green-600 flex items-center gap-1">
+                  <span className="text-success flex items-center gap-1">
                     {question.options.find(
                       (opt) => opt.id === question.answerId
                     )?.text ?? '-'}
@@ -184,10 +184,12 @@ export function TriviaQuizQuestionCardComponent({
                 </span>
               )}
             </div>
-            <div className="mt-2 text-gray-700">{question.explanation}</div>
+            <div className="mt-2 text-muted-foreground">
+              {question.explanation}
+            </div>
             <motion.button
               onClick={onNext}
-              className="mt-4 px-6 py-2 text-base font-bold bg-gradient-to-r from-violet-400 to-pink-400 text-white shadow-md hover:scale-105 active:scale-95 transition-transform rounded"
+              className="mt-4 px-6 py-2 text-base font-bold bg-primary text-primary-foreground shadow-md hover:scale-105 active:scale-95 transition-transform rounded"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.98 }}
             >

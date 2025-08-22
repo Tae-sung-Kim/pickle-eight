@@ -32,7 +32,7 @@ export function LottoNumberComponent() {
   }, [orderCount]);
 
   return (
-    <div className="bg-gradient-to-b from-pink-50/30 to-rose-50/30 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -44,7 +44,7 @@ export function LottoNumberComponent() {
           transition={{ delay: 0.1 }}
           className="space-y-2 text-center"
         >
-          <h1 className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-4xl font-bold tracking-tight text-transparent">
+          <h1 className="text-4xl font-bold tracking-tight text-primary">
             로또 번호 생성기
           </h1>
           <p className="text-lg text-muted-foreground mb-3">
@@ -58,9 +58,9 @@ export function LottoNumberComponent() {
           transition={{ delay: 0.2 }}
           className="space-y-6"
         >
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+          <div className="rounded-2xl border bg-surface-card p-6 shadow-sm border-border">
             <div className="space-y-6">
-              <div className="rounded-xl bg-gradient-to-r from-pink-50 to-rose-50 p-6">
+              <div className="rounded-xl bg-muted p-6">
                 <LottoGeneratorControlsComponent
                   orderCount={orderCount}
                   isGenerating={isGenerating}

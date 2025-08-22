@@ -54,9 +54,9 @@ const crumbs = jsonLdBreadcrumb([
 ]);
 
 const theme = {
-  ring: 'ring-indigo-200',
-  hoverRing: 'hover:ring-indigo-300',
-  headerBadge: 'bg-indigo-50 text-indigo-700 ring-indigo-100',
+  ring: 'ring-primary/20',
+  hoverRing: 'hover:ring-primary/30',
+  headerBadge: 'bg-primary/10 text-primary ring-primary/20',
 } as const;
 
 export default function RandomPickerHubPage() {
@@ -106,7 +106,7 @@ export default function RandomPickerHubPage() {
         </span>
       </div>
       <h1 className="mt-3 text-2xl font-bold tracking-tight">랜덤 도구 허브</h1>
-      <p className="mt-2 text-sm text-gray-600">
+      <p className="mt-2 text-sm text-muted-foreground">
         원하는 랜덤 도구를 선택하세요.
       </p>
       <ul
@@ -118,10 +118,12 @@ export default function RandomPickerHubPage() {
           <li key={it.href} role="listitem">
             <Link
               href={it.href}
-              className={`block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-transparent ${theme.ring} ${theme.hoverRing}`}
+              className={`block rounded-2xl border border-border bg-surface-card p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-transparent ${theme.ring} ${theme.hoverRing}`}
             >
-              <div className="font-semibold text-slate-800">{it.label}</div>
-              <div className="mt-1 text-sm text-gray-600">{it.desc}</div>
+              <div className="font-semibold text-foreground">{it.label}</div>
+              <div className="mt-1 text-sm text-muted-foreground">
+                {it.desc}
+              </div>
             </Link>
           </li>
         ))}

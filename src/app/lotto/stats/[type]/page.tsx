@@ -50,7 +50,7 @@ export default async function LottoStatsTypePage({
       {valid ? (
         <>
           <h1 className="text-2xl font-bold tracking-tight">통계: {type}</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-muted-foreground">
             그래프/표는 추후 연결됩니다.
           </p>
         </>
@@ -59,7 +59,7 @@ export default async function LottoStatsTypePage({
           <h1 className="text-2xl font-bold tracking-tight">
             잘못된 통계 유형
           </h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-muted-foreground">
             허용된 유형: frequency, range, odd-even
           </p>
         </>

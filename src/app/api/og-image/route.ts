@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { THEME } from '@/constants';
 
 function escapeXml(input: string): string {
   return input
@@ -61,6 +62,7 @@ export async function GET(request: Request) {
     .join('');
 
   const showTag = Boolean(tag);
+  const brandColor = THEME.light.primary;
 
   const svg = `
     <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
@@ -75,8 +77,7 @@ export async function GET(request: Request) {
         <style>
           .title { font-family: 'Inter', 'Noto Sans KR', system-ui, -apple-system, sans-serif; font-size: 72px; font-weight: 800; fill: #0F172A; letter-spacing: -0.02em; }
           .subtitle { font-family: 'Inter', 'Noto Sans KR', system-ui, -apple-system, sans-serif; font-size: 36px; font-weight: 500; fill: #334155; }
-          .brand { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 28px; font-weight: 700; fill: #2563EB; letter-spacing: 0.02em; }
-          .pill { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 28px; font-weight: 700; fill: #1E293B; }
+          .brand { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 0.02em; }
         </style>
       </defs>
       <rect width="1200" height="630" fill="url(#bgGradient)" />
@@ -111,7 +112,7 @@ export async function GET(request: Request) {
 
       <!-- brand footer -->
       <g transform="translate(120, 560)">
-        <text class="brand">Pickle Eight</text>
+        <text class="brand" fill="${brandColor}">Pickle Eight</text>
       </g>
     </svg>
   `;

@@ -29,13 +29,11 @@ export const DiceComponent = ({
           key={idx}
           className={cn(
             'relative w-14 h-14 sm:w-16 sm:h-16 rounded-lg',
-            'bg-white shadow-[0_4px_0_rgba(0,0,0,0.1)]',
-            'border-2 border-gray-100',
+            'bg-surface-card shadow-[0_4px_0_rgba(0,0,0,0.1)]',
+            'border-2 border-border',
             'flex items-center justify-center',
-            winner && 'ring-2 ring-yellow-400 ring-offset-2',
-            isDouble &&
-              doubleEffect &&
-              'bg-gradient-to-br from-blue-50 to-indigo-50'
+            winner && 'ring-2 ring-success ring-offset-2',
+            isDouble && doubleEffect && 'bg-info/10'
           )}
           animate={{
             rotate: rolling ? [0, 360] : 0,
@@ -75,8 +73,8 @@ export const DiceComponent = ({
                     dot.position === 'bottom-left' && 'col-start-1 row-start-3',
                     dot.position === 'bottom-right' &&
                       'col-start-3 row-start-3',
-                    winner ? 'text-yellow-500' : 'text-gray-800',
-                    isDouble && doubleEffect && 'text-blue-500'
+                    winner ? 'text-success' : 'text-foreground',
+                    isDouble && doubleEffect && 'text-info'
                   )}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -93,7 +91,7 @@ export const DiceComponent = ({
 
           {isDouble && doubleEffect && (
             <motion.div
-              className="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10 whitespace-nowrap shadow-md"
+              className="absolute -top-2 -right-2 bg-info text-info-foreground text-[10px] font-bold px-2 py-0.5 rounded-full z-10 whitespace-nowrap shadow-md"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.5, type: 'spring' }}

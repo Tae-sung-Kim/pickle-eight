@@ -7,10 +7,10 @@ export function TeamResultListComponent({ teams }: TeamResultListPropsType) {
       {teams.map((team, idx) => (
         <div
           key={idx}
-          className="bg-gradient-to-br from-indigo-100 to-purple-100 border border-indigo-200 rounded-xl shadow-md p-5 flex flex-col items-start"
+          className="bg-surface-card border border-border rounded-xl shadow-md p-5 flex flex-col items-start"
         >
           <div className="flex items-center mb-2">
-            <span className="inline-block bg-indigo-500 text-white rounded-full px-3 py-1 text-xs font-bold mr-2">
+            <span className="inline-block bg-primary text-primary-foreground rounded-full px-3 py-1 text-xs font-bold mr-2">
               TEAM {idx + 1}
             </span>
             <span className="text-xs text-muted-foreground">
@@ -21,7 +21,7 @@ export function TeamResultListComponent({ teams }: TeamResultListPropsType) {
             {team.map((member, i) => (
               <li
                 key={i}
-                className="text-base font-medium text-foreground bg-white/60 rounded px-2 py-1"
+                className="text-base font-medium text-foreground bg-muted rounded px-2 py-1"
               >
                 {member}
               </li>

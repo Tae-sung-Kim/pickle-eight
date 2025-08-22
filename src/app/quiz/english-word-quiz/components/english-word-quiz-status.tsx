@@ -14,8 +14,10 @@ export function EnglishWordQuizStatusComponent({
   if (status === 'loading') {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
-        <p className="ml-4 text-lg text-gray-600">퀴즈를 만들고 있어요...</p>
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+        <p className="ml-4 text-lg text-muted-foreground">
+          퀴즈를 만들고 있어요...
+        </p>
       </div>
     );
   }

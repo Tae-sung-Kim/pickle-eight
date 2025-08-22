@@ -27,7 +27,7 @@ export function LottoGeneratorControlsComponent({
               AI가 추천하는 행운의 번호를 생성합니다
             </p>
           </div>
-          <div className="flex h-12 w-16 items-center justify-center rounded-full bg-pink-100 text-lg font-bold text-pink-600">
+          <div className="flex h-12 w-16 items-center justify-center rounded-full bg-muted text-lg font-bold text-primary">
             {orderCount}
           </div>
         </div>
@@ -37,7 +37,7 @@ export function LottoGeneratorControlsComponent({
             <span className="text-sm font-medium text-muted-foreground">
               생성할 게임 수
             </span>
-            <span className="text-sm font-medium text-pink-600">최대 10개</span>
+            <span className="text-sm font-medium text-primary">최대 10개</span>
           </div>
           <Slider
             value={[orderCount]}
@@ -45,7 +45,7 @@ export function LottoGeneratorControlsComponent({
             max={10}
             step={1}
             onValueChange={(value) => onOrderCountChange(value[0])}
-            className="[&_[data-slot=slider-track]]:bg-gray-300 [&_[data-slot=slider-track]]:cursor-pointer [&_[data-slot=slider-range]]:bg-pink-600 [&_[data-slot=slider-thumb]]:cursor-pointer"
+            className="[&_[data-slot=slider-track]]:bg-muted [&_[data-slot=slider-track]]:cursor-pointer [&_[data-slot=slider-range]]:bg-primary [&_[data-slot=slider-thumb]]:cursor-pointer"
           />
         </div>
       </div>
@@ -56,8 +56,7 @@ export function LottoGeneratorControlsComponent({
         size="lg"
         className={cn(
           'w-full py-6 text-base font-bold',
-          'bg-gradient-to-r from-pink-500 to-rose-500',
-          'hover:from-pink-600 hover:to-rose-600',
+          'bg-primary text-primary-foreground hover:bg-primary/90',
           'shadow-lg hover:shadow-xl',
           'transition-all duration-300',
           'disabled:opacity-70'

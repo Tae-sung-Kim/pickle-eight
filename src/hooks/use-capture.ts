@@ -28,9 +28,13 @@ export function useCapture() {
       if (!elementRef.current) return;
 
       try {
+        // Use computed background from document (respects light/dark theme)
+        const computedBg = getComputedStyle(document.body).backgroundColor;
+        const backgroundColor = computedBg || 'white';
+
         const dataUrl = await toPng(elementRef.current, {
           quality: 1,
-          backgroundColor: '#f9fafb',
+          backgroundColor,
           filter: (node) => {
             if (!(node instanceof HTMLElement)) return true;
             if (node.dataset.capture === 'ignore') return false;

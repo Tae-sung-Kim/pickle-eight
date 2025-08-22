@@ -70,10 +70,10 @@ export function LottoCheckResultCardComponent({
                       const base =
                         'inline-flex h-8 w-8 items-center justify-center rounded-full border text-sm';
                       const cls = isWin
-                        ? 'bg-green-600 text-white border-green-700'
+                        ? 'bg-success text-success-foreground border-success/30'
                         : isBonus
-                        ? 'bg-orange-500 text-white border-orange-600'
-                        : 'bg-white text-foreground border-muted';
+                        ? 'bg-warning text-warning-foreground border-warning/30'
+                        : 'bg-surface-card text-foreground border-border';
                       return (
                         <span key={idx} className={`${base} ${cls}`}>
                           {n}

@@ -25,14 +25,16 @@ export function DrawOrderInputListComponent({
 
   return (
     <motion.section
-      className="bg-white rounded-lg shadow-sm p-4 mb-6 border border-gray-100"
+      className="bg-surface-card rounded-lg shadow-sm p-4 mb-6 border border-border"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+      <label className="block text-sm font-medium text-foreground mb-2">
         {label}
-        <span className="ml-1 text-xs text-gray-500">({list.length}개)</span>
+        <span className="ml-1 text-xs text-muted-foreground">
+          ({list.length}개)
+        </span>
       </label>
 
       <div
@@ -48,22 +50,22 @@ export function DrawOrderInputListComponent({
           onBlur={() => setIsFocused(false)}
           isIcon={true}
           placeholder={placeholder}
-          className="flex-1 bg-gray-50 border-gray-200 focus:ring-2 focus:ring-primary/50"
+          className="flex-1 bg-muted border-border focus:ring-2 focus:ring-primary/50"
           buttonText="추가"
         />
       </div>
 
-      <div className="max-h-48 overflow-y-auto rounded-md border border-gray-100">
+      <div className="max-h-48 overflow-y-auto rounded-md border border-border">
         <NameListComponent
           list={list}
           onRemove={onRemove}
-          className="divide-y divide-gray-100"
-          itemClassName="px-3 py-2 hover:bg-gray-50 transition-colors"
+          className="divide-y divide-border"
+          itemClassName="px-3 py-2 hover:bg-muted transition-colors"
         />
       </div>
 
       {list.length === 0 && (
-        <p className="text-sm text-gray-400 text-center py-4">
+        <p className="text-sm text-muted-foreground text-center py-4">
           {label === '참가자'
             ? '참가자를 추가해주세요'
             : '추첨할 항목을 추가해주세요'}

@@ -49,8 +49,9 @@ export function LadderComponent({
           y1={paddingTop}
           x2={paddingX + i * colGap}
           y2={paddingTop + height}
-          stroke="#333"
+          stroke="currentColor"
           strokeWidth={2}
+          className="text-muted-foreground"
         />
       ))}
 
@@ -62,9 +63,10 @@ export function LadderComponent({
           y1={paddingTop + h.row * rowGap}
           x2={paddingX + (h.col + 1) * colGap}
           y2={paddingTop + h.row * rowGap}
-          stroke="#e11d48"
+          stroke="currentColor"
           strokeWidth={4}
           strokeLinecap="round"
+          className="text-primary"
         />
       ))}
 
@@ -77,7 +79,7 @@ export function LadderComponent({
           textAnchor="middle"
           fontSize={22}
           fontWeight="bold"
-          className="font-medium fill-blue-600"
+          className="font-medium fill-primary"
         >
           {prize}
         </text>

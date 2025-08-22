@@ -36,8 +36,8 @@ export function FourIdiomQuizFormComponent({
         <Input
           {...register('answer')}
           className={cn(
-            'border border-gray-300 px-4 py-2 rounded-lg w-36 text-lg font-semibold focus:ring-2 focus:ring-violet-300 transition',
-            showAnswer || isPending ? 'bg-gray-100' : 'bg-white'
+            'border border-border px-4 py-2 rounded-lg w-36 text-lg font-semibold focus:ring-2 focus:ring-primary/30 transition',
+            showAnswer || isPending ? 'bg-muted' : 'surface-card'
           )}
           placeholder="정답(4글자)"
           disabled={showAnswer || isPending}
@@ -46,14 +46,14 @@ export function FourIdiomQuizFormComponent({
         <Button
           type="submit"
           size="lg"
-          className="bg-gradient-to-r from-pink-500 to-violet-500 text-white font-bold shadow"
+          className="bg-primary text-primary-foreground font-bold shadow"
           disabled={showAnswer || isPending}
         >
           정답 확인
         </Button>
       </form>
       {formState.errors.answer && (
-        <div className="text-red-500 text-sm mb-3 font-semibold">
+        <div className="text-destructive text-sm mb-3 font-semibold">
           {formState.errors.answer.message}
         </div>
       )}
