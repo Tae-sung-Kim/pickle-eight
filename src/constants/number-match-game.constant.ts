@@ -9,7 +9,7 @@ export const NUMBER_MATCH_GAME_MAP_SIZE_OPTIONS: { [key: number]: number[] } = {
   3: [6, 9],
 };
 
-export enum NUMBER_MATCH_GAME_CARD_STATUS {
+export enum NUMBER_MATCH_GAME_CARD_STATUS_ENUM {
   HIDDEN = 'hidden',
   VISIBLE = 'visible',
   MATCHED = 'matched',

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { NumberMatchGameCardType } from '@/types';
-import { NUMBER_MATCH_GAME_CARD_STATUS } from '@/constants';
+import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from '@/constants';
 
 export function NumberMatchNumberCardComponent({
   card,
@@ -12,9 +12,9 @@ export function NumberMatchNumberCardComponent({
 }: NumberMatchGameCardType) {
   const handleClick = () => {
     if (
-      status !== NUMBER_MATCH_GAME_CARD_STATUS.MATCHED &&
-      status !== NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE &&
-      status !== NUMBER_MATCH_GAME_CARD_STATUS.SELECTED
+      status !== NUMBER_MATCH_GAME_CARD_STATUS_ENUM.MATCHED &&
+      status !== NUMBER_MATCH_GAME_CARD_STATUS_ENUM.VISIBLE &&
+      status !== NUMBER_MATCH_GAME_CARD_STATUS_ENUM.SELECTED
     ) {
       onClick(card.id);
     }
@@ -30,15 +30,15 @@ export function NumberMatchNumberCardComponent({
     relative h-full w-full rounded-lg border-2 transform-style-3d ${
       status === 'selected' ? 'bg-ring text-primary-foreground' : ''
     } ${
-          status === NUMBER_MATCH_GAME_CARD_STATUS.MATCHED
+          status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.MATCHED
             ? 'bg-success text-success-foreground opacity-60'
             : ''
         } ${
-          status === NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE
+          status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.VISIBLE
             ? 'bg-primary text-primary-foreground'
             : ''
         } ${
-          status === NUMBER_MATCH_GAME_CARD_STATUS.HIDDEN
+          status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.HIDDEN
             ? 'bg-secondary text-secondary-foreground'
             : ''
         }`}

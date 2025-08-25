@@ -2,15 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { LottoUtils, LottoGenerator } from '@/utils';
-import { LottoWarningAlertComponent } from '@/components';
-
-function Ball({ n }: { n: number }) {
-  return (
-    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-secondary-foreground text-sm">
-      {n}
-    </span>
-  );
-}
+import { LottoWarningAlertComponent, LottoBallComponent } from '@/components';
 
 function generateRandomDraw() {
   const pool: number[] = [];
@@ -199,8 +191,8 @@ export function LottoSimulatorComponent() {
                   티켓 #{idx + 1}
                 </div>
                 <div className="mt-2 flex gap-1 flex-wrap">
-                  {t.numbers.map((n) => (
-                    <Ball key={n} n={n} />
+                  {t.numbers.map((n, i) => (
+                    <LottoBallComponent key={n} number={n} index={i} />
                   ))}
                 </div>
               </div>

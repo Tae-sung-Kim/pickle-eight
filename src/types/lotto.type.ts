@@ -1,3 +1,4 @@
+import { LOTTO_ANALYSIS_VARIANT_ENUM } from '@/constants';
 import { ReactNode } from 'react';
 
 export type LottoGeneratorControlsPropsType = {
@@ -140,3 +141,6 @@ export type LottoCheckTicketRowType = {
   readonly canRemove: boolean;
   readonly onRemove: () => void;
 };
+
+export type LottoAnalysisVariantValueType =
+  (typeof LOTTO_ANALYSIS_VARIANT_ENUM)[keyof typeof LOTTO_ANALYSIS_VARIANT_ENUM];

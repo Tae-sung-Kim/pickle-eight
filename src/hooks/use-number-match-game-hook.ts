@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { NumberMatchCardType, NumberMatchCardStatusType } from '@/types';
-import { NUMBER_MATCH_GAME_CARD_STATUS } from '@/constants';
+import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from '@/constants';
 
 const shuffleArray = <T>(array: T[]): T[] => {
   return array.sort(() => Math.random() - 0.5);
@@ -32,7 +32,7 @@ export function useNumberMatchGame(
         newCards.push({
           id: newCards.length,
           value: i + 1,
-          status: NUMBER_MATCH_GAME_CARD_STATUS.HIDDEN,
+          status: NUMBER_MATCH_GAME_CARD_STATUS_ENUM.HIDDEN,
         });
       }
     }
@@ -62,7 +62,9 @@ export function useNumberMatchGame(
     if (
       isGameActive &&
       cards.length > 0 &&
-      cards.every((c) => c.status === NUMBER_MATCH_GAME_CARD_STATUS.MATCHED)
+      cards.every(
+        (c) => c.status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.MATCHED
+      )
     ) {
       setIsGameOver(true);
     }
@@ -82,7 +84,7 @@ export function useNumberMatchGame(
       setCards((prev) =>
         prev.map((c) =>
           selectedCards.includes(c.id)
-            ? { ...c, status: NUMBER_MATCH_GAME_CARD_STATUS.MATCHED }
+            ? { ...c, status: NUMBER_MATCH_GAME_CARD_STATUS_ENUM.MATCHED }
             : c
         )
       );
@@ -91,7 +93,7 @@ export function useNumberMatchGame(
         setCards((prev) =>
           prev.map((c) =>
             selectedCards.includes(c.id)
-              ? { ...c, status: NUMBER_MATCH_GAME_CARD_STATUS.HIDDEN }
+              ? { ...c, status: NUMBER_MATCH_GAME_CARD_STATUS_ENUM.HIDDEN }
               : c
           )
         );
@@ -109,16 +111,16 @@ export function useNumberMatchGame(
         const card = prev.find((c) => c.id === cardId);
         if (
           !card ||
-          card.status === NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE ||
-          card.status === NUMBER_MATCH_GAME_CARD_STATUS.MATCHED ||
-          card.status === NUMBER_MATCH_GAME_CARD_STATUS.SELECTED
+          card.status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.VISIBLE ||
+          card.status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.MATCHED ||
+          card.status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.SELECTED
         ) {
           return prev;
         }
 
         // 현재 선택된 카드 수 확인
         const selectedCount = prev.filter(
-          (c) => c.status === NUMBER_MATCH_GAME_CARD_STATUS.SELECTED
+          (c) => c.status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.SELECTED
         ).length;
 
         // 이미 matchCount만큼 선택된 경우 더 이상 선택 불가
@@ -129,7 +131,7 @@ export function useNumberMatchGame(
         // 카드 상태 업데이트
         return prev.map((c) =>
           c.id === cardId
-            ? { ...c, status: NUMBER_MATCH_GAME_CARD_STATUS.SELECTED }
+            ? { ...c, status: NUMBER_MATCH_GAME_CARD_STATUS_ENUM.SELECTED }
             : c
         );
       });
@@ -140,7 +142,9 @@ export function useNumberMatchGame(
   // 카드 클릭 시 selectedCards 상태 업데이트
   useEffect(() => {
     const selected = cards
-      .filter((card) => card.status === NUMBER_MATCH_GAME_CARD_STATUS.SELECTED)
+      .filter(
+        (card) => card.status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.SELECTED
+      )
       .map((card) => card.id);
     setSelectedCards(selected);
   }, [cards]);
@@ -148,13 +152,13 @@ export function useNumberMatchGame(
   const getCardStatus = (
     card: NumberMatchCardType
   ): NumberMatchCardStatusType => {
-    if (isRevealing) return NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE;
+    if (isRevealing) return NUMBER_MATCH_GAME_CARD_STATUS_ENUM.VISIBLE;
     if (
-      card.status === NUMBER_MATCH_GAME_CARD_STATUS.VISIBLE &&
+      card.status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.VISIBLE &&
       selectedCards[0] === card.id &&
       selectedCards.length < matchCount
     ) {
-      return NUMBER_MATCH_GAME_CARD_STATUS.SELECTED;
+      return NUMBER_MATCH_GAME_CARD_STATUS_ENUM.SELECTED;
     }
     return card.status;
   };

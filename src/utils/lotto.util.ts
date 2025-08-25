@@ -57,14 +57,6 @@ function frequencyByNumber(
   return freq;
 }
 
-function bucketLabel(n: number): string {
-  if (n <= 10) return '01-10';
-  if (n <= 20) return '11-20';
-  if (n <= 30) return '21-30';
-  if (n <= 40) return '31-40';
-  return '41-45';
-}
-
 function computeStats(draws: readonly LottoDrawType[]): LottoStatsType {
   const frequency = frequencyByNumber(draws);
 
@@ -146,7 +138,7 @@ const BUCKETS: ReadonlyArray<[number, number, string]> = [
   [41, 45, '41-45'],
 ] as const;
 
-function bucketOf(n: number): string {
+export function bucketLabel(n: number): string {
   for (const [lo, hi, label] of BUCKETS) {
     if (n >= lo && n <= hi) return label;
   }
@@ -191,7 +183,7 @@ function passesFilters(
     if (odd !== filters.desiredOddCount) return false;
   }
   if (isComplete && filters.minBucketSpread !== undefined) {
-    const s = new Set(nums.map((n) => bucketOf(n)));
+    const s = new Set(nums.map((n) => bucketLabel(n)));
     if (s.size < filters.minBucketSpread) return false;
   }
   if (filters.excludeRecentNumbers && filters.excludeRecentNumbers.length > 0) {

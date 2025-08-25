@@ -1,7 +1,7 @@
-import { NUMBER_MATCH_GAME_CARD_STATUS } from '@/constants';
+import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from '@/constants';
 
 export type NumberMatchCardStatusType =
-  (typeof NUMBER_MATCH_GAME_CARD_STATUS)[keyof typeof NUMBER_MATCH_GAME_CARD_STATUS];
+  (typeof NUMBER_MATCH_GAME_CARD_STATUS_ENUM)[keyof typeof NUMBER_MATCH_GAME_CARD_STATUS_ENUM];
 
 export type NumberMatchCardType = {
   id: number;

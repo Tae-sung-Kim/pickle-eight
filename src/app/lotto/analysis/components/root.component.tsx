@@ -1,69 +1,69 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import type { LottoDrawType } from '@/types';
+import { useEffect, useMemo, useState } from 'react';
 import { LottoUtils } from '@/utils';
 import { LottoWarningAlertComponent } from '@/components';
-
-function fetchDraws(from: number, to: number): Promise<LottoDrawType[]> {
-  const url = `/api/lotto/draws?from=${encodeURIComponent(
-    String(from)
-  )}&to=${encodeURIComponent(String(to))}`;
-  return fetch(url).then(async (res) => {
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err?.error ?? 'Failed to load draws');
-    }
-    const json = (await res.json()) as { data: LottoDrawType[] };
-    return json.data;
-  });
-}
-
-function Bar({
-  label,
-  value,
-  max,
-}: {
-  label: string;
-  value: number;
-  max: number;
-}) {
-  const width = max > 0 ? Math.round((value / max) * 100) : 0;
-  return (
-    <div className="flex items-center gap-3">
-      <div className="w-20 text-xs text-muted-foreground">{label}</div>
-      <div className="h-3 flex-1 rounded bg-muted">
-        <div
-          className="h-3 rounded bg-primary"
-          style={{ width: `${width}%` }}
-        />
-      </div>
-      <div className="w-8 text-right text-xs">{value}</div>
-    </div>
-  );
-}
+import LottoAnalysisControlsComponent from './controls.component';
+import LottoAnalysisFrequencySectionComponent from './frequency-section.component';
+import LottoAnalysisBucketSectionComponent from './bucket-section.component';
+import LottoAnalysisOddEvenSectionComponent from './odd-even-section.component';
+import LottoAnalysisSumSectionComponent from './sum-section.component';
+import LottoAnalysisConsecutiveSectionComponent from './consecutive-section.component';
+import { useLottoDrawsQuery, useLatestLottoDrawQuery } from '@/queries';
 
 export function LottoAnalysisComponent() {
   const [from, setFrom] = useState<number>(1);
   const [to, setTo] = useState<number>(50);
+  const [bootstrapped, setBootstrapped] = useState<boolean>(false);
 
   const enabled = useMemo(
     () =>
-      Number.isInteger(from) && Number.isInteger(to) && from > 0 && to >= from,
-    [from, to]
+      bootstrapped &&
+      Number.isInteger(from) &&
+      Number.isInteger(to) &&
+      from > 0 &&
+      to >= from,
+    [bootstrapped, from, to]
   );
 
-  const { data, isLoading, isError, error, refetch, isFetching } = useQuery({
-    queryKey: ['lotto-analysis', from, to],
-    queryFn: () => fetchDraws(from, to),
-    enabled,
-  });
+  // 데이터 로딩은 queries 훅을 사용합니다.
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useLottoDrawsQuery({ from, to, enabled });
 
   const stats = useMemo(
     () => (data && data.length > 0 ? LottoUtils.computeStats(data) : null),
     [data]
   );
+
+  // 부트스트랩: 최신 회차 로딩 성공 시 마지막-20 ~ 마지막으로 최초 1회 조회
+  // 최신 회차 불가(로딩 종료 + 에러/데이터 없음) 시 1~50으로 폴백하여 최초 1회 조회
+  const {
+    data: latest,
+    isLoading: isLatestLoading,
+    isError: isLatestError,
+    isSuccess: isLatestSuccess,
+  } = useLatestLottoDrawQuery();
+
+  useEffect(() => {
+    if (bootstrapped) return;
+    if (isLatestSuccess && latest) {
+      const last = latest.lastDrawNumber ?? latest.drawNumber;
+      if (Number.isInteger(last) && last > 0) {
+        const nextFrom = Math.max(1, last - 20);
+        const nextTo = last;
+        setFrom((prev) => (prev !== nextFrom ? nextFrom : prev));
+        setTo((prev) => (prev !== nextTo ? nextTo : prev));
+        setBootstrapped(true);
+        return;
+      }
+    }
+    if (!isLatestLoading && (isLatestError || !latest)) {
+      // 폴백: 1~50
+      setFrom((prev) => (prev !== 1 ? 1 : prev));
+      setTo((prev) => (prev !== 50 ? 50 : prev));
+      setBootstrapped(true);
+    }
+  }, [bootstrapped, isLatestLoading, isLatestError, isLatestSuccess, latest]);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -78,129 +78,53 @@ export function LottoAnalysisComponent() {
         includeAgeNotice
       />
 
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="flex items-center gap-2">
-          <label htmlFor="from" className="w-16 text-sm">
-            From
-          </label>
-          <input
-            id="from"
-            type="number"
-            value={from}
-            onChange={(e) => setFrom(Number(e.target.value))}
-            className="w-full rounded-md border px-3 py-2 text-sm"
-            min={1}
+      {!bootstrapped ? (
+        <div className="mt-6 text-sm text-muted-foreground">
+          최신 회차 정보를 불러오는 중입니다...
+        </div>
+      ) : (
+        <>
+          <LottoAnalysisControlsComponent
+            from={from}
+            to={to}
+            setFrom={setFrom}
+            setTo={setTo}
+            enabled={enabled}
+            isFetching={isFetching}
+            onAnalyze={() => refetch()}
           />
-        </div>
-        <div className="flex items-center gap-2">
-          <label htmlFor="to" className="w-16 text-sm">
-            To
-          </label>
-          <input
-            id="to"
-            type="number"
-            value={to}
-            onChange={(e) => setTo(Number(e.target.value))}
-            className="w-full rounded-md border px-3 py-2 text-sm"
-            min={from}
-          />
-        </div>
-        <div className="flex items-end">
-          <button
-            type="button"
-            onClick={() => refetch()}
-            disabled={!enabled || isFetching}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
-          >
-            {isFetching ? '분석 중…' : '분석'}
-          </button>
-        </div>
-      </div>
 
-      <div className="mt-8 space-y-8">
-        {isLoading && <p className="text-sm">불러오는 중…</p>}
-        {isError && (
-          <p className="text-sm text-destructive">
-            오류: {(error as Error).message}
-          </p>
-        )}
-
-        {stats && (
-          <>
-            <section>
-              <h2 className="text-lg font-medium mb-3">번호 빈도 (1-45)</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {Array.from({ length: 45 }, (_, i) => i + 1).map((n) => (
-                  <Bar
-                    key={n}
-                    label={String(n).padStart(2, '0')}
-                    value={stats.frequencyByNumber[n] ?? 0}
-                    max={Math.max(...Object.values(stats.frequencyByNumber))}
-                  />
-                ))}
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-medium mb-3">구간 분포</h2>
-              <div className="space-y-2">
-                {Object.entries(stats.bucketDistribution).map(([k, v]) => (
-                  <Bar
-                    key={k}
-                    label={k}
-                    value={v}
-                    max={Math.max(...Object.values(stats.bucketDistribution))}
-                  />
-                ))}
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-medium mb-3">홀/짝 분포</h2>
-              <div className="space-y-2">
-                <Bar
-                  label="홀수"
-                  value={stats.oddEvenDistribution.odd}
-                  max={
-                    stats.oddEvenDistribution.odd +
-                    stats.oddEvenDistribution.even
-                  }
-                />
-                <Bar
-                  label="짝수"
-                  value={stats.oddEvenDistribution.even}
-                  max={
-                    stats.oddEvenDistribution.odd +
-                    stats.oddEvenDistribution.even
-                  }
-                />
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-medium mb-3">합계 분포</h2>
-              <div className="space-y-2">
-                {Object.entries(stats.sumDistribution).map(([k, v]) => (
-                  <Bar
-                    key={k}
-                    label={k}
-                    value={v}
-                    max={Math.max(...Object.values(stats.sumDistribution))}
-                  />
-                ))}
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-medium mb-3">연속수 발생</h2>
-              <p className="text-sm">
-                연속된 번호가 포함된 회차 수:{' '}
-                <span className="font-medium">{stats.consecutiveCount}</span>
+          <div className="mt-6 space-y-8">
+            {isLoading && <p className="text-sm">불러오는 중…</p>}
+            {isError && (
+              <p className="text-sm text-destructive">
+                오류: {(error as Error).message}
               </p>
-            </section>
-          </>
-        )}
-      </div>
+            )}
+
+            {stats && (
+              <>
+                <LottoAnalysisFrequencySectionComponent
+                  frequencyByNumber={stats.frequencyByNumber}
+                />
+                <LottoAnalysisBucketSectionComponent
+                  bucketDistribution={stats.bucketDistribution}
+                />
+                <LottoAnalysisOddEvenSectionComponent
+                  odd={stats.oddEvenDistribution.odd}
+                  even={stats.oddEvenDistribution.even}
+                />
+                <LottoAnalysisSumSectionComponent
+                  sumDistribution={stats.sumDistribution}
+                />
+                <LottoAnalysisConsecutiveSectionComponent
+                  consecutiveCount={stats.consecutiveCount}
+                />
+              </>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
