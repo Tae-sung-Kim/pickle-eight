@@ -21,7 +21,7 @@ import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { MENU_LIST } from '@/constants';
 import { cn } from '@/lib';
-import MenuTooltipComponent from './menu-tooltip.component';
+import MenuTooltipComponent from './tooltip.component';
 
 const ICONS: Record<string, LucideIcon> = {
   Ticket,

@@ -1,3 +1,3 @@
-export * from './trivia-quiz-form.component';
-export * from './trivia-quiz-question.component';
-export * from './trivia-quiz.component';
+export * from './form.component';
+export * from './question.component';
+export * from './root.component';

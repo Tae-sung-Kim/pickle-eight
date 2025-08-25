@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { generateLadder, getLadderResults } from '@/utils/ladder-game.util';
 import { LadderType, LadderConfigType, LadderResultType } from '@/types';
-import LadderHeaderComponent from './ladder-header.component';
-import LadderInputComponent from './ladder-input.component';
-import LadderGameSectionComponent from './ladder-game-section.component';
+import LadderHeaderComponent from './header.component';
+import LadderInputComponent from './input.component';
+import LadderGameSectionComponent from './section.component';
 
 export function LadderGameComponent() {
   const [config, setConfig] = useState<LadderConfigType | null>(null);

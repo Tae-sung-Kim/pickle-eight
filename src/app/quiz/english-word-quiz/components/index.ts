@@ -1,3 +1,3 @@
-export * from './english-word-quiz.component';
-export * from './english-word-quiz-options';
-export * from './english-word-quiz-status';
+export * from './root.component';
+export * from './options';
+export * from './status';

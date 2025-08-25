@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { DicePlayerComponent } from './dice-player.component';
+import { DicePlayerComponent } from './player.component';
 import { DicePlayerListComponentPropsType } from '@/types';
 
 export const DicePlayerListComponent = ({

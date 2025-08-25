@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLatestLottoDrawQuery, useLottoDrawsQuery } from '@/queries';
-import LottoHistorySearchComponent from './lotto-history-search.component';
-import LottoHistoryResultComponent from './lotto-history-result.component';
+import LottoHistorySearchComponent from './search.component';
+import LottoHistoryResultComponent from './result.component';
 
 export function LottoHistoryComponent() {
   const { data: latestDraw } = useLatestLottoDrawQuery();

@@ -5,9 +5,9 @@ import { useNameManager } from '@/hooks';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { DrawOrderCircleComponent } from './draw-order-circle.component';
-import { DrawOrderGuideComponent } from './draw-order-guide.component';
-import DrawOrderInputListComponent from './draw-order-input-list.component';
+import { DrawOrderCircleComponent } from './circle.component';
+import { DrawOrderGuideComponent } from './guide.component';
+import DrawOrderInputListComponent from './input-list.component';
 
 // 결과값 섞기
 export function shuffle<T>(arr: T[]): T[] {

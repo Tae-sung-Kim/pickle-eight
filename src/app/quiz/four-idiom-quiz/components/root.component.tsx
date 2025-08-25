@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useDailyLimit } from '@/hooks/use-daily-limit';
+import { useDailyLimit } from '@/hooks/use-daily-limit.hook';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useGptFourIdiomQuizQuery } from '@/queries';
@@ -9,9 +9,9 @@ import { BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FOUR_IDIOMS_COLLECTION } from '@/constants/four-idiom-quiz.constant';
 import { FourIdiomQuizDifficultyType } from '@/types';
-import FourIdiomQuizDifficultyComponent from './four-idiom-quiz-difficulty.component';
-import FourIdiomQuizAnswerComponent from './four-idiom-quiz-answer.component';
-import FourIdiomQuizFormComponent from './four-idiom-quiz-form.component';
+import FourIdiomQuizDifficultyComponent from './difficulty.component';
+import FourIdiomQuizAnswerComponent from './answer.component';
+import FourIdiomQuizFormComponent from './form.component';
 
 const schema = z.object({ answer: z.string().length(4, '정확히 4글자!') });
 type FormValues = { answer: string };

@@ -1,1 +1,1 @@
-export * from './name-random.component';
+export * from './name-random-root.component';

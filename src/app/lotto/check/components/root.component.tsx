@@ -16,8 +16,8 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
-import { LottoCheckTicketRowComponent } from './lotto-check-ticket-row.component';
-import { LottoCheckResultCardComponent } from './lotto-check-result-card.component';
+import { LottoCheckTicketRowComponent } from './ticket-row.component';
+import { LottoCheckResultCardComponent } from './result-card.component';
 import { Plus, Sparkles } from 'lucide-react';
 import {
   useLatestLottoDrawQuery,

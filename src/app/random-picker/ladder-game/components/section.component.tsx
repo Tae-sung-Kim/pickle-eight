@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Share2 } from 'lucide-react';
-import { LadderComponent } from './ladder.component';
-import { LadderResultComponent } from './ladder-result.component';
+import { LadderComponent } from './root.component';
+import { LadderResultComponent } from './result.component';
 import { LadderGameSectionComponentPropsType } from '@/types';
 import { useCapture } from '@/hooks';
 import { useRef } from 'react';

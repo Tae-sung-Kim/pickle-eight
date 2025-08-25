@@ -9,22 +9,22 @@ import React, {
   useState,
 } from 'react';
 
-type ConsentState = 'unknown' | 'accepted' | 'declined';
+type ConsentStateType = 'unknown' | 'accepted' | 'declined';
 
-interface ConsentContextValue {
-  readonly state: ConsentState;
+type ConsentContextValueType = {
+  readonly state: ConsentStateType;
   readonly visible: boolean;
   onAccept: () => void;
   onDecline: () => void;
   onOpen: () => void;
   onClose: () => void;
-}
+};
 
-const ConsentContext = createContext<ConsentContextValue | null>(null);
+const ConsentContext = createContext<ConsentContextValueType | null>(null);
 const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_cookie_consent_v1';
 
 export function ConsentProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<ConsentState>('unknown');
+  const [state, setState] = useState<ConsentStateType>('unknown');
   const [visible, setVisible] = useState<boolean>(false);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
   const onOpen = useCallback(() => setVisible(true), []);
   const onClose = useCallback(() => setVisible(false), []);
 
-  const value = useMemo<ConsentContextValue>(
+  const value = useMemo<ConsentContextValueType>(
     () => ({ state, visible, onAccept, onDecline, onOpen, onClose }),
     [state, visible, onAccept, onDecline, onOpen, onClose]
   );
@@ -76,7 +76,7 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useConsentContext(): ConsentContextValue {
+export function useConsentContext(): ConsentContextValueType {
   const ctx = useContext(ConsentContext);
   if (!ctx)
     throw new Error('useConsentContext must be used within ConsentProvider');

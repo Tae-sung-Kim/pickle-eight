@@ -8,8 +8,8 @@ import { useCapture, useNameManager } from '@/hooks';
 import { NameInputComponent, NameBadgeComponent } from '@/components';
 import { cn } from '@/lib';
 import { generateTeams } from '@/utils/team-assignment.util';
-import TeamResultListComponent from './team-result-list.component';
-import TeamCountInputComponent from './team-count-input.component';
+import TeamResultListComponent from './result-list.component';
+import TeamCountInputComponent from './count-input.component';
 
 /**
  * 팀 배정 페이지

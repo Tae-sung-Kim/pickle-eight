@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDailyLimit } from '@/hooks/use-daily-limit';
+import { useDailyLimit } from '@/hooks/use-daily-limit.hook';
 import { useTriviaQuizStore } from '@/hooks';
 import { TriviaQuizCategoryType, TriviaQuizDifficultyType } from '@/types';
 import { useGptTriviaQuizQuery } from '@/queries';
@@ -9,8 +9,8 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TriviaQuizFormSchema, TriviaQuizFormValuesType } from '@/types';
-import TriviaQuizFormComponent from './trivia-quiz-form.component';
-import TriviaQuizQuestionCardComponent from './trivia-quiz-question.component';
+import TriviaQuizFormComponent from './form.component';
+import TriviaQuizQuestionCardComponent from './question.component';
 import { getKoreaTime } from '@/utils';
 
 export function TriviaQuizComponent() {

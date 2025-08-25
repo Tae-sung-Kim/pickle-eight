@@ -1,1 +1,1 @@
-export * from './lotto-analysis.component';
+export * from './root.component';

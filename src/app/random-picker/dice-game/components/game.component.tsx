@@ -6,9 +6,9 @@ import { useCapture, useNameManager } from '@/hooks';
 import { getRandomValue, getWinnerIndexes } from '@/utils';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trophy } from 'lucide-react';
-import DiceInputComponent from './dice-input.component';
-import DicePlayerListComponent from './dice-player-list.component';
-import DiceRollButtonComponent from './dice-roll-button.component';
+import DiceInputComponent from './input.component';
+import DicePlayerListComponent from './player-list.component';
+import DiceRollButtonComponent from './roll-button.component';
 
 export function DiceGameComponent() {
   const { names, addName, removeName, reset } = useNameManager();

@@ -1,3 +1,3 @@
-export * from './name-badge.component';
-export * from './name-input.component';
-export * from './name-list.component';
+export * from './badge.component';
+export * from './input.component';
+export * from './list.component';

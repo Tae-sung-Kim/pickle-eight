@@ -3,8 +3,8 @@
 import { useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 import { generateLottoNumbers } from '@/utils';
-import LottoNumberListComponent from './lotto-number-list.component';
-import LottoGeneratorControlsComponent from './lotto-generator-controls.component';
+import LottoNumberListComponent from './list.component';
+import LottoGeneratorControlsComponent from './generator-controls.component';
 
 export function LottoNumberComponent() {
   const [orderCount, setOrderCount] = useState(1);

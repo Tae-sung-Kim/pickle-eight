@@ -1,18 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
 import { callOpenAI } from '@/services';
-
-const generateSchema = z.object({
-  action: z.literal('generate'),
-  category: z.enum(['영화', '음식', '일상', '랜덤']).optional(),
-});
-const gradeSchema = z.object({
-  action: z.literal('grade'),
-  emojis: z.string().min(1),
-  answer: z.string().min(1),
-  userGuess: z.string().min(1),
-});
-const requestSchema = z.union([generateSchema, gradeSchema]);
+import { EmojiTranslationRequestSchema } from '@/schemas';
 
 export type EmojiQuizProblem = {
   emojis: string;
@@ -29,7 +17,7 @@ export type EmojiQuizGrade = {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const parsed = requestSchema.safeParse(body);
+    const parsed = EmojiTranslationRequestSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
         { error: 'Invalid payload', issues: parsed.error.issues },

@@ -1,2 +1,2 @@
-export * from './hero-banner.component';
-export * from './hero-today-message.component';
+export * from './banner.component';
+export * from './today-message.component';

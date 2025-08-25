@@ -1,1 +1,1 @@
-export * from './lotto-simulator.component';
+export * from './root.component';

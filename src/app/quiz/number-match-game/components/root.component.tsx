@@ -2,9 +2,9 @@
 
 import { useNumberMatchGame } from '@/hooks';
 import React from 'react';
-import NumberMatchGameControlsComponent from './number-match-game-controls.component';
-import NumberMatchGameBoardComponent from './number-match-game-board.component';
-import NumberMatchGameOverModalComponent from './number-match-game-over-modal.component';
+import NumberMatchGameControlsComponent from './controls.component';
+import NumberMatchGameBoardComponent from './board.component';
+import NumberMatchGameOverModalComponent from './over-modal.component';
 
 export function NumberMatchGameComponent() {
   const {

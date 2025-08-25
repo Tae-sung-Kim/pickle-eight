@@ -1,3 +1,3 @@
-export * from './lotto-history-search.component';
-export * from './lotto-history-result.component';
-export * from './lotto-history.component';
+export * from './search.component';
+export * from './result.component';
+export * from './root.component';

@@ -1,1 +1,1 @@
-export * from './lotto-advanced-generator.component';
+export * from './root.component';

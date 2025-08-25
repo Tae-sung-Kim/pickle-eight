@@ -7,7 +7,7 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
-import { LottoCheckRankBadgeComponent } from './lotto-check-rank-badge.component';
+import { LottoCheckRankBadgeComponent } from './rank-badge.component';
 import { LottoBallComponent } from '@/components';
 
 export function LottoCheckResultCardComponent({

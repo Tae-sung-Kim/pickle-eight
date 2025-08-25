@@ -8,8 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, Lightbulb, RefreshCw } from 'lucide-react';
 import { useDailyLimit } from '@/hooks';
-import { EnglishWordQuizOptionsComponent } from './english-word-quiz-options';
-import EnglishWordQuizStatusComponent from './english-word-quiz-status';
+import { EnglishWordQuizOptionsComponent } from './options';
+import EnglishWordQuizStatusComponent from './status';
 
 export function EnglishWordQuizComponent() {
   const [quiz, setQuiz] = useState<GptEnglishWordQuizResponse | null>(null);

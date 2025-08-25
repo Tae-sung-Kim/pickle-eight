@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useDailyLimit } from '@/hooks/use-daily-limit';
+import { useDailyLimit } from '@/hooks/use-daily-limit.hook';
 
 const generateSchema = z.object({
   category: z.enum(['영화', '음식', '일상', '랜덤']).default('랜덤'),

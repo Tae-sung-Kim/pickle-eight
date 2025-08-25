@@ -1,1 +1,1 @@
-export * from './seat-assignment.component';
+export * from './seat-assignment-root.component';

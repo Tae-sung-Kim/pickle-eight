@@ -1,1 +1,1 @@
-export * from './emoji-translation.component';
+export * from './root.component';

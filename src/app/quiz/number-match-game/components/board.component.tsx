@@ -1,6 +1,6 @@
 import React from 'react';
 import { NumberMatchGameBoardType } from '@/types';
-import NumberMatchNumberCardComponent from './number-match-number-card.component';
+import NumberMatchNumberCardComponent from './card.component';
 import { NUMBER_MATCH_GAME_GRID_COLS_MAP } from '@/constants';
 
 export function NumberMatchGameBoardComponent({

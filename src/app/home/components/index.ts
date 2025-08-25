@@ -1,2 +1,2 @@
-export * from './home-menu-grid.componet';
-export * from './menu-tooltip.component';
+export * from './menu-grid.componet';
+export * from './tooltip.component';

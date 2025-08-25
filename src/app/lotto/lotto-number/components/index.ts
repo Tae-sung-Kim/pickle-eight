@@ -1,3 +1,3 @@
-export * from './lotto-generator-controls.component';
-export * from './lotto-number-list.component';
-export * from './lotto-number.component';
+export * from './generator-controls.component';
+export * from './list.component';
+export * from './root.component';
