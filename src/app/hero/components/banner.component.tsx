@@ -2,7 +2,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { HERO_BADGE_LIST, HERO_FEATURE_LIST } from '@/constants';
 import { BrainCircuit } from 'lucide-react';
 
-export function HeroBanner() {
+export function HeroBannerComponent() {
   return (
     <Alert className="mb-8 surface-card border-0 shadow-lg flex flex-col md:flex-row items-center gap-4 py-6 px-6">
       <div
@@ -54,3 +54,5 @@ export function HeroBanner() {
     </Alert>
   );
 }
+
+export default HeroBannerComponent;

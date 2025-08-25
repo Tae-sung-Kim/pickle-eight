@@ -1,4 +1,4 @@
-import { HeroBanner, HeroTodayMessageComponent } from './components';
+import { HeroBannerComponent, HeroTodayMessageComponent } from './components';
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
 
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 export default function HeroPage() {
   return (
     <>
-      <HeroBanner />
+      <HeroBannerComponent />
       <HeroTodayMessageComponent />
     </>
   );
