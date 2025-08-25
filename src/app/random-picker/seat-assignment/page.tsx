@@ -1,6 +1,8 @@
 import { generateOgImageUrl } from '@/utils';
 import { SeatAssignmentComponent } from './components';
 import { Metadata } from 'next';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '자리 배정기 - 랜덤 좌석/자리 배정',
@@ -56,8 +58,22 @@ export const metadata: Metadata = {
     canonical:
       process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/seat-assignment',
   },
+  robots: { index: true, follow: true },
 };
 
 export default function SeatAssignmentPage() {
-  return <SeatAssignmentComponent />;
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    {
+      name: '자리 배정기',
+      item: canonicalUrl('/random-picker/seat-assignment'),
+    },
+  ]);
+  return (
+    <>
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <SeatAssignmentComponent />
+    </>
+  );
 }

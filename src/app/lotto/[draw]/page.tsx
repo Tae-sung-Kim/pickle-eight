@@ -5,6 +5,7 @@ import { getLottoDrawByNumber } from '@/services';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 // import { Button } from '@/components/ui/button';
 import { LottoWarningAlertComponent } from '@/components';
+import { ReactElement } from 'react';
 
 type Params = { draw: string };
 
@@ -20,26 +21,98 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { draw } = await params;
-  const title = isValidDraw(draw)
-    ? `로또 ${draw}회차 - 당첨번호 상세 | Pickle Eight`
-    : '로또 회차 - 잘못된 회차 | Pickle Eight';
-  const description = isValidDraw(draw)
-    ? `${draw}회차 당첨 번호, 보너스 번호 및 간단 통계를 확인하세요.`
+  const valid = isValidDraw(draw);
+  const siteUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pickle-eight.vercel.app'
+  ).replace(/\/+$/, '');
+  const url = `${siteUrl}/lotto/${draw}`;
+  const baseTitle = valid
+    ? `로또 ${draw}회차 - 당첨번호 상세`
+    : '로또 회차 - 잘못된 회차';
+  const title = `${baseTitle} | Pickle Eight`;
+  const description = valid
+    ? `${draw}회차 당첨 번호, 보너스 번호, 추첨일 및 간단 통계를 확인하세요.`
     : '요청하신 회차 값이 올바르지 않습니다.';
   return {
     title,
     description,
-    alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/lotto/${draw}`,
+    alternates: { canonical: url },
+    robots: valid
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
+    openGraph: {
+      type: 'website',
+      url,
+      title,
+      description,
+      images: [{ url: '/og-image.svg' }],
     },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/og-image.svg'],
+    },
+    keywords: valid
+      ? [
+          `로또 ${draw}회차`,
+          '로또 당첨 번호',
+          '로또 결과',
+          '보너스 번호',
+          '로또 통계',
+        ]
+      : ['로또 회차 오류', '잘못된 회차'],
   };
+}
+
+function JsonLd(props: {
+  url: string;
+  draw: string;
+  valid: boolean;
+  description: string;
+}) {
+  const { url, draw, valid, description } = props;
+  const breadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: '로또',
+        item: `${url.replace(/\/lotto\/.+$/, '/lotto')}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: valid ? `${draw}회차` : '잘못된 회차',
+        item: url,
+      },
+    ],
+  };
+  const webPage = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: valid
+      ? `로또 ${draw}회차 - 당첨번호 상세`
+      : '로또 회차 - 잘못된 회차',
+    url,
+    description,
+  };
+  const json = [breadcrumb, webPage];
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }}
+    />
+  );
 }
 
 export default async function LottoDrawPage({
   params,
 }: {
   params: Promise<Params>;
-}) {
+}): Promise<ReactElement> {
   const { draw } = await params;
   const valid = isValidDraw(draw);
   let data: LottoDrawType | null = null;
@@ -54,8 +127,21 @@ export default async function LottoDrawPage({
 
   const numbers = data?.numbers ?? [];
   const bonus = data?.bonusNumber;
+  const siteUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pickle-eight.vercel.app'
+  ).replace(/\/+$/, '');
+  const pageUrl = `${siteUrl}/lotto/${draw}`;
+  const pageDescription = valid
+    ? `${draw}회차 당첨 번호, 보너스 번호, 추첨일 및 간단 통계를 확인하세요.`
+    : '요청하신 회차 값이 올바르지 않습니다.';
   return (
     <section className="mx-auto max-w-4xl px-4 py-10">
+      <JsonLd
+        url={pageUrl}
+        draw={draw}
+        valid={valid}
+        description={pageDescription}
+      />
       <div className="mb-4">
         <Link href="/lotto" className="text-sm text-primary hover:underline">
           ← 로또 허브로 돌아가기

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MENU_LIST } from '@/constants/menu.constant';
+import { MENU_LIST } from '@/constants';
 import { JsonLd } from '@/components';
 import {
   buildMetadata,

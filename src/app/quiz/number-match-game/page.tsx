@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { NumberMatchGameComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
@@ -56,15 +58,23 @@ export const metadata: Metadata = {
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/number-match-game',
   },
+  robots: { index: true, follow: true },
 };
 
 export default function NumberMatchGamePage() {
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '퀴즈 허브', item: canonicalUrl('/quiz') },
+    { name: '숫자 매칭 게임', item: canonicalUrl('/quiz/number-match-game') },
+  ]);
+
   return (
     <div className="flex items-center justify-center bg-gradient-to-br from-emerald-50 via-cyan-50 to-sky-50 py-8">
       <div className="w-full max-w-4xl space-y-8">
         <h1 className="text-center text-4xl font-bold tracking-tight">
           숫자 매칭 게임
         </h1>
+        <JsonLd data={[jsonLdWebSite(), crumbs]} />
         <NumberMatchGameComponent />
       </div>
     </div>

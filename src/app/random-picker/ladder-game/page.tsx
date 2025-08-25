@@ -1,6 +1,8 @@
 import { generateOgImageUrl } from '@/utils';
 import { LadderGameComponent } from './components';
 import { Metadata } from 'next';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '사다리 타기 게임 - 랜덤 결과 추첨기',
@@ -55,8 +57,22 @@ export const metadata: Metadata = {
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/ladder-game',
   },
+  robots: { index: true, follow: true },
 };
 
 export default function LadderGamePage() {
-  return <LadderGameComponent />;
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    {
+      name: '사다리 타기 게임',
+      item: canonicalUrl('/random-picker/ladder-game'),
+    },
+  ]);
+  return (
+    <>
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <LadderGameComponent />
+    </>
+  );
 }

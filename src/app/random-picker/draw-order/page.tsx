@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { DrawOrderComponent } from './components';
 import { generateOgImageUrl } from '@/utils';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '랜덤 순서/상품 추첨기 - 공정한 매칭 뽑기',
@@ -54,8 +56,22 @@ export const metadata: Metadata = {
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/draw-order',
   },
+  robots: { index: true, follow: true },
 };
 
 export default function DrawOrderPage() {
-  return <DrawOrderComponent />;
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    {
+      name: '랜덤 순서/상품 추첨기',
+      item: canonicalUrl('/random-picker/draw-order'),
+    },
+  ]);
+  return (
+    <>
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <DrawOrderComponent />
+    </>
+  );
 }

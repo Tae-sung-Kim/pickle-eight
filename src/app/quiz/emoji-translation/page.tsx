@@ -1,10 +1,23 @@
 import type { Metadata } from 'next';
 import { generateOgImageUrl, getOgTag } from '@/utils';
 import { EmojiTranslationComponent } from './components';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: 'AI 이모지 번역 퀴즈',
   description: '이모지 힌트만 보고 정답을 맞혀보세요.',
+  keywords: [
+    '이모지퀴즈',
+    '이모지 번역',
+    '이모지 게임',
+    '이모지 맞추기',
+    'AI퀴즈',
+    '퀴즈게임',
+    '그림퀴즈',
+    '수수께끼',
+  ],
+  robots: { index: true, follow: true },
   openGraph: {
     title: 'AI 이모지 번역 퀴즈',
     description: '이모지 힌트만 보고 정답을 맞혀보세요.',
@@ -40,6 +53,11 @@ export const metadata: Metadata = {
 };
 
 export default function EmojiTranslationPage() {
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '퀴즈 허브', item: canonicalUrl('/quiz') },
+    { name: '이모지 번역 퀴즈', item: canonicalUrl('/quiz/emoji-translation') },
+  ]);
   return (
     <div className="w-full">
       {/* Hero */}
@@ -58,6 +76,7 @@ export default function EmojiTranslationPage() {
       {/* Content */}
       <section className="mx-auto max-w-3xl px-4 pb-16">
         <div className="mt-2">
+          <JsonLd data={[jsonLdWebSite(), crumbs]} />
           <EmojiTranslationComponent />
         </div>
       </section>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MENU_LIST } from '@/constants/menu.constant';
+import { MENU_LIST } from '@/constants';
 import { JsonLd } from '@/components';
 import {
   buildMetadata,
@@ -96,6 +96,19 @@ export default function RandomPickerHubPage() {
             ],
           },
         ]}
+      />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          itemListElement: randomItems.map((it, idx) => ({
+            '@type': 'ListItem',
+            position: idx + 1,
+            name: it.label,
+            url: canonicalUrl(it.href),
+            description: it.desc,
+          })),
+        }}
       />
       <div className="flex items-center gap-3">
         <span

@@ -1,6 +1,8 @@
 import { generateOgImageUrl } from '@/utils';
 import { DiceGameComponent } from './components';
 import { Metadata } from 'next';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '주사위 게임 - 랜덤 주사위 추첨기',
@@ -53,11 +55,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/dice-game',
   },
+  robots: { index: true, follow: true },
 };
 
 export default function DiceGamePage() {
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    { name: '주사위 게임', item: canonicalUrl('/random-picker/dice-game') },
+  ]);
   return (
     <div className="bg-gradient-to-b from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <DiceGameComponent />
     </div>
   );

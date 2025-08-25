@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { NameRandomComponent } from './components';
 import { generateOgImageUrl } from '@/utils';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
@@ -55,8 +57,22 @@ export const metadata: Metadata = {
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/name-random',
   },
+  robots: { index: true, follow: true },
 };
 
 export default function NameRandomPage() {
-  return <NameRandomComponent />;
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    {
+      name: '항목 랜덤 추첨기',
+      item: canonicalUrl('/random-picker/name-random'),
+    },
+  ]);
+  return (
+    <>
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <NameRandomComponent />
+    </>
+  );
 }

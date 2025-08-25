@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { FourIdiomQuizComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
@@ -56,12 +58,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/four-idiom-quiz',
   },
+  robots: { index: true, follow: true },
 };
 
 export default function FourIdiomQuizPage() {
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '퀴즈 허브', item: canonicalUrl('/quiz') },
+    { name: '사자성어 퀴즈', item: canonicalUrl('/quiz/four-idiom-quiz') },
+  ]);
+
   return (
     <div className="flex items-center justify-center bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50 py-8">
       <div className="w-full max-w-lg mx-auto rounded-2xl shadow-2xl bg-white/90 p-8 relative">
+        <JsonLd data={[jsonLdWebSite(), crumbs]} />
         <FourIdiomQuizComponent />
       </div>
     </div>

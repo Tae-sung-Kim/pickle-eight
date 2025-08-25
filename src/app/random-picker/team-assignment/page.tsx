@@ -1,6 +1,8 @@
 import { generateOgImageUrl } from '@/utils';
 import { TeamAssignmentComponent } from './components';
 import { Metadata } from 'next';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '팀 배정기 - 랜덤 팀 나누기/조 편성',
@@ -56,8 +58,19 @@ export const metadata: Metadata = {
     canonical:
       process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/team-assignment',
   },
+  robots: { index: true, follow: true },
 };
 
 export default function TeamAssignmentPage() {
-  return <TeamAssignmentComponent />;
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    { name: '팀 배정기', item: canonicalUrl('/random-picker/team-assignment') },
+  ]);
+  return (
+    <>
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <TeamAssignmentComponent />
+    </>
+  );
 }
