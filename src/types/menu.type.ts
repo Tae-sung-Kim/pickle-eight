@@ -1,3 +1,6 @@
+import { LucideIcon } from 'lucide-react';
+import { ComponentType } from 'react';
+
 export type MenuItemType = {
   href: string;
   label: string;
@@ -12,4 +15,16 @@ export type MenuGroupType = {
   label: string;
   href?: string;
   items: readonly MenuItemType[];
+};
+
+export type MenuSectionKeyType = 'lotto' | 'tools' | 'ai';
+
+export type FeatureItemType = {
+  section: MenuSectionKeyType;
+  Icon: ComponentType<{ className?: string }> | LucideIcon;
+  href: string;
+  label: string;
+  description?: string;
+  example?: string;
+  className?: string;
 };

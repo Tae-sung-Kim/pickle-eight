@@ -219,7 +219,7 @@ export function EmojiTranslationComponent() {
               aria-live="polite"
               className={`mt-4 rounded-md border p-3 text-sm ${
                 result.correct
-                  ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+                  ? 'border-primary/30 bg-primary/5 text-primary'
                   : 'border-amber-200 bg-amber-50 text-amber-800'
               }`}
             >

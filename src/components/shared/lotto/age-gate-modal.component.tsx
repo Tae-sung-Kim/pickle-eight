@@ -76,7 +76,7 @@ export function AgeGateModalComponent() {
             type="button"
             onClick={confirm}
             size="sm"
-            className="bg-emerald-600 text-white hover:bg-emerald-700"
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
           >
             만 19세 이상입니다
           </Button>

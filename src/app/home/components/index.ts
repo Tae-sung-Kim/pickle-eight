@@ -1,2 +1,3 @@
-export * from './menu-grid.componet';
+export * from './menu-grid.component';
 export * from './tooltip.component';
+export * from './feature-item.component';

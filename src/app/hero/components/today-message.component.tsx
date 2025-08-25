@@ -268,10 +268,10 @@ export function HeroTodayMessageComponent() {
           ref={menuRef}
           className="relative surface-card rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] transition-transform duration-300 hover:scale-105"
         >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-primary/30">
-            <UtensilsCrossed className="w-8 h-8 text-primary" />
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-indigo-300">
+            <UtensilsCrossed className="w-8 h-8 text-indigo-600" />
           </div>
-          <h3 className="mt-6 text-lg font-bold text-primary text-center tracking-tight">
+          <h3 className="mt-6 text-lg font-bold text-indigo-600 text-center tracking-tight">
             {mealType} 추천 메뉴
           </h3>
           <p className="mt-3 text-sm text-muted-foreground text-center font-medium flex-grow whitespace-pre-line">

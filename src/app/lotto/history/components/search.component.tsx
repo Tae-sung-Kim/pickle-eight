@@ -91,7 +91,7 @@ export function LottoHistorySearchComponent({
           onClick={handleSearch}
           disabled={!canSearch}
           variant="secondary"
-          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           조회
         </Button>
