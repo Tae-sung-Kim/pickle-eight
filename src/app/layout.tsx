@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from 'next';
-import { LoadingComponent, AnalyticsClientComponent } from '@/components';
-import { Toaster } from 'sonner';
-import { QueryClientProviderWrapper, ConsentProvider } from '@/providers';
 import {
-  AgeGateModal,
+  LoadingComponent,
+  AnalyticsClientComponent,
+  AgeGateModalComponent,
   CookieConsentComponent,
   FooterLayout,
   HeaderLayout,
-} from '@/components/layouts';
+} from '@/components';
+import { Toaster } from 'sonner';
+import { QueryClientProviderWrapper, ConsentProvider } from '@/providers';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -132,7 +133,7 @@ export default function RootLayout({
             <Toaster />
             <AnalyticsClientComponent />
             <LoadingComponent />
-            <AgeGateModal />
+            <AgeGateModalComponent />
             <CookieConsentComponent />
           </ConsentProvider>
         </QueryClientProviderWrapper>

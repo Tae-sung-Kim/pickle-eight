@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 const TTL_MS = 1000 * 60 * 60 * 24 * 30; // 30 days
 const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_age_gate_verified_v1';
 
-export function AgeGateModal() {
+export function AgeGateModalComponent() {
   const [open, setOpen] = useState<boolean>(false);
   const pathname = usePathname();
 
@@ -85,3 +85,5 @@ export function AgeGateModal() {
     </div>
   );
 }
+
+export default AgeGateModalComponent;

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { LottoUtils, LottoGenerator } from '@/utils';
-import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
+import { LottoWarningAlertComponent } from '@/components';
 
 function Ball({ n }: { n: number }) {
   return (

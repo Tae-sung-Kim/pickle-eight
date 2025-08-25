@@ -1,7 +1,7 @@
 import { LottoHistoryComponent } from './components';
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
-import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
+import { LottoWarningAlertComponent } from '@/components';
 import Link from 'next/link';
 
 export const metadata: Metadata = {

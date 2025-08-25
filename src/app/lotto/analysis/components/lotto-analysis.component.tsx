@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { LottoDrawType } from '@/types';
 import { LottoUtils } from '@/utils';
-import { LottoWarningAlertComponent } from '@/components/lotto-warning-alert.component';
+import { LottoWarningAlertComponent } from '@/components';
 
 function fetchDraws(from: number, to: number): Promise<LottoDrawType[]> {
   const url = `/api/lotto/draws?from=${encodeURIComponent(

@@ -8,8 +8,7 @@ import { useNameManager } from '@/hooks';
 import { cn } from '@/lib';
 import { useState } from 'react';
 import { LadderInputComponentPropsType } from '@/types';
-import { NameInputComponent } from '@/components';
-import NameBadgeComponent from '@/components/name-badge.component';
+import { NameInputComponent, NameBadgeComponent } from '@/components';
 
 export function LadderInputComponent({
   onCreateLadder,
