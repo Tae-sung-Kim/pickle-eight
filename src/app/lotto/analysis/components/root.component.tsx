@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { LottoUtils } from '@/utils';
-import { LottoWarningAlertComponent } from '@/components';
 import LottoAnalysisControlsComponent from './controls.component';
 import LottoAnalysisFrequencySectionComponent from './frequency-section.component';
 import LottoAnalysisBucketSectionComponent from './bucket-section.component';
@@ -66,21 +65,11 @@ export function LottoAnalysisComponent() {
   }, [bootstrapped, isLatestLoading, isLatestError, isLatestSuccess, latest]);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="text-2xl font-semibold">로또 분석</h1>
-      <p className="text-sm text-muted-foreground mt-1">
-        회차 범위를 선택하여 빈도/패턴을 확인하세요.
-      </p>
+    <>
       <div className="mt-2 rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
         ※ 본 페이지의 모든 통계는 당첨 번호 6개만을 기준으로 하며, 보너스 번호는
         포함하지 않습니다. 공식 공개된 회차 데이터에 근거해 계산됩니다.
       </div>
-
-      <LottoWarningAlertComponent
-        className="mt-4"
-        tone="danger"
-        includeAgeNotice
-      />
 
       {!bootstrapped ? (
         <div className="mt-6 text-sm text-muted-foreground">
@@ -129,7 +118,7 @@ export function LottoAnalysisComponent() {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }
 
