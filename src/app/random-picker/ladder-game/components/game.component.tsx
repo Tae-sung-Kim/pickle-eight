@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { generateLadder, getLadderResults } from '@/utils/ladder-game.util';
 import { LadderType, LadderConfigType, LadderResultType } from '@/types';
-import LadderHeaderComponent from './header.component';
-import LadderInputComponent from './input.component';
+import LadderInputComponent from './input-list.component';
 import LadderGameSectionComponent from './section.component';
+import { TitleWrapperComponent } from '@/components';
 
 export function LadderGameComponent() {
   const [config, setConfig] = useState<LadderConfigType | null>(null);
@@ -28,9 +28,10 @@ export function LadderGameComponent() {
   };
 
   return (
-    <div className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto h-fit p-4">
       <div className="max-w-6xl mx-auto">
-        <LadderHeaderComponent
+        <TitleWrapperComponent
+          type="random"
           title="사다리 타기 게임"
           description="참가자와 상품을 매칭해보세요"
         />
@@ -39,7 +40,7 @@ export function LadderGameComponent() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="bg-background rounded-2xl shadow-sm border overflow-hidden"
+          className="rounded-2xl border border-border bg-white/70 backdrop-blur shadow-sm ring-1 ring-black/5 overflow-hidden"
         >
           {!ladder ? (
             <LadderInputComponent onCreateLadder={handleCreateLadder} />

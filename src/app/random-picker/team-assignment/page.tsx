@@ -1,7 +1,7 @@
 import { generateOgImageUrl } from '@/utils';
 import { TeamAssignmentComponent } from './components';
 import { Metadata } from 'next';
-import { JsonLd } from '@/components';
+import { ContentWrapperComponent, JsonLd } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -68,9 +68,9 @@ export default function TeamAssignmentPage() {
     { name: '팀 배정기', item: canonicalUrl('/random-picker/team-assignment') },
   ]);
   return (
-    <>
+    <ContentWrapperComponent type="random">
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <TeamAssignmentComponent />
-    </>
+    </ContentWrapperComponent>
   );
 }

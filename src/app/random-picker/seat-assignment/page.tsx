@@ -1,7 +1,7 @@
 import { generateOgImageUrl } from '@/utils';
 import { SeatAssignmentComponent } from './components';
 import { Metadata } from 'next';
-import { JsonLd } from '@/components';
+import { ContentWrapperComponent, JsonLd } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -71,9 +71,9 @@ export default function SeatAssignmentPage() {
     },
   ]);
   return (
-    <>
+    <ContentWrapperComponent type="random">
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <SeatAssignmentComponent />
-    </>
+    </ContentWrapperComponent>
   );
 }

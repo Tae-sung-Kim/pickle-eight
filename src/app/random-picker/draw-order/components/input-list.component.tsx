@@ -25,12 +25,12 @@ export function DrawOrderInputListComponent({
 
   return (
     <motion.section
-      className="bg-surface-card rounded-lg shadow-sm p-4 mb-6 border border-border"
+      className="rounded-2xl border border-border bg-white/70 backdrop-blur p-4 sm:p-5 shadow-sm ring-1 ring-black/5"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <label className="block text-sm font-medium text-foreground mb-2">
+      <label className="block text-sm font-semibold text-foreground mb-2">
         {label}
         <span className="ml-1 text-xs text-muted-foreground">
           ({list.length}개)
@@ -39,7 +39,7 @@ export function DrawOrderInputListComponent({
 
       <div
         className={`flex gap-2 mb-3 transition-all duration-200 ${
-          isFocused ? 'ring-2 ring-primary/20 rounded-md' : ''
+          isFocused ? 'ring-2 ring-primary/30 rounded-xl bg-primary/5' : ''
         }`}
       >
         <NameInputComponent
@@ -55,12 +55,12 @@ export function DrawOrderInputListComponent({
         />
       </div>
 
-      <div className="max-h-48 overflow-y-auto rounded-md border border-border">
+      <div className="max-h-52 overflow-y-auto rounded-xl border border-border bg-white">
         <NameListComponent
           list={list}
           onRemove={onRemove}
           className="divide-y divide-border"
-          itemClassName="px-3 py-2 hover:bg-muted transition-colors"
+          itemClassName="px-3 py-2 hover:bg-muted/60 transition-colors"
         />
       </div>
 

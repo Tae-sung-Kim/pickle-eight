@@ -30,3 +30,9 @@ export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
   random: 'bg-sky-50 text-sky-700 border-sky-200',
   quiz: 'bg-indigo-50 text-indigo-700 border-indigo-200',
 } as const;
+
+export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
+  lotto: 'bg-emerald-50 dark:bg-emerald-950',
+  random: 'bg-cyan-50 dark:bg-cyan-950',
+  quiz: 'bg-sky-50 dark:bg-slate-950',
+};

@@ -87,7 +87,7 @@ export function DrawOrderComponent() {
 
   if (!started) {
     return (
-      <div className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
+      <div className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <motion.div
             className="text-center mb-10"
@@ -169,7 +169,7 @@ export function DrawOrderComponent() {
   }
 
   return (
-    <div className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
+    <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 flex items-center justify-center min-h-[400px]">
           <DrawOrderCircleComponent

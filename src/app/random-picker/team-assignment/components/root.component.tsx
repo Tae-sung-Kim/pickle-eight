@@ -5,7 +5,11 @@ import { motion } from 'framer-motion';
 import { Share2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCapture, useNameManager } from '@/hooks';
-import { NameInputComponent, NameBadgeComponent } from '@/components';
+import {
+  NameInputComponent,
+  NameBadgeComponent,
+  TitleWrapperComponent,
+} from '@/components';
 import { cn } from '@/lib';
 import { generateTeams } from '@/utils/team-assignment.util';
 import TeamResultListComponent from './result-list.component';
@@ -51,20 +55,16 @@ export function TeamAssignmentComponent() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-10 px-6 bg-muted"
+      className="container mx-auto h-fit p-4"
     >
       {/* 타이틀/설명: 카드 바깥, 최상단 */}
-      <div className="mb-10 w-full flex flex-col items-center">
-        <h1 className="text-3xl font-bold mb-2 text-primary">팀 배정</h1>
-        <p className="text-muted-foreground text-base text-center max-w-xl">
-          참가자 명단을 입력하고, 원하는 팀 개수를 설정한 뒤 <b>팀 배정하기</b>{' '}
-          버튼을 누르세요.
-          <br />
-          참가자들은 무작위로 팀에 배정됩니다.
-        </p>
-      </div>
+      <TitleWrapperComponent
+        type="random"
+        title="팀 배정기"
+        description="참가자 명단을 입력하고, 원하는 팀 개수를 설정한 뒤 팀 배정 버튼을 누르세요"
+      />
       <div
-        className="w-full bg-surface-card rounded-2xl shadow-lg p-8 space-y-8 border border-border"
+        className="w-full rounded-2xl border border-border bg-white/70 backdrop-blur p-8 space-y-8 shadow-sm ring-1 ring-black/5"
         ref={resultRef}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end mb-4">
@@ -107,7 +107,7 @@ export function TeamAssignmentComponent() {
             className={cn(
               'w-full max-w-md mx-auto py-4 text-base font-bold',
               'bg-primary text-primary-foreground hover:bg-primary/90',
-              'shadow-lg hover:shadow-xl',
+              'shadow-sm hover:shadow',
               names.length < teamCount && 'opacity-70'
             )}
           >
@@ -118,12 +118,8 @@ export function TeamAssignmentComponent() {
             onClick={handleShare}
             disabled={!teams.length}
             size="lg"
-            className={cn(
-              'w-full max-w-md mx-auto py-4 text-base font-bold',
-              'bg-primary/10 text-primary hover:bg-primary/20',
-              'shadow-lg hover:shadow-xl',
-              names.length < teamCount && 'opacity-70'
-            )}
+            variant="outline"
+            className={cn('w-full max-w-md mx-auto py-4 text-base font-bold')}
           >
             <Share2 className="mr-2 h-5 w-5" />
             공유하기

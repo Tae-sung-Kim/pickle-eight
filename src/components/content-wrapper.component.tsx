@@ -1,3 +1,4 @@
+import { BACKGROUND_COLORS } from '@/constants';
 import { MenuSectionKeyType } from '@/types';
 
 type ContentWarpperType = {
@@ -6,17 +7,27 @@ type ContentWarpperType = {
   children: React.ReactNode;
 };
 
-const COLORS: Record<MenuSectionKeyType, string> = {
-  lotto: 'bg-sky-50 dark:bg-slate-950',
-  random: 'bg-sky-50 dark:bg-slate-950',
-  quiz: 'bg-sky-50 dark:bg-slate-950',
-};
-
 export function ContentWrapperComponent({
   type = 'lotto',
   children,
 }: ContentWarpperType) {
-  return <div className={`w-full ${COLORS[type]}`}>{children}</div>;
+  if (type === 'random') {
+    return (
+      <div
+        className={`w-full py-12 px-4 sm:px-6 lg:px-8 ${BACKGROUND_COLORS[type]}`}
+      >
+        {children}
+      </div>
+    );
+  } else if (type === 'quiz') {
+    return (
+      <div className={`w-full ${BACKGROUND_COLORS[type]}`}>{children}</div>
+    );
+  } else {
+    return (
+      <div className={`w-full ${BACKGROUND_COLORS[type]}`}>{children}</div>
+    );
+  }
 }
 
 export default ContentWrapperComponent;

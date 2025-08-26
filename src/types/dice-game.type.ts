@@ -22,7 +22,7 @@ export type DicePlayerComponentPropsType = {
   index: number;
 };
 
-export type DiceInputComponentPropsType = {
+export type DiceInputListComponentType = {
   addName: (name: string) => boolean;
 };
 

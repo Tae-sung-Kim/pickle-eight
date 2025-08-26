@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { NameRandomComponent } from './components';
 import { generateOgImageUrl } from '@/utils';
-import { JsonLd } from '@/components';
+import { ContentWrapperComponent, JsonLd } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -70,9 +70,9 @@ export default function NameRandomPage() {
     },
   ]);
   return (
-    <>
+    <ContentWrapperComponent type="random">
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <NameRandomComponent />
-    </>
+    </ContentWrapperComponent>
   );
 }

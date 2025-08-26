@@ -6,9 +6,10 @@ import { useCapture, useNameManager } from '@/hooks';
 import { getRandomValue, getWinnerIndexes } from '@/utils';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trophy } from 'lucide-react';
-import DiceInputComponent from './input.component';
+import DiceInputComponent from './input-list.component';
 import DicePlayerListComponent from './player-list.component';
 import DiceRollButtonComponent from './roll-button.component';
+import { TitleWrapperComponent } from '@/components';
 
 export function DiceGameComponent() {
   const { names, addName, removeName, reset } = useNameManager();
@@ -69,16 +70,13 @@ export function DiceGameComponent() {
       animate={{ opacity: 1, y: 0 }}
       className="container mx-auto max-w-4xl"
     >
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-primary mb-2 flex items-center justify-center gap-2">
-          주사위 굴리기
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          참가자들을 추가하고 주사위를 굴려 승자를 가려보세요!
-        </p>
-      </div>
+      <TitleWrapperComponent
+        type="random"
+        title="주사위 굴리기"
+        description="참가자들을 추가하고 주사위를 굴려 승자를 가려보세요!"
+      />
 
-      <Card className="shadow-xl border-0 rounded-2xl overflow-hidden bg-surface-card backdrop-blur-sm">
+      <Card className="shadow-xl border-0 rounded-2xl overflow-hidden">
         {/* <CardHeader className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
             <div className="flex items-center justify-between">
               <div>

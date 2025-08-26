@@ -1,7 +1,7 @@
 import { generateOgImageUrl } from '@/utils';
 import { DiceGameComponent } from './components';
 import { Metadata } from 'next';
-import { JsonLd } from '@/components';
+import { ContentWrapperComponent, JsonLd } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -65,9 +65,9 @@ export default function DiceGamePage() {
     { name: '주사위 게임', item: canonicalUrl('/random-picker/dice-game') },
   ]);
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+    <ContentWrapperComponent type="random">
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <DiceGameComponent />
-    </div>
+    </ContentWrapperComponent>
   );
 }

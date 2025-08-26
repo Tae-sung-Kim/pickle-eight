@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { DiceInputComponentPropsType } from '@/types';
+import { DiceInputListComponentType } from '@/types';
 import { NameInputComponent } from '@/components';
 
-export const DiceInputComponent = ({
+export const DiceInputListComponent = ({
   addName,
-}: DiceInputComponentPropsType) => {
+}: DiceInputListComponentType) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleAddName = () => {
@@ -32,4 +32,4 @@ export const DiceInputComponent = ({
   );
 };
 
-export default DiceInputComponent;
+export default DiceInputListComponent;

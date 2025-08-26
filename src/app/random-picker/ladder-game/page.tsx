@@ -1,7 +1,7 @@
 import { generateOgImageUrl } from '@/utils';
 import { LadderGameComponent } from './components';
 import { Metadata } from 'next';
-import { JsonLd } from '@/components';
+import { ContentWrapperComponent, JsonLd } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -70,9 +70,9 @@ export default function LadderGamePage() {
     },
   ]);
   return (
-    <>
+    <ContentWrapperComponent type="random">
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <LadderGameComponent />
-    </>
+    </ContentWrapperComponent>
   );
 }

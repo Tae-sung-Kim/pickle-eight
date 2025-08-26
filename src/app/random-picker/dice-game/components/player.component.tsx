@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { cn } from '@/lib';
-import { DiceComponent } from './dice-root.component';
+import { DiceComponent } from './root.component';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { DicePlayerComponentPropsType } from '@/types/dice-game.type';

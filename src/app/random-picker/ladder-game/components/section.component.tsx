@@ -51,7 +51,7 @@ export const LadderGameSectionComponent = ({
       </div>
 
       <div
-        className="bg-surface-card rounded-xl shadow-sm border border-border p-6 overflow-hidden"
+        className="rounded-xl border border-border bg-white/70 backdrop-blur shadow-sm ring-1 ring-black/5 p-6 overflow-hidden"
         ref={resultRef}
       >
         <div className="h-[600px]">

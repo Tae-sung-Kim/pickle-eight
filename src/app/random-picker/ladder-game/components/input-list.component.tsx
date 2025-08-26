@@ -127,7 +127,7 @@ export function LadderInputComponent({
           className={cn(
             'w-full max-w-md mx-auto py-4 text-base font-bold',
             'bg-primary text-primary-foreground hover:bg-primary/90',
-            'shadow-lg hover:shadow-xl',
+            'shadow-sm hover:shadow',
             (names.length < 2 ||
               prizes.length < 2 ||
               names.length !== prizes.length) &&
