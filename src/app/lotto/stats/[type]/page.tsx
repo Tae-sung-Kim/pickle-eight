@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import { JsonLd } from '@/components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 const allowedTypes = ['frequency', 'range', 'odd-even'] as const;
 
@@ -33,7 +36,7 @@ export async function generateMetadata({
     title,
     description,
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/lotto/stats/${urlType}`,
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/${MENU_GROUP_NAME_ENUM.LOTTO}/stats/${urlType}`,
     },
   };
 }
@@ -45,8 +48,19 @@ export default async function LottoStatsTypePage({
 }) {
   const { type } = await params;
   const valid = isAllowed(type);
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },
+    {
+      name: valid ? `통계 - ${type}` : '잘못된 통계 유형',
+      item: canonicalUrl(
+        `${MENU_GROUP_NAME_ENUM.LOTTO}/stats/${valid ? type : 'unknown'}`
+      ),
+    },
+  ]);
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
       {valid ? (
         <>
           <h1 className="text-2xl font-bold tracking-tight">통계: {type}</h1>

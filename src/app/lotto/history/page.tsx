@@ -6,8 +6,10 @@ import {
   ContentWrapperComponent,
   LottoWarningAlertComponent,
   TitleWrapperComponent,
+  JsonLd,
 } from '@/components';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
@@ -59,8 +61,17 @@ export const metadata: Metadata = {
 };
 
 export default function LottoHistoryPage() {
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },
+    {
+      name: '로또 당첨 결과 히스토리',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/history`),
+    },
+  ]);
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
 
       <LottoWarningAlertComponent

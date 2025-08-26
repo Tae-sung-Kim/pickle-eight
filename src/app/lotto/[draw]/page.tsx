@@ -5,10 +5,12 @@ import {
   BackHubPageComponent,
   ContentWrapperComponent,
   LottoWarningAlertComponent,
+  JsonLd,
 } from '@/components';
 import { ReactElement } from 'react';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
-import { JsonLdComponent, LottoDrawCardComponent } from './components';
+import { LottoDrawCardComponent } from './components';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 type Params = { draw: string };
 
@@ -87,21 +89,30 @@ export default async function LottoDrawPage({
 
   const numbers = data?.numbers ?? [];
   const bonus = data?.bonusNumber;
-  const siteUrl = (
-    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pickle-eight.vercel.app'
-  ).replace(/\/+$/, '');
-  const pageUrl = `${siteUrl}/${MENU_GROUP_NAME_ENUM.LOTTO}/${draw}`;
+  const pageUrl = canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/${draw}`);
   const pageDescription = valid
     ? `${draw}회차 당첨 번호, 보너스 번호, 추첨일 및 간단 통계를 확인하세요.`
     : '요청하신 회차 값이 올바르지 않습니다.';
+
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },
+    { name: valid ? `${draw}회차` : '잘못된 회차', item: pageUrl },
+  ]);
+
+  const webPage = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: valid
+      ? `로또 ${draw}회차 - 당첨번호 상세`
+      : '로또 회차 - 잘못된 회차',
+    url: pageUrl,
+    description: pageDescription,
+  } as const;
+
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
-      <JsonLdComponent
-        url={pageUrl}
-        draw={draw}
-        valid={valid}
-        description={pageDescription}
-      />
+      <JsonLd data={[jsonLdWebSite(), crumbs, webPage]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <LottoWarningAlertComponent
         className="mt-4"

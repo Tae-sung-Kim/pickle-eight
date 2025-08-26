@@ -5,9 +5,11 @@ import {
   ContentWrapperComponent,
   LottoWarningAlertComponent,
   TitleWrapperComponent,
+  JsonLd,
 } from '@/components';
 import { generateOgImageUrl } from '@/utils';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
   title: '로또 번호 채점기 - 당첨 등수 확인',
@@ -18,7 +20,8 @@ export const metadata: Metadata = {
     title: '로또 번호 채점기 - 당첨 등수 확인',
     description:
       '회차 번호와 선택한 6개 번호를 입력해 당첨 등수를 빠르게 확인하세요. 실시간 채점과 결과 요약을 제공합니다.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/lotto/check',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL + `/${MENU_GROUP_NAME_ENUM.LOTTO}/check`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     images: [
       generateOgImageUrl(
@@ -44,13 +47,23 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/lotto/check',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL + `${MENU_GROUP_NAME_ENUM.LOTTO}/check`,
   },
 };
 
 export default function LottoCheckPage() {
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },
+    {
+      name: '로또 번호 채점기',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/check`),
+    },
+  ]);
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
 
       <LottoWarningAlertComponent

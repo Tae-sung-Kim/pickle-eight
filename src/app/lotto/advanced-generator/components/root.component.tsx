@@ -22,6 +22,7 @@ export function LottoAdvancedGeneratorComponent() {
   const [from, setFrom] = useState<number>(1);
   const [to, setTo] = useState<number>(50);
   const [excludeLatest, setExcludeLatest] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Initialize range using latest draw (set to latest, from to last 50 draws)
   const { data: latestDraw } = useLatestLottoDrawQuery();
@@ -70,12 +71,34 @@ export function LottoAdvancedGeneratorComponent() {
   >([]);
 
   function onGenerate() {
+    setError(null);
+    if (
+      filters.sumMin !== undefined &&
+      filters.sumMax !== undefined &&
+      filters.sumMin > filters.sumMax
+    ) {
+      setError('합계 최소값이 최대값보다 클 수 없습니다.');
+      return;
+    }
+    if (useWeight && to < from) {
+      setError('가중치 범위(From/To)가 올바르지 않습니다.');
+      return;
+    }
     const f = {
       ...filters,
       excludeRecentNumbers: excludeNumbers,
     } as GenerateFiltersType;
-    const list = LottoGenerator.generate(count, f, weighting);
-    setGenerated(list);
+    try {
+      const safeCount = Math.max(1, Math.min(50, count));
+      const list = LottoGenerator.generate(safeCount, f, weighting);
+      setGenerated(list);
+    } catch (e) {
+      setError(
+        `조건이 너무 엄격합니다. 필터를 완화하고 다시 시도하세요.${
+          e instanceof Error ? ' ' + e.message : ''
+        }`
+      );
+    }
   }
 
   return (
@@ -86,6 +109,11 @@ export function LottoAdvancedGeneratorComponent() {
           번호는 포함하지 않습니다.
         </AlertDescription>
       </Alert>
+      {error && (
+        <Alert className="mt-2 border-red-200 bg-red-50 text-red-900">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
       <div className="mt-6 space-y-6">
         <Card className="p-4">
           <LottoAdvancedGenerateControlsComponent

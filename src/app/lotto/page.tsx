@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MENU_LIST } from '@/constants';
+import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
 import { JsonLd } from '@/components';
 import {
   buildMetadata,
@@ -14,7 +14,7 @@ const baseMeta = buildMetadata({
   title: '로또 허브 - 로또 분석/번호 생성',
   description:
     '로또 번호 생성, 당첨번호 확인, 회차별 기록 등 로또 관련 기능을 한 곳에서 제공합니다.',
-  pathname: '/lotto',
+  pathname: `${MENU_GROUP_NAME_ENUM.LOTTO}`,
 });
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         '로또 허브 - 로또 분석/번호 생성 | Pickle Eight',
         '로또 번호 생성, 당첨번호 확인, 회차별 기록 등 로또 관련 기능을 한 곳에서 제공합니다.',
         '로또 허브',
-        getOgTag({ href: '/lotto' })
+        getOgTag({ href: `${MENU_GROUP_NAME_ENUM.LOTTO}` })
       ),
     ],
   },
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
         '로또 허브 - 로또 분석/번호 생성 | Pickle Eight',
         '로또 번호 생성, 당첨번호 확인, 회차별 기록 등 로또 관련 기능을 한 곳에서 제공합니다.',
         '로또 허브',
-        getOgTag({ href: '/lotto' })
+        getOgTag({ href: `${MENU_GROUP_NAME_ENUM.LOTTO}` })
       ),
     ],
   },
@@ -50,7 +50,7 @@ export default function LottoHubPage() {
 
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '로또 허브', item: canonicalUrl('/lotto') },
+    { name: '로또 허브', item: canonicalUrl(`${MENU_GROUP_NAME_ENUM.LOTTO}`) },
   ]);
 
   const theme = {

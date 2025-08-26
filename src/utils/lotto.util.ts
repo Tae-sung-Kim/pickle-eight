@@ -210,48 +210,45 @@ function generateOne(
 ): LottoTicketType {
   const pool: number[] = [];
   for (let n = 1; n <= 45; n += 1) pool.push(n);
-  const selected: number[] = [];
-  const MAX_ATTEMPTS = 5000;
-  let attempts = 0;
+  const MAX_STEPS_PER_TRY = 5000;
+  const MAX_TRIES = 50;
+  let tryCount = 0;
+  while (tryCount < MAX_TRIES) {
+    tryCount += 1;
 
-  while (selected.length < 6) {
-    attempts += 1;
-    if (attempts > MAX_ATTEMPTS) {
-      const remain = pool.filter(
-        (n) =>
-          !selected.includes(n) && !filters?.excludeRecentNumbers?.includes(n)
+    const selected: number[] = [];
+    let steps = 0;
+
+    while (selected.length < 6 && steps < MAX_STEPS_PER_TRY) {
+      steps += 1;
+      const remain = pool.filter((n) => !selected.includes(n));
+      const pick = weightedSample(
+        remain,
+        weighting?.frequency,
+        weighting?.hotColdAlpha ?? 0
       );
-      while (selected.length < 6 && remain.length > 0) {
-        const idx = Math.floor(Math.random() * remain.length);
-        const pick = remain.splice(idx, 1)[0]!;
-        selected.push(pick);
-        selected.sort((a, b) => a - b);
+      selected.push(pick);
+      selected.sort((a, b) => a - b);
+      if (!passesFilters(selected, filters)) {
+        selected.pop();
       }
-      break;
     }
-    const remain = pool.filter((n) => !selected.includes(n));
-    const pick = weightedSample(
-      remain,
-      weighting?.frequency,
-      weighting?.hotColdAlpha ?? 0
-    );
-    selected.push(pick);
-    selected.sort((a, b) => a - b);
-    if (!passesFilters(selected, filters)) {
-      selected.pop();
-    }
-  }
 
-  return {
-    numbers: [
-      selected[0],
-      selected[1],
-      selected[2],
-      selected[3],
-      selected[4],
-      selected[5],
-    ],
-  } as const;
+    if (selected.length === 6 && passesFilters(selected, filters)) {
+      return {
+        numbers: [
+          selected[0],
+          selected[1],
+          selected[2],
+          selected[3],
+          selected[4],
+          selected[5],
+        ],
+      } as const;
+    }
+    // retry from scratch when constraints too tight
+  }
+  throw new Error('Failed to generate a valid ticket within constraints');
 }
 
 function buildFrequencyFromDraws(
