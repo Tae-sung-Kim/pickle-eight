@@ -66,11 +66,7 @@ export function DiceGameComponent() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="container mx-auto max-w-4xl"
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
       <TitleWrapperComponent
         type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}
         title="주사위 굴리기"

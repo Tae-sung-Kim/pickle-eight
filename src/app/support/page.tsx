@@ -38,7 +38,7 @@
 //   ]);
 
 //   return (
-//     <main className="container mx-auto max-w-3xl px-4 py-10">
+//     <main className="container mx-auto max-w-5xl px-4 py-10">
 //       <JsonLd data={[jsonLdWebSite(), crumbs]} />
 //       <header className="mb-8">
 //         <h1 className="text-2xl font-bold">Support</h1>

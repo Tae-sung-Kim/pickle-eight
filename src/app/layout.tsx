@@ -18,6 +18,11 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    (
+      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pickle-eight.vercel.app'
+    ).replace(/\/+$/, '')
+  ),
   title: {
     template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME}`,
     default: `${process.env.NEXT_PUBLIC_SITE_NAME} : 랜덤(random) 추첨, 게임, 로또, AI 퀴즈의 모든 것`,

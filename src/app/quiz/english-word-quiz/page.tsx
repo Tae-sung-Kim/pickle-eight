@@ -76,7 +76,7 @@ export default function EnglishWordQuizPage() {
       />
 
       {/* Content */}
-      <section className="mx-auto max-w-3xl px-4 pb-16">
+      <section className="mx-auto max-w-5xl px-4 pb-16">
         <div className="mt-2">
           <EnglishWordQuizComponent />
         </div>

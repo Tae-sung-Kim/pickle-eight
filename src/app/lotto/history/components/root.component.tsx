@@ -44,8 +44,8 @@ export function LottoHistoryComponent() {
   }, [latestDraw]);
 
   return (
-    <>
-      <div className="mt-2 rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
+    <div className="bg-white shadow-sm rounded-lg p-5">
+      <div className="rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
         ※ 표시되는 통계/분석 정보는 당첨 번호 6개를 기준으로 하며, 보너스 번호는
         포함하지 않습니다.
       </div>
@@ -56,7 +56,7 @@ export function LottoHistoryComponent() {
       />
 
       {/* 결과 */}
-      <div className="mt-6">
+      <div className="mt-5">
         {isError && (
           <p className="text-sm text-destructive">
             오류: {(error as Error).message}
@@ -70,7 +70,7 @@ export function LottoHistoryComponent() {
 
         <LottoHistoryResultComponent data={data ?? []} />
       </div>
-    </>
+    </div>
   );
 }
 

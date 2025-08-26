@@ -91,7 +91,7 @@ export default function FourIdiomQuizPage() {
         description="뜻을 보고 정답 4글자를 맞혀보세요. 난이도 선택과 힌트 기능을 지원합니다."
       />
       {/* Content */}
-      <section className="mx-auto max-w-3xl px-4 pb-16">
+      <section className="mx-auto max-w-5xl px-4 pb-16">
         <JsonLd data={[jsonLdWebSite(), crumbs]} />
         <FourIdiomQuizComponent />
       </section>

@@ -77,7 +77,7 @@ export function LottoAdvancedGeneratorComponent() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <div className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="text-2xl font-semibold">로또 고급 번호 생성기</h1>
       <p className="text-sm text-muted-foreground mt-1">
         필터와 가중치를 사용하여 번호를 생성하세요.

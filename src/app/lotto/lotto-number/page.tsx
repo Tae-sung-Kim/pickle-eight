@@ -64,10 +64,14 @@ export default function LottoPage() {
 
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
-      <LottoWarningAlertComponent tone="danger" includeAgeNotice />
-      <div className="mt-4">
+      <LottoWarningAlertComponent
+        className="mt-4"
+        tone="danger"
+        includeAgeNotice
+      />
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <div className="mx-auto max-w-5xl p-4">
         <LottoNumberComponent />
       </div>
     </ContentWrapperComponent>

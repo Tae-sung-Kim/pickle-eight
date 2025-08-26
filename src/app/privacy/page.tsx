@@ -46,7 +46,7 @@ export default function PrivacyPolicyPage() {
     { name: '개인정보처리방침', item: canonicalUrl('/privacy') },
   ]);
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <div className="mx-auto max-w-5xl px-4 py-8">
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <h1 className="text-2xl font-semibold">개인정보처리방침</h1>
       <p className="mt-1 text-xs text-muted-foreground">

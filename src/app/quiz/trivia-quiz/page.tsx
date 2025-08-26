@@ -89,7 +89,7 @@ export default function TriviaQuizPage() {
         description="다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요."
       />
       {/* Content */}
-      <section className="mx-auto max-w-3xl px-4 pb-16">
+      <section className="mx-auto max-w-5xl px-4 pb-16">
         <JsonLd data={[jsonLdWebSite(), crumbs]} />
         <TriviaQuizComponent />
       </section>

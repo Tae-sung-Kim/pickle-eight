@@ -111,7 +111,7 @@ export function LottoSimulatorComponent() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <div className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="text-2xl font-semibold">로또 시뮬레이터</h1>
       <p className="text-sm text-muted-foreground mt-1">
         랜덤 추첨을 다회 실행하여 당첨 분포를 확인합니다.

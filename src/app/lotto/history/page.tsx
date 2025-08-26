@@ -1,8 +1,13 @@
 import { LottoHistoryComponent } from './components';
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
-import { LottoWarningAlertComponent } from '@/components';
-import Link from 'next/link';
+import {
+  BackHubPageComponent,
+  ContentWrapperComponent,
+  LottoWarningAlertComponent,
+  TitleWrapperComponent,
+} from '@/components';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
@@ -19,7 +24,9 @@ export const metadata: Metadata = {
     title: '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
     description:
       '회차별 로또 당첨번호와 보너스 번호, 1등 당첨 인원 등 기록을 범위로 조회하세요.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/lotto/history',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.LOTTO}/history`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     images: [
       generateOgImageUrl(
@@ -45,31 +52,16 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/lotto/history',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.LOTTO}/history`,
   },
 };
 
 export default function LottoHistoryPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-2">
-        <Link
-          href="/lotto"
-          className="text-sm text-muted-foreground hover:underline"
-        >
-          &larr; 로또 허브
-        </Link>
-      </div>
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            로또 당첨 결과 히스토리
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            회차 범위를 입력해 조회하세요.
-          </p>
-        </div>
-      </div>
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
 
       <LottoWarningAlertComponent
         className="mt-4"
@@ -77,7 +69,15 @@ export default function LottoHistoryPage() {
         includeAgeNotice
       />
 
-      <LottoHistoryComponent />
-    </div>
+      <div className="mx-auto max-w-5xl py-4 p-4">
+        <TitleWrapperComponent
+          type={MENU_GROUP_NAME_ENUM.LOTTO}
+          title="로또 당첨 결과 히스토리"
+          description="회차 범위를 입력해 조회하세요."
+        />
+
+        <LottoHistoryComponent />
+      </div>
+    </ContentWrapperComponent>
   );
 }

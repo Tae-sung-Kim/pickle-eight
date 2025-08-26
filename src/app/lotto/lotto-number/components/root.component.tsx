@@ -35,11 +35,7 @@ export function LottoNumberComponent() {
 
   return (
     <div className="container mx-auto h-fit p-4">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mx-auto max-w-4xl"
-      >
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -49,7 +45,7 @@ export function LottoNumberComponent() {
           <TitleWrapperComponent
             type={MENU_GROUP_NAME_ENUM.LOTTO}
             title="로또 번호 생성기"
-            description="AI가 추천하는 행운의 번호로 당첨의 기회를 잡아보세요!"
+            description="추천하는 행운의 번호로 당첨의 기회를 잡아보세요!"
           />
         </motion.div>
 
