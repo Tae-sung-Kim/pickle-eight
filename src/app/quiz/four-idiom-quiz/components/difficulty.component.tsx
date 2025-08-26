@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { FourIdiomQuizDifficultyType } from '@/types';
 
-type FourIdiomQuizDifficultyComponentProps = {
+type FourIdiomQuizDifficultyComponentType = {
   difficulty: FourIdiomQuizDifficultyType | null;
   isPending: boolean;
   difficultyDisabled: boolean;
@@ -13,7 +13,7 @@ export function FourIdiomQuizDifficultyComponent({
   isPending,
   difficultyDisabled,
   onDifficuly,
-}: FourIdiomQuizDifficultyComponentProps) {
+}: FourIdiomQuizDifficultyComponentType) {
   return (
     <div className="mb-3 flex gap-2 items-center">
       <span className="text-xs font-semibold text-muted-foreground">

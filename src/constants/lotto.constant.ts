@@ -1,3 +1,5 @@
+import { LottoWarningToneType } from '@/types';
+
 export const LOTTO_ANALYSIS_CHART_BUCKET_COLORS: Readonly<
   Record<string, string>
 > = {
@@ -33,3 +35,37 @@ export const LOTTO_ANALYSIS_SUM_COLOR_MAP: Readonly<Record<string, string>> = {
   '151-200': 'from-[var(--color-chart-3)] to-[var(--color-chart-3)]',
   '201-255': 'from-[var(--color-chart-4)] to-[var(--color-chart-4)]',
 };
+
+// token-like style map for tones
+export const LOTTO_ALERT_TONE_STYLES: Record<
+  LottoWarningToneType,
+  { container: string; icon: string }
+> = {
+  danger: {
+    container: 'border-red-200 bg-red-50 text-red-900',
+    icon: 'text-red-600',
+  },
+  warning: {
+    container: 'border-amber-200 bg-amber-50 text-amber-900',
+    icon: 'text-amber-600',
+  },
+  muted: {
+    container: 'border-gray-200 bg-gray-50 text-gray-900',
+    icon: 'text-gray-600',
+  },
+} as const;
+
+export const LOTTO_WARNING_SPACING: Record<string, string> = {
+  none: 'my-0',
+  sm: 'mt-2 mb-4',
+  md: 'mt-4 mb-6',
+  lg: 'mt-6 mb-8',
+} as const;
+
+// use horizontal PADDING on a wrapper to avoid overflow beyond rounded containers
+export const LOTTO_WARNING_X_PADDING: Record<string, string> = {
+  none: 'px-0',
+  sm: 'px-2',
+  md: 'px-4',
+  lg: 'px-6',
+} as const;

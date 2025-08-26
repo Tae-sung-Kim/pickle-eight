@@ -13,7 +13,7 @@ export function TitleWrapperComponent({
 }) {
   return (
     <section className="w-full">
-      <div className="mx-auto max-w-3xl px-4 pt-12 pb-8 text-center">
+      <div className="mx-auto max-w-3xl px-4 pt-6 pb-4 text-center">
         <h1
           className={cn(
             'text-4xl sm:text-5xl font-bold tracking-tight',

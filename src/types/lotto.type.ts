@@ -144,3 +144,5 @@ export type LottoCheckTicketRowType = {
 
 export type LottoAnalysisVariantValueType =
   (typeof LOTTO_ANALYSIS_VARIANT_ENUM)[keyof typeof LOTTO_ANALYSIS_VARIANT_ENUM];
+
+export type LottoWarningAlertSpaceType = 'none' | 'sm' | 'md' | 'lg';

@@ -2,11 +2,13 @@ import { Metadata } from 'next';
 import { NumberMatchGameComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
+  BackHubPageComponent,
   ContentWrapperComponent,
   JsonLd,
   TitleWrapperComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
@@ -32,7 +34,9 @@ export const metadata: Metadata = {
     title: '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
     description:
       '숫자 카드 매칭 게임으로 두뇌 트레이닝을 해보세요! 기억력과 집중력을 향상시키는 재미있는 숫자 맞추기 게임입니다.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/number-match-game',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.QUIZ}/number-match-game`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -41,7 +45,7 @@ export const metadata: Metadata = {
         '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
         '숫자 카드 매칭 게임으로 두뇌 트레이닝을 해보세요! 기억력과 집중력을 향상시켜보세요!',
         '숫자 매칭 게임',
-        getOgTag({ href: '/quiz/number-match-game' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/number-match-game` })
       ),
     ],
   },
@@ -55,12 +59,14 @@ export const metadata: Metadata = {
         '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',
         '숫자 카드 매칭 게임으로 두뇌 트레이닝을 해보세요! 기억력과 집중력을 향상시켜보세요!',
         '숫자 매칭 게임',
-        getOgTag({ href: '/quiz/number-match-game' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/number-match-game` })
       ),
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/number-match-game',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.QUIZ}/number-match-game`,
   },
   robots: { index: true, follow: true },
 };
@@ -68,15 +74,19 @@ export const metadata: Metadata = {
 export default function NumberMatchGamePage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '퀴즈 허브', item: canonicalUrl('/quiz') },
-    { name: '숫자 매칭 게임', item: canonicalUrl('/quiz/number-match-game') },
+    { name: '퀴즈 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}`) },
+    {
+      name: '숫자 매칭 게임',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}/number-match-game`),
+    },
   ]);
 
   return (
-    <ContentWrapperComponent type="quiz">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.QUIZ}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.QUIZ} />
       {/* Hero */}
       <TitleWrapperComponent
-        type="quiz"
+        type={MENU_GROUP_NAME_ENUM.QUIZ}
         title="숫자 매칭 게임"
         description="기억력과 집중력을 높이는 숫자 카드 매칭 게임에 도전해보세요."
       />

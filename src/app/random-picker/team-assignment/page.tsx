@@ -1,8 +1,13 @@
 import { generateOgImageUrl } from '@/utils';
 import { TeamAssignmentComponent } from './components';
 import { Metadata } from 'next';
-import { ContentWrapperComponent, JsonLd } from '@/components';
+import {
+  BackHubPageComponent,
+  ContentWrapperComponent,
+  JsonLd,
+} from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '팀 배정기 - 랜덤 팀 나누기/조 편성',
@@ -29,7 +34,9 @@ export const metadata: Metadata = {
     title: '팀 배정기 - 랜덤 팀 나누기/조 편성',
     description:
       '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 모임, 수업, 워크샵, 게임 등에서 공정하게 팀을 나눠보세요.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/team-assignment',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/team-assignment`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -56,7 +63,8 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical:
-      process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/team-assignment',
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/team-assignment`,
   },
   robots: { index: true, follow: true },
 };
@@ -64,11 +72,20 @@ export const metadata: Metadata = {
 export default function TeamAssignmentPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
-    { name: '팀 배정기', item: canonicalUrl('/random-picker/team-assignment') },
+    {
+      name: '랜덤 도구 허브',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}`),
+    },
+    {
+      name: '팀 배정기',
+      item: canonicalUrl(
+        `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/team-assignment`
+      ),
+    },
   ]);
   return (
-    <ContentWrapperComponent type="random">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER} />
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <TeamAssignmentComponent />
     </ContentWrapperComponent>

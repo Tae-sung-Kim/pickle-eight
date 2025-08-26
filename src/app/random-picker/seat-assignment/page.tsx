@@ -1,8 +1,13 @@
 import { generateOgImageUrl } from '@/utils';
 import { SeatAssignmentComponent } from './components';
 import { Metadata } from 'next';
-import { ContentWrapperComponent, JsonLd } from '@/components';
+import {
+  BackHubPageComponent,
+  ContentWrapperComponent,
+  JsonLd,
+} from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '자리 배정기 - 랜덤 좌석/자리 배정',
@@ -29,7 +34,9 @@ export const metadata: Metadata = {
     title: '자리 배정기 - 랜덤 좌석/자리 배정',
     description:
       '참가자와 자리 수를 입력하면, 랜덤으로 좌석을 배정해주는 자리 배정기! 모임, 파티, 행사 등에서 공정하게 자리를 정하세요.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/seat-assignment',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/seat-assignment`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -56,7 +63,8 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical:
-      process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/seat-assignment',
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/seat-assignment`,
   },
   robots: { index: true, follow: true },
 };
@@ -64,14 +72,20 @@ export const metadata: Metadata = {
 export default function SeatAssignmentPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    {
+      name: '랜덤 도구 허브',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}`),
+    },
     {
       name: '자리 배정기',
-      item: canonicalUrl('/random-picker/seat-assignment'),
+      item: canonicalUrl(
+        `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/seat-assignment`
+      ),
     },
   ]);
   return (
-    <ContentWrapperComponent type="random">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER} />
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <SeatAssignmentComponent />
     </ContentWrapperComponent>

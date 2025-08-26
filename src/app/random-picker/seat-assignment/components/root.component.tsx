@@ -6,6 +6,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 import { TitleWrapperComponent } from '@/components';
 import { SeatAssignmentInputCardComponent } from './input-card.component';
 import { SeatAssignmentResultViewComponent } from './result-view.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export function SeatAssignmentComponent() {
   const { names, addName, removeName, reset } = useNameManager();
@@ -85,7 +86,7 @@ export function SeatAssignmentComponent() {
           className="space-y-2 text-center"
         >
           <TitleWrapperComponent
-            type="random"
+            type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}
             title="자리 배정기"
             description="참가자와 자리 수를 입력하면 랜덤으로 자리를 배정해드려요"
           />

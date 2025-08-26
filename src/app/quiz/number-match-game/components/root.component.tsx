@@ -1,7 +1,6 @@
 'use client';
 
 import { useNumberMatchGame } from '@/hooks';
-import React from 'react';
 import NumberMatchGameControlsComponent from './controls.component';
 import NumberMatchGameBoardComponent from './board.component';
 import NumberMatchGameOverModalComponent from './over-modal.component';

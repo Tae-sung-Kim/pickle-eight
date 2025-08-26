@@ -33,15 +33,15 @@ export function LottoNumberListComponent({
   }
 
   return (
-    <Card className="overflow-hidden">
-      <CardHeader className="bg-muted flex flex-row items-center justify-between gap-2">
+    <Card className="overflow-hidden rounded-2xl border border-border bg-white/70 backdrop-blur shadow-sm ring-1 ring-black/5">
+      <CardHeader className="bg-transparent flex flex-row items-center justify-between gap-2">
         <CardTitle className="text-xl font-bold text-primary">
           {title}
         </CardTitle>
         <Button
           type="button"
           onClick={handleShare}
-          className="flex items-center gap-1 px-4 py-2 rounded-lg shadow bg-surface-card/80 hover:bg-surface-card transition z-10 text-foreground border border-border"
+          className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white/70 backdrop-blur shadow-sm hover:shadow ring-1 ring-black/5 transition z-10 text-foreground border border-border"
         >
           <Share2 className="w-5 h-5" />
           공유하기
@@ -55,7 +55,7 @@ export function LottoNumberListComponent({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="rounded-xl border bg-surface-card p-4 shadow-sm hover:shadow-md border-border"
+              className="rounded-xl border border-border bg-white/70 backdrop-blur p-4 shadow-sm hover:shadow ring-1 ring-black/5"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">

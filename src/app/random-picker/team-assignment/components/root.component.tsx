@@ -14,6 +14,7 @@ import { cn } from '@/lib';
 import { generateTeams } from '@/utils/team-assignment.util';
 import TeamResultListComponent from './result-list.component';
 import TeamCountInputComponent from './count-input.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 /**
  * 팀 배정 페이지
@@ -59,7 +60,7 @@ export function TeamAssignmentComponent() {
     >
       {/* 타이틀/설명: 카드 바깥, 최상단 */}
       <TitleWrapperComponent
-        type="random"
+        type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}
         title="팀 배정기"
         description="참가자 명단을 입력하고, 원하는 팀 개수를 설정한 뒤 팀 배정 버튼을 누르세요"
       />

@@ -2,11 +2,13 @@ import type { Metadata } from 'next';
 import { generateOgImageUrl, getOgTag } from '@/utils';
 import { EmojiTranslationComponent } from './components';
 import {
+  BackHubPageComponent,
   ContentWrapperComponent,
   JsonLd,
   TitleWrapperComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: 'AI 이모지 번역 퀴즈',
@@ -25,7 +27,9 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AI 이모지 번역 퀴즈',
     description: '이모지 힌트만 보고 정답을 맞혀보세요.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/emoji-translation',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.QUIZ}/emoji-translation`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -34,7 +38,7 @@ export const metadata: Metadata = {
         'AI 이모지 번역 퀴즈',
         '이모지 힌트만 보고 정답을 맞혀보세요.',
         '이모지 퀴즈',
-        getOgTag({ href: '/quiz/emoji-translation' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/emoji-translation` })
       ),
     ],
   },
@@ -47,26 +51,35 @@ export const metadata: Metadata = {
         'AI 이모지 번역 퀴즈',
         '이모지 힌트만 보고 정답을 맞혀보세요.',
         '이모지 퀴즈',
-        getOgTag({ href: '/quiz/emoji-translation' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/emoji-translation` })
       ),
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/emoji-translation',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.QUIZ}/emoji-translation`,
   },
 };
 
 export default function EmojiTranslationPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '퀴즈 허브', item: canonicalUrl('/quiz') },
-    { name: '이모지 번역 퀴즈', item: canonicalUrl('/quiz/emoji-translation') },
+    {
+      name: '퀴즈 허브',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}`),
+    },
+    {
+      name: '이모지 번역 퀴즈',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}/emoji-translation`),
+    },
   ]);
   return (
-    <ContentWrapperComponent type="quiz">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.QUIZ}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.QUIZ} />
       {/* Hero */}
       <TitleWrapperComponent
-        type="quiz"
+        type={MENU_GROUP_NAME_ENUM.QUIZ}
         title="이모지 번역 퀴즈"
         description="이모지 조합이 의미하는 것을 맞혀보세요. 실제로 통용되는 명칭/작품/표현만 정답입니다."
       />

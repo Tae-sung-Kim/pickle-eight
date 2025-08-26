@@ -6,6 +6,7 @@ import { useCapture, useNameManager } from '@/hooks';
 import { TitleWrapperComponent } from '@/components';
 import { NameRandomInputCardComponent } from './input-card.component';
 import { NameRandomWinnerViewComponent } from './winner-view.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export function NameRandomComponent() {
   const { names, addName, removeName, reset } = useNameManager();
@@ -73,7 +74,7 @@ export function NameRandomComponent() {
           className="space-y-2 text-center"
         >
           <TitleWrapperComponent
-            type="random"
+            type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}
             title="항목 랜덤 추첨기"
             description="추첨할 항목을 추가하고 행운의 당첨자를 뽑아보세요"
           />

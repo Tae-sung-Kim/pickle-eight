@@ -17,7 +17,7 @@ export type MenuGroupType = {
   items: readonly MenuItemType[];
 };
 
-export type MenuSectionKeyType = 'lotto' | 'random' | 'quiz';
+export type MenuSectionKeyType = 'lotto' | 'random-picker' | 'quiz';
 
 export type FeatureItemType = {
   section: MenuSectionKeyType;

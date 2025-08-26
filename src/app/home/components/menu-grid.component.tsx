@@ -18,15 +18,13 @@ import {
   PlayCircle,
   type LucideIcon,
 } from 'lucide-react';
-import { MENU_LIST, SECTION_ICON_COLOR } from '@/constants';
+import {
+  MENU_GROUP_NAME_ENUM,
+  MENU_LIST,
+  SECTION_ICON_COLOR,
+} from '@/constants';
 import { HomeMenuFeatureItemComponent } from './feature-item.component';
 import { MenuSectionKeyType } from '@/types';
-
-function mapGroupToSection(group: string): MenuSectionKeyType {
-  if (group === 'lotto') return 'lotto';
-  if (group === 'random') return 'random';
-  return 'quiz';
-}
 
 const ICONS: Record<string, LucideIcon> = {
   Ticket,
@@ -53,15 +51,22 @@ export function HomeMenuGridComponent() {
     <section className="max-w-4xl mx-auto py-10 px-2">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {MENU_LIST.map((data) => {
-          const section = mapGroupToSection(data.group);
+          const groupName = data.group as MenuSectionKeyType;
+
           return (
             <div key={data.group}>
               <div className="flex items-center gap-2 mb-3 px-2">
-                {data.group === 'lotto' && <span className="text-xl">🎱</span>}
-                {data.group === 'random' && <span className="text-xl">🎲</span>}
-                {data.group === 'quiz' && <span className="text-xl">🤖</span>}
+                {groupName === MENU_GROUP_NAME_ENUM.LOTTO && (
+                  <span className="text-xl">🎱</span>
+                )}
+                {groupName === MENU_GROUP_NAME_ENUM.RANDOM_PICKER && (
+                  <span className="text-xl">🎲</span>
+                )}
+                {groupName === MENU_GROUP_NAME_ENUM.QUIZ && (
+                  <span className="text-xl">🤖</span>
+                )}
                 <span
-                  className={`text-base font-bold ${SECTION_ICON_COLOR[section]}`}
+                  className={`text-base font-bold ${SECTION_ICON_COLOR[groupName]}`}
                 >
                   {data.label}
                 </span>
@@ -73,7 +78,7 @@ export function HomeMenuGridComponent() {
                   return (
                     <li key={menu.href}>
                       <HomeMenuFeatureItemComponent
-                        section={section}
+                        section={groupName}
                         Icon={Icon}
                         href={menu.href}
                         label={menu.label}

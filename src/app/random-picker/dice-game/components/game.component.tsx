@@ -6,10 +6,11 @@ import { useCapture, useNameManager } from '@/hooks';
 import { getRandomValue, getWinnerIndexes } from '@/utils';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trophy } from 'lucide-react';
-import DiceInputComponent from './input-list.component';
+import DiceInputListComponent from './input-list.component';
 import DicePlayerListComponent from './player-list.component';
 import DiceRollButtonComponent from './roll-button.component';
 import { TitleWrapperComponent } from '@/components';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export function DiceGameComponent() {
   const { names, addName, removeName, reset } = useNameManager();
@@ -71,7 +72,7 @@ export function DiceGameComponent() {
       className="container mx-auto max-w-4xl"
     >
       <TitleWrapperComponent
-        type="random"
+        type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}
         title="주사위 굴리기"
         description="참가자들을 추가하고 주사위를 굴려 승자를 가려보세요!"
       />
@@ -101,7 +102,7 @@ export function DiceGameComponent() {
           </CardHeader> */}
         <CardContent className="p-6">
           <div className="mb-8">
-            <DiceInputComponent addName={addName} />
+            <DiceInputListComponent addName={addName} />
           </div>
 
           <div ref={resultRef}>

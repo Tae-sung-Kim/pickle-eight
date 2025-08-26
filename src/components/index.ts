@@ -6,3 +6,4 @@ export * from './analytics-client.component';
 export * from './loading.component';
 export * from './content-wrapper.component';
 export * from './title-warpper.component';
+export * from './back-hub.component';

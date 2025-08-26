@@ -1,8 +1,13 @@
 import { Metadata } from 'next';
 import { DrawOrderComponent } from './components';
 import { generateOgImageUrl } from '@/utils';
-import { ContentWrapperComponent, JsonLd } from '@/components';
+import {
+  BackHubPageComponent,
+  ContentWrapperComponent,
+  JsonLd,
+} from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '랜덤 순서/상품 추첨기 - 공정한 매칭 뽑기',
@@ -28,7 +33,9 @@ export const metadata: Metadata = {
     title: '랜덤 순서/상품 추첨기 - 공정한 매칭 뽑기',
     description:
       '참가자와 상품(번호)을 등록하면, 클릭으로 랜덤하게 순서 또는 상품을 추첨하는 공정한 매칭 추첨기! 실시간 공개, 애니메이션, 재추첨 등 다양한 기능 제공.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/draw-order',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/draw-order`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -54,7 +61,9 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/draw-order',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/draw-order`,
   },
   robots: { index: true, follow: true },
 };
@@ -62,14 +71,18 @@ export const metadata: Metadata = {
 export default function DrawOrderPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    {
+      name: '랜덤 도구 허브',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}`),
+    },
     {
       name: '랜덤 순서/상품 추첨기',
-      item: canonicalUrl('/random-picker/draw-order'),
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/draw-order`),
     },
   ]);
   return (
-    <ContentWrapperComponent type="random">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER} />
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <DrawOrderComponent />
     </ContentWrapperComponent>

@@ -2,11 +2,13 @@ import { Metadata } from 'next';
 import { TriviaQuizComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
+  BackHubPageComponent,
   ContentWrapperComponent,
   JsonLd,
   TitleWrapperComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '상식 퀴즈 - AI 상식/지식 문제 풀기',
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
         '상식 퀴즈 - AI 상식/지식 문제 풀기',
         'AI가 출제하는 상식/지식 퀴즈! 다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요.',
         '상식 퀴즈',
-        getOgTag({ href: '/quiz/trivia-quiz' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/trivia-quiz` })
       ),
     ],
   },
@@ -55,12 +57,14 @@ export const metadata: Metadata = {
         '상식 퀴즈 - AI 상식/지식 문제 풀기',
         'AI가 출제하는 상식/지식 퀴즈! 다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요.',
         '상식 퀴즈',
-        getOgTag({ href: '/quiz/trivia-quiz' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/trivia-quiz` })
       ),
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/trivia-quiz',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.QUIZ}/trivia-quiz`,
   },
   robots: { index: true, follow: true },
 };
@@ -68,15 +72,19 @@ export const metadata: Metadata = {
 export default function TriviaQuizPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '퀴즈 허브', item: canonicalUrl('/quiz') },
-    { name: '상식 퀴즈', item: canonicalUrl('/quiz/trivia-quiz') },
+    { name: '퀴즈 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}`) },
+    {
+      name: '상식 퀴즈',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}/trivia-quiz`),
+    },
   ]);
 
   return (
-    <ContentWrapperComponent type="quiz">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.QUIZ}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.QUIZ} />
       {/* Hero */}
       <TitleWrapperComponent
-        type="quiz"
+        type={MENU_GROUP_NAME_ENUM.QUIZ}
         title="상식/지식 퀴즈"
         description="다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요."
       />

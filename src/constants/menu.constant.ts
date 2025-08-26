@@ -1,13 +1,19 @@
 import { MenuGroupType } from '@/types';
 
+export enum MENU_GROUP_NAME_ENUM {
+  LOTTO = 'lotto',
+  RANDOM_PICKER = 'random-picker',
+  QUIZ = 'quiz',
+}
+
 export const MENU_LIST: MenuGroupType[] = [
   {
-    group: 'lotto',
+    group: MENU_GROUP_NAME_ENUM.LOTTO,
     label: '로또',
-    href: '/lotto',
+    href: '/' + MENU_GROUP_NAME_ENUM.LOTTO,
     items: [
       {
-        href: '/lotto/lotto-number',
+        href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/lotto-number',
         label: '번호 추천',
         icon: 'Ticket',
         colorClass: 'text-primary',
@@ -15,7 +21,7 @@ export const MENU_LIST: MenuGroupType[] = [
         example: '예: 로또 구매 전, 재미로 번호 조합이 필요할 때',
       },
       {
-        href: '/lotto/history',
+        href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/history',
         label: '회차별 당첨 결과',
         icon: 'CalendarSearch',
         colorClass: 'text-primary',
@@ -23,7 +29,7 @@ export const MENU_LIST: MenuGroupType[] = [
         example: '예: 최근 50회 결과 확인',
       },
       {
-        href: '/lotto/check',
+        href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/check',
         label: '번호 채점기',
         icon: 'CheckCircle2',
         colorClass: 'text-primary',
@@ -57,12 +63,12 @@ export const MENU_LIST: MenuGroupType[] = [
     ],
   },
   {
-    group: 'random',
+    group: MENU_GROUP_NAME_ENUM.RANDOM_PICKER,
     label: '랜덤 도구',
-    href: '/random-picker',
+    href: '/' + MENU_GROUP_NAME_ENUM.RANDOM_PICKER,
     items: [
       {
-        href: '/random-picker/name-random',
+        href: '/' + MENU_GROUP_NAME_ENUM.RANDOM_PICKER + '/name-random',
         label: '항목 뽑기',
         icon: 'Wand2',
         colorClass: 'text-primary',
@@ -70,7 +76,7 @@ export const MENU_LIST: MenuGroupType[] = [
         example: '예: 경품 당첨자 선정, 점심 메뉴 결정 등',
       },
       {
-        href: '/random-picker/seat-assignment',
+        href: '/' + MENU_GROUP_NAME_ENUM.RANDOM_PICKER + '/seat-assignment',
         label: '자리 배정',
         icon: 'Layout',
         colorClass: 'text-primary',
@@ -78,7 +84,7 @@ export const MENU_LIST: MenuGroupType[] = [
         example: '예: 모임 자리 배치, 시험 좌석 배정 등',
       },
       {
-        href: '/random-picker/team-assignment',
+        href: '/' + MENU_GROUP_NAME_ENUM.RANDOM_PICKER + '/team-assignment',
         label: '팀 배정',
         icon: 'Group',
         colorClass: 'text-primary',
@@ -86,7 +92,7 @@ export const MENU_LIST: MenuGroupType[] = [
         example: '예: 워크숍 조 편성, 모임 팀 배정 등',
       },
       {
-        href: '/random-picker/ladder-game',
+        href: '/' + MENU_GROUP_NAME_ENUM.RANDOM_PICKER + '/ladder-game',
         label: '사다리 타기',
         icon: 'SlidersHorizontal',
         colorClass: 'text-primary',
@@ -95,7 +101,7 @@ export const MENU_LIST: MenuGroupType[] = [
         example: '예: 점심 메뉴 결정, 벌칙 정하기, 역할 분배 등',
       },
       {
-        href: '/random-picker/dice-game',
+        href: '/' + MENU_GROUP_NAME_ENUM.RANDOM_PICKER + '/dice-game',
         label: '주사위 굴리기',
         icon: 'Dice5',
         colorClass: 'text-primary',
@@ -103,7 +109,7 @@ export const MENU_LIST: MenuGroupType[] = [
         example: '예: 순서 정하기, 게임 진행, 벌칙 정하기 등',
       },
       {
-        href: '/random-picker/draw-order',
+        href: '/' + MENU_GROUP_NAME_ENUM.RANDOM_PICKER + '/draw-order',
         label: '랜덤 매칭',
         icon: 'Shuffle',
         colorClass: 'text-primary',
@@ -113,40 +119,40 @@ export const MENU_LIST: MenuGroupType[] = [
     ],
   },
   {
-    group: 'quiz',
+    group: MENU_GROUP_NAME_ENUM.QUIZ,
     label: 'AI 퀴즈/게임',
-    href: '/quiz',
+    href: '/' + MENU_GROUP_NAME_ENUM.QUIZ,
     items: [
       {
-        href: '/quiz/english-word-quiz',
+        href: '/' + MENU_GROUP_NAME_ENUM.QUIZ + '/english-word-quiz',
         label: '영어 단어 퀴즈',
         icon: 'SpellCheck',
         colorClass: 'text-primary',
         description: '단어의 뜻을 보고 알맞은 영어 단어를 맞춰보세요.',
       },
       {
-        href: '/quiz/trivia-quiz',
+        href: '/' + MENU_GROUP_NAME_ENUM.QUIZ + '/trivia-quiz',
         label: '상식/지식 퀴즈',
         icon: 'Brain',
         colorClass: 'text-primary',
         description: '원하는 주제의 지식 및 상식 퀴즈를 풀어보세요.',
       },
       {
-        href: '/quiz/four-idiom-quiz',
+        href: '/' + MENU_GROUP_NAME_ENUM.QUIZ + '/four-idiom-quiz',
         label: '사자성어 퀴즈',
         icon: 'ScrollText',
         colorClass: 'text-primary',
         description: '사자성어를 맞추는 퀴즈를 풀어보세요.',
       },
       {
-        href: '/quiz/number-match-game',
+        href: '/' + MENU_GROUP_NAME_ENUM.QUIZ + '/number-match-game',
         label: '숫자 매칭 게임',
         icon: 'SquareStack',
         colorClass: 'text-primary',
         description: '같은 숫자를 찾는 게임을 해보세요.',
       },
       {
-        href: '/quiz/emoji-translation',
+        href: '/' + MENU_GROUP_NAME_ENUM.QUIZ + '/emoji-translation',
         label: '이모지 번역 퀴즈',
         icon: 'Smile',
         colorClass: 'text-primary',

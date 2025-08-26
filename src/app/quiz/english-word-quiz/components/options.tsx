@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { GptEnglishWordQuizResponse } from '@/types';
 
-type EnglishWordQuizOptionsComponentPropsType = {
+type EnglishWordQuizOptionsComponentType = {
   quiz: GptEnglishWordQuizResponse;
   isRevealed: boolean;
   selectedAnswer: string | null;
@@ -15,7 +15,7 @@ export function EnglishWordQuizOptionsComponent({
   isRevealed,
   selectedAnswer,
   onAnswerSelect,
-}: EnglishWordQuizOptionsComponentPropsType) {
+}: EnglishWordQuizOptionsComponentType) {
   const getButtonVariant = (option: string) => {
     if (!isRevealed) return 'outline';
     if (option === quiz.answer) return 'default';

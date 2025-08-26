@@ -57,7 +57,7 @@ export function LottoGeneratorControlsComponent({
         className={cn(
           'w-full py-6 text-base font-bold',
           'bg-primary text-primary-foreground hover:bg-primary/90',
-          'shadow-lg hover:shadow-xl',
+          'shadow-sm hover:shadow',
           'transition-all duration-300',
           'disabled:opacity-70'
         )}

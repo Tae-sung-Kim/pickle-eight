@@ -1,6 +1,6 @@
 'use client';
 
-import { MENU_LIST } from '@/constants';
+import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib';
 import {
@@ -20,50 +20,50 @@ export function PcMenuLayout() {
   return (
     <NavigationMenu viewport={false}>
       <NavigationMenuList>
-        {MENU_LIST.map((group) => (
-          <NavigationMenuItem key={group.group}>
+        {MENU_LIST.map(({ group, href, label, items }) => (
+          <NavigationMenuItem key={group}>
             <div className="flex items-center">
-              {group.href ? (
+              {href ? (
                 <Link
-                  href={group.href}
+                  href={href}
                   className="px-4 text-base font-semibold flex items-center gap-2 hover:text-primary"
                 >
-                  {group.group === 'lotto' && (
+                  {group === MENU_GROUP_NAME_ENUM.LOTTO && (
                     <span className="text-xl">🎱</span>
                   )}
-                  {group.group === 'random' && (
+                  {group === MENU_GROUP_NAME_ENUM.RANDOM_PICKER && (
                     <span className="text-xl">🎲</span>
                   )}
-                  {group.group === 'quiz' && (
+                  {group === MENU_GROUP_NAME_ENUM.QUIZ && (
                     <span className="text-xl">🤖</span>
                   )}
-                  {group.label}
+                  {label}
                 </Link>
               ) : (
                 <span className="px-4 text-base font-semibold flex items-center gap-2">
-                  {group.group === 'lotto' && (
+                  {group === MENU_GROUP_NAME_ENUM.LOTTO && (
                     <span className="text-xl">🎱</span>
                   )}
-                  {group.group === 'random' && (
+                  {group === MENU_GROUP_NAME_ENUM.RANDOM_PICKER && (
                     <span className="text-xl">🎲</span>
                   )}
-                  {group.group === 'quiz' && (
+                  {group === MENU_GROUP_NAME_ENUM.QUIZ && (
                     <span className="text-xl">🤖</span>
                   )}
-                  {group.label}
+                  {label}
                 </span>
               )}
               <NavigationMenuTrigger
-                aria-label={`${group.label} 메뉴 열기`}
+                aria-label={`${label} 메뉴 열기`}
                 className="px-2 h-9"
-                title={`${group.label} 메뉴 열기`}
+                title={`${label} 메뉴 열기`}
               >
-                <span className="sr-only">{group.label} 메뉴 열기</span>
+                <span className="sr-only">{label} 메뉴 열기</span>
               </NavigationMenuTrigger>
             </div>
             <NavigationMenuContent>
               <ul className="w-[200px] p-1.5">
-                {group.items.map((item) => {
+                {items.map((item) => {
                   const isActive = pathname.startsWith(item.href);
                   return (
                     <li key={item.href}>

@@ -8,26 +8,10 @@ type ContentWarpperType = {
 };
 
 export function ContentWrapperComponent({
-  type = 'lotto',
+  type,
   children,
 }: ContentWarpperType) {
-  if (type === 'random') {
-    return (
-      <div
-        className={`w-full py-12 px-4 sm:px-6 lg:px-8 ${BACKGROUND_COLORS[type]}`}
-      >
-        {children}
-      </div>
-    );
-  } else if (type === 'quiz') {
-    return (
-      <div className={`w-full ${BACKGROUND_COLORS[type]}`}>{children}</div>
-    );
-  } else {
-    return (
-      <div className={`w-full ${BACKGROUND_COLORS[type]}`}>{children}</div>
-    );
-  }
+  return <div className={`w-full ${BACKGROUND_COLORS[type]}`}>{children}</div>;
 }
 
 export default ContentWrapperComponent;

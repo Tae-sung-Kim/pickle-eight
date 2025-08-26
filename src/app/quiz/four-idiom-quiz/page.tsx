@@ -2,11 +2,13 @@ import { Metadata } from 'next';
 import { FourIdiomQuizComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
+  BackHubPageComponent,
   ContentWrapperComponent,
   JsonLd,
   TitleWrapperComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
@@ -32,7 +34,9 @@ export const metadata: Metadata = {
     title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
     description:
       'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요. 난이도, 힌트, 일일 제한 등 다양한 기능 제공!',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/four-idiom-quiz',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.QUIZ}/four-idiom-quiz`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -41,7 +45,7 @@ export const metadata: Metadata = {
         '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
         'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요. 난이도, 힌트, 일일 제한 등 다양한 기능 제공!',
         '사자성어 퀴즈',
-        getOgTag({ href: '/quiz/four-idiom-quiz' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/four-idiom-quiz` })
       ),
     ],
   },
@@ -55,12 +59,14 @@ export const metadata: Metadata = {
         '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',
         'AI가 출제하는 사자성어 퀴즈! 뜻을 보고 정답 4글자를 맞혀보세요. 난이도, 힌트, 일일 제한 등 다양한 기능 제공!',
         '사자성어 퀴즈',
-        getOgTag({ href: '/quiz/four-idiom-quiz' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/four-idiom-quiz` })
       ),
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/four-idiom-quiz',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.QUIZ}/four-idiom-quiz`,
   },
   robots: { index: true, follow: true },
 };
@@ -68,15 +74,19 @@ export const metadata: Metadata = {
 export default function FourIdiomQuizPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '퀴즈 허브', item: canonicalUrl('/quiz') },
-    { name: '사자성어 퀴즈', item: canonicalUrl('/quiz/four-idiom-quiz') },
+    { name: '퀴즈 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}`) },
+    {
+      name: '사자성어 퀴즈',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}/four-idiom-quiz`),
+    },
   ]);
 
   return (
-    <ContentWrapperComponent type="quiz">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.QUIZ}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.QUIZ} />
       {/* Hero */}
       <TitleWrapperComponent
-        type="quiz"
+        type={MENU_GROUP_NAME_ENUM.QUIZ}
         title="사자성어 퀴즈"
         description="뜻을 보고 정답 4글자를 맞혀보세요. 난이도 선택과 힌트 기능을 지원합니다."
       />

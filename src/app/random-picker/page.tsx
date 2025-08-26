@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MENU_LIST } from '@/constants';
+import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
 import { JsonLd } from '@/components';
 import {
   buildMetadata,
@@ -44,13 +44,17 @@ export const metadata: Metadata = {
 };
 
 const randomItems = (
-  MENU_LIST.find((g) => g.group === 'random')?.items ?? []
+  MENU_LIST.find((g) => g.group === MENU_GROUP_NAME_ENUM.RANDOM_PICKER)
+    ?.items ?? []
 ).map((it) => ({ href: it.href, label: it.label, desc: it.description }));
 
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Pickle Eight';
 const crumbs = jsonLdBreadcrumb([
   { name: siteName, item: canonicalUrl('/') },
-  { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+  {
+    name: '랜덤 도구 허브',
+    item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}`),
+  },
 ]);
 
 const theme = {

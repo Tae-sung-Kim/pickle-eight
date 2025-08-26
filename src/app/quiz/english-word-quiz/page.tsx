@@ -1,7 +1,12 @@
 import { Metadata } from 'next';
 import { EnglishWordQuizComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
-import { ContentWrapperComponent, TitleWrapperComponent } from '@/components';
+import {
+  BackHubPageComponent,
+  ContentWrapperComponent,
+  TitleWrapperComponent,
+} from '@/components';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: 'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
@@ -23,7 +28,9 @@ export const metadata: Metadata = {
     title: 'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
     description:
       '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/english-word-quiz',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.QUIZ}/english-word-quiz`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -32,7 +39,7 @@ export const metadata: Metadata = {
         'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
         '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
         'AI 영어 단어 퀴즈',
-        getOgTag({ href: '/quiz/english-word-quiz' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/english-word-quiz` })
       ),
     ],
   },
@@ -46,21 +53,24 @@ export const metadata: Metadata = {
         'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
         '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
         'AI 영어 단어 퀴즈',
-        getOgTag({ href: '/quiz/english-word-quiz' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/english-word-quiz` })
       ),
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/quiz/english-word-quiz',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.QUIZ}/english-word-quiz`,
   },
 };
 
 export default function EnglishWordQuizPage() {
   return (
-    <ContentWrapperComponent type="quiz">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.QUIZ}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.QUIZ} />
       {/* Hero */}
       <TitleWrapperComponent
-        type="quiz"
+        type={MENU_GROUP_NAME_ENUM.QUIZ}
         title="영어 단어 퀴즈"
         description="단어의 뜻을 보고 알맞은 영어 단어를 맞춰보세요!"
       />

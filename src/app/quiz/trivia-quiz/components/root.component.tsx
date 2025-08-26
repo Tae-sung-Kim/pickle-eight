@@ -1,8 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDailyLimit } from '@/hooks/use-daily-limit.hook';
-import { useTriviaQuizStore } from '@/hooks';
+import { useTriviaQuizStore, useDailyLimit } from '@/hooks';
 import { TriviaQuizCategoryType, TriviaQuizDifficultyType } from '@/types';
 import { useGptTriviaQuizQuery } from '@/queries';
 import { toast } from 'sonner';

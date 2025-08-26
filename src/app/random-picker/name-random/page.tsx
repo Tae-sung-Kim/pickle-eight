@@ -1,8 +1,13 @@
 import { Metadata } from 'next';
 import { NameRandomComponent } from './components';
 import { generateOgImageUrl } from '@/utils';
-import { ContentWrapperComponent, JsonLd } from '@/components';
+import {
+  BackHubPageComponent,
+  ContentWrapperComponent,
+  JsonLd,
+} from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
@@ -29,7 +34,9 @@ export const metadata: Metadata = {
     title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
     description:
       '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/name-random',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/name-random`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -55,7 +62,9 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/name-random',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/name-random`,
   },
   robots: { index: true, follow: true },
 };
@@ -63,14 +72,18 @@ export const metadata: Metadata = {
 export default function NameRandomPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    {
+      name: '랜덤 도구 허브',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}`),
+    },
     {
       name: '항목 랜덤 추첨기',
-      item: canonicalUrl('/random-picker/name-random'),
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/name-random`),
     },
   ]);
   return (
-    <ContentWrapperComponent type="random">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER} />
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <NameRandomComponent />
     </ContentWrapperComponent>

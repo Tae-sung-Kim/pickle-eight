@@ -1,8 +1,13 @@
 import { generateOgImageUrl } from '@/utils';
 import { LadderGameComponent } from './components';
 import { Metadata } from 'next';
-import { ContentWrapperComponent, JsonLd } from '@/components';
+import {
+  BackHubPageComponent,
+  ContentWrapperComponent,
+  JsonLd,
+} from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '사다리 타기 게임 - 랜덤 결과 추첨기',
@@ -29,7 +34,9 @@ export const metadata: Metadata = {
     title: '사다리 타기 게임 - 랜덤 결과 추첨기',
     description:
       '참가자와 상품을 입력하면, 사다리 타기를 통해 랜덤하게 결과를 추첨합니다. 애니메이션, 실시간 결과 공개, 재시도 등 다양한 기능 제공!',
-    url: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/ladder-game',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/ladder-game`,
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -55,7 +62,9 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL + '/random-picker/ladder-game',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL +
+      `/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/ladder-game`,
   },
   robots: { index: true, follow: true },
 };
@@ -63,14 +72,18 @@ export const metadata: Metadata = {
 export default function LadderGamePage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '랜덤 도구 허브', item: canonicalUrl('/random-picker') },
+    {
+      name: '랜덤 도구 허브',
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}`),
+    },
     {
       name: '사다리 타기 게임',
-      item: canonicalUrl('/random-picker/ladder-game'),
+      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.RANDOM_PICKER}/ladder-game`),
     },
   ]);
   return (
-    <ContentWrapperComponent type="random">
+    <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}>
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER} />
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <LadderGameComponent />
     </ContentWrapperComponent>

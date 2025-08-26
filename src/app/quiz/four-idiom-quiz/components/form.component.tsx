@@ -9,7 +9,7 @@ import {
 
 type FormValues = { answer: string };
 
-type FourIdiomQuizFormComponentPropsType = {
+type FourIdiomQuizFormComponentType = {
   handleSubmit: UseFormHandleSubmit<FormValues>;
   onSubmit: (data: FormValues) => void;
   showAnswer: boolean;
@@ -25,7 +25,7 @@ export function FourIdiomQuizFormComponent({
   isPending,
   register,
   formState,
-}: FourIdiomQuizFormComponentPropsType) {
+}: FourIdiomQuizFormComponentType) {
   return (
     <>
       <form

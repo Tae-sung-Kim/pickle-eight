@@ -1,6 +1,6 @@
 'use client';
 import { NavLinkComponent } from '@/components';
-import { MENU_LIST } from '@/constants';
+import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
 import { Menu, X } from 'lucide-react';
 import {
   Sheet,
@@ -59,33 +59,33 @@ export function MobileMenuLayout() {
           </div>
           {/* 메뉴 리스트 */}
           <nav className="flex-1 overflow-y-auto px-4 pb-6">
-            {MENU_LIST.map((group) => (
-              <div key={group.group} className="mb-6">
+            {MENU_LIST.map(({ group, href, label, items }) => (
+              <div key={group} className="mb-6">
                 <div className="flex items-center gap-2 px-2 mb-2">
-                  {group.group === 'lotto' && (
+                  {group === MENU_GROUP_NAME_ENUM.LOTTO && (
                     <span className="text-xl">🎱</span>
                   )}
-                  {group.group === 'random' && (
+                  {group === MENU_GROUP_NAME_ENUM.RANDOM_PICKER && (
                     <span className="text-xl">🎲</span>
                   )}
-                  {group.group === 'quiz' && (
+                  {group === MENU_GROUP_NAME_ENUM.QUIZ && (
                     <span className="text-xl">🤖</span>
                   )}
-                  {group.href ? (
+                  {href ? (
                     <Link
-                      href={group.href}
+                      href={href}
                       className="text-xs font-medium text-gray-700 uppercase tracking-wider hover:text-primary"
                     >
-                      {group.label}
+                      {label}
                     </Link>
                   ) : (
                     <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      {group.label}
+                      {label}
                     </span>
                   )}
                 </div>
                 <div className="space-y-1">
-                  {group.items.map((item) => {
+                  {items.map((item) => {
                     const isActive = pathname.startsWith(item.href);
                     return (
                       <SheetClose asChild key={item.href}>

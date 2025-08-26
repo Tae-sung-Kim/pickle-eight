@@ -7,6 +7,7 @@ import { LadderType, LadderConfigType, LadderResultType } from '@/types';
 import LadderInputComponent from './input-list.component';
 import LadderGameSectionComponent from './section.component';
 import { TitleWrapperComponent } from '@/components';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export function LadderGameComponent() {
   const [config, setConfig] = useState<LadderConfigType | null>(null);
@@ -31,7 +32,7 @@ export function LadderGameComponent() {
     <div className="container mx-auto h-fit p-4">
       <div className="max-w-6xl mx-auto">
         <TitleWrapperComponent
-          type="random"
+          type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}
           title="사다리 타기 게임"
           description="참가자와 상품을 매칭해보세요"
         />
