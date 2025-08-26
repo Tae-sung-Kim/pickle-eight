@@ -15,9 +15,10 @@ async function fetchMulti(): Promise<{
   todo: string;
   menu: string;
 }> {
-  const fortunePrompt = '오늘 하루의 운세를 한국어로 한 줄로 알려줘.';
+  const fortunePrompt =
+    '오늘 하루의 운세를 한국어로 한 줄로 알려줘. 자연스러운 한국어로 작성하고, 맞춤법과 띄어쓰기를 교정해. 의미가 모호한 표현은 쓰지 마.';
   const cheerPrompt =
-    '오늘 하루 힘이 되는 응원 문구를 한국어로 한 줄로 만들어줘.';
+    '오늘 하루 힘이 되는 응원 문구를 한국어로 한 줄로 만들어줘. 자연스러운 한국어로 작성하고, 맞춤법과 띄어쓰기를 교정해. 의미가 모호한 표현은 쓰지 마.';
   const { menuPrompt, todoPrompt } = getTodayPrompts();
   const [fortune, cheer, todo, menu] = await Promise.all([
     callOpenAI({ messages: [{ role: 'user', content: fortunePrompt }] }),
@@ -42,6 +43,7 @@ async function fetchSingle(): Promise<{
     '- 각 값은 줄바꿈(\n) 없이 한 줄로 생성합니다.',
     '- 이모지 사용 가능하나 과도하지 않게 해주세요.',
     '- 마크다운, 설명, 불필요한 말 없이 JSON만 출력하세요.',
+    '- 자연스러운 한국어로 작성하고, 맞춤법/띄어쓰기를 교정한 뒤 반환합니다. 의미가 모호한 표현(예: \u2018들수만 된\u2019)이나 어색한 직역은 사용하지 않습니다.',
     '',
     '스키마(JSON):',
     '{',
@@ -60,6 +62,8 @@ async function fetchSingle(): Promise<{
 
   const raw = await callOpenAI({
     messages: [{ role: 'user', content: prompt }],
+    json: true,
+    temperature: 0.3,
   });
   const text = stripCodeFences(raw);
   const json = JSON.parse(text) as {

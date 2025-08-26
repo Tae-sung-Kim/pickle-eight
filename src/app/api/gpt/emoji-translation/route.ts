@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     if (parsed.data.action === 'generate') {
       const category = parsed.data.category ?? '랜덤';
-      const prompt = `너는 한국어 이모지 퀴즈 출제자야. 아래 형식으로 한 문제를 만들어줘.
+      const prompt = `너는 한국어 이모지 퀴즈 출제자야. 아래 형식으로 한 문제를 만들어줘. JSON만 출력해.
 필수 조건(공통):
 - 카테고리: ${category}
 - 이모지만으로 표현 (2~6개)
@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
 - 실제로 통용되는 명칭/작품/표현만 사용(신조어/조어/가상 금지). 가능하면 표제형/공식 표기 사용.
 - 문장형 감탄/명령 금지. 보통명사/작품명/관용구 등 널리 쓰이는 표현 사용.
 - 힌트는 정답을 간접적으로 설명하되, 이모지와 의미적으로 일관되어야 함.
+- 최근 생성과 중복되는 정답/패턴을 피하고 참신하게 구성. 다양성 토큰: nonce=${Date.now()}.
 카테고리별 추가 규칙:
 - 영화: 실제 영화 제목만. 이모지는 영화의 핵심 요소(배경, 인물 관계, 테마, 상징)와 제목의 핵심 명사/키워드를 직접 연상시키는 아이콘을 포함해야 함.
   예: '해리포터와 불의 잔'이라면 잔/컵/트로피류와 불/화염 이모지 중 최소 1개 이상 포함. 시리즈 공통 요소(모자/안경/막대 등)만으로는 금지.
@@ -80,7 +81,7 @@ export async function POST(req: NextRequest) {
 - 영화: 실제 개봉/발매된 영화 제목이어야 함(번역 제목 포함 허용). 팬메이드/가상의 제목 금지.
 - 음식: 실제로 통용되는 음식/요리명이어야 함. 조어 금지.
 - 일상: 일반적으로 통용되는 보통명사/개념 또는 널리 쓰이는 관용구/사자성어/관용표현 허용. 개인적 감탄/명령/유행어는 금지.
-- 랜덤: 위 범주 중 하나로 합당하게 분류 가능한 통용 명칭 또는 널리 쓰이는 관용구/사자성어 허용. 개인적 감탄/명령/유행어 금지.
+- 랜덤: 위 범주 중 하나로 합당하게 분류 가능한 통용 명칭 또는 넔리 쓰이는 관용구/사자성어 허용. 개인적 감탄/명령/유행어 금지.
 요구사항:
 - 통용되지 않으면 ok=false.
 - 통용되면 대표 표기(표제형/정식명칭)를 canonical에 제시.
@@ -147,7 +148,6 @@ export async function POST(req: NextRequest) {
 - 제목에서 핵심 명사/상징 1~3개 추출.
 - 이모지가 그 키워드와 직접적으로 매칭되는 아이콘을 최소 1개 이상 포함해야 함(가능하면 2개).
 - 시리즈 공통 상징(안경/마법 모자/마법봉 등)만으로는 인정하지 않음.
-출력(JSON): {"ok": true|false, "keywords": string[]}
 출력(JSON): {"ok": true|false}
 입력: 제목=${answer}, 이모지=${emojis}`;
         const content = await callOpenAI({
@@ -175,12 +175,18 @@ export async function POST(req: NextRequest) {
       while (attempts < 6) {
         const content = await callOpenAI({
           messages: [
-            { role: 'system', content: '너는 창의적인 이모지 퀴즈 출제자야.' },
+            {
+              role: 'system',
+              content:
+                '너는 창의적인 이모지 퀴즈 출제자야. 반드시 JSON만 반환.',
+            },
             { role: 'user', content: prompt },
           ],
           max_tokens: 200,
           temperature: 0.4,
           json: true,
+          presence_penalty: 0.1,
+          frequency_penalty: 0.3,
         });
         const cleaned = content.replace(/```json|```/g, '').trim();
         const out = JSON.parse(cleaned) as EmojiQuizProblem;
@@ -227,14 +233,14 @@ export async function POST(req: NextRequest) {
 
     // grade
     const { emojis, answer, userGuess } = parsed.data;
-    const prompt = `다음 이모지 퀴즈의 정답 여부를 판정해줘. 의미상 동일/매우 유사하면 정답.
+    const prompt = `다음 이모지 퀴즈의 정답 여부를 판정해줘. 의미상 동일/매우 유사하면 정답. JSON만 출력.
 - 이모지: ${emojis}
 - 정답: ${answer}
 - 사용자 답: ${userGuess}
 출력(JSON): {"correct": boolean, "score": 0|1, "feedback": string }`;
     const content = await callOpenAI({
       messages: [
-        { role: 'system', content: '너는 간결한 채점기야.' },
+        { role: 'system', content: '너는 간결한 채점기야. 항상 JSON만 반환.' },
         { role: 'user', content: prompt },
       ],
       max_tokens: 150,

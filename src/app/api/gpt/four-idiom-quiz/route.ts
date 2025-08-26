@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
   const prompt = `
 당신은 한국어 사자성어 퀴즈 출제 전문가입니다.
-정답 사자성어인 '${targetIdioms.answer}'에 대한 퀴즈를 생성해주세요.
+JSON만 출력하세요(마크다운 금지). 정답 사자성어인 '${targetIdioms.answer}'에 대한 퀴즈를 생성해주세요.
 
 [규칙]
 1.  **문제(question)**: '${targetIdioms.meaning}'이라는 뜻을 가진 사자성어를 맞히는 문제입니다. 뜻을 직접적으로 설명하는 질문을 만드세요.
@@ -43,9 +43,13 @@ export async function POST(req: NextRequest) {
   for (let i = 0; i < 3; i++) {
     try {
       const data = await callOpenAI({
-        messages: [{ role: 'user', content: prompt }],
+        messages: [
+          { role: 'system', content: '항상 JSON만 반환하세요.' },
+          { role: 'user', content: prompt },
+        ],
         max_tokens: 400,
         temperature: 0.4,
+        json: true,
       });
       const text = data ?? '{}';
       const json = JSON.parse(text);

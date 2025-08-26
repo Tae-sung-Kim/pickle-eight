@@ -5,33 +5,51 @@ export const runtime = 'edge';
 
 export async function POST() {
   const prompt = `
-    You are an English teacher who creates fun word quizzes.
-    Please create one English word quiz based on the following rules:
+    You are a precise English teacher who creates one multiple-choice word quiz.
+    Output strictly JSON only. No markdown, no explanations outside JSON. Korean is used only in the definition and explanation.
 
-    1.  The quiz must be in JSON format.
-    2.  The user has to guess the English word that matches the given definition.
-    3.  Provide four multiple-choice options, one of which is the correct answer.
-    4.  The JSON object must have the following keys: "quiz", "options", "answer", "explanation".
-    5.  The "quiz" value should be the definition of the word in Korean.
-    6.  The "options" value should be an array of four English words.
-    7.  The "answer" value should be the correct English word.
-    8.  The "explanation" value should provide the Korean meaning of the answer and an example sentence in both English and Korean.
+    Constraints:
+    - The quiz must be solvable and unambiguous.
+    - Options must be four distinct English words with different meanings.
+    - No near-duplicates, no inflected forms of the same lemma, no obvious synonyms among options.
+    - The correct answer must be exactly one of the options (case-sensitive match).
+    - Prefer B2~C1 vocabulary level.
+    - Avoid overly common repeats across runs. Diversity token: nonce=${Date.now()}.
 
-    Example format:
+    JSON Schema:
     {
-      "quiz": "어떤 것이나 누군가를 매우 좋아하고 열정적으로 지지하는 사람",
-      "options": ["Detractor", "Adversary", "Enthusiast", "Critic"],
+      "quiz": string,            // Korean definition of the target word, one line
+      "options": string[4],      // Four distinct English words
+      "answer": string,          // Must be exactly one of options
+      "explanation": string      // Korean meaning + one EN example + its KR translation
+    }
+
+    Example:
+    {
+      "quiz": "어떤 분야에 대해 깊은 지식과 열정을 가진 사람",
+      "options": ["Enthusiast", "Novice", "Opponent", "Skeptic"],
       "answer": "Enthusiast",
-      "explanation": "열광적인 팬. 예문: He is a huge enthusiast of jazz music. (그는 재즈 음악의 열렬한 팬이다.)"
+      "explanation": "열광적인 지지자. 예: He is an enthusiast of jazz. (그는 재즈를 열렬히 좋아한다.)"
     }
   `;
 
   for (let i = 0; i < 3; i++) {
     try {
       const data = await callOpenAI({
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 1,
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are a meticulous quiz generator. Always respond with strict JSON matching the schema.',
+          },
+          { role: 'user', content: prompt },
+        ],
+        temperature: 0.4,
         json: true,
+        presence_penalty: 0.1,
+        frequency_penalty: 0.3,
+        top_p: 0.9,
+        max_tokens: 350,
       });
 
       const quizData = JSON.parse(data || '{}');
@@ -40,7 +58,10 @@ export async function POST() {
         quizData.quiz &&
         quizData.options &&
         quizData.answer &&
-        quizData.explanation
+        quizData.explanation &&
+        Array.isArray(quizData.options) &&
+        quizData.options.length === 4 &&
+        quizData.options.includes(quizData.answer)
       ) {
         return NextResponse.json(quizData);
       }
