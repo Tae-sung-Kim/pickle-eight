@@ -1,7 +1,11 @@
 import { Metadata } from 'next';
 import { FourIdiomQuizComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
-import { JsonLd } from '@/components';
+import {
+  ContentWrapperComponent,
+  JsonLd,
+  TitleWrapperComponent,
+} from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -69,11 +73,18 @@ export default function FourIdiomQuizPage() {
   ]);
 
   return (
-    <div className="flex items-center justify-center bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50 py-8">
-      <div className="w-full max-w-lg mx-auto rounded-2xl shadow-2xl bg-white/90 p-8 relative">
+    <ContentWrapperComponent type="quiz">
+      {/* Hero */}
+      <TitleWrapperComponent
+        type="quiz"
+        title="사자성어 퀴즈"
+        description="뜻을 보고 정답 4글자를 맞혀보세요. 난이도 선택과 힌트 기능을 지원합니다."
+      />
+      {/* Content */}
+      <section className="mx-auto max-w-3xl px-4 pb-16">
         <JsonLd data={[jsonLdWebSite(), crumbs]} />
         <FourIdiomQuizComponent />
-      </div>
-    </div>
+      </section>
+    </ContentWrapperComponent>
   );
 }

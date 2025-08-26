@@ -1,7 +1,11 @@
 import { Metadata } from 'next';
 import { TriviaQuizComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
-import { JsonLd } from '@/components';
+import {
+  ContentWrapperComponent,
+  JsonLd,
+  TitleWrapperComponent,
+} from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -69,10 +73,18 @@ export default function TriviaQuizPage() {
   ]);
 
   return (
-    <section className="flex flex-col items-center justify-start py-10">
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
-      <h1 className="text-3xl font-bold mb-2 text-primary">상식/지식 퀴즈</h1>
-      <TriviaQuizComponent />
-    </section>
+    <ContentWrapperComponent type="quiz">
+      {/* Hero */}
+      <TitleWrapperComponent
+        type="quiz"
+        title="상식/지식 퀴즈"
+        description="다양한 카테고리와 난이도로 오늘의 퀴즈에 도전해보세요."
+      />
+      {/* Content */}
+      <section className="mx-auto max-w-3xl px-4 pb-16">
+        <JsonLd data={[jsonLdWebSite(), crumbs]} />
+        <TriviaQuizComponent />
+      </section>
+    </ContentWrapperComponent>
   );
 }

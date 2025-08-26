@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { EnglishWordQuizComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
+import { ContentWrapperComponent, TitleWrapperComponent } from '@/components';
 
 export const metadata: Metadata = {
   title: 'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
@@ -56,16 +57,20 @@ export const metadata: Metadata = {
 
 export default function EnglishWordQuizPage() {
   return (
-    <div className="flex flex-col items-center w-full bg-muted p-4">
-      <div className="w-full max-w-2xl mt-8 mb-20">
-        <h1 className="text-4xl font-bold text-center text-foreground mb-2">
-          영어 단어 퀴즈
-        </h1>
-        <p className="text-center text-muted-foreground mb-8">
-          단어의 뜻을 보고 알맞은 영어 단어를 맞춰보세요!
-        </p>
-        <EnglishWordQuizComponent />
-      </div>
-    </div>
+    <ContentWrapperComponent type="quiz">
+      {/* Hero */}
+      <TitleWrapperComponent
+        type="quiz"
+        title="영어 단어 퀴즈"
+        description="단어의 뜻을 보고 알맞은 영어 단어를 맞춰보세요!"
+      />
+
+      {/* Content */}
+      <section className="mx-auto max-w-3xl px-4 pb-16">
+        <div className="mt-2">
+          <EnglishWordQuizComponent />
+        </div>
+      </section>
+    </ContentWrapperComponent>
   );
 }

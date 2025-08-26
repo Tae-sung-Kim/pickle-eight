@@ -1,13 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useDailyLimit } from '@/hooks/use-daily-limit.hook';
+import { useDailyLimit } from '@/hooks';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useGptFourIdiomQuizQuery } from '@/queries';
-import { BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { FOUR_IDIOMS_COLLECTION } from '@/constants/four-idiom-quiz.constant';
+import { FOUR_IDIOMS_COLLECTION } from '@/constants';
 import { FourIdiomQuizDifficultyType } from '@/types';
 import FourIdiomQuizDifficultyComponent from './difficulty.component';
 import FourIdiomQuizAnswerComponent from './answer.component';
@@ -109,23 +108,19 @@ export function FourIdiomQuizComponent() {
     return null;
   }
   return (
-    <>
+    <div className="m-5 p-5 bg-white/80 border-2 border-muted rounded-lg">
       <div className="flex items-center gap-2 mb-2">
-        <BookOpen className="w-7 h-7 text-violet-500" />
-        <h2 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent">
-          사자성어 퀴즈
-        </h2>
+        {/* 난이도 선택 */}
+        <FourIdiomQuizDifficultyComponent
+          difficulty={difficulty}
+          isPending={isPending}
+          difficultyDisabled={difficultyDisabled}
+          onDifficuly={handleDifficuly}
+        />
         <span className="ml-auto inline-flex items-center gap-1 bg-blue-100 text-blue-600 rounded-full px-3 py-1 text-xs font-semibold">
           남은 기회 {limit - used} / {limit}
         </span>
       </div>
-      {/* 난이도 선택 */}
-      <FourIdiomQuizDifficultyComponent
-        difficulty={difficulty}
-        isPending={isPending}
-        difficultyDisabled={difficultyDisabled}
-        onDifficuly={handleDifficuly}
-      />
       {!isAllUsed ? (
         <>
           <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-violet-50 to-pink-50 border border-violet-100 text-gray-800 font-medium shadow-inner">
@@ -178,7 +173,7 @@ export function FourIdiomQuizComponent() {
           내일 다시 도전해 주세요.
         </div>
       )}
-    </>
+    </div>
   );
 }
 

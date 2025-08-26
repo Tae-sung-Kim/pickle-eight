@@ -122,14 +122,16 @@ export function TriviaQuizComponent() {
   return (
     <>
       <motion.div
-        className="mb-6 text-gray-700"
+        className="mb-4 flex justify-end"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.15 }}
+        aria-label="오늘 남은 문제"
       >
-        오늘 남은 문제:{' '}
-        <span className="font-semibold text-violet-600">{limit - used}</span> /{' '}
-        <span className="font-semibold">{limit}</span>
+        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-100 text-indigo-700 px-3 py-1 text-xs font-semibold border border-indigo-200 shadow-sm dark:bg-indigo-900/40 dark:text-indigo-200 dark:border-indigo-800">
+          오늘 남은 문제: <span className="font-bold">{limit - used}</span> /{' '}
+          <span className="font-bold">{limit}</span>
+        </span>
       </motion.div>
       <AnimatePresence mode="wait">
         {allDone ? (

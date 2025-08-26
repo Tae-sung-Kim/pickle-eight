@@ -24,8 +24,8 @@ import { MenuSectionKeyType } from '@/types';
 
 function mapGroupToSection(group: string): MenuSectionKeyType {
   if (group === 'lotto') return 'lotto';
-  if (group === 'random') return 'tools';
-  return 'ai';
+  if (group === 'random') return 'random';
+  return 'quiz';
 }
 
 const ICONS: Record<string, LucideIcon> = {

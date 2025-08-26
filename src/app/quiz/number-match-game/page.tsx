@@ -1,7 +1,11 @@
 import { Metadata } from 'next';
 import { NumberMatchGameComponent } from './components';
 import { generateOgImageUrl, getOgTag } from '@/utils';
-import { JsonLd } from '@/components';
+import {
+  ContentWrapperComponent,
+  JsonLd,
+  TitleWrapperComponent,
+} from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -69,14 +73,18 @@ export default function NumberMatchGamePage() {
   ]);
 
   return (
-    <div className="flex items-center justify-center bg-gradient-to-br from-emerald-50 via-cyan-50 to-sky-50 py-8">
-      <div className="w-full max-w-4xl space-y-8">
-        <h1 className="text-center text-4xl font-bold tracking-tight">
-          숫자 매칭 게임
-        </h1>
+    <ContentWrapperComponent type="quiz">
+      {/* Hero */}
+      <TitleWrapperComponent
+        type="quiz"
+        title="숫자 매칭 게임"
+        description="기억력과 집중력을 높이는 숫자 카드 매칭 게임에 도전해보세요."
+      />
+      {/* Content */}
+      <section className="mx-auto max-w-4xl px-4 pb-16">
         <JsonLd data={[jsonLdWebSite(), crumbs]} />
         <NumberMatchGameComponent />
-      </div>
-    </div>
+      </section>
+    </ContentWrapperComponent>
   );
 }

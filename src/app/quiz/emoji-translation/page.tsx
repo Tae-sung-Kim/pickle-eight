@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import { generateOgImageUrl, getOgTag } from '@/utils';
 import { EmojiTranslationComponent } from './components';
-import { JsonLd } from '@/components';
+import {
+  ContentWrapperComponent,
+  JsonLd,
+  TitleWrapperComponent,
+} from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -59,19 +63,13 @@ export default function EmojiTranslationPage() {
     { name: '이모지 번역 퀴즈', item: canonicalUrl('/quiz/emoji-translation') },
   ]);
   return (
-    <div className="w-full">
+    <ContentWrapperComponent type="quiz">
       {/* Hero */}
-      <section className="w-full bg-gradient-to-b from-muted/50 to-transparent">
-        <div className="mx-auto max-w-3xl px-4 pt-12 pb-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
-            이모지 번역 퀴즈
-          </h1>
-          <p className="mt-3 text-base sm:text-lg text-muted-foreground">
-            이모지 조합이 의미하는 것을 맞혀보세요. 실제로 통용되는
-            명칭/작품/표현만 정답입니다.
-          </p>
-        </div>
-      </section>
+      <TitleWrapperComponent
+        type="quiz"
+        title="이모지 번역 퀴즈"
+        description="이모지 조합이 의미하는 것을 맞혀보세요. 실제로 통용되는 명칭/작품/표현만 정답입니다."
+      />
 
       {/* Content */}
       <section className="mx-auto max-w-3xl px-4 pb-16">
@@ -80,6 +78,6 @@ export default function EmojiTranslationPage() {
           <EmojiTranslationComponent />
         </div>
       </section>
-    </div>
+    </ContentWrapperComponent>
   );
 }
