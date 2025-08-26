@@ -14,10 +14,15 @@ export async function getLottoDraws({
   return res.data.data;
 }
 
-export async function getLatestLottoDraw(): Promise<LottoDrawType> {
-  const res = await apiInstance.get<{ data: LottoDrawType }>('/lotto/draws', {
-    params: { latest: 1 },
-  });
+export async function getLatestLottoDraw(): Promise<{
+  lastDrawNumber: number;
+}> {
+  const res = await apiInstance.get<{ data: { lastDrawNumber: number } }>(
+    '/lotto/draws',
+    {
+      params: { latest: 1 },
+    }
+  );
   return res.data.data;
 }
 

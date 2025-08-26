@@ -1,4 +1,4 @@
-// import { LottoAnalysisComponent } from './components';
+import { LottoAnalysisComponent } from './components';
 import Link from 'next/link';
 // import type { Metadata } from 'next';
 // import { generateOgImageUrl } from '@/utils';
@@ -53,7 +53,7 @@ export default function LottoAnalysisPage() {
           &larr; 로또 허브
         </Link>
       </div>
-      {/* <LottoAnalysisComponent /> */}
+      <LottoAnalysisComponent />
     </div>
   );
 }

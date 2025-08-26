@@ -25,7 +25,7 @@ export function useLottoDrawsQuery({
 
 // 제일 마지막회차 가져오기
 export function useLatestLottoDrawQuery() {
-  return useQuery<LottoDrawType, Error>({
+  return useQuery<{ lastDrawNumber: number }, Error>({
     queryKey: ['lotto-draw', 'latest'],
     queryFn: () => getLatestLottoDraw(),
     enabled: true,

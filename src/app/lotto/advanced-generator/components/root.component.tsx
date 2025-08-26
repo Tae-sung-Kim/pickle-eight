@@ -25,7 +25,8 @@ export function LottoAdvancedGeneratorComponent() {
   const { data: latestDraw } = useLatestLottoDrawQuery();
   useEffect(() => {
     if (!latestDraw) return;
-    const latestNo = latestDraw.drawNumber;
+    const latestNo = latestDraw.lastDrawNumber;
+    if (!Number.isInteger(latestNo) || latestNo <= 0) return;
     const nextTo = latestNo;
     const nextFrom = Math.max(1, latestNo - 49);
     setFrom(nextFrom);
@@ -81,6 +82,10 @@ export function LottoAdvancedGeneratorComponent() {
       <p className="text-sm text-muted-foreground mt-1">
         필터와 가중치를 사용하여 번호를 생성하세요.
       </p>
+      <div className="mt-2 rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
+        ※ 생성 및 필터 기준은 통계상 당첨 번호 6개를 대상으로 하며, 보너스
+        번호는 포함하지 않습니다.
+      </div>
 
       <LottoWarningAlertComponent
         className="mt-4"

@@ -47,7 +47,7 @@ export function LottoAnalysisComponent() {
   useEffect(() => {
     if (bootstrapped) return;
     if (isLatestSuccess && latest) {
-      const last = latest.lastDrawNumber ?? latest.drawNumber;
+      const last = latest.lastDrawNumber;
       if (Number.isInteger(last) && last > 0) {
         const nextFrom = Math.max(1, last - 20);
         const nextTo = last;
@@ -71,6 +71,10 @@ export function LottoAnalysisComponent() {
       <p className="text-sm text-muted-foreground mt-1">
         회차 범위를 선택하여 빈도/패턴을 확인하세요.
       </p>
+      <div className="mt-2 rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
+        ※ 본 페이지의 모든 통계는 당첨 번호 6개만을 기준으로 하며, 보너스 번호는
+        포함하지 않습니다. 공식 공개된 회차 데이터에 근거해 계산됩니다.
+      </div>
 
       <LottoWarningAlertComponent
         className="mt-4"

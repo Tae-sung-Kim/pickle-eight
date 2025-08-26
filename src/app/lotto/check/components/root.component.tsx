@@ -115,12 +115,12 @@ export function LottoCheckComponent() {
 
   const canSubmit = useMemo(() => formState.isValid, [formState.isValid]);
 
-  // 초기 로드 시 최신 회차를 자동 표시
+  // 초기 로드 시 최신 회차 번호를 폼에 세팅
   useEffect(() => {
-    if (!latestDraw) return; // 쿼리가 아직 로드되지 않음
-    setResult({ draw: latestDraw });
+    const latest = latestDraw?.lastDrawNumber;
+    if (!latest || latest <= 0) return;
     reset({
-      drwNo: latestDraw.lastDrawNumber ?? latestDraw.drawNumber,
+      drwNo: latest,
       tickets: [
         {
           n1: undefined as unknown as number,
@@ -226,6 +226,10 @@ export function LottoCheckComponent() {
 
   return (
     <>
+      <div className="mt-2 rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
+        ※ 채점은 보너스 번호 일치 여부를 별도로 판단하여 등수(2등 등)에
+        반영합니다. 반면 분석/생성 통계는 보너스 번호를 포함하지 않습니다.
+      </div>
       <Card className="mt-6">
         <CardHeader className="pb-4">
           <CardTitle className="text-base">입력</CardTitle>
