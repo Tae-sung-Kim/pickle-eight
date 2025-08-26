@@ -64,7 +64,7 @@ Pickle-eight은 다양한 랜덤 추첨 기능(로또, 항목 추첨, 자리 배
       page.tsx
     layout.tsx
   /api
-    /lotto-number
+    /normal-generator
       route.ts
   layout.tsx
   page.tsx

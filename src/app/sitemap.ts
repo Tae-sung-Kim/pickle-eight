@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     '/',
     '/lotto',
-    '/lotto/lotto-number',
+    '/lotto/normal-generator',
     // '/lotto/analysis',
     '/lotto/history',
     '/lotto/check',

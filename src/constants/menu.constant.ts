@@ -13,7 +13,7 @@ export const MENU_LIST: MenuGroupType[] = [
     href: '/' + MENU_GROUP_NAME_ENUM.LOTTO,
     items: [
       {
-        href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/lotto-number',
+        href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/normal-generator',
         label: '번호 추천',
         icon: 'Ticket',
         colorClass: 'text-primary',

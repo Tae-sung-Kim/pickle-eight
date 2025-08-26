@@ -139,3 +139,19 @@ export type LottoAnalysisVariantValueType =
   (typeof LOTTO_ANALYSIS_VARIANT_ENUM)[keyof typeof LOTTO_ANALYSIS_VARIANT_ENUM];
 
 export type LottoWarningAlertSpaceType = 'none' | 'sm' | 'md' | 'lg';
+
+export type GenerateFiltersType = {
+  readonly sumMin?: number;
+  readonly sumMax?: number;
+  readonly maxConsecutive?: number; // 0=금지, 1=허용, 2=최대 2연속 ...
+  readonly desiredOddCount?: number; // 0..6, 비우면 제한 없음
+  readonly minBucketSpread?: number; // 서로 다른 구간(01-10..41-45) 최소 개수
+  readonly excludeRecentNumbers?: readonly number[]; // 최근 회차에서 제외할 번호들
+};
+
+export type WeightingOptionsType = {
+  /** frequency[1..45], 가중치로 사용 */
+  readonly frequency?: Readonly<Record<number, number>>;
+  /** 0(완전랜덤) ~ 1(빈도에 완전 의존) */
+  readonly hotColdAlpha?: number;
+};

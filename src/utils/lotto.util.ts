@@ -1,8 +1,10 @@
 import type {
+  GenerateFiltersType,
   LottoCheckResultType,
   LottoDrawType,
   LottoStatsType,
   LottoTicketType,
+  WeightingOptionsType,
 } from '@/types';
 
 function uniqueSortedSix(
@@ -114,22 +116,6 @@ export const LottoUtils = {
   computeStats,
 };
 
-export type GenerateFilters = {
-  readonly sumMin?: number;
-  readonly sumMax?: number;
-  readonly maxConsecutive?: number; // 0=금지, 1=허용, 2=최대 2연속 ...
-  readonly desiredOddCount?: number; // 0..6, 비우면 제한 없음
-  readonly minBucketSpread?: number; // 서로 다른 구간(01-10..41-45) 최소 개수
-  readonly excludeRecentNumbers?: readonly number[]; // 최근 회차에서 제외할 번호들
-};
-
-export type WeightingOptions = {
-  /** frequency[1..45], 가중치로 사용 */
-  readonly frequency?: Readonly<Record<number, number>>;
-  /** 0(완전랜덤) ~ 1(빈도에 완전 의존) */
-  readonly hotColdAlpha?: number;
-};
-
 const BUCKETS: ReadonlyArray<[number, number, string]> = [
   [1, 10, '01-10'],
   [11, 20, '11-20'],
@@ -164,7 +150,7 @@ function hasTooLongConsecutive(
 
 function passesFilters(
   nums: readonly number[],
-  filters?: GenerateFilters
+  filters?: GenerateFiltersType
 ): boolean {
   if (!filters) return true;
   const isComplete = nums.length === 6;
@@ -219,8 +205,8 @@ function weightedSample(
 }
 
 function generateOne(
-  filters?: GenerateFilters,
-  weighting?: WeightingOptions
+  filters?: GenerateFiltersType,
+  weighting?: WeightingOptionsType
 ): LottoTicketType {
   const pool: number[] = [];
   for (let n = 1; n <= 45; n += 1) pool.push(n);
@@ -280,8 +266,8 @@ function buildFrequencyFromDraws(
 export const LottoGenerator = {
   generate(
     count: number,
-    filters?: GenerateFilters,
-    weighting?: WeightingOptions
+    filters?: GenerateFiltersType,
+    weighting?: WeightingOptionsType
   ): readonly LottoTicketType[] {
     const out: LottoTicketType[] = [];
     for (let i = 0; i < count; i += 1)

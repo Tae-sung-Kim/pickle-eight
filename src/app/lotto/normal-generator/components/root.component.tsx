@@ -3,12 +3,12 @@
 import { useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 import { generateLottoNumbers } from '@/utils';
-import LottoNumberListComponent from './list.component';
-import LottoGeneratorControlsComponent from './generator-controls.component';
+import { LottoNumberListComponent } from './number-list.component';
+import { LottoGeneratorControlsComponent } from './generator-controls.component';
 import { TitleWrapperComponent } from '@/components';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
-export function LottoNumberComponent() {
+export function LottoNormalGeneratorComponent() {
   const [orderCount, setOrderCount] = useState(1);
   const [lottoNumberList, setLottoNumberList] = useState<number[][]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -78,4 +78,4 @@ export function LottoNumberComponent() {
   );
 }
 
-export default LottoNumberComponent;
+export default LottoNormalGeneratorComponent;
