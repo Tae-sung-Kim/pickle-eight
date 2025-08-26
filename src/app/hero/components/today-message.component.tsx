@@ -1,53 +1,19 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { MessageStateType } from '@/types';
-import { Smile, Sparkles, ListChecks, UtensilsCrossed } from 'lucide-react';
 import { useGptTodayMessageQuery } from '@/queries';
-import { getTodayString, getTimeSlot, getKoreaTime } from '@/utils';
-import { useCapture } from '@/hooks';
-import { Button } from '@/components/ui/button';
+import {
+  getTodayString,
+  getTimeSlot,
+  getKoreaTime,
+  getCachedData,
+  setCachedData,
+} from '@/utils';
+import { buildHeroCards } from './hero-cards.builder';
+import MessageCardComponent from './message-card.component';
 
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? 'pickle-eight';
-
-/**
- * 캐시에서 데이터를 안전하게 읽어옵니다.
- * @param {string} key - localStorage에서 사용할 키.
- * @returns {string | null} 유효한 캐시 데이터 또는 null.
- */
-const getCachedData = (key: string): string | null => {
-  const saved = localStorage.getItem(key);
-  if (!saved) return null;
-
-  try {
-    const cache = JSON.parse(saved);
-    if (cache.expires && new Date(cache.expires) > new Date()) {
-      return cache.data;
-    }
-    localStorage.removeItem(key);
-    return null;
-  } catch {
-    localStorage.removeItem(key);
-    return null;
-  }
-};
-
-/**
- * 데이터를 캐시에 저장합니다.
- * @param {string} key - localStorage에서 사용할 키.
- * @param {string} data - 저장할 데이터.
- */
-const setCachedData = (key: string, data: string): void => {
-  const expires = new Date();
-  expires.setDate(expires.getDate() + 1);
-  expires.setHours(0, 0, 0, 0); // 다음 날 자정 만료
-
-  const newCache = {
-    data,
-    expires: expires.toISOString(),
-  };
-  localStorage.setItem(key, JSON.stringify(newCache));
-};
 
 export function HeroTodayMessageComponent() {
   const [messages, setMessages] = useState<MessageStateType>({
@@ -58,11 +24,6 @@ export function HeroTodayMessageComponent() {
   });
   const [mealType, setMealType] = useState<string>('지금');
   const { mutateAsync, isPending } = useGptTodayMessageQuery();
-  const { onCapture } = useCapture();
-  const cheerRef = useRef<HTMLDivElement>(null);
-  const fortuneRef = useRef<HTMLDivElement>(null);
-  const todoRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -146,155 +107,36 @@ export function HeroTodayMessageComponent() {
     loadMessages();
   }, [mutateAsync]);
 
-  const handleCapture = useCallback(
-    (
-      elementRef: React.RefObject<HTMLElement>,
-      options?: { fileName?: string; shareTitle?: string; shareText?: string }
-    ) => {
-      onCapture(elementRef, options);
+  const getMessage = useCallback(
+    (message: string | null): string => {
+      if (message) return message;
+      return isPending ? '로딩 중...' : '메시지를 불러올 수 없습니다.';
     },
-    [onCapture]
+    [isPending]
   );
 
-  const getMessage = (message: string | null): string => {
-    if (message) return message;
-    return isPending ? '로딩 중...' : '메시지를 불러올 수 없습니다.';
-  };
+  const safeMessages = useMemo(
+    () => ({
+      cheer: getMessage(messages.cheer),
+      fortune: getMessage(messages.fortune),
+      todo: getMessage(messages.todo),
+      menu: getMessage(messages.menu),
+    }),
+    [messages, getMessage]
+  );
+
+  const cards = useMemo(
+    () =>
+      buildHeroCards({ messages: safeMessages, mealType, siteName: SITE_NAME }),
+    [safeMessages, mealType]
+  );
 
   return (
     <section className="w-full max-w-5xl mx-auto mt-12 mb-10 px-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-        {/* Cheer Message */}
-        <div
-          ref={cheerRef}
-          className="relative surface-card rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] transition-transform duration-300 hover:scale-105"
-        >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-success/30">
-            <Smile className="w-8 h-8 text-success" />
-          </div>
-          <h3 className="mt-6 text-lg font-bold text-success text-center tracking-tight">
-            오늘의 응원
-          </h3>
-          <p className="mt-3 text-sm text-muted-foreground text-center font-medium flex-grow whitespace-pre-line">
-            {getMessage(messages.cheer)}
-          </p>
-          <div className="mt-4 flex justify-center" data-capture="ignore">
-            <Button
-              type="button"
-              size="sm"
-              variant="secondary"
-              aria-label="오늘의 응원 캡처 및 공유"
-              onClick={() =>
-                handleCapture(cheerRef as React.RefObject<HTMLElement>, {
-                  fileName: `${SITE_NAME}-cheer.png`,
-                  shareTitle: '오늘의 응원',
-                  shareText: '오늘의 응원을 공유합니다',
-                })
-              }
-            >
-              공유/저장
-            </Button>
-          </div>
-        </div>
-
-        {/* Fortune Message */}
-        <div
-          ref={fortuneRef}
-          className="relative surface-card rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] transition-transform duration-300 hover:scale-105"
-        >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-info/30">
-            <Sparkles className="w-8 h-8 text-info" />
-          </div>
-          <h3 className="mt-6 text-lg font-bold text-info text-center tracking-tight">
-            오늘의 행운
-          </h3>
-          <p className="mt-3 text-sm text-muted-foreground text-center font-medium flex-grow whitespace-pre-line">
-            {getMessage(messages.fortune)}
-          </p>
-          <div className="mt-4 flex justify-center" data-capture="ignore">
-            <Button
-              type="button"
-              size="sm"
-              variant="secondary"
-              aria-label="오늘의 행운 캡처 및 공유"
-              onClick={() =>
-                handleCapture(fortuneRef as React.RefObject<HTMLElement>, {
-                  fileName: `${SITE_NAME}-fortune.png`,
-                  shareTitle: '오늘의 행운',
-                  shareText: '오늘의 행운을 공유합니다',
-                })
-              }
-            >
-              공유/저장
-            </Button>
-          </div>
-        </div>
-
-        {/* Todo Message */}
-        <div
-          ref={todoRef}
-          className="relative surface-card rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] transition-transform duration-300 hover:scale-105"
-        >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-warning/30">
-            <ListChecks className="w-8 h-8 text-warning" />
-          </div>
-          <h3 className="mt-6 text-lg font-bold text-warning text-center tracking-tight">
-            지금 할 일
-          </h3>
-          <p className="mt-3 text-sm text-muted-foreground text-center font-medium flex-grow whitespace-pre-line">
-            {getMessage(messages.todo)}
-          </p>
-          <div className="mt-4 flex justify-center" data-capture="ignore">
-            <Button
-              type="button"
-              size="sm"
-              variant="secondary"
-              aria-label="지금 할 일 캡처 및 공유"
-              onClick={() =>
-                handleCapture(todoRef as React.RefObject<HTMLElement>, {
-                  fileName: `${SITE_NAME}-todo.png`,
-                  shareTitle: '지금 할 일',
-                  shareText: '지금 할 일을 공유합니다',
-                })
-              }
-            >
-              공유/저장
-            </Button>
-          </div>
-        </div>
-
-        {/* Menu Message */}
-        <div
-          ref={menuRef}
-          className="relative surface-card rounded-2xl shadow-lg p-6 flex flex-col min-h-[160px] transition-transform duration-300 hover:scale-105"
-        >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background shadow-md rounded-full p-3 border border-indigo-300">
-            <UtensilsCrossed className="w-8 h-8 text-indigo-600" />
-          </div>
-          <h3 className="mt-6 text-lg font-bold text-indigo-600 text-center tracking-tight">
-            {mealType} 추천 메뉴
-          </h3>
-          <p className="mt-3 text-sm text-muted-foreground text-center font-medium flex-grow whitespace-pre-line">
-            {getMessage(messages.menu)}
-          </p>
-          <div className="mt-4 flex justify-center" data-capture="ignore">
-            <Button
-              type="button"
-              size="sm"
-              variant="secondary"
-              aria-label={`${mealType} 추천 메뉴 캡처 및 공유`}
-              onClick={() =>
-                handleCapture(menuRef as React.RefObject<HTMLElement>, {
-                  fileName: `${SITE_NAME}-menu.png`,
-                  shareTitle: `${mealType} 추천 메뉴`,
-                  shareText: '추천 메뉴를 공유합니다',
-                })
-              }
-            >
-              공유/저장
-            </Button>
-          </div>
-        </div>
+        {cards.map(({ key, props }) => (
+          <MessageCardComponent key={key} {...props} />
+        ))}
       </div>
     </section>
   );

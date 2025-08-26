@@ -61,3 +61,42 @@ export function generateOgImageUrl(
     alt,
   };
 }
+
+/**
+ * 캐시에서 데이터를 안전하게 읽어옵니다.
+ * @param {string} key - localStorage에서 사용할 키.
+ * @returns {string | null} 유효한 캐시 데이터 또는 null.
+ */
+export const getCachedData = (key: string): string | null => {
+  const saved = localStorage.getItem(key);
+  if (!saved) return null;
+
+  try {
+    const cache = JSON.parse(saved);
+    if (cache.expires && new Date(cache.expires) > new Date()) {
+      return cache.data;
+    }
+    localStorage.removeItem(key);
+    return null;
+  } catch {
+    localStorage.removeItem(key);
+    return null;
+  }
+};
+
+/**
+ * 데이터를 캐시에 저장합니다.
+ * @param {string} key - localStorage에서 사용할 키.
+ * @param {string} data - 저장할 데이터.
+ */
+export const setCachedData = (key: string, data: string): void => {
+  const expires = new Date();
+  expires.setDate(expires.getDate() + 1);
+  expires.setHours(0, 0, 0, 0); // 다음 날 자정 만료
+
+  const newCache = {
+    data,
+    expires: expires.toISOString(),
+  };
+  localStorage.setItem(key, JSON.stringify(newCache));
+};
