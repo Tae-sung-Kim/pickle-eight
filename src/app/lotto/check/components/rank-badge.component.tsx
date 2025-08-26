@@ -1,7 +1,9 @@
+import { LottoLankType } from '@/types';
+
 export function LottoCheckRankBadgeComponent({
   rank,
 }: {
-  rank: 0 | 1 | 2 | 3 | 4 | 5;
+  rank: LottoLankType;
 }) {
   const label = rank === 0 ? '미당첨' : `${rank}등`;
   const color =

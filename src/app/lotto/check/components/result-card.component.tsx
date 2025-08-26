@@ -1,5 +1,5 @@
 import React from 'react';
-import type { LottoCheckResultCardType } from '@/types';
+import type { LottoCheckResultCardType, LottoLankType } from '@/types';
 import {
   Card,
   CardContent,
@@ -60,7 +60,7 @@ export function LottoCheckResultCardComponent({
                       {m.bonusMatch ? '예' : '아니오'}
                     </span>
                     <LottoCheckRankBadgeComponent
-                      rank={m.rank as 0 | 1 | 2 | 3 | 4 | 5}
+                      rank={m.rank as LottoLankType}
                     />
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">

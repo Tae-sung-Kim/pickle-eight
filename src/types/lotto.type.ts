@@ -38,9 +38,6 @@ export type LottoDrawType = {
   readonly lastDrawNumber?: number;
 };
 
-/**
- * Lotto ticket: user-selected 6 numbers.
- */
 export type LottoTicketType = {
   /** 선택한 번호 6개, 오름차순 보장 */
   readonly numbers: readonly [number, number, number, number, number, number];
@@ -50,23 +47,19 @@ export type LottoTicketType = {
   readonly favorite?: boolean;
 };
 
-/**
- * Result of checking a ticket against a particular draw.
- */
+export type LottoLankType = 0 | 1 | 2 | 3 | 4 | 5;
+
 export type LottoCheckResultType = {
   /** 일치한 번호 개수 */
   readonly matchCount: number;
   /** 보너스 번호 일치 여부 */
   readonly bonusMatch: boolean;
   /** 등수 (1~5), 미당첨은 0 */
-  readonly rank: 0 | 1 | 2 | 3 | 4 | 5;
+  readonly rank: LottoLankType;
   /** 예상 당첨금 (옵션, KRW) */
   readonly estimatedPrize?: number;
 };
 
-/**
- * Aggregated statistics over a set of draws.
- */
 export type LottoStatsType = {
   /** 번호(1~45)별 출현 빈도 */
   readonly frequencyByNumber: Readonly<Record<number, number>>;
