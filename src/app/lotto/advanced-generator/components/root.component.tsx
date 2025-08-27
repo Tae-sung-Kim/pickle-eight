@@ -10,6 +10,7 @@ import { LottoAdvancedGeneratedListComponent } from './generated-list.component'
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AdFitSlot } from '@/components';
 
 export function LottoAdvancedGeneratorComponent() {
   const [count, setCount] = useState<number>(5);
@@ -151,6 +152,16 @@ export function LottoAdvancedGeneratorComponent() {
         </div>
 
         <LottoAdvancedGeneratedListComponent items={generated} />
+
+        {/* AdFit banner below results */}
+        <div className="mt-6 flex justify-center">
+          <AdFitSlot
+            unitId={
+              process.env.NEXT_PUBLIC_ADFIT_UNIT_ID_BODY ??
+              'DAN-omzthNPcHMmkZIRx'
+            }
+          />
+        </div>
       </div>
     </>
   );

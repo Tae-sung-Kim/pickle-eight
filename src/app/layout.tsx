@@ -8,7 +8,11 @@ import {
   HeaderLayout,
 } from '@/components';
 import { Toaster } from 'sonner';
-import { QueryClientProviderWrapper, ConsentProvider } from '@/providers';
+import {
+  QueryClientProviderWrapper,
+  ConsentProvider,
+  AuthProvider,
+} from '@/providers';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -128,18 +132,20 @@ export default function RootLayout({
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
         <QueryClientProviderWrapper>
           <ConsentProvider>
-            <HeaderLayout />
-            <main className="flex-1 py-8">
-              <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                {children}
-              </div>
-            </main>
-            <FooterLayout />
-            <Toaster />
-            <AnalyticsClientComponent />
-            <LoadingComponent />
-            <AgeGateModalComponent />
-            <CookieConsentComponent />
+            <AuthProvider>
+              <HeaderLayout />
+              <main className="flex-1 py-8">
+                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                  {children}
+                </div>
+              </main>
+              <FooterLayout />
+              <Toaster />
+              <AnalyticsClientComponent />
+              <LoadingComponent />
+              <AgeGateModalComponent />
+              <CookieConsentComponent />
+            </AuthProvider>
           </ConsentProvider>
         </QueryClientProviderWrapper>
       </body>
