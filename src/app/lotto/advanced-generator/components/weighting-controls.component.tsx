@@ -6,6 +6,7 @@ import { Switch } from '@/components/ui/switch';
 
 export type WeightingControlsType = {
   readonly useWeight: boolean;
+  readonly loading: boolean;
   readonly from: number;
   readonly to: number;
   readonly excludeLatest: boolean;
@@ -17,6 +18,7 @@ export type WeightingControlsType = {
 
 export function LottoAdvancedWeightingControlsComponent({
   useWeight,
+  loading,
   from,
   to,
   excludeLatest,
@@ -26,11 +28,21 @@ export function LottoAdvancedWeightingControlsComponent({
   onToggleExcludeLatest,
 }: WeightingControlsType) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3" aria-busy={loading}>
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">가중치(핫/콜드) 사용</div>
-        <Switch checked={useWeight} onCheckedChange={onToggleUseWeight} />
+        <Switch
+          className="cursor-pointer"
+          checked={useWeight}
+          onCheckedChange={onToggleUseWeight}
+          disabled={loading}
+        />
       </div>
+      {useWeight && loading && (
+        <div className="text-xs text-muted-foreground">
+          최신 회차 기준 범위를 불러오는 중...
+        </div>
+      )}
       {useWeight && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="grid w-full items-center gap-2">
@@ -41,6 +53,7 @@ export function LottoAdvancedWeightingControlsComponent({
               min={1}
               value={from}
               onChange={(e) => onChangeFrom(Number(e.target.value))}
+              disabled={loading}
             />
           </div>
           <div className="grid w-full items-center gap-2">
@@ -51,6 +64,7 @@ export function LottoAdvancedWeightingControlsComponent({
               min={from}
               value={to}
               onChange={(e) => onChangeTo(Number(e.target.value))}
+              disabled={loading}
             />
           </div>
           <div className="flex items-center justify-between sm:justify-start gap-3 pt-1.5">
@@ -59,8 +73,10 @@ export function LottoAdvancedWeightingControlsComponent({
             </Label>
             <Switch
               id="excludeLatest"
+              className="cursor-pointer"
               checked={excludeLatest}
               onCheckedChange={onToggleExcludeLatest}
+              disabled={loading}
             />
           </div>
         </div>

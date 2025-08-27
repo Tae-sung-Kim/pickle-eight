@@ -23,10 +23,14 @@ export function LottoAdvancedGeneratorComponent() {
   const [to, setTo] = useState<number>(50);
   const [excludeLatest, setExcludeLatest] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [rangeInitialized, setRangeInitialized] = useState<boolean>(false);
 
-  // Initialize range using latest draw (set to latest, from to last 50 draws)
-  const { data: latestDraw } = useLatestLottoDrawQuery();
+  const { data: latestDraw } = useLatestLottoDrawQuery({ enabled: useWeight });
   useEffect(() => {
+    if (!useWeight) {
+      setRangeInitialized(false);
+      return;
+    }
     if (!latestDraw) return;
     const latestNo = latestDraw.lastDrawNumber;
     if (!Number.isInteger(latestNo) || latestNo <= 0) return;
@@ -34,16 +38,18 @@ export function LottoAdvancedGeneratorComponent() {
     const nextFrom = Math.max(1, latestNo - 49);
     setFrom(nextFrom);
     setTo(nextTo);
-  }, [latestDraw]);
+    setRangeInitialized(true);
+  }, [useWeight, latestDraw]);
 
   const enabled = useMemo(
     () =>
       useWeight &&
+      rangeInitialized &&
       Number.isInteger(from) &&
       Number.isInteger(to) &&
       from > 0 &&
       to >= from,
-    [useWeight, from, to]
+    [useWeight, rangeInitialized, from, to]
   );
 
   const { data: draws } = useLottoDrawsQuery({ from, to, enabled });
@@ -127,6 +133,7 @@ export function LottoAdvancedGeneratorComponent() {
         <Card className="p-4">
           <LottoAdvancedWeightingControlsComponent
             useWeight={useWeight}
+            loading={useWeight && !rangeInitialized}
             from={from}
             to={to}
             excludeLatest={excludeLatest}

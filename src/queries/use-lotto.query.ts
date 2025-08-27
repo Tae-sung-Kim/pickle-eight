@@ -24,11 +24,14 @@ export function useLottoDrawsQuery({
 }
 
 // 제일 마지막회차 가져오기
-export function useLatestLottoDrawQuery() {
+export function useLatestLottoDrawQuery(options?: {
+  readonly enabled?: boolean;
+}) {
+  const enabled = options?.enabled ?? true;
   return useQuery<{ lastDrawNumber: number }, Error>({
     queryKey: ['lotto-draw', 'latest'],
     queryFn: () => getLatestLottoDraw(),
-    enabled: true,
+    enabled,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
