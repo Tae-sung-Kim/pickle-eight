@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    kakaoAsyncAdFit?: unknown[];
+  }
+}
+
 export * from './ladder-game.type';
 export * from './dice-game.type';
 export * from './draw-order.type';

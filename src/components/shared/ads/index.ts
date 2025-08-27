@@ -1,1 +1,1 @@
-export * from './adfit-slot';
+export * from './adfit-slot.component';

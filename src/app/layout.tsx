@@ -6,6 +6,7 @@ import {
   CookieConsentComponent,
   FooterLayout,
   HeaderLayout,
+  AdFitSlotComponent,
 } from '@/components';
 import { Toaster } from 'sonner';
 import {
@@ -134,6 +135,15 @@ export default function RootLayout({
           <ConsentProvider>
             <AuthProvider>
               <HeaderLayout />
+              <div className="w-full flex justify-center py-4">
+                <div className="w-[320px] h-[100px]">
+                  <AdFitSlotComponent
+                    unitId={process.env.NEXT_PUBLIC_ADFIT_UNIT_ID_BODY ?? ''}
+                    width={320}
+                    height={100}
+                  />
+                </div>
+              </div>
               <main className="flex-1 py-8">
                 <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
                   {children}
