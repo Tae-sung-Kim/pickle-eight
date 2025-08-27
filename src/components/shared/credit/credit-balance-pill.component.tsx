@@ -11,6 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useConsentContext } from '@/providers';
 
 export type CreditBalancePillType = {
   readonly className?: string;
@@ -26,6 +27,8 @@ export function CreditBalancePillComponent({
   const [cooldownMsLeft, setCooldownMsLeft] = useState<number>(0);
   const reachedDailyCap = todayEarned >= CREDIT_POLICY.dailyCap;
   const remaining = Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
+
+  const { state, onOpen } = useConsentContext();
 
   useEffect(() => {
     const updateLeft = (): void => {
@@ -58,6 +61,13 @@ export function CreditBalancePillComponent({
   const handleTriggerClick = (
     e: React.MouseEvent | React.KeyboardEvent
   ): void => {
+    if (state !== 'accepted') {
+      e.preventDefault();
+      e.stopPropagation();
+      onOpen();
+      return;
+    }
+
     if (disabledNow) {
       e.preventDefault();
       e.stopPropagation();
@@ -108,7 +118,9 @@ export function CreditBalancePillComponent({
           </span>
         </TooltipTrigger>
         <TooltipContent sideOffset={6}>
-          {reachedDailyCap
+          {state !== 'accepted'
+            ? '광고 허가 필요'
+            : reachedDailyCap
             ? '오늘 시청 한도 도달'
             : inCooldown
             ? `다음 시청까지 ${cooldownLabel}`

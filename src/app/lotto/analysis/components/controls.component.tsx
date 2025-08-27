@@ -28,6 +28,7 @@ export function LottoAnalysisControlsComponent({
     isBusy: isFetching,
     busyLabel: '분석 중…',
   });
+
   return (
     <Card className="mt-6">
       <CardHeader className="pb-3">

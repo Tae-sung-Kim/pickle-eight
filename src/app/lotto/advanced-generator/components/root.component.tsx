@@ -10,6 +10,8 @@ import { LottoAdvancedGeneratedListComponent } from './generated-list.component'
 import { Card } from '@/components/ui/card';
 import { CreditGateButtonComponent } from '@/components/shared/gates';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useCreditCostLabel } from '@/hooks';
+import { CreditBalancePillComponent } from '@/components';
 
 export function LottoAdvancedGeneratorComponent() {
   const [count, setCount] = useState<number>(5);
@@ -25,7 +27,16 @@ export function LottoAdvancedGeneratorComponent() {
   const [error, setError] = useState<string | null>(null);
   const [rangeInitialized, setRangeInitialized] = useState<boolean>(false);
 
-  const { data: latestDraw } = useLatestLottoDrawQuery({ enabled: useWeight });
+  const { data: latestDraw, isFetching } = useLatestLottoDrawQuery({
+    enabled: useWeight,
+  });
+  const label = useCreditCostLabel({
+    spendKey: 'advanced',
+    baseLabel: '생성',
+    isBusy: isFetching,
+    busyLabel: '생성 중…',
+  });
+
   useEffect(() => {
     if (!useWeight) {
       setRangeInitialized(false);
@@ -144,13 +155,14 @@ export function LottoAdvancedGeneratorComponent() {
           />
         </Card>
 
-        <div className="flex">
+        <div className="flex items-end justify-between gap-3">
           <CreditGateButtonComponent
             className="ml-auto"
-            label="생성"
+            label={label}
             spendKey="advanced"
             onProceed={onGenerate}
           />
+          <CreditBalancePillComponent />
         </div>
 
         <LottoAdvancedGeneratedListComponent items={generated} />

@@ -1,7 +1,11 @@
+'use client';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CreditGateButtonComponent } from '@/components/shared/gates';
+import { useCreditCostLabel } from '@/hooks';
+import { CreditBalancePillComponent } from '@/components';
 
 export type SimulatorControlsComponentType = Readonly<{
   ticketCount: number;
@@ -28,6 +32,13 @@ export function SimulatorControlsComponent({
   onDrawCountChange,
   onRun,
 }: SimulatorControlsComponentType) {
+  const label = useCreditCostLabel({
+    spendKey: 'simulator',
+    baseLabel: '시뮬레이션',
+    isBusy: running,
+    busyLabel: '시뮬레이션 중…',
+  });
+
   return (
     <Card className="mt-4 py-4">
       <CardContent>
@@ -53,7 +64,7 @@ export function SimulatorControlsComponent({
           </div>
           <div className="flex items-center gap-3">
             <Label htmlFor="draw-count" className="w-24 text-sm md:w-28">
-              시뮬레이션 회수
+              회수
             </Label>
             <Input
               id="draw-count"
@@ -70,16 +81,20 @@ export function SimulatorControlsComponent({
               className="w-full"
             />
           </div>
-          <div className="flex md:justify-end">
+
+          <div className="flex items-end md:justify-end justify-between gap-3">
             <CreditGateButtonComponent
               className="w-full md:w-auto"
-              label={running ? '실행 중...' : '시뮬레이션 실행'}
+              label={label}
               spendKey="simulator"
               onProceed={onRun}
             />
+            <CreditBalancePillComponent />
           </div>
         </div>
       </CardContent>
     </Card>
   );
 }
+
+export default SimulatorControlsComponent;
