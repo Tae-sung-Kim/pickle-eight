@@ -87,7 +87,7 @@ export function LottoAnalysisComponent() {
             onAnalyze={() => refetch()}
           />
 
-          <div className="mt-6 space-y-8">
+          <div className="mt-6 space-y-8 bg-white rounded-md shadow p-4">
             {isLoading && <p className="text-sm">불러오는 중…</p>}
             {isError && (
               <p className="text-sm text-destructive">

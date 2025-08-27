@@ -49,7 +49,7 @@ export function CreditGateButtonComponent({
       >
         {label}
       </Button>
-      <RewardModalComponent open={open} onOpenChange={setOpen} />
+      {open && <RewardModalComponent onOpenChange={setOpen} />}
     </>
   );
 }

@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { AdFitSlotComponent } from '@/components';
@@ -14,11 +15,10 @@ import { CREDIT_POLICY } from '@/constants';
 import { useRewardVisibility } from '@/hooks';
 
 export type RewardModalType = {
-  readonly open: boolean;
   readonly onOpenChange: (v: boolean) => void;
 };
 
-export function RewardModalComponent({ open, onOpenChange }: RewardModalType) {
+export function RewardModalComponent({ onOpenChange }: RewardModalType) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { earn } = useCreditStore();
 
@@ -37,6 +37,11 @@ export function RewardModalComponent({ open, onOpenChange }: RewardModalType) {
     [visibleSeconds]
   );
 
+  const progress = useMemo<number>(() => {
+    const ratio = visibleSeconds / CREDIT_POLICY.visibleSecondsRequired;
+    return Math.max(0, Math.min(100, Math.round(ratio * 100)));
+  }, [visibleSeconds]);
+
   const onClose = (): void => onOpenChange(false);
 
   const onClaim = (): void => {
@@ -45,22 +50,51 @@ export function RewardModalComponent({ open, onOpenChange }: RewardModalType) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+    <Dialog open={true} onOpenChange={onOpenChange}>
+      <DialogContent
+        className="sm:max-w-2xl max-h-[80vh] overflow-auto"
+        showCloseButton={false}
+      >
         <DialogHeader>
           <DialogTitle>광고 보기로 크레딧 받기</DialogTitle>
         </DialogHeader>
-        <div ref={containerRef} className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            광고 영역이 화면에 충분히 보여지는 동안 타이머가 진행됩니다.
-            완료되면 크레딧이 지급됩니다.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <AdFitSlotComponent width={250} height={250} />
-            <AdFitSlotComponent width={250} height={250} />
+        <DialogDescription>
+          광고 영역이 화면에 충분히 보이는 동안 타이머가 진행됩니다. 완료되면
+          크레딧이 지급됩니다.
+        </DialogDescription>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div
+              ref={containerRef}
+              className="flex min-h-[260px] items-center justify-center"
+            >
+              <AdFitSlotComponent />
+            </div>
+            <div className="flex min-h-[260px] items-center justify-center">
+              <AdFitSlotComponent />
+            </div>
           </div>
-          <div className="text-sm">남은 시간: {remain}s</div>
-          <div className="flex justify-end gap-2">
+
+          {/* 진행 상태 */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">진행률</span>
+              <span className="tabular-nums">{progress}%</span>
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-primary transition-[width] duration-300"
+                style={{ width: `${progress}%` }}
+                aria-hidden
+              />
+            </div>
+            <div className="text-sm text-muted-foreground" aria-live="polite">
+              남은 시간: {remain}s
+            </div>
+          </div>
+
+          {/* 액션 영역 */}
+          <div className="flex justify-end gap-2 pt-2">
             <Button type="button" variant="secondary" onClick={onClose}>
               닫기
             </Button>
