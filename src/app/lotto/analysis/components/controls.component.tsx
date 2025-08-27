@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { CreditGateButtonComponent } from '@/components/shared/gates';
 
 export function LottoAnalysisControlsComponent({
   from,
@@ -64,14 +64,13 @@ export function LottoAnalysisControlsComponent({
           </div>
 
           <div className="flex items-end">
-            <Button
-              type="button"
-              onClick={onAnalyze}
-              disabled={!enabled || isFetching}
+            <CreditGateButtonComponent
               className="w-full sm:w-auto"
-            >
-              {isFetching ? '분석 중…' : '분석'}
-            </Button>
+              label={isFetching ? '분석 중…' : '분석'}
+              spendKey="analysis"
+              onProceed={onAnalyze}
+              disabled={!enabled || isFetching}
+            />
           </div>
         </div>
       </CardContent>

@@ -8,7 +8,7 @@ import { LottoAdvancedGenerateControlsComponent } from './generate-controls.comp
 import { LottoAdvancedWeightingControlsComponent } from './weighting-controls.component';
 import { LottoAdvancedGeneratedListComponent } from './generated-list.component';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { CreditGateButtonComponent } from '@/components/shared/gates';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export function LottoAdvancedGeneratorComponent() {
@@ -145,9 +145,12 @@ export function LottoAdvancedGeneratorComponent() {
         </Card>
 
         <div className="flex">
-          <Button type="button" onClick={onGenerate} className="ml-auto">
-            생성
-          </Button>
+          <CreditGateButtonComponent
+            className="ml-auto"
+            label="생성"
+            spendKey="advanced"
+            onProceed={onGenerate}
+          />
         </div>
 
         <LottoAdvancedGeneratedListComponent items={generated} />

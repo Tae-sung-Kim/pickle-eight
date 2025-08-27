@@ -5,7 +5,7 @@ import { useConsentContext } from '@/providers';
 import { Button } from '@/components/ui/button';
 
 export type AdFitSlotType = {
-  readonly unitId: string;
+  readonly unitId?: string;
   readonly width?: number;
   readonly height?: number;
   readonly className?: string;

@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { CreditGateButtonComponent } from '@/components/shared/gates';
 
 export type SimulatorControlsComponentType = Readonly<{
   ticketCount: number;
@@ -73,14 +73,13 @@ export function SimulatorControlsComponent({
             />
           </div>
           <div className="flex md:justify-end">
-            <Button
-              type="button"
-              disabled={running || isInvalid}
-              onClick={onRun}
+            <CreditGateButtonComponent
               className="w-full md:w-auto"
-            >
-              {running ? '실행 중...' : '시뮬레이션 실행'}
-            </Button>
+              label={running ? '실행 중...' : '시뮬레이션 실행'}
+              spendKey="simulator"
+              onProceed={onRun}
+              disabled={running || isInvalid}
+            />
           </div>
         </div>
       </CardContent>
