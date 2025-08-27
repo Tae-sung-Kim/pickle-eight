@@ -2,9 +2,9 @@
 
 import { ComponentProps, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useCreditStore } from '@/stores/credit.store';
-import { SPEND_COST } from '@/constants/credit.constant';
-import RewardModalComponent from '@/components/shared/reward/reward-modal.component';
+import { useCreditStore } from '@/stores';
+import { SPEND_COST } from '@/constants';
+import { RewardModalComponent } from '@/components';
 
 export type CreditGateButtonType = {
   readonly variant?: ComponentProps<typeof Button>['variant'];
@@ -24,7 +24,7 @@ export function CreditGateButtonComponent({
   disabled,
 }: CreditGateButtonType) {
   const [open, setOpen] = useState<boolean>(false);
-  const { canSpend, spend } = useCreditStore();
+  const { canSpend, onSpend } = useCreditStore();
   const amount = useMemo<number>(() => SPEND_COST[spendKey], [spendKey]);
 
   const handleClick = (): void => {
@@ -34,7 +34,7 @@ export function CreditGateButtonComponent({
       setOpen(true);
       return;
     }
-    const res = spend(amount);
+    const res = onSpend(amount);
     if (res.canSpend) onProceed();
   };
 

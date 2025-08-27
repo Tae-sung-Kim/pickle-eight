@@ -15,7 +15,7 @@ export function LottoAnalysisComponent() {
   const [to, setTo] = useState<number>(50);
   const [bootstrapped, setBootstrapped] = useState<boolean>(false);
 
-  const enabled = useMemo(
+  const canAnalyze = useMemo(
     () =>
       bootstrapped &&
       Number.isInteger(from) &&
@@ -26,8 +26,11 @@ export function LottoAnalysisComponent() {
   );
 
   // 데이터 로딩은 queries 훅을 사용합니다.
-  const { data, isLoading, isError, error, refetch, isFetching } =
-    useLottoDrawsQuery({ from, to, enabled });
+  const { data, isError, error, refetch, isFetching } = useLottoDrawsQuery({
+    from,
+    to,
+    enabled: false,
+  });
 
   const stats = useMemo(
     () => (data && data.length > 0 ? LottoUtils.computeStats(data) : null),
@@ -82,13 +85,12 @@ export function LottoAnalysisComponent() {
             to={to}
             setFrom={setFrom}
             setTo={setTo}
-            enabled={enabled}
+            enabled={canAnalyze}
             isFetching={isFetching}
             onAnalyze={() => refetch()}
           />
 
           <div className="mt-6 space-y-8 bg-white rounded-md shadow p-4">
-            {isLoading && <p className="text-sm">불러오는 중…</p>}
             {isError && (
               <p className="text-sm text-destructive">
                 오류: {(error as Error).message}

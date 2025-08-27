@@ -1,3 +1,5 @@
+import { SPEND_COST } from '@/constants';
+
 export type CreditEventType =
   | 'reward_complete'
   | 'spend_analysis'
@@ -33,4 +35,11 @@ export type EarnCheckResultType = {
 export type SpendCheckResultType = {
   readonly canSpend: boolean;
   readonly shortBy?: number;
+};
+
+export type UseCreditCostLabelType = {
+  readonly spendKey: keyof typeof SPEND_COST;
+  readonly baseLabel: string;
+  readonly isBusy?: boolean;
+  readonly busyLabel?: string;
 };

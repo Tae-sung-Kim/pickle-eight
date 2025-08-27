@@ -5,3 +5,4 @@ export * from './name';
 export * from './ads';
 export * from './reward';
 export * from './gates';
+export * from './credit';

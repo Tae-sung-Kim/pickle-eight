@@ -1,7 +1,11 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { CreditGateButtonComponent } from '@/components/shared/gates';
+import { CreditGateButtonComponent } from '@/components';
+import { CreditBalancePillComponent } from '@/components';
+import { useCreditCostLabel } from '@/hooks';
 
 export function LottoAnalysisControlsComponent({
   from,
@@ -20,6 +24,12 @@ export function LottoAnalysisControlsComponent({
   isFetching: boolean;
   onAnalyze: () => void;
 }) {
+  const label = useCreditCostLabel({
+    spendKey: 'analysis',
+    baseLabel: '분석',
+    isBusy: isFetching,
+    busyLabel: '분석 중…',
+  });
   return (
     <Card className="mt-6">
       <CardHeader className="pb-3">
@@ -63,14 +73,15 @@ export function LottoAnalysisControlsComponent({
             />
           </div>
 
-          <div className="flex items-end">
+          <div className="flex items-end justify-between gap-3">
             <CreditGateButtonComponent
               className="w-full sm:w-auto"
-              label={isFetching ? '분석 중…' : '분석'}
+              label={label}
               spendKey="analysis"
               onProceed={onAnalyze}
               disabled={!enabled || isFetching}
             />
+            <CreditBalancePillComponent />
           </div>
         </div>
       </CardContent>

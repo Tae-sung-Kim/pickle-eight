@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useId, useMemo } from 'react';
+import React, { useEffect, useId, useMemo, useState } from 'react';
 import { useConsentContext } from '@/providers';
 import { Button } from '@/components/ui/button';
 
@@ -34,9 +34,18 @@ export function AdFitSlotComponent({
     return process.env.NODE_ENV !== 'production';
   }, []);
 
-  // 임의로 광고 노출하지 않을 경우
-  const adsDisabledOverride = useMemo<boolean>(() => {
-    return localStorage.getItem('adfit-disabled') === 'true';
+  // 임의로 광고 노출하지 않을 경우 - SSR에서 localStorage 접근 금지
+  const [adsDisabledOverride, setAdsDisabledOverride] =
+    useState<boolean>(false);
+  useEffect(() => {
+    try {
+      const v =
+        typeof window !== 'undefined' &&
+        window.localStorage?.getItem('adfit-disabled') === 'true';
+      setAdsDisabledOverride(Boolean(v));
+    } catch {
+      setAdsDisabledOverride(false);
+    }
   }, []);
 
   // Reason is environment only

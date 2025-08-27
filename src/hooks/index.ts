@@ -5,3 +5,4 @@ export * from './use-daily-limit.hook';
 export * from './use-capture.hook';
 export * from './use-number-match-game-hook';
 export * from './use-reward-visibility.hook';
+export * from './credit-cost-label.hook';
