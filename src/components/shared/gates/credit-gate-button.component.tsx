@@ -12,7 +12,6 @@ export type CreditGateButtonType = {
   readonly label: string;
   readonly spendKey: keyof typeof SPEND_COST;
   readonly onProceed: () => void;
-  readonly disabled?: boolean;
 };
 
 export function CreditGateButtonComponent({
@@ -21,14 +20,14 @@ export function CreditGateButtonComponent({
   label,
   spendKey,
   onProceed,
-  disabled,
 }: CreditGateButtonType) {
   const [open, setOpen] = useState<boolean>(false);
-  const { canSpend, onSpend } = useCreditStore();
+  const { total, canSpend, onSpend } = useCreditStore();
   const amount = useMemo<number>(() => SPEND_COST[spendKey], [spendKey]);
+  const insufficient = useMemo<boolean>(() => total < amount, [total, amount]);
 
   const handleClick = (): void => {
-    if (disabled) return;
+    if (insufficient) return;
     const check = canSpend(amount);
     if (!check.canSpend) {
       setOpen(true);
@@ -44,7 +43,8 @@ export function CreditGateButtonComponent({
         type="button"
         variant={variant}
         className={className}
-        disabled={disabled}
+        disabled={insufficient}
+        aria-disabled={insufficient}
         onClick={handleClick}
       >
         {label}

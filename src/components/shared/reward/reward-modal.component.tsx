@@ -60,10 +60,12 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
     () => cooldownMsLeft > 0,
     [cooldownMsLeft]
   );
-  const cooldownSeconds = useMemo<number>(
-    () => Math.ceil(cooldownMsLeft / 1000),
-    [cooldownMsLeft]
-  );
+  const cooldownLabel = useMemo<string>(() => {
+    const totalSec = Math.ceil(cooldownMsLeft / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${m}m${s}s`;
+  }, [cooldownMsLeft]);
   const reachedDailyCap = todayEarned >= CREDIT_POLICY.dailyCap;
 
   const onClose = (): void => onOpenChange(false);
@@ -102,7 +104,7 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
           >
             {reachedDailyCap
               ? '오늘 시청 한도에 도달했습니다.'
-              : `쿨다운 중입니다. ${cooldownSeconds}s 후 다시 시도해주세요.`}
+              : `쿨다운 중입니다. ${cooldownLabel} 후 다시 시도해주세요.`}
           </div>
         )}
 
@@ -146,7 +148,7 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
               {reachedDailyCap
                 ? '오늘 한도 도달'
                 : inCooldown
-                ? `쿨다운 ${cooldownSeconds}s`
+                ? `쿨다운 ${cooldownLabel}`
                 : `크레딧 받기 (+${CREDIT_POLICY.rewardAmount})`}
             </Button>
           </div>

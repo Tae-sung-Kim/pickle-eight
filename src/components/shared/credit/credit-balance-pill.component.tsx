@@ -43,10 +43,12 @@ export function CreditBalancePillComponent({
     () => cooldownMsLeft > 0,
     [cooldownMsLeft]
   );
-  const cooldownSeconds = useMemo<number>(
-    () => Math.ceil(cooldownMsLeft / 1000),
-    [cooldownMsLeft]
-  );
+  const cooldownLabel = useMemo<string>(() => {
+    const totalSec = Math.ceil(cooldownMsLeft / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${m}m${s}s`;
+  }, [cooldownMsLeft]);
 
   const disabledNow = useMemo<boolean>(
     () => reachedDailyCap || inCooldown,
@@ -109,7 +111,7 @@ export function CreditBalancePillComponent({
           {reachedDailyCap
             ? '오늘 시청 한도 도달'
             : inCooldown
-            ? `다음 시청까지 ${cooldownSeconds}s`
+            ? `다음 시청까지 ${cooldownLabel}`
             : `광고 보기로 크레딧 충전 · 남은 횟수 ${Math.floor(
                 remaining / CREDIT_POLICY.rewardAmount
               )}회`}

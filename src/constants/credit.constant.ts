@@ -2,10 +2,10 @@ import type { CreditPolicyType, SpendCostType } from '@/types';
 
 export const CREDIT_POLICY: CreditPolicyType = {
   rewardAmount: 5,
-  dailyCap: 50,
-  cooldownMs: 1 * 60 * 1000,
+  dailyCap: 40,
+  cooldownMs: 1.5 * 60 * 1000,
   visibleRatioRequired: 0.5,
-  visibleSecondsRequired: 12,
+  visibleSecondsRequired: 20,
 } as const;
 
 export const SPEND_COST: SpendCostType = {

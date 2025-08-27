@@ -9,7 +9,7 @@ export function useCreditCostLabel({
 }: UseCreditCostLabelType): string {
   if (isBusy) return busyLabel;
   const cost = SPEND_COST[spendKey];
-  return `${baseLabel}(${cost})`;
+  return `${baseLabel}(-${cost})`;
 }
 
 export default useCreditCostLabel;

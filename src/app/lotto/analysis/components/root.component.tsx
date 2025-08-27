@@ -15,15 +15,15 @@ export function LottoAnalysisComponent() {
   const [to, setTo] = useState<number>(50);
   const [bootstrapped, setBootstrapped] = useState<boolean>(false);
 
-  const canAnalyze = useMemo(
-    () =>
-      bootstrapped &&
-      Number.isInteger(from) &&
-      Number.isInteger(to) &&
-      from > 0 &&
-      to >= from,
-    [bootstrapped, from, to]
-  );
+  // const canAnalyze = useMemo(
+  //   () =>
+  //     bootstrapped &&
+  //     Number.isInteger(from) &&
+  //     Number.isInteger(to) &&
+  //     from > 0 &&
+  //     to >= from,
+  //   [bootstrapped, from, to]
+  // );
 
   // 데이터 로딩은 queries 훅을 사용합니다.
   const { data, isError, error, refetch, isFetching } = useLottoDrawsQuery({
@@ -85,7 +85,6 @@ export function LottoAnalysisComponent() {
             to={to}
             setFrom={setFrom}
             setTo={setTo}
-            enabled={canAnalyze}
             isFetching={isFetching}
             onAnalyze={() => refetch()}
           />

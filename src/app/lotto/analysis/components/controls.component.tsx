@@ -12,7 +12,6 @@ export function LottoAnalysisControlsComponent({
   to,
   setFrom,
   setTo,
-  enabled,
   isFetching,
   onAnalyze,
 }: {
@@ -20,7 +19,6 @@ export function LottoAnalysisControlsComponent({
   to: number;
   setFrom: (v: number) => void;
   setTo: (v: number) => void;
-  enabled: boolean;
   isFetching: boolean;
   onAnalyze: () => void;
 }) {
@@ -79,7 +77,6 @@ export function LottoAnalysisControlsComponent({
               label={label}
               spendKey="analysis"
               onProceed={onAnalyze}
-              disabled={!enabled || isFetching}
             />
             <CreditBalancePillComponent />
           </div>

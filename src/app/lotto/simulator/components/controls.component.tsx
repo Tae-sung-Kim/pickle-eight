@@ -28,8 +28,6 @@ export function SimulatorControlsComponent({
   onDrawCountChange,
   onRun,
 }: SimulatorControlsComponentType) {
-  const isInvalid =
-    ticketCount < 1 || ticketCount > 100 || drawCount < 1 || drawCount > 20000;
   return (
     <Card className="mt-4 py-4">
       <CardContent>
@@ -78,7 +76,6 @@ export function SimulatorControlsComponent({
               label={running ? '실행 중...' : '시뮬레이션 실행'}
               spendKey="simulator"
               onProceed={onRun}
-              disabled={running || isInvalid}
             />
           </div>
         </div>
