@@ -37,7 +37,7 @@ export function LottoAnalysisComponent() {
     [data]
   );
 
-  // 부트스트랩: 최신 회차 로딩 성공 시 마지막-20 ~ 마지막으로 최초 1회 조회
+  // 부트스트랩: 최신 회차 로딩 성공 시 마지막-50 ~ 마지막으로 최초 1회 조회
   // 최신 회차 불가(로딩 종료 + 에러/데이터 없음) 시 1~50으로 폴백하여 최초 1회 조회
   const {
     data: latest,
@@ -51,7 +51,7 @@ export function LottoAnalysisComponent() {
     if (isLatestSuccess && latest) {
       const last = latest.lastDrawNumber;
       if (Number.isInteger(last) && last > 0) {
-        const nextFrom = Math.max(1, last - 20);
+        const nextFrom = Math.max(1, last - 50);
         const nextTo = last;
         setFrom((prev) => (prev !== nextFrom ? nextFrom : prev));
         setTo((prev) => (prev !== nextTo ? nextTo : prev));

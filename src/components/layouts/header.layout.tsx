@@ -9,17 +9,84 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from '@/components/ui/tooltip';
-import { CREDIT_POLICY } from '@/constants';
-import { useMemo } from 'react';
+import { CREDIT_POLICY, CREDIT_RESET_MODE_ENUM } from '@/constants';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { CreditResetModeType } from '@/types';
 
 export function HeaderLayout() {
-  const { total, todayEarned } = useCreditStore();
+  const { total, todayEarned, syncReset } = useCreditStore();
+  // Normalize env to enum VALUE union ('midnight' | 'minute')
+  const envMode = (
+    process.env.NEXT_PUBLIC_CREDIT_RESET_MODE || ''
+  ).toLowerCase();
+  const resetMode: CreditResetModeType =
+    envMode === CREDIT_RESET_MODE_ENUM.MINUTE
+      ? CREDIT_RESET_MODE_ENUM.MINUTE
+      : CREDIT_RESET_MODE_ENUM.MIDNIGHT;
+
+  const calcNextResetTs = useCallback(() => {
+    const now = new Date();
+    if (resetMode === CREDIT_RESET_MODE_ENUM.MINUTE) {
+      const d = new Date(now);
+      d.setSeconds(0, 0);
+      d.setMinutes(d.getMinutes() + 1);
+      return d.getTime();
+    }
+    const d = new Date(now);
+    d.setHours(24, 0, 0, 0);
+    return d.getTime();
+  }, [resetMode]);
+
+  // Keep moving threshold in state; initialize after mount to avoid SSR mismatch
+  const [nextResetTs, setNextResetTs] = useState<number>(0);
+
+  const [remainingMs, setRemainingMs] = useState<number>(-1);
+
+  const didResetRef = useRef<boolean>(false);
+
+  useEffect(() => {
+    // initialize threshold when mode changes
+    const initialNext = calcNextResetTs();
+    setNextResetTs(initialNext);
+    const tick = (): void => {
+      const now = Date.now();
+      if (now >= nextResetTs) {
+        if (!didResetRef.current) {
+          // Force store to sync to new period (sets credits to baseDaily)
+          syncReset();
+          didResetRef.current = true;
+        }
+        const next = calcNextResetTs();
+        setNextResetTs(next);
+        setRemainingMs(next - Date.now());
+      } else {
+        didResetRef.current = false;
+        setRemainingMs(nextResetTs - now);
+      }
+    };
+    // IMPORTANT: do NOT tick immediately to avoid hydration race
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [resetMode, syncReset, nextResetTs, calcNextResetTs]);
+
+  const remainingLabel = useMemo<string>(() => {
+    if (remainingMs < 0) return '';
+    const totalSec = Math.ceil(remainingMs / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    const mm = String(m).padStart(2, '0');
+    const ss = String(s).padStart(2, '0');
+    if (h > 0) return `${String(h).padStart(2, '0')}:${mm}:${ss}`;
+    return `${mm}:${ss}`;
+  }, [remainingMs]);
+
   const tooltipText = useMemo<string>(() => {
     if (todayEarned >= CREDIT_POLICY.dailyCap) {
-      return `오늘 획득 ${todayEarned}/${CREDIT_POLICY.dailyCap} · 일일 한도 도달`;
+      return `오늘 획득 ${todayEarned}/${CREDIT_POLICY.dailyCap} · 일일 한도 도달 · 리셋까지 ${remainingLabel}`;
     }
-    return `오늘 획득 ${todayEarned}/${CREDIT_POLICY.dailyCap} · 획득 조건은 크레딧 + 버튼에서 확인`;
-  }, [todayEarned]);
+    return `오늘 획득 ${todayEarned}/${CREDIT_POLICY.dailyCap} · 리셋까지 ${remainingLabel}`;
+  }, [todayEarned, remainingLabel]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -57,6 +124,9 @@ export function HeaderLayout() {
               <div className="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs cursor-default select-none">
                 <Coins className="h-4 w-4 text-amber-500" />
                 <span className="tabular-nums font-semibold">{total}</span>
+                <span className="ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border">
+                  ↻ {remainingLabel}
+                </span>
               </div>
             </TooltipTrigger>
             <TooltipContent sideOffset={6}>{tooltipText}</TooltipContent>

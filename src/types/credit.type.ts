@@ -1,4 +1,4 @@
-import { SPEND_COST } from '@/constants';
+import { CREDIT_RESET_MODE_ENUM, SPEND_COST } from '@/constants';
 
 export type CreditEventType =
   | 'reward_complete'
@@ -10,6 +10,7 @@ export type CreditBalanceType = {
   readonly total: number;
   readonly todayEarned: number;
   readonly lastEarnedAt?: number;
+  readonly lastResetAt?: number;
 };
 
 export type CreditPolicyType = {
@@ -18,6 +19,7 @@ export type CreditPolicyType = {
   readonly cooldownMs: number;
   readonly visibleRatioRequired: number;
   readonly visibleSecondsRequired: number;
+  readonly baseDaily: number;
 };
 
 export type SpendCostType = {
@@ -43,3 +45,14 @@ export type UseCreditCostLabelType = {
   readonly isBusy?: boolean;
   readonly busyLabel?: string;
 };
+
+export type CreditStateType = {
+  onEarn: () => EarnCheckResultType;
+  onSpend: (amount: number) => SpendCheckResultType;
+  canSpend: (amount: number) => SpendCheckResultType;
+  syncReset: () => void;
+} & CreditBalanceType;
+
+// Use enum VALUE union ("midnight" | "minute"), not KEY union ("MIDNIGHT" | "MINUTE")
+export type CreditResetModeType =
+  (typeof CREDIT_RESET_MODE_ENUM)[keyof typeof CREDIT_RESET_MODE_ENUM];

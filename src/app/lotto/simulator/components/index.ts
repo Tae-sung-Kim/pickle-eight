@@ -4,3 +4,4 @@ export * from './tickets.component';
 export * from './results-summary.component';
 export * from './probabilities.component';
 export * from './best-performance.component';
+export * from './custom-tickets.component';

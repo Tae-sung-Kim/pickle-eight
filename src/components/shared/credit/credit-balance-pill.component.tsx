@@ -14,8 +14,8 @@ import {
 import { useConsentContext } from '@/providers';
 
 export type CreditBalancePillType = {
-  readonly className?: string;
-  readonly showLabel?: boolean;
+  className?: string;
+  showLabel?: boolean;
 };
 
 export function CreditBalancePillComponent({

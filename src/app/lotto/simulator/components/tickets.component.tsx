@@ -67,7 +67,11 @@ export function SimulatorTicketsComponent({
             <CardContent>
               <div className="mt-1 flex flex-wrap gap-1">
                 {t.numbers.map((n, i) => (
-                  <LottoBallComponent key={n} number={n} index={i} />
+                  <LottoBallComponent
+                    key={`${idx}-${i}-${n}`}
+                    number={n}
+                    index={i}
+                  />
                 ))}
               </div>
             </CardContent>
