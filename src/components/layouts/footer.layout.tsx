@@ -12,24 +12,32 @@ export function FooterLayout() {
             All rights reserved.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:justify-end">
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              이용약관
-            </Link>
-            <Link
-              href="/credits-policy"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              크레딧 정책
-            </Link>
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              개인정보처리방침
-            </Link>
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+              <Link
+                href="/terms"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                이용약관
+              </Link>
+              <Link
+                href="/privacy"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                개인정보처리방침
+              </Link>
+              <Link
+                href="/credits-policy"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                크레딧 정책
+              </Link>
+              <Link
+                href="/support"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                후원
+              </Link>
+            </div>
             <CookieSettingsButtonComponent />
             <div className="flex flex-col items-center gap-1 text-sm text-muted-foreground sm:flex-row sm:gap-3">
               <a

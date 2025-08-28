@@ -80,13 +80,13 @@ export function TriviaQuizComponent() {
     if (!questions[currentIdx]) return;
     setAnsweredId(selectedId);
     // answer()와 results 추가는 handleNext에서 처리
-    // toast는 피드백용으로만 유지
-    const isCorrect = selectedId === questions[currentIdx].answerId;
-    if (isCorrect) {
-      toast.success('정답입니다!');
-    } else {
-      toast.error('틀렸어요!');
-    }
+    // // toast는 피드백용으로만 유지
+    // const isCorrect = selectedId === questions[currentIdx].answerId;
+    // if (isCorrect) {
+    //   toast.success('정답입니다!');
+    // } else {
+    //   toast.error('틀렸어요!');
+    // }
   };
 
   // 다음 문제: answer() 호출 및 상태 초기화
