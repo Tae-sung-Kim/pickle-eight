@@ -111,7 +111,7 @@ export function LottoAnalysisControlsComponent({
             />
           </div>
 
-          <div className="flex items-end justify-between gap-3">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-end gap-2 sm:gap-3">
             <CreditGateButtonComponent
               className="w-full sm:w-auto"
               label={label}
@@ -119,7 +119,7 @@ export function LottoAnalysisControlsComponent({
               onProceed={onAnalyze}
               amountOverride={amountOverride}
             />
-            <CreditBalancePillComponent />
+            <CreditBalancePillComponent className="self-end sm:self-auto" />
           </div>
         </div>
       </CardContent>

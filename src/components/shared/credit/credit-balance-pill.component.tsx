@@ -87,12 +87,25 @@ export function CreditBalancePillComponent({
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full border px-2 py-1 text-xs text-muted-foreground whitespace-nowrap',
+        // Mobile-safe: allow shrinking, avoid overflow, slightly tighter sizes
+        // Also push to the right on small screens to avoid overlapping primary buttons in rows
+        // Add a small right margin on mobile to prevent card edge clipping when parent has overflow-hidden
+        'inline-flex max-w-full items-center gap-1.5 rounded-full border px-2 py-1 text-[11px] text-muted-foreground overflow-hidden ml-auto mr-2 md:ml-0 md:mr-0 sm:text-xs sm:px-2.5 sm:py-1.5',
         className
       )}
     >
-      {showLabel && <span>보유</span>}
-      <span className="tabular-nums font-semibold">{total}</span>
+      {showLabel && <span className="shrink-0">보유</span>}
+      <span className="tabular-nums font-semibold shrink-0">{total}</span>
+      {/* Mobile-only inline status since tooltips are not available on touch */}
+      <span className="block sm:hidden min-w-0 truncate text-[10px] text-muted-foreground">
+        {state !== 'accepted'
+          ? '광고 허가 필요'
+          : reachedDailyCap
+          ? '오늘 한도 도달'
+          : inCooldown
+          ? `${cooldownLabel}`
+          : `오늘 ${todayEarned}/${CREDIT_POLICY.dailyCap}`}
+      </span>
       <Tooltip>
         <TooltipTrigger asChild>
           {/* span을 Trigger로 사용하여, 내부 버튼이 비활성화처럼 보이더라도 툴팁은 항상 노출되도록 함 */}
@@ -102,14 +115,17 @@ export function CreditBalancePillComponent({
             aria-disabled={disabledNow}
             onClick={handleTriggerClick}
             onKeyDown={handleTriggerKeyDown}
-            className={cn('inline-flex', disabledNow && 'cursor-not-allowed')}
+            className={cn(
+              'inline-flex shrink-0',
+              disabledNow && 'cursor-not-allowed'
+            )}
           >
             <Button
               type="button"
               variant="ghost"
               size="sm"
               className={cn(
-                'ml-0.5 h-5 px-1 text-xs',
+                'ml-0.5 h-5 w-5 p-0 text-xs sm:h-5 sm:w-5',
                 disabledNow && 'opacity-50 pointer-events-none'
               )}
             >

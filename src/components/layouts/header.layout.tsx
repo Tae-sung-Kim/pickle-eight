@@ -88,6 +88,11 @@ export function HeaderLayout() {
     return `오늘 획득 ${todayEarned}/${CREDIT_POLICY.dailyCap} · 리셋까지 ${remainingLabel}`;
   }, [todayEarned, remainingLabel]);
 
+  const remainingCharges = useMemo<number>(() => {
+    const left = Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
+    return Math.floor(left / CREDIT_POLICY.rewardAmount);
+  }, [todayEarned]);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 sm:px-6">
@@ -124,6 +129,10 @@ export function HeaderLayout() {
               <div className="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs cursor-default select-none">
                 <Coins className="h-4 w-4 text-amber-500" />
                 <span className="tabular-nums font-semibold">{total}</span>
+                {/* 남은 충전 횟수 (모바일 표시) */}
+                <span className="ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border">
+                  {remainingCharges}회 남음
+                </span>
                 <span className="ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border">
                   ↻ {remainingLabel}
                 </span>

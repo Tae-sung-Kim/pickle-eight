@@ -146,7 +146,7 @@ export function SimulatorControlsComponent({
             />
           </div>
 
-          <div className="flex items-end md:justify-end justify-between gap-3 md:col-span-3">
+          <div className="flex flex-col-reverse md:flex-row items-stretch md:items-end gap-2 md:gap-3 md:col-span-3">
             {canRun ? (
               <CreditGateButtonComponent
                 className="w-full md:w-auto"
@@ -165,7 +165,7 @@ export function SimulatorControlsComponent({
                 {label}
               </Button>
             )}
-            <CreditBalancePillComponent />
+            <CreditBalancePillComponent className="self-end md:self-auto" />
           </div>
         </div>
       </CardContent>
