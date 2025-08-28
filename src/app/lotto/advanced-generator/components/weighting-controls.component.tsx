@@ -3,9 +3,11 @@
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
+import { useEffect, useState } from 'react';
 
 export type WeightingControlsType = {
   readonly useWeight: boolean;
+  readonly loading: boolean;
   readonly from: number;
   readonly to: number;
   readonly excludeLatest: boolean;
@@ -17,6 +19,7 @@ export type WeightingControlsType = {
 
 export function LottoAdvancedWeightingControlsComponent({
   useWeight,
+  loading,
   from,
   to,
   excludeLatest,
@@ -25,32 +28,59 @@ export function LottoAdvancedWeightingControlsComponent({
   onChangeTo,
   onToggleExcludeLatest,
 }: WeightingControlsType) {
+  const [fromText, setFromText] = useState<string>(String(from ?? ''));
+  const [toText, setToText] = useState<string>(String(to ?? ''));
+  useEffect(() => setFromText(String(from ?? '')), [from]);
+  useEffect(() => setToText(String(to ?? '')), [to]);
+
   return (
-    <div className="space-y-3">
+    <div className="space-y-3" aria-busy={loading}>
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">가중치(핫/콜드) 사용</div>
-        <Switch checked={useWeight} onCheckedChange={onToggleUseWeight} />
+        <Switch
+          className="cursor-pointer"
+          checked={useWeight}
+          onCheckedChange={onToggleUseWeight}
+          disabled={loading}
+        />
       </div>
+      {useWeight && loading && (
+        <div className="text-xs text-muted-foreground">
+          최신 회차 기준 범위를 불러오는 중...
+        </div>
+      )}
       {useWeight && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="grid w-full items-center gap-2">
             <Label htmlFor="from">From</Label>
             <Input
               id="from"
-              type="number"
+              type="text"
+              inputMode="numeric"
               min={1}
-              value={from}
-              onChange={(e) => onChangeFrom(Number(e.target.value))}
+              value={fromText}
+              onChange={(e) => setFromText(e.target.value)}
+              onBlur={(e) => {
+                const n = Number.parseInt(e.target.value, 10);
+                if (Number.isFinite(n)) onChangeFrom(n);
+              }}
+              disabled={loading}
             />
           </div>
           <div className="grid w-full items-center gap-2">
             <Label htmlFor="to">To</Label>
             <Input
               id="to"
-              type="number"
+              type="text"
+              inputMode="numeric"
               min={from}
-              value={to}
-              onChange={(e) => onChangeTo(Number(e.target.value))}
+              value={toText}
+              onChange={(e) => setToText(e.target.value)}
+              onBlur={(e) => {
+                const n = Number.parseInt(e.target.value, 10);
+                if (Number.isFinite(n)) onChangeTo(n);
+              }}
+              disabled={loading}
             />
           </div>
           <div className="flex items-center justify-between sm:justify-start gap-3 pt-1.5">
@@ -59,8 +89,10 @@ export function LottoAdvancedWeightingControlsComponent({
             </Label>
             <Switch
               id="excludeLatest"
+              className="cursor-pointer"
               checked={excludeLatest}
               onCheckedChange={onToggleExcludeLatest}
+              disabled={loading}
             />
           </div>
         </div>

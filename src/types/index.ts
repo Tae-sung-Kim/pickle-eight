@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    kakaoAsyncAdFit?: unknown[];
+  }
+}
+
 export * from './ladder-game.type';
 export * from './dice-game.type';
 export * from './draw-order.type';
@@ -10,3 +16,4 @@ export * from './number-match-game.type';
 export * from './lotto.type';
 export * from './emoji-translation.type';
 export * from './theme.type';
+export * from './credit.type';

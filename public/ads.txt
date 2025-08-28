@@ -1,0 +1,4 @@
+# Kakao AdFit ads.txt
+# IMPORTANT: Replace the following line with the exact value provided in Kakao AdFit console.
+# Example format (do NOT use this as-is):
+# kakao.com, PUB-XXXXXXXXXXXXXXXX, DIRECT

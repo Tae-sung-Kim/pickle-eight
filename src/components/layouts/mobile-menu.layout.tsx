@@ -1,5 +1,5 @@
 'use client';
-import { NavLinkComponent } from '@/components';
+import { NavLinkComponent, CreditIndicatorComponent } from '@/components';
 import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
 import { Menu, X } from 'lucide-react';
 import {
@@ -93,13 +93,16 @@ export function MobileMenuLayout() {
                           href={item.href}
                           isActive={isActive}
                           className={cn(
-                            'block px-4 py-3 rounded-lg text-sm font-medium transition-colors text-left w-full',
+                            'flex items-center justify-between gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-colors text-left w-full',
                             isActive
                               ? 'bg-gray-100 text-primary font-semibold'
                               : 'text-gray-700 hover:bg-gray-50'
                           )}
                         >
-                          {item.label}
+                          <span className="truncate">{item.label}</span>
+                          {item.isCredit && (
+                            <CreditIndicatorComponent size="xs" />
+                          )}
                         </NavLinkComponent>
                       </SheetClose>
                     );

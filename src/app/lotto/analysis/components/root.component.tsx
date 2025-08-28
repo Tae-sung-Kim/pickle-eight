@@ -12,30 +12,33 @@ import { useLottoDrawsQuery, useLatestLottoDrawQuery } from '@/queries';
 
 export function LottoAnalysisComponent() {
   const [from, setFrom] = useState<number>(1);
-  const [to, setTo] = useState<number>(50);
+  const [to, setTo] = useState<number>(30);
   const [bootstrapped, setBootstrapped] = useState<boolean>(false);
 
-  const enabled = useMemo(
-    () =>
-      bootstrapped &&
-      Number.isInteger(from) &&
-      Number.isInteger(to) &&
-      from > 0 &&
-      to >= from,
-    [bootstrapped, from, to]
-  );
+  // const canAnalyze = useMemo(
+  //   () =>
+  //     bootstrapped &&
+  //     Number.isInteger(from) &&
+  //     Number.isInteger(to) &&
+  //     from > 0 &&
+  //     to >= from,
+  //   [bootstrapped, from, to]
+  // );
 
   // 데이터 로딩은 queries 훅을 사용합니다.
-  const { data, isLoading, isError, error, refetch, isFetching } =
-    useLottoDrawsQuery({ from, to, enabled });
+  const { data, isError, error, refetch, isFetching } = useLottoDrawsQuery({
+    from,
+    to,
+    enabled: false,
+  });
 
   const stats = useMemo(
     () => (data && data.length > 0 ? LottoUtils.computeStats(data) : null),
     [data]
   );
 
-  // 부트스트랩: 최신 회차 로딩 성공 시 마지막-20 ~ 마지막으로 최초 1회 조회
-  // 최신 회차 불가(로딩 종료 + 에러/데이터 없음) 시 1~50으로 폴백하여 최초 1회 조회
+  // 부트스트랩: 최신 회차 로딩 성공 시 마지막-30 ~ 마지막으로 최초 1회 조회
+  // 최신 회차 불가(로딩 종료 + 에러/데이터 없음) 시 1~30으로 폴백하여 최초 1회 조회
   const {
     data: latest,
     isLoading: isLatestLoading,
@@ -48,7 +51,7 @@ export function LottoAnalysisComponent() {
     if (isLatestSuccess && latest) {
       const last = latest.lastDrawNumber;
       if (Number.isInteger(last) && last > 0) {
-        const nextFrom = Math.max(1, last - 20);
+        const nextFrom = Math.max(1, last - 30);
         const nextTo = last;
         setFrom((prev) => (prev !== nextFrom ? nextFrom : prev));
         setTo((prev) => (prev !== nextTo ? nextTo : prev));
@@ -57,9 +60,9 @@ export function LottoAnalysisComponent() {
       }
     }
     if (!isLatestLoading && (isLatestError || !latest)) {
-      // 폴백: 1~50
+      // 폴백: 1~30
       setFrom((prev) => (prev !== 1 ? 1 : prev));
-      setTo((prev) => (prev !== 50 ? 50 : prev));
+      setTo((prev) => (prev !== 30 ? 30 : prev));
       setBootstrapped(true);
     }
   }, [bootstrapped, isLatestLoading, isLatestError, isLatestSuccess, latest]);
@@ -82,13 +85,11 @@ export function LottoAnalysisComponent() {
             to={to}
             setFrom={setFrom}
             setTo={setTo}
-            enabled={enabled}
             isFetching={isFetching}
             onAnalyze={() => refetch()}
           />
 
-          <div className="mt-6 space-y-8">
-            {isLoading && <p className="text-sm">불러오는 중…</p>}
+          <div className="mt-6 space-y-8 bg-white rounded-md shadow p-4">
             {isError && (
               <p className="text-sm text-destructive">
                 오류: {(error as Error).message}

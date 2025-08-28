@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
-import { JsonLd } from '@/components';
+import { JsonLd, CreditIndicatorComponent } from '@/components';
 import {
   buildMetadata,
   canonicalUrl,
@@ -46,7 +46,12 @@ export const metadata: Metadata = {
 const randomItems = (
   MENU_LIST.find((g) => g.group === MENU_GROUP_NAME_ENUM.RANDOM_PICKER)
     ?.items ?? []
-).map((it) => ({ href: it.href, label: it.label, desc: it.description }));
+).map((it) => ({
+  href: it.href,
+  label: it.label,
+  desc: it.description,
+  isCredit: it.isCredit,
+}));
 
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Pickle Eight';
 const crumbs = jsonLdBreadcrumb([
@@ -137,7 +142,12 @@ export default function RandomPickerHubPage() {
               href={it.href}
               className={`block rounded-2xl border border-border bg-surface-card p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-transparent ${theme.ring} ${theme.hoverRing}`}
             >
-              <div className="font-semibold text-foreground">{it.label}</div>
+              <div className="flex items-center justify-between gap-3">
+                <div className="font-semibold text-foreground truncate">
+                  {it.label}
+                </div>
+                {it.isCredit && <CreditIndicatorComponent size="xs" />}
+              </div>
               <div className="mt-1 text-sm text-muted-foreground">
                 {it.desc}
               </div>

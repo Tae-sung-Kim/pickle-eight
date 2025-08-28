@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LottoBallComponent } from '@/components';
-import { LottoDrawStatsComponent } from './lotto-draw-stats.component';
+import { LottoDrawStatsComponent } from './stats.component';
 
 export type LottoDrawCardType = {
   readonly drawNumber: number;

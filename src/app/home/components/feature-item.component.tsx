@@ -3,6 +3,7 @@ import { cn } from '@/lib';
 import { SECTION_ICON_COLOR } from '@/constants';
 import MenuTooltipComponent from './tooltip.component';
 import { FeatureItemType } from '@/types';
+import { CreditIndicatorComponent } from '@/components';
 
 export function HomeMenuFeatureItemComponent({
   section,
@@ -12,6 +13,7 @@ export function HomeMenuFeatureItemComponent({
   description,
   example,
   className,
+  isCredit,
 }: FeatureItemType) {
   return (
     <Link
@@ -35,6 +37,11 @@ export function HomeMenuFeatureItemComponent({
           />
         )}
       </div>
+      {isCredit && (
+        <span className="ml-2 flex-shrink-0">
+          <CreditIndicatorComponent size="xs" showText={false} />
+        </span>
+      )}
       <span className="ml-2 text-primary/60 text-lg flex-shrink-0">{'>'}</span>
     </Link>
   );

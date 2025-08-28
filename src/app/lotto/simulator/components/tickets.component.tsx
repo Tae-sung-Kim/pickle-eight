@@ -1,6 +1,8 @@
 import { LottoBallComponent } from '@/components';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useCreditStore } from '@/stores';
+import { CREDIT_POLICY } from '@/constants';
 
 export type SimulatorTicketsComponentType = Readonly<{
   tickets: ReadonlyArray<{
@@ -21,6 +23,14 @@ export function SimulatorTicketsComponent({
   onShowAll,
   onCollapse,
 }: SimulatorTicketsComponentType) {
+  const { todayEarned } = useCreditStore();
+  const previewCount = Math.min(6, tickets.length);
+  const remainingCharges = Math.max(
+    0,
+    Math.floor(
+      (CREDIT_POLICY.dailyCap - todayEarned) / CREDIT_POLICY.rewardAmount
+    )
+  );
   if (tickets.length === 0) return <></>;
   return (
     <div className="mt-6">
@@ -30,9 +40,13 @@ export function SimulatorTicketsComponent({
           <span className="ml-1">
             (표시 {displayTickets.length} / 총 {tickets.length})
           </span>
+          {/* 모바일 전용: 남은 충전 횟수 노출 */}
+          <span className="ml-2 inline-block rounded border px-1.5 py-0.5 text-[10px] text-muted-foreground sm:hidden">
+            남은 충전 {remainingCharges}회
+          </span>
         </div>
         <div className="flex items-center gap-2">
-          {tickets.length > displayTickets.length && (
+          {!showAll && tickets.length > previewCount && (
             <Button
               type="button"
               variant="link"
@@ -43,7 +57,7 @@ export function SimulatorTicketsComponent({
               모두 보기
             </Button>
           )}
-          {showAll && tickets.length > 24 && (
+          {showAll && tickets.length > previewCount && (
             <Button
               type="button"
               variant="link"
@@ -67,7 +81,11 @@ export function SimulatorTicketsComponent({
             <CardContent>
               <div className="mt-1 flex flex-wrap gap-1">
                 {t.numbers.map((n, i) => (
-                  <LottoBallComponent key={n} number={n} index={i} />
+                  <LottoBallComponent
+                    key={`${idx}-${i}-${n}`}
+                    number={n}
+                    index={i}
+                  />
                 ))}
               </div>
             </CardContent>

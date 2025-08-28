@@ -229,7 +229,29 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">20. 문의</h2>
+          <h2 className="font-medium text-foreground">
+            20. 크레딧 정책 및 부정 이용
+          </h2>
+          <p>
+            서비스 내 크레딧의 획득·사용은 별도의{' '}
+            <a href="/credits-policy" className="underline">
+              크레딧 정책
+            </a>
+            을 따릅니다. 보상은 광고 가시성, 노출 시간, 쿨다운 등 요건 충족
+            시에만 지급됩니다.
+          </p>
+          <p className="mt-2">
+            자동화 도구 사용, 비정상 트래픽 생성, 가시성 요건 우회 등 부정
+            행위가 확인될 경우 보상 취소·회수, 이용 제한 등의 조치가 적용될 수
+            있습니다. 관련 데이터 처리 및 동의에 관한 사항은{' '}
+            <a href="/privacy" className="underline">
+              개인정보처리방침
+            </a>
+            을 참조하세요.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">21. 문의</h2>
           <p className="break-all">문의: contact.tskim@gmail.com</p>
           <p>
             텔레그램:{' '}
@@ -243,6 +265,7 @@ export default function TermsPage() {
             </a>
           </p>
         </section>
+
         <p className="text-xs">
           [알림] 본 문서는 일반 정보 제공이며 법률 자문이 아닙니다. 사업 특성에
           맞춰 법률 검토를 권장합니다.

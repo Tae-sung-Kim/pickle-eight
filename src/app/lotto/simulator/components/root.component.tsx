@@ -8,6 +8,8 @@ import { SimulatorResultsSummaryComponent } from './results-summary.component';
 import { SimulatorProbabilitiesComponent } from './probabilities.component';
 import { SimulatorBestPerformanceComponent } from './best-performance.component';
 import { LottoLankType } from '@/types';
+import { SimulatorCustomTicketsComponent } from './custom-tickets.component';
+import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants';
 
 function generateRandomDraw() {
   const pool: number[] = [];
@@ -38,9 +40,36 @@ function generateRandomDraw() {
   };
 }
 
+function toNumberTickets(
+  src: ReadonlyArray<{
+    numbers: readonly [string, string, string, string, string, string];
+  }>
+): ReadonlyArray<{
+  numbers: readonly [number, number, number, number, number, number];
+}> {
+  const out: Array<{
+    numbers: readonly [number, number, number, number, number, number];
+  }> = [];
+  for (const t of src) {
+    const nums = t.numbers
+      .map((s) => parseInt(s, 10))
+      .filter((n) => Number.isFinite(n)) as number[];
+    if (nums.length !== 6) continue;
+    const inRange = nums.every((n) => n >= 1 && n <= 45);
+    if (!inRange) continue;
+    const unique = new Set(nums);
+    if (unique.size !== 6) continue;
+    nums.sort((a, b) => a - b);
+    out.push({
+      numbers: [nums[0], nums[1], nums[2], nums[3], nums[4], nums[5]],
+    });
+  }
+  return out;
+}
+
 export function LottoSimulatorComponent() {
-  const [ticketCount, setTicketCount] = useState<number>(5);
-  const [drawCount, setDrawCount] = useState<number>(1000);
+  const [ticketCount, setTicketCount] = useState<number>(10);
+  const [drawCount, setDrawCount] = useState<number>(500);
   const [running, setRunning] = useState<boolean>(false);
   const [result, setResult] = useState<null | {
     total: number;
@@ -60,10 +89,48 @@ export function LottoSimulatorComponent() {
       numbers: readonly [number, number, number, number, number, number];
     }>
   >([]);
+  const [mode, setMode] = useState<'random' | 'custom'>('random');
+  const [customTickets, setCustomTickets] = useState<
+    ReadonlyArray<{
+      numbers: readonly [string, string, string, string, string, string];
+    }>
+  >([]);
+
+  const handleModeChage = (mode: string) => {
+    setMode(mode as 'random' | 'custom');
+    if (mode === 'custom') {
+      setTicketCount(0);
+    } else {
+      setTicketCount(10);
+    }
+    setCustomTickets([]);
+  };
+
+  const handleAddCustomTicket = (
+    next: ReadonlyArray<{
+      numbers: readonly [string, string, string, string, string, string];
+    }>
+  ) => {
+    if (customTickets.length >= LOTTO_MAX_CUSTOM_TICKETS) return;
+    setCustomTickets(next);
+    setTicketCount(next.length);
+  };
+
   useEffect(() => {
-    setTickets(LottoGenerator.generate(ticketCount));
-  }, [ticketCount]);
+    if (mode === 'random') {
+      setTickets(LottoGenerator.generate(ticketCount));
+      return;
+    }
+    setTickets(toNumberTickets(customTickets));
+  }, [mode, ticketCount, customTickets]);
   const [showAll, setShowAll] = useState<boolean>(false);
+  const canRun: boolean = useMemo<boolean>(() => {
+    if (running) return false;
+    if (mode === 'random') return ticketCount > 0;
+    const generated = toNumberTickets(customTickets).length;
+    const requested = customTickets.length;
+    return requested > 0 && generated === requested;
+  }, [running, mode, ticketCount, customTickets]);
   const displayTickets = useMemo(
     () => (showAll ? tickets : tickets.slice(0, Math.min(6, tickets.length))),
     [showAll, tickets]
@@ -120,10 +187,20 @@ export function LottoSimulatorComponent() {
         ticketCount={ticketCount}
         drawCount={drawCount}
         running={running}
+        mode={mode}
+        onModeChange={handleModeChage}
         onTicketCountChange={setTicketCount}
         onDrawCountChange={setDrawCount}
         onRun={run}
+        canRun={canRun}
       />
+
+      {mode === 'custom' && (
+        <SimulatorCustomTicketsComponent
+          tickets={customTickets}
+          onChange={handleAddCustomTicket}
+        />
+      )}
 
       <SimulatorTicketsComponent
         tickets={tickets}

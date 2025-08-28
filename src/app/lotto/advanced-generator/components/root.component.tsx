@@ -8,11 +8,16 @@ import { LottoAdvancedGenerateControlsComponent } from './generate-controls.comp
 import { LottoAdvancedWeightingControlsComponent } from './weighting-controls.component';
 import { LottoAdvancedGeneratedListComponent } from './generated-list.component';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useCreditCostLabel } from '@/hooks';
+import {
+  CreditBalancePillComponent,
+  CreditGateButtonComponent,
+} from '@/components';
+import { SPEND_COST } from '@/constants';
 
 export function LottoAdvancedGeneratorComponent() {
-  const [count, setCount] = useState<number>(5);
+  const [count, setCount] = useState<number>(3);
   const [filters, setFilters] = useState<GenerateFiltersType>({
     sumMin: 100,
     sumMax: 200,
@@ -23,10 +28,28 @@ export function LottoAdvancedGeneratorComponent() {
   const [to, setTo] = useState<number>(50);
   const [excludeLatest, setExcludeLatest] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [rangeInitialized, setRangeInitialized] = useState<boolean>(false);
 
-  // Initialize range using latest draw (set to latest, from to last 50 draws)
-  const { data: latestDraw } = useLatestLottoDrawQuery();
+  const { data: latestDraw, isFetching } = useLatestLottoDrawQuery({
+    enabled: useWeight,
+  });
+  const amountOverride =
+    SPEND_COST.advanced +
+    (useWeight ? 2 : 0) +
+    Math.floor(Math.max(0, count - 1) / 3); // +1 per every +3 tickets
+  const label = useCreditCostLabel({
+    spendKey: 'advanced',
+    baseLabel: '생성',
+    isBusy: isFetching,
+    busyLabel: '생성 중…',
+    amountOverride,
+  });
+
   useEffect(() => {
+    if (!useWeight) {
+      setRangeInitialized(false);
+      return;
+    }
     if (!latestDraw) return;
     const latestNo = latestDraw.lastDrawNumber;
     if (!Number.isInteger(latestNo) || latestNo <= 0) return;
@@ -34,16 +57,18 @@ export function LottoAdvancedGeneratorComponent() {
     const nextFrom = Math.max(1, latestNo - 49);
     setFrom(nextFrom);
     setTo(nextTo);
-  }, [latestDraw]);
+    setRangeInitialized(true);
+  }, [useWeight, latestDraw]);
 
   const enabled = useMemo(
     () =>
       useWeight &&
+      rangeInitialized &&
       Number.isInteger(from) &&
       Number.isInteger(to) &&
       from > 0 &&
       to >= from,
-    [useWeight, from, to]
+    [useWeight, rangeInitialized, from, to]
   );
 
   const { data: draws } = useLottoDrawsQuery({ from, to, enabled });
@@ -127,6 +152,7 @@ export function LottoAdvancedGeneratorComponent() {
         <Card className="p-4">
           <LottoAdvancedWeightingControlsComponent
             useWeight={useWeight}
+            loading={useWeight && !rangeInitialized}
             from={from}
             to={to}
             excludeLatest={excludeLatest}
@@ -137,10 +163,15 @@ export function LottoAdvancedGeneratorComponent() {
           />
         </Card>
 
-        <div className="flex">
-          <Button type="button" onClick={onGenerate} className="ml-auto">
-            생성
-          </Button>
+        <div className="flex items-end justify-between gap-3">
+          <CreditGateButtonComponent
+            className="ml-auto"
+            label={label}
+            spendKey="advanced"
+            onProceed={onGenerate}
+            amountOverride={amountOverride}
+          />
+          <CreditBalancePillComponent />
         </div>
 
         <LottoAdvancedGeneratedListComponent items={generated} />

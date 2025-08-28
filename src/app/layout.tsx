@@ -6,9 +6,15 @@ import {
   CookieConsentComponent,
   FooterLayout,
   HeaderLayout,
+  AdFitSlotComponent,
 } from '@/components';
 import { Toaster } from 'sonner';
-import { QueryClientProviderWrapper, ConsentProvider } from '@/providers';
+import {
+  QueryClientProviderWrapper,
+  ConsentProvider,
+  AuthProvider,
+} from '@/providers';
+import { jsonLdWebSite } from '@/lib';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -26,6 +32,9 @@ export const metadata: Metadata = {
   title: {
     template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME}`,
     default: `${process.env.NEXT_PUBLIC_SITE_NAME} : 랜덤(random) 추첨, 게임, 로또, AI 퀴즈의 모든 것`,
+  },
+  icons: {
+    icon: '/icon.svg',
   },
   description: `온라인에서 쉽고 빠르게 이름, 상품, 자리, 메뉴, 사다리, 주사위 등 다양한 항목을 랜덤으로 추첨하고 결과를 공유하세요. 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천, 빈칸 채우기 퀴즈, 숫자 맞추기 게임 등 다양한 랜덤 도구와 재미있는 게임을 ${process.env.NEXT_PUBLIC_SITE_NAME}에서 무료로 즐겨보세요!`,
   keywords: [
@@ -124,22 +133,38 @@ export default function RootLayout({
           name="naver-site-verification"
           content="3b2951ae643e0dd91af8ba5dedd85cb450a7018a"
         />
+        {/* JSON-LD: WebSite */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebSite()) }}
+        />
       </head>
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
         <QueryClientProviderWrapper>
           <ConsentProvider>
-            <HeaderLayout />
-            <main className="flex-1 py-8">
-              <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                {children}
+            <AuthProvider>
+              <HeaderLayout />
+              <div className="w-full flex justify-center py-4">
+                <div className="w-[320px] h-[100px]">
+                  <AdFitSlotComponent
+                    unitId={process.env.NEXT_PUBLIC_ADFIT_UNIT_ID_BODY ?? ''}
+                    width={320}
+                    height={100}
+                  />
+                </div>
               </div>
-            </main>
-            <FooterLayout />
-            <Toaster />
-            <AnalyticsClientComponent />
-            <LoadingComponent />
-            <AgeGateModalComponent />
-            <CookieConsentComponent />
+              <main className="flex-1 py-8">
+                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                  {children}
+                </div>
+              </main>
+              <FooterLayout />
+              <Toaster />
+              <AnalyticsClientComponent />
+              <LoadingComponent />
+              <AgeGateModalComponent />
+              <CookieConsentComponent />
+            </AuthProvider>
           </ConsentProvider>
         </QueryClientProviderWrapper>
       </body>
