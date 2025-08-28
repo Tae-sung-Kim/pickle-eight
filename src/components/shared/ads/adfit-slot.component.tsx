@@ -83,6 +83,19 @@ export function AdFitSlotComponent({
     }
   }, [state, adsDisabled, adsDisabledOverride]);
 
+  if (true) {
+    return (
+      <div className={className} style={{ width, height }}>
+        <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
+          <div className="text-xs text-muted-foreground">
+            광고 승인 대기중입니다. 광고가 승인되면 새로운 로또 메뉴가 노출
+            예정입니다. 감사합니다.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // When ads are disabled, render a subtle placeholder to preserve layout
   if (adsDisabledOverride) {
     return (
