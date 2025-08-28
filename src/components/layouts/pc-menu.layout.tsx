@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import NavLinkComponent from '../nav-link.component';
 import Link from 'next/link';
+import { CreditIndicatorComponent } from '@/components';
 
 export function PcMenuLayout() {
   const pathname = usePathname();
@@ -62,7 +63,7 @@ export function PcMenuLayout() {
               </NavigationMenuTrigger>
             </div>
             <NavigationMenuContent>
-              <ul className="w-[200px] p-1.5">
+              <ul className="w-[240px] p-1.5">
                 {items.map((item) => {
                   const isActive = pathname.startsWith(item.href);
                   return (
@@ -72,13 +73,21 @@ export function PcMenuLayout() {
                           href={item.href}
                           isActive={isActive}
                           className={cn(
-                            'block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                            'flex w-full !flex-row items-center justify-between gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors',
                             isActive
                               ? 'bg-gray-100 text-primary font-semibold'
                               : 'text-gray-700 hover:bg-gray-50'
                           )}
                         >
-                          {item.label}
+                          <span className="flex-1 min-w-0 truncate">
+                            {item.label}
+                          </span>
+                          {item.isCredit && (
+                            <CreditIndicatorComponent
+                              size="xs"
+                              className="shrink-0"
+                            />
+                          )}
                         </NavLinkComponent>
                       </NavigationMenuLink>
                     </li>

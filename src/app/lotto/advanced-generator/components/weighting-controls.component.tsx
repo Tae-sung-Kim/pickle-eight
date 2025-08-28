@@ -3,6 +3,7 @@
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
+import { useEffect, useState } from 'react';
 
 export type WeightingControlsType = {
   readonly useWeight: boolean;
@@ -27,6 +28,11 @@ export function LottoAdvancedWeightingControlsComponent({
   onChangeTo,
   onToggleExcludeLatest,
 }: WeightingControlsType) {
+  const [fromText, setFromText] = useState<string>(String(from ?? ''));
+  const [toText, setToText] = useState<string>(String(to ?? ''));
+  useEffect(() => setFromText(String(from ?? '')), [from]);
+  useEffect(() => setToText(String(to ?? '')), [to]);
+
   return (
     <div className="space-y-3" aria-busy={loading}>
       <div className="flex items-center justify-between">
@@ -49,10 +55,15 @@ export function LottoAdvancedWeightingControlsComponent({
             <Label htmlFor="from">From</Label>
             <Input
               id="from"
-              type="number"
+              type="text"
+              inputMode="numeric"
               min={1}
-              value={from}
-              onChange={(e) => onChangeFrom(Number(e.target.value))}
+              value={fromText}
+              onChange={(e) => setFromText(e.target.value)}
+              onBlur={(e) => {
+                const n = Number.parseInt(e.target.value, 10);
+                if (Number.isFinite(n)) onChangeFrom(n);
+              }}
               disabled={loading}
             />
           </div>
@@ -60,10 +71,15 @@ export function LottoAdvancedWeightingControlsComponent({
             <Label htmlFor="to">To</Label>
             <Input
               id="to"
-              type="number"
+              type="text"
+              inputMode="numeric"
               min={from}
-              value={to}
-              onChange={(e) => onChangeTo(Number(e.target.value))}
+              value={toText}
+              onChange={(e) => setToText(e.target.value)}
+              onBlur={(e) => {
+                const n = Number.parseInt(e.target.value, 10);
+                if (Number.isFinite(n)) onChangeTo(n);
+              }}
               disabled={loading}
             />
           </div>

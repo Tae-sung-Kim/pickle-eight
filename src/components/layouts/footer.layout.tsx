@@ -19,6 +19,12 @@ export function FooterLayout() {
               이용약관
             </Link>
             <Link
+              href="/credits-policy"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              크레딧 정책
+            </Link>
+            <Link
               href="/privacy"
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >

@@ -43,6 +43,7 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-primary',
         description: '빈도, 구간, 홀짝, 합계, 연속수 등을 분석합니다.',
         example: '예: 1~200회 빈도 상위/하위 번호',
+        isCredit: true,
       },
       {
         href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/advanced-generator',
@@ -51,6 +52,7 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-primary',
         description: '합계/연속/홀짝/구간/가중치를 적용해 생성합니다.',
         example: '예: 합계 100~200, 연속 최대 2, 최근 제외',
+        isCredit: true,
       },
       {
         href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/simulator',
@@ -59,6 +61,7 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-primary',
         description: '랜덤 추첨을 다회 실행해 등수 분포를 시뮬레이션합니다.',
         example: '예: 5티켓 × 10,000회',
+        isCredit: true,
       },
     ],
   },

@@ -4,9 +4,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { CreditGateButtonComponent } from '@/components/shared/gates';
+import {
+  CreditGateButtonComponent,
+  CreditBalancePillComponent,
+} from '@/components';
 import { useCreditCostLabel } from '@/hooks';
-import { CreditBalancePillComponent } from '@/components';
+import { useEffect, useState } from 'react';
 
 export type SimulatorControlsComponentType = Readonly<{
   ticketCount: number;
@@ -28,6 +31,16 @@ function clampInt(value: string, min: number, max: number): number {
   return n;
 }
 
+function parseClamp(
+  value: string,
+  min: number,
+  max: number
+): number | undefined {
+  const n = parseInt(value, 10);
+  if (!Number.isFinite(n)) return undefined;
+  return Math.min(max, Math.max(min, n));
+}
+
 export function SimulatorControlsComponent({
   ticketCount,
   drawCount,
@@ -39,11 +52,31 @@ export function SimulatorControlsComponent({
   onRun,
   canRun = true,
 }: SimulatorControlsComponentType) {
+  const [ticketText, setTicketText] = useState<string>(
+    String(ticketCount ?? '')
+  );
+  const [drawText, setDrawText] = useState<string>(String(drawCount ?? ''));
+  useEffect(() => setTicketText(String(ticketCount ?? '')), [ticketCount]);
+  useEffect(() => setDrawText(String(drawCount ?? '')), [drawCount]);
+  // 실시간 크레딧 계산을 위해 텍스트 입력을 우선 사용
+  const ticketForCost = (parseClamp(ticketText, 1, 100) ?? ticketCount) - 1;
+  const drawForCost = parseClamp(drawText, 1, 20000) ?? drawCount;
+  // Dynamic simulator cost rules (updated)
+  // - random: base 2 + floor(ticketCount/10)
+  // - custom: base 3 + floor(ticketCount/2)
+  // + floor((drawCount - 1) / 500)  // 1~500:+0, 501~1000:+1, ...
+  const amountOverride =
+    (mode === 'random'
+      ? 2 + Math.floor(Math.max(0, ticketForCost) / 10)
+      : 3 + Math.floor(Math.max(0, ticketForCost) / 2)) +
+    Math.floor((Math.max(1, drawForCost) - 1) / 500);
+
   const label = useCreditCostLabel({
     spendKey: 'simulator',
     baseLabel: '시뮬레이션',
     isBusy: running,
     busyLabel: '시뮬레이션 중…',
+    amountOverride,
   });
 
   return (
@@ -80,13 +113,12 @@ export function SimulatorControlsComponent({
             </Label>
             <Input
               id="ticket-count"
-              type="number"
+              type="text"
+              inputMode="numeric"
               min={1}
               max={100}
-              value={ticketCount}
-              onChange={(e) =>
-                onTicketCountChange(clampInt(e.target.value, 1, 100))
-              }
+              value={ticketText}
+              onChange={(e) => setTicketText(e.target.value)}
               onBlur={(e) =>
                 onTicketCountChange(clampInt(e.target.value, 1, 100))
               }
@@ -101,13 +133,12 @@ export function SimulatorControlsComponent({
             </Label>
             <Input
               id="draw-count"
-              type="number"
+              type="text"
+              inputMode="numeric"
               min={1}
               max={20000}
-              value={drawCount}
-              onChange={(e) =>
-                onDrawCountChange(clampInt(e.target.value, 1, 20000))
-              }
+              value={drawText}
+              onChange={(e) => setDrawText(e.target.value)}
               onBlur={(e) =>
                 onDrawCountChange(clampInt(e.target.value, 1, 20000))
               }
@@ -122,6 +153,7 @@ export function SimulatorControlsComponent({
                 label={label}
                 spendKey="simulator"
                 onProceed={onRun}
+                amountOverride={amountOverride}
               />
             ) : (
               <Button

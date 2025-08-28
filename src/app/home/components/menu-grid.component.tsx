@@ -84,6 +84,7 @@ export function HomeMenuGridComponent() {
                         label={menu.label}
                         description={menu.description}
                         example={menu.example}
+                        isCredit={menu.isCredit}
                       />
                     </li>
                   );

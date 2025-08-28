@@ -8,13 +8,16 @@ import { LottoAdvancedGenerateControlsComponent } from './generate-controls.comp
 import { LottoAdvancedWeightingControlsComponent } from './weighting-controls.component';
 import { LottoAdvancedGeneratedListComponent } from './generated-list.component';
 import { Card } from '@/components/ui/card';
-import { CreditGateButtonComponent } from '@/components/shared/gates';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useCreditCostLabel } from '@/hooks';
-import { CreditBalancePillComponent } from '@/components';
+import {
+  CreditBalancePillComponent,
+  CreditGateButtonComponent,
+} from '@/components';
+import { SPEND_COST } from '@/constants';
 
 export function LottoAdvancedGeneratorComponent() {
-  const [count, setCount] = useState<number>(5);
+  const [count, setCount] = useState<number>(3);
   const [filters, setFilters] = useState<GenerateFiltersType>({
     sumMin: 100,
     sumMax: 200,
@@ -30,11 +33,16 @@ export function LottoAdvancedGeneratorComponent() {
   const { data: latestDraw, isFetching } = useLatestLottoDrawQuery({
     enabled: useWeight,
   });
+  const amountOverride =
+    SPEND_COST.advanced +
+    (useWeight ? 2 : 0) +
+    Math.floor(Math.max(0, count - 1) / 3); // +1 per every +3 tickets
   const label = useCreditCostLabel({
     spendKey: 'advanced',
     baseLabel: '생성',
     isBusy: isFetching,
     busyLabel: '생성 중…',
+    amountOverride,
   });
 
   useEffect(() => {
@@ -161,6 +169,7 @@ export function LottoAdvancedGeneratorComponent() {
             label={label}
             spendKey="advanced"
             onProceed={onGenerate}
+            amountOverride={amountOverride}
           />
           <CreditBalancePillComponent />
         </div>

@@ -8,6 +8,7 @@ export type MenuItemType = {
   colorClass: string;
   icon: string; // 아이콘 이름만 저장
   example?: string;
+  isCredit?: boolean;
 };
 
 export type MenuGroupType = {
@@ -27,4 +28,5 @@ export type FeatureItemType = {
   description?: string;
   example?: string;
   className?: string;
+  isCredit?: boolean;
 };

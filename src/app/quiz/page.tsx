@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MENU_LIST } from '@/constants';
-import { JsonLd } from '@/components';
+import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
+import { JsonLd, CreditIndicatorComponent } from '@/components';
 import {
   buildMetadata,
   canonicalUrl,
@@ -14,7 +14,7 @@ const baseMeta = buildMetadata({
   title: '퀴즈 허브 - AI 퀴즈/게임 모음',
   description:
     'AI 기반 퀴즈와 게임을 한 곳에서: 영어 단어, 상식 퀴즈, 사자성어, 숫자 매칭 등.',
-  pathname: '/quiz',
+  pathname: `/${MENU_GROUP_NAME_ENUM.QUIZ}`,
 });
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         '퀴즈 허브 - AI 퀴즈/게임 모음 | Pickle Eight',
         'AI 기반 퀴즈와 게임을 한 곳에서: 영어 단어, 상식 퀴즈, 사자성어, 숫자 매칭 등.',
         '퀴즈 허브',
-        getOgTag({ href: '/quiz' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}` })
       ),
     ],
   },
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
         '퀴즈 허브 - AI 퀴즈/게임 모음 | Pickle Eight',
         'AI 기반 퀴즈와 게임을 한 곳에서: 영어 단어, 상식 퀴즈, 사자성어, 숫자 매칭 등.',
         '퀴즈 허브',
-        getOgTag({ href: '/quiz' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}` })
       ),
     ],
   },
@@ -45,12 +45,17 @@ export const metadata: Metadata = {
 
 export default function QuizHubPage() {
   const quizItems = (
-    MENU_LIST.find((g) => g.group === 'quiz')?.items ?? []
-  ).map((it) => ({ href: it.href, label: it.label, desc: it.description }));
+    MENU_LIST.find((g) => g.group === MENU_GROUP_NAME_ENUM.QUIZ)?.items ?? []
+  ).map((it) => ({
+    href: it.href,
+    label: it.label,
+    desc: it.description,
+    isCredit: it.isCredit,
+  }));
 
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '퀴즈 허브', item: canonicalUrl('/quiz') },
+    { name: '퀴즈 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}`) },
   ]);
 
   const theme = {
@@ -132,7 +137,12 @@ export default function QuizHubPage() {
               href={it.href}
               className={`block rounded-2xl border border-border surface-card p-5 shadow-sm transition-all duration-200 hover:shadow-md ring-1 ring-transparent ${theme.ring} ${theme.hoverRing}`}
             >
-              <div className="font-semibold text-foreground">{it.label}</div>
+              <div className="flex items-center justify-between gap-3">
+                <div className="font-semibold text-foreground truncate">
+                  {it.label}
+                </div>
+                {it.isCredit && <CreditIndicatorComponent size="xs" />}
+              </div>
               <div className="mt-1 text-sm text-muted-foreground">
                 {it.desc}
               </div>

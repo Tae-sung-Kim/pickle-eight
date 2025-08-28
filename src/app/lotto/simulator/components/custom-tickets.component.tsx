@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LottoCheckTicketRowComponent } from '@/app/lotto/check/components/ticket-row.component';
+import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants';
 
 export type SimulatorCustomTicketsComponentType = Readonly<{
   tickets: ReadonlyArray<{
@@ -17,14 +18,12 @@ export type SimulatorCustomTicketsComponentType = Readonly<{
   ) => void;
 }>;
 
-const MAX_CUSTOM_TICKETS = 50 as const;
-
 export function SimulatorCustomTicketsComponent({
   tickets,
   onChange,
 }: SimulatorCustomTicketsComponentType) {
   const addTicket = useCallback((): void => {
-    if (tickets.length >= MAX_CUSTOM_TICKETS) return;
+    if (tickets.length >= LOTTO_MAX_CUSTOM_TICKETS) return;
     const next = [...tickets, { numbers: ['', '', '', '', '', ''] as const }];
     onChange(next);
   }, [tickets, onChange]);
@@ -98,7 +97,7 @@ export function SimulatorCustomTicketsComponent({
             티켓 추가
           </Button>
           <span className="text-xs text-muted-foreground">
-            최대 {MAX_CUSTOM_TICKETS}장
+            최대 {LOTTO_MAX_CUSTOM_TICKETS}장
           </span>
         </div>
       </CardHeader>

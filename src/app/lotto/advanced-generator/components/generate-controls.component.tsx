@@ -3,6 +3,7 @@
 import { GenerateFiltersType } from '@/types';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { useEffect, useState } from 'react';
 
 export type GenerateControlsType = {
   readonly count: number;
@@ -19,6 +20,40 @@ export function LottoAdvancedGenerateControlsComponent({
   onChangeCount,
   onChangeFilters,
 }: GenerateControlsType) {
+  const [countText, setCountText] = useState<string>(String(count ?? ''));
+  const [sumMinText, setSumMinText] = useState<string>(
+    filters.sumMin === undefined ? '' : String(filters.sumMin)
+  );
+  const [sumMaxText, setSumMaxText] = useState<string>(
+    filters.sumMax === undefined ? '' : String(filters.sumMax)
+  );
+  const [maxConsecutiveText, setMaxConsecutiveText] = useState<string>(
+    String(filters.maxConsecutive ?? 6)
+  );
+  const [oddCountText, setOddCountText] = useState<string>(
+    filters.desiredOddCount === undefined ? '' : String(filters.desiredOddCount)
+  );
+  const [minBucketSpreadText, setMinBucketSpreadText] = useState<string>(
+    filters.minBucketSpread === undefined ? '' : String(filters.minBucketSpread)
+  );
+
+  useEffect(() => setCountText(String(count ?? '')), [count]);
+  useEffect(() => {
+    setSumMinText(filters.sumMin === undefined ? '' : String(filters.sumMin));
+    setSumMaxText(filters.sumMax === undefined ? '' : String(filters.sumMax));
+    setMaxConsecutiveText(String(filters.maxConsecutive ?? 6));
+    setOddCountText(
+      filters.desiredOddCount === undefined
+        ? ''
+        : String(filters.desiredOddCount)
+    );
+    setMinBucketSpreadText(
+      filters.minBucketSpread === undefined
+        ? ''
+        : String(filters.minBucketSpread)
+    );
+  }, [filters]);
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -26,41 +61,78 @@ export function LottoAdvancedGenerateControlsComponent({
           <Label htmlFor="count">생성 매수</Label>
           <Input
             id="count"
-            type="number"
+            type="text"
+            inputMode="numeric"
             min={1}
             max={50}
-            value={count}
-            onChange={(e) => onChangeCount(Number(e.target.value))}
+            value={countText}
+            onChange={(e) => {
+              const v = e.target.value;
+              setCountText(v);
+              const n = parseInt(v, 10);
+              if (Number.isFinite(n)) {
+                const clamped = Math.min(50, Math.max(1, n));
+                onChangeCount(clamped);
+              }
+            }}
+            onKeyDown={(e) => {
+              const allowed = [
+                'Backspace',
+                'Delete',
+                'ArrowLeft',
+                'ArrowRight',
+                'Tab',
+              ];
+              if (allowed.includes(e.key)) return;
+              if (!/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onBlur={(e) => {
+              const n = parseInt(e.target.value, 10);
+              if (!Number.isFinite(n)) {
+                setCountText('1');
+                onChangeCount(1);
+                return;
+              }
+              const clamped = Math.min(50, Math.max(1, n));
+              if (String(clamped) !== countText) setCountText(String(clamped));
+              onChangeCount(clamped);
+            }}
           />
         </div>
         <div className="grid w-full items-center gap-2">
           <Label htmlFor="sumMin">합계 최소</Label>
           <Input
             id="sumMin"
-            type="number"
-            value={filters.sumMin ?? ''}
-            onChange={(e) =>
+            type="text"
+            inputMode="numeric"
+            value={sumMinText}
+            onChange={(e) => setSumMinText(e.target.value)}
+            onBlur={(e) => {
+              const v = e.target.value.trim();
               onChangeFilters((p) => ({
                 ...p,
-                sumMin:
-                  e.target.value === '' ? undefined : Number(e.target.value),
-              }))
-            }
+                sumMin: v === '' ? undefined : Number.parseInt(v, 10),
+              }));
+            }}
           />
         </div>
         <div className="grid w-full items-center gap-2">
           <Label htmlFor="sumMax">합계 최대</Label>
           <Input
             id="sumMax"
-            type="number"
-            value={filters.sumMax ?? ''}
-            onChange={(e) =>
+            type="text"
+            inputMode="numeric"
+            value={sumMaxText}
+            onChange={(e) => setSumMaxText(e.target.value)}
+            onBlur={(e) => {
+              const v = e.target.value.trim();
               onChangeFilters((p) => ({
                 ...p,
-                sumMax:
-                  e.target.value === '' ? undefined : Number(e.target.value),
-              }))
-            }
+                sumMax: v === '' ? undefined : Number.parseInt(v, 10),
+              }));
+            }}
           />
         </div>
       </div>
@@ -70,50 +142,57 @@ export function LottoAdvancedGenerateControlsComponent({
           <Label htmlFor="maxConsecutive">최대 연속수</Label>
           <Input
             id="maxConsecutive"
-            type="number"
+            type="text"
+            inputMode="numeric"
             min={0}
             max={6}
-            value={filters.maxConsecutive ?? 6}
-            onChange={(e) =>
+            value={maxConsecutiveText}
+            onChange={(e) => setMaxConsecutiveText(e.target.value)}
+            onBlur={(e) => {
+              const n = Number.parseInt(e.target.value, 10);
               onChangeFilters((p) => ({
                 ...p,
-                maxConsecutive: Number(e.target.value),
-              }))
-            }
+                maxConsecutive: Number.isFinite(n) ? n : p.maxConsecutive,
+              }));
+            }}
           />
         </div>
         <div className="grid w-full items-center gap-2">
           <Label htmlFor="oddCount">홀수 개수</Label>
           <Input
             id="oddCount"
-            type="number"
+            type="text"
+            inputMode="numeric"
             min={0}
             max={6}
-            value={filters.desiredOddCount ?? ''}
-            onChange={(e) =>
+            value={oddCountText}
+            onChange={(e) => setOddCountText(e.target.value)}
+            onBlur={(e) => {
+              const v = e.target.value.trim();
               onChangeFilters((p) => ({
                 ...p,
-                desiredOddCount:
-                  e.target.value === '' ? undefined : Number(e.target.value),
-              }))
-            }
+                desiredOddCount: v === '' ? undefined : Number.parseInt(v, 10),
+              }));
+            }}
           />
         </div>
         <div className="grid w-full items-center gap-2">
           <Label htmlFor="minBucketSpread">구간 최소개수</Label>
           <Input
             id="minBucketSpread"
-            type="number"
+            type="text"
+            inputMode="numeric"
             min={1}
             max={5}
-            value={filters.minBucketSpread ?? ''}
-            onChange={(e) =>
+            value={minBucketSpreadText}
+            onChange={(e) => setMinBucketSpreadText(e.target.value)}
+            onBlur={(e) => {
+              const v = e.target.value.trim();
               onChangeFilters((p) => ({
                 ...p,
-                minBucketSpread:
-                  e.target.value === '' ? undefined : Number(e.target.value),
-              }))
-            }
+                minBucketSpread: v === '' ? undefined : Number.parseInt(v, 10),
+              }));
+            }}
           />
         </div>
       </div>

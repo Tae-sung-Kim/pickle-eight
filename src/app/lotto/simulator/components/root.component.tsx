@@ -9,6 +9,7 @@ import { SimulatorProbabilitiesComponent } from './probabilities.component';
 import { SimulatorBestPerformanceComponent } from './best-performance.component';
 import { LottoLankType } from '@/types';
 import { SimulatorCustomTicketsComponent } from './custom-tickets.component';
+import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants';
 
 function generateRandomDraw() {
   const pool: number[] = [];
@@ -67,8 +68,8 @@ function toNumberTickets(
 }
 
 export function LottoSimulatorComponent() {
-  const [ticketCount, setTicketCount] = useState<number>(5);
-  const [drawCount, setDrawCount] = useState<number>(1000);
+  const [ticketCount, setTicketCount] = useState<number>(10);
+  const [drawCount, setDrawCount] = useState<number>(500);
   const [running, setRunning] = useState<boolean>(false);
   const [result, setResult] = useState<null | {
     total: number;
@@ -94,6 +95,26 @@ export function LottoSimulatorComponent() {
       numbers: readonly [string, string, string, string, string, string];
     }>
   >([]);
+
+  const handleModeChage = (mode: string) => {
+    setMode(mode as 'random' | 'custom');
+    if (mode === 'custom') {
+      setTicketCount(0);
+    } else {
+      setTicketCount(10);
+    }
+    setCustomTickets([]);
+  };
+
+  const handleAddCustomTicket = (
+    next: ReadonlyArray<{
+      numbers: readonly [string, string, string, string, string, string];
+    }>
+  ) => {
+    if (customTickets.length >= LOTTO_MAX_CUSTOM_TICKETS) return;
+    setCustomTickets(next);
+    setTicketCount(next.length);
+  };
 
   useEffect(() => {
     if (mode === 'random') {
@@ -167,7 +188,7 @@ export function LottoSimulatorComponent() {
         drawCount={drawCount}
         running={running}
         mode={mode}
-        onModeChange={setMode}
+        onModeChange={handleModeChage}
         onTicketCountChange={setTicketCount}
         onDrawCountChange={setDrawCount}
         onRun={run}
@@ -177,7 +198,7 @@ export function LottoSimulatorComponent() {
       {mode === 'custom' && (
         <SimulatorCustomTicketsComponent
           tickets={customTickets}
-          onChange={setCustomTickets}
+          onChange={handleAddCustomTicket}
         />
       )}
 

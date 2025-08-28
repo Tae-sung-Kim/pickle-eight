@@ -12,6 +12,7 @@ export type CreditGateButtonType = {
   readonly label: string;
   readonly spendKey: keyof typeof SPEND_COST;
   readonly onProceed: () => void;
+  readonly amountOverride?: number;
 };
 
 export function CreditGateButtonComponent({
@@ -20,10 +21,17 @@ export function CreditGateButtonComponent({
   label,
   spendKey,
   onProceed,
+  amountOverride,
 }: CreditGateButtonType) {
   const [open, setOpen] = useState<boolean>(false);
   const { total, canSpend, onSpend } = useCreditStore();
-  const amount = useMemo<number>(() => SPEND_COST[spendKey], [spendKey]);
+  const amount = useMemo<number>(
+    () =>
+      typeof amountOverride === 'number'
+        ? amountOverride
+        : SPEND_COST[spendKey],
+    [spendKey, amountOverride]
+  );
   const insufficient = useMemo<boolean>(() => total < amount, [total, amount]);
 
   const handleClick = (): void => {

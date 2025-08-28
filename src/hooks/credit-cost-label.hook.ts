@@ -6,10 +6,12 @@ export function useCreditCostLabel({
   baseLabel,
   isBusy = false,
   busyLabel = `${baseLabel} 중…`,
-}: UseCreditCostLabelType): string {
+  amountOverride,
+}: UseCreditCostLabelType & { amountOverride?: number }): string {
   if (isBusy) return busyLabel;
-  const cost = SPEND_COST[spendKey];
-  return `${baseLabel}(-${cost})`;
+  const amount =
+    typeof amountOverride === 'number' ? amountOverride : SPEND_COST[spendKey];
+  return `${baseLabel}(-${amount})`;
 }
 
 export default useCreditCostLabel;

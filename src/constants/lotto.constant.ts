@@ -69,3 +69,5 @@ export const LOTTO_WARNING_X_PADDING: Record<string, string> = {
   md: 'px-4',
   lg: 'px-6',
 } as const;
+
+export const LOTTO_MAX_CUSTOM_TICKETS = 50 as const;

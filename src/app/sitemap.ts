@@ -30,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/random-picker/team-assignment',
     '/privacy',
     '/terms',
+    '/credits-policy',
   ];
 
   const priorityByRoute = (route: string): number => {

@@ -12,7 +12,7 @@ import { useLottoDrawsQuery, useLatestLottoDrawQuery } from '@/queries';
 
 export function LottoAnalysisComponent() {
   const [from, setFrom] = useState<number>(1);
-  const [to, setTo] = useState<number>(50);
+  const [to, setTo] = useState<number>(30);
   const [bootstrapped, setBootstrapped] = useState<boolean>(false);
 
   // const canAnalyze = useMemo(
@@ -37,8 +37,8 @@ export function LottoAnalysisComponent() {
     [data]
   );
 
-  // 부트스트랩: 최신 회차 로딩 성공 시 마지막-50 ~ 마지막으로 최초 1회 조회
-  // 최신 회차 불가(로딩 종료 + 에러/데이터 없음) 시 1~50으로 폴백하여 최초 1회 조회
+  // 부트스트랩: 최신 회차 로딩 성공 시 마지막-30 ~ 마지막으로 최초 1회 조회
+  // 최신 회차 불가(로딩 종료 + 에러/데이터 없음) 시 1~30으로 폴백하여 최초 1회 조회
   const {
     data: latest,
     isLoading: isLatestLoading,
@@ -51,7 +51,7 @@ export function LottoAnalysisComponent() {
     if (isLatestSuccess && latest) {
       const last = latest.lastDrawNumber;
       if (Number.isInteger(last) && last > 0) {
-        const nextFrom = Math.max(1, last - 50);
+        const nextFrom = Math.max(1, last - 30);
         const nextTo = last;
         setFrom((prev) => (prev !== nextFrom ? nextFrom : prev));
         setTo((prev) => (prev !== nextTo ? nextTo : prev));
@@ -60,9 +60,9 @@ export function LottoAnalysisComponent() {
       }
     }
     if (!isLatestLoading && (isLatestError || !latest)) {
-      // 폴백: 1~50
+      // 폴백: 1~30
       setFrom((prev) => (prev !== 1 ? 1 : prev));
-      setTo((prev) => (prev !== 50 ? 50 : prev));
+      setTo((prev) => (prev !== 30 ? 30 : prev));
       setBootstrapped(true);
     }
   }, [bootstrapped, isLatestLoading, isLatestError, isLatestSuccess, latest]);
