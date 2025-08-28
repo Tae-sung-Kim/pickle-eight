@@ -41,8 +41,12 @@ export function AnalyticsClientComponent() {
   const { state } = useConsentContext();
   return (
     <>
-      <TelegramRunner pathname={pathname} />
-      {state === 'accepted' ? <AnalyticsRunner pathname={pathname} /> : null}
+      {state === 'accepted' ? (
+        <>
+          <TelegramRunner pathname={pathname} />
+          <AnalyticsRunner pathname={pathname} />
+        </>
+      ) : null}
     </>
   );
 }

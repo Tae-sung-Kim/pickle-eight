@@ -35,7 +35,11 @@ export function CreditGateButtonComponent({
   const insufficient = useMemo<boolean>(() => total < amount, [total, amount]);
 
   const handleClick = (): void => {
-    if (insufficient) return;
+    // 부족하면 보상 모달을 열어 충전 유도
+    if (insufficient) {
+      setOpen(true);
+      return;
+    }
     const check = canSpend(amount);
     if (!check.canSpend) {
       setOpen(true);
@@ -51,7 +55,7 @@ export function CreditGateButtonComponent({
         type="button"
         variant={variant}
         className={className}
-        disabled={insufficient}
+        // 실제 클릭은 막지 않고, 시각적으로는 비활성처럼 보이게만 처리(aria)
         aria-disabled={insufficient}
         onClick={handleClick}
       >

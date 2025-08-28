@@ -14,6 +14,7 @@ import {
   ConsentProvider,
   AuthProvider,
 } from '@/providers';
+import { jsonLdWebSite } from '@/lib';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -131,6 +132,11 @@ export default function RootLayout({
         <meta
           name="naver-site-verification"
           content="3b2951ae643e0dd91af8ba5dedd85cb450a7018a"
+        />
+        {/* JSON-LD: WebSite */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebSite()) }}
         />
       </head>
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
