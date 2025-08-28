@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() { return request.auth != null; }
+
+    // 1) 공개 읽기 허용이 필요한 컬렉션만 명시
+    // 예: 사자성어 데이터(컬렉션명을 실제 사용 중인 것으로 교체하세요)
+    match /four-idiom-quiz/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    // 다른 공개 컬렉션이 있다면 여기에 추가:
+    // match /public-collection/{docId} { allow read: if true; allow write: if false; }
+
+    // 2) users: 본인 읽기만 허용, 쓰기 금지
+    match /users/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // 3) 크레딧 관련: 클라이언트 읽기/쓰기 전부 금지(서버만)
+    match /credit-claims/{docId} {
+      allow read: if false;
+      allow write: if false;
+    }
+    match /device-claims/{docId} {
+      allow read: if false;
+      allow write: if false;
+    }
+    match /ip-claims/{docId} {
+      allow read: if false;
+      allow write: if false;
+    }
+
+    // 4) 그 외 컬렉션: 명시적 허용이 없으면 기본 거부(더 안전)
+  }
+}

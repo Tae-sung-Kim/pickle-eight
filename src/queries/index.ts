@@ -4,3 +4,4 @@ export * from './use-gpt-trivia-quiz.query';
 export * from './use-gpt-english-word-quiz.query';
 export * from './use-lotto.query';
 export * from './use-emoji-translation.query';
+export * from './use-credit.query';

@@ -1,5 +1,5 @@
 import { SPEND_COST } from '@/constants';
-import { UseCreditCostLabelType } from '@/types';
+import { CreditCostLabelType } from '@/types';
 
 export function useCreditCostLabel({
   spendKey,
@@ -7,7 +7,7 @@ export function useCreditCostLabel({
   isBusy = false,
   busyLabel = `${baseLabel} 중…`,
   amountOverride,
-}: UseCreditCostLabelType & { amountOverride?: number }): string {
+}: CreditCostLabelType & { amountOverride?: number }): string {
   if (isBusy) return busyLabel;
   const amount =
     typeof amountOverride === 'number' ? amountOverride : SPEND_COST[spendKey];

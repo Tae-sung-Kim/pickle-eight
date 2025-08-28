@@ -39,7 +39,7 @@ export type SpendCheckResultType = {
   readonly shortBy?: number;
 };
 
-export type UseCreditCostLabelType = {
+export type CreditCostLabelType = {
   readonly spendKey: keyof typeof SPEND_COST;
   readonly baseLabel: string;
   readonly isBusy?: boolean;
@@ -56,3 +56,21 @@ export type CreditStateType = {
 // Use enum VALUE union ("midnight" | "minute"), not KEY union ("MIDNIGHT" | "MINUTE")
 export type CreditResetModeType =
   (typeof CREDIT_RESET_MODE_ENUM)[keyof typeof CREDIT_RESET_MODE_ENUM];
+
+export type CreditClaimErrorCodeType =
+  | 'appcheck/missing'
+  | 'appcheck/invalid'
+  | 'auth/missing'
+  | 'auth/invalid'
+  | 'limit/device'
+  | 'limit/ip'
+  | 'internal'
+  | 'request_failed';
+
+export type CreditClaimResponseType = {
+  ok: boolean;
+  already?: boolean;
+  code?: CreditClaimErrorCodeType;
+};
+
+export type UserCreditsType = { credits: number; lastClaimDate?: string };

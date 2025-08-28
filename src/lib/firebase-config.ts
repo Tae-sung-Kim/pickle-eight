@@ -1,6 +1,13 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAnalytics, isSupported, type Analytics } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
+import {
+  getAuth,
+  signInAnonymously,
+  onAuthStateChanged,
+  type Auth,
+  type User,
+} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,6 +21,27 @@ const firebaseConfig = {
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
+const auth: Auth = getAuth(app);
+
+let appCheckInitialized = false;
+
+/**
+ * Initialize App Check (disabled). No-op by design.
+ */
+export const ensureAppCheck = (): null => {
+  if (typeof window === 'undefined') return null;
+  if (appCheckInitialized) return null;
+  appCheckInitialized = true;
+  return null;
+};
+
+/**
+ * Get App Check token for custom API requests (disabled). Always returns null.
+ */
+export const getAppCheckToken = async (): Promise<string | null> => {
+  ensureAppCheck();
+  return null;
+};
 
 /**
  * Analytics 인스턴스를 클라이언트에서만 안전하게 반환
@@ -28,4 +56,21 @@ export const getAnalyticsClient = async (): Promise<Analytics | null> => {
   return getAnalytics(app);
 };
 
-export { app, db };
+/**
+ * Ensure anonymous auth session exists and return current user.
+ */
+export const ensureAnonUser = async (): Promise<User> => {
+  if (!auth.currentUser) {
+    await signInAnonymously(auth);
+  }
+  return new Promise<User>((resolve) => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      if (u) {
+        unsub();
+        resolve(u);
+      }
+    });
+  });
+};
+
+export { app, db, auth };
