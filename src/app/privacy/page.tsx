@@ -197,7 +197,24 @@ export default function PrivacyPolicyPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">17. 문의</h2>
+          <h2 className="font-medium text-foreground">17. 크레딧 관련 처리</h2>
+          <p>
+            크레딧 보상·소비 운영을 위해 광고 가시성·노출 시간, 보상/쿨다운
+            이벤트, 버튼 클릭 등 서비스 이용 이벤트가 처리될 수 있습니다. 개인화
+            광고·분석 등 비필수 목적은 이용자의 사전 동의 시에만 실행되며, 동의
+            거부 시 관련 쿠키/스크립트는 저장·수집·전송되지 않습니다.
+          </p>
+          <p className="mt-2">
+            데이터 보관 기간과 보호조치는 본 방침과 도구 제공사 정책을 따릅니다.
+            상세한 크레딧 운영 기준은{' '}
+            <a href="/credits-policy" className="underline">
+              크레딧 정책
+            </a>
+            에서 확인할 수 있습니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">18. 문의</h2>
           <p className="break-all">문의: contact.tskim@gmail.com</p>
           <p>
             텔레그램:{' '}

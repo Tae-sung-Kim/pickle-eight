@@ -1,18 +1,67 @@
 import type { JSX } from 'react';
+import { Metadata } from 'next';
+import { generateOgImageUrl } from '@/utils';
+import { JsonLd } from '@/components';
+import {
+  buildMetadata,
+  canonicalUrl,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+} from '@/lib';
 import { CREDIT_POLICY, SPEND_COST } from '@/constants';
 
 /**
  * 크레딧 정책 페이지
  * 코드 상수(CREDIT_POLICY, SPEND_COST) 기반으로 표기하여 불일치 방지
  */
+const baseMeta = buildMetadata({
+  title: '크레딧 정책 - Pickle Eight',
+  description:
+    '일일 기본/상한, 보상 조건(가시성/시간), 쿨다운 및 소비 비용 등 크레딧 운영 정책을 안내합니다.',
+  pathname: '/credits-policy',
+});
+
+export const metadata: Metadata = {
+  ...baseMeta,
+  openGraph: {
+    ...baseMeta.openGraph,
+    images: [
+      generateOgImageUrl(
+        '크레딧 정책 - Pickle Eight',
+        '일일 기본/상한, 보상 조건(가시성/시간), 쿨다운 및 소비 비용 등 크레딧 운영 정책을 안내합니다.',
+        '크레딧 정책'
+      ),
+    ],
+  },
+  twitter: {
+    ...baseMeta.twitter,
+    images: [
+      generateOgImageUrl(
+        '크레딧 정책 - Pickle Eight',
+        '일일 기본/상한, 보상 조건(가시성/시간), 쿨다운 및 소비 비용 등 크레딧 운영 정책을 안내합니다.',
+        '크레딧 정책'
+      ),
+    ],
+  },
+};
+
 export default function CreditsPolicyPage(): JSX.Element {
   const minutes = Math.floor(CREDIT_POLICY.cooldownMs / 60000);
   const seconds = Math.round((CREDIT_POLICY.cooldownMs % 60000) / 1000);
   const cooldownLabel = `${minutes}:${String(seconds).padStart(2, '0')}`;
+  const EFFECTIVE_DATE = '2025-08-28' as const;
+  const crumbs = jsonLdBreadcrumb([
+    { name: 'Home', item: canonicalUrl('/') },
+    { name: '크레딧 정책', item: canonicalUrl('/credits-policy') },
+  ]);
 
   return (
     <main className="container mx-auto max-w-3xl px-4 py-10">
+      <JsonLd data={[jsonLdWebSite(), crumbs]} />
       <h1 className="text-2xl font-bold mb-6">크레딧 정책</h1>
+      <p className="mt-1 text-xs text-muted-foreground">
+        시행일: {EFFECTIVE_DATE}
+      </p>
 
       <section className="space-y-2 mb-8">
         <h2 className="text-lg font-semibold">핵심 규칙</h2>
@@ -57,21 +106,58 @@ export default function CreditsPolicyPage(): JSX.Element {
       </section>
 
       <section className="space-y-2 mb-8">
-        <h2 className="text-lg font-semibold">추가 가산 규칙</h2>
+        <h2 className="text-lg font-semibold">데이터 처리 및 보안</h2>
         <ul className="list-disc pl-5 text-sm leading-6">
           <li>
-            분석: 범위 크기 (최대 200) 기준으로 1~30 +0, 31~60 +1, 61~90 +2 즉
-            30개 단위로 +1로 가산.
+            보상 판단을 위해 광고 가시성/노출 시간, 클릭/표시 이벤트, 쿨다운
+            타이밍 등의 로그가 처리될 수 있습니다.
           </li>
           <li>
-            시뮬레이터: 티켓 수에 따라 랜덤은 +10, 커스텀은 +2 가산. 회수는
-            +500으로 1~500 +0, 501~1000 +1로 가산
+            개인정보 처리의 범위·보관 기간·동의 관리 등은{' '}
+            <a href="/privacy" className="underline">
+              개인정보처리방침
+            </a>
+            을 따릅니다.
+          </li>
+          <li>분석/광고 스크립트는 이용자 동의 후에만 활성화됩니다.</li>
+        </ul>
+      </section>
+
+      <section className="space-y-2 mb-8">
+        <h2 className="text-lg font-semibold">부정 이용 방지</h2>
+        <ul className="list-disc pl-5 text-sm leading-6">
+          <li>
+            자동화 도구 사용, 비정상 다중 요청, 가시성 요건 우회 등은
+            금지됩니다.
           </li>
           <li>
-            고급 기능: 기본 {SPEND_COST.advanced}에 가중치 사용 시 +2, 생성
-            매수는 +3으로 1~3장 +0, 4~6장 +1로 가산
+            부정 획득이 확인되면 보상 취소·회수, 계정 제한 등 조치가 적용될 수
+            있습니다.
+          </li>
+          <li>
+            자세한 책임 및 금지 행위는{' '}
+            <a href="/terms" className="underline">
+              이용약관
+            </a>
+            을 참조하세요.
           </li>
         </ul>
+      </section>
+
+      <section className="space-y-2 mb-8">
+        <h2 className="text-lg font-semibold">정책 및 관련 문서</h2>
+        <p className="text-sm leading-6">
+          본 정책은 서비스 개선 또는 법령 변경에 따라 갱신될 수 있으며, 중요
+          변경 시 공지합니다. 세부 개인정보 처리 및 권리에 대한 내용은{' '}
+          <a href="/privacy" className="underline">
+            개인정보처리방침
+          </a>
+          과{' '}
+          <a href="/terms" className="underline">
+            이용약관
+          </a>
+          을 함께 확인하세요.
+        </p>
       </section>
     </main>
   );
