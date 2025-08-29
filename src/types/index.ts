@@ -17,3 +17,4 @@ export * from './lotto.type';
 export * from './emoji-translation.type';
 export * from './theme.type';
 export * from './credit.type';
+export * from './ad-config.type';

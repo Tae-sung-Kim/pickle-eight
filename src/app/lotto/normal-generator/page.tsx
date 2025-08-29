@@ -71,7 +71,7 @@ export default function LottoPage() {
         includeAgeNotice
       />
       <JsonLd data={[jsonLdWebSite(), crumbs]} />
-      <div className="mx-auto max-w-5xl p-4">
+      <div className="mx-auto max-w-5xl p-8">
         <LottoNormalGeneratorComponent />
       </div>
     </ContentWrapperComponent>

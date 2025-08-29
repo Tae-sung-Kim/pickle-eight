@@ -91,7 +91,7 @@ export default function NumberMatchGamePage() {
         description="기억력과 집중력을 높이는 숫자 카드 매칭 게임에 도전해보세요."
       />
       {/* Content */}
-      <section className="mx-auto max-w-5xl p-4">
+      <section className="mx-auto max-w-5xl p-8">
         <JsonLd data={[jsonLdWebSite(), crumbs]} />
         <NumberMatchGameComponent />
       </section>

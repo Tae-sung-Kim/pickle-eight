@@ -155,3 +155,5 @@ export type WeightingOptionsType = {
   /** 0(완전랜덤) ~ 1(빈도에 완전 의존) */
   readonly hotColdAlpha?: number;
 };
+
+export type LottoAgeGateModeType = 'always' | 'session' | 'ttl';

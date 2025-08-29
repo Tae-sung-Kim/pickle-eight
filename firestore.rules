@@ -3,12 +3,17 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isSignedIn() { return request.auth != null; }
 
-    // 1) 공개 읽기 허용이 필요한 컬렉션만 명시
-    // 예: 사자성어 데이터(컬렉션명을 실제 사용 중인 것으로 교체하세요)
+    // 공개 읽기 허용이 필요한 컬렉션만 명시
     match /four-idiom-quiz/{docId} {
       allow read: if true;
       allow write: if false;
     }
+
+    match /configs/ads {
+      allow read: if true;
+      allow write: if false;
+    }
+
     // 다른 공개 컬렉션이 있다면 여기에 추가:
     // match /public-collection/{docId} { allow read: if true; allow write: if false; }
 

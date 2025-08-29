@@ -74,7 +74,7 @@ export default function LottoAnalysisPage() {
         tone="danger"
         includeAgeNotice
       />
-      <div className="mx-auto max-w-5xl p-4 py-4">
+      <div className="mx-auto max-w-5xl p-8">
         <TitleWrapperComponent
           type={MENU_GROUP_NAME_ENUM.LOTTO}
           title="로또 분석"

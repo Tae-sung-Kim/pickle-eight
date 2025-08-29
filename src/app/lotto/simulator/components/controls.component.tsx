@@ -129,7 +129,7 @@ export function SimulatorControlsComponent({
 
           <div className="flex items-center gap-3">
             <Label htmlFor="draw-count" className="w-24 text-sm md:w-28">
-              회수
+              횟수
             </Label>
             <Input
               id="draw-count"
@@ -149,7 +149,7 @@ export function SimulatorControlsComponent({
           <div className="flex flex-col-reverse md:flex-row items-stretch md:items-end gap-2 md:gap-3 md:col-span-3">
             {canRun ? (
               <CreditGateButtonComponent
-                className="w-full md:w-auto"
+                className="w-full md:w-auto md:ml-auto"
                 label={label}
                 spendKey="simulator"
                 onProceed={onRun}
@@ -158,7 +158,7 @@ export function SimulatorControlsComponent({
             ) : (
               <Button
                 type="button"
-                className="w-full md:w-auto"
+                className="w-full md:w-auto md:ml-auto"
                 disabled
                 aria-disabled
               >

@@ -137,7 +137,7 @@ export default async function LottoDrawPage({
         </>
       )}
       {valid && data && (
-        <div className="mx-auto max-w-5xl p-4">
+        <div className="mx-auto max-w-5xl p-8">
           <LottoDrawCardComponent
             drawNumber={data.drawNumber}
             drawDate={data.drawDate}

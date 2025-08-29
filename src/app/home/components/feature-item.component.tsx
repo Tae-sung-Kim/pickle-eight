@@ -34,6 +34,7 @@ export function HomeMenuFeatureItemComponent({
           <MenuTooltipComponent
             description={description ?? ''}
             example={example}
+            section={section}
           />
         )}
       </div>
