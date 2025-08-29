@@ -1,11 +1,18 @@
 export const HERO_FEATURE_LIST = [
   {
-    highlight: '공정한 랜덤 추첨',
-    description: '참가자 이름, 번호, 좌석 등 다양한 기준으로 공정하게 ',
-    color: 'text-success',
+    highlight: '로또에 진심인 서비스 ',
+    description: '번호 생성·당첨 번호 히스토리·번호 채점은 기본, ',
+    color: 'text-primary',
+    suffix: '시뮬레이터·통계/패턴 분석·고급 번호 생성까지 지원합니다. ',
   },
   {
-    highlight: '재미있는 미니게임',
+    highlight: '공정한 랜덤 추첨 ',
+    description: '참가자 이름, 번호, 좌석 등 다양한 기준으로 공정하게 ',
+    color: 'text-success',
+    suffix: '랜덤 추첨을 진행하세요. ',
+  },
+  {
+    highlight: '재미있는 미니게임 ',
     description: '사다리 타기, 주사위, 순서 정하기 등 ',
     color: 'text-warning',
     suffix: '미니게임도 한 곳에서! ',
@@ -15,23 +22,22 @@ export const HERO_FEATURE_LIST = [
     description:
       '챗GPT 기반 상식/영단어/사자성어/속담 퀴즈와 오늘의 운세, 추천 메뉴 등 ',
     color: 'text-info',
-    suffix: '매일 새롭게 제공합니다.',
-  },
-  {
-    highlight: '로또 기능 ',
-    description: '번호 생성·당첨 번호 히스토리·번호 체크까지! ',
-    color: 'text-primary',
+    suffix: '매일 새롭게 제공합니다. ',
   },
 ];
 
 export const HERO_BADGE_LIST = [
   {
-    text: '🚀 새로운 기능이 계속 추가되고 있어요!',
+    text: '🎯 로또 시뮬레이터·분석·고급 번호 생성 오픈!',
     className: 'bg-primary/15 text-primary',
   },
   {
-    text: '✨ AI로 퀴즈와 운세는 매일 새롭게!',
+    text: '📊 회차별 히스토리·빈도·패턴까지 한눈에',
     className: 'bg-info/15 text-info',
+  },
+  {
+    text: '🧪 공정한 추첨과 다양한 랜덤 도구 제공',
+    className: 'bg-success/15 text-success',
   },
   {
     text: '🍽️ 시간대에 맞는 메뉴 추천!',

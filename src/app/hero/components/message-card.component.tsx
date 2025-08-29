@@ -23,9 +23,9 @@ export function MessageCardComponent({
   const { onCapture } = useCapture();
 
   useEffect(() => {
+    const el = textRef.current;
+    if (!el) return;
     const compute = () => {
-      const el = textRef.current;
-      if (!el) return setCanToggle(false);
       const rootFont = parseFloat(
         getComputedStyle(document.documentElement).fontSize || '16'
       );
@@ -33,14 +33,15 @@ export function MessageCardComponent({
       const hasOverflow = el.scrollHeight > collapsedMax + 2;
       setCanToggle(hasOverflow);
     };
-    const id = requestAnimationFrame(() => {
+    const raf = requestAnimationFrame(() => {
       compute();
       setTimeout(compute, 0);
     });
-    window.addEventListener('resize', compute);
+    const ro = new ResizeObserver(() => compute());
+    ro.observe(el);
     return () => {
-      cancelAnimationFrame(id);
-      window.removeEventListener('resize', compute);
+      cancelAnimationFrame(raf);
+      ro.disconnect();
     };
   }, [message]);
 

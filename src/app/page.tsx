@@ -76,7 +76,7 @@ export default function RootPage() {
         ]}
       />
       <div className="bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50 flex flex-col">
-        <div className="max-w-5xl mx-auto w-full px-4 py-10">
+        <div className="max-w-8xl mx-auto w-full p-8">
           <HeroPage />
           <HomePage />
         </div>
