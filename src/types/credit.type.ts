@@ -110,4 +110,5 @@ export type ApplixirRewardAdType = {
   readonly onAdCompleted?: () => void;
   readonly onAdError?: (error: string) => void;
   readonly maxHeight?: number; // modal이 계산한 가용 높이 전달(선택)
+  readonly disabled?: boolean; // 외부에서 버튼 활성/비활성 제어
 };

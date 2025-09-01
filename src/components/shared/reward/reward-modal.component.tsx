@@ -15,6 +15,8 @@ export type RewardModalType = {
   readonly onOpenChange: (v: boolean) => void;
 };
 
+const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_apxConsentHintShown';
+
 export function RewardModalComponent({ onOpenChange }: RewardModalType) {
   const onClose = (): void => onOpenChange(false);
 
@@ -22,6 +24,7 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
   const headerRef = useRef<HTMLDivElement | null>(null);
   const actionsRef = useRef<HTMLDivElement | null>(null);
   const [adMaxHeight, setAdMaxHeight] = useState<number>(0);
+  const [showConsentHint, setShowConsentHint] = useState<boolean>(false);
 
   useEffect(() => {
     const calc = (): void => {
@@ -40,6 +43,28 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
     window.addEventListener('resize', calc);
     return () => window.removeEventListener('resize', calc);
   }, []);
+
+  // 최초 1회: 광고 제공사(CMP) 동의 팝업 안내 표기
+  useEffect(() => {
+    try {
+      const seen =
+        typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : '1';
+      setShowConsentHint(seen !== '1');
+    } catch (_) {
+      console.error(_, 'Failed to get consent hint shown');
+      setShowConsentHint(false);
+    }
+  }, []);
+
+  const handleDismissConsentHint = (): void => {
+    try {
+      localStorage.setItem(STORAGE_KEY, '1');
+    } catch (_) {
+      // ignore storage errors
+      console.error(_, 'Failed to set consent hint shown');
+    }
+    setShowConsentHint(false);
+  };
 
   const handleAdCompleted = (): void => {
     onOpenChange(false);
@@ -83,9 +108,35 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
           </p>
         </div>
 
+        {/* 최초 1회 안내: 광고 제공사 동의 팝업 안내 */}
+        {showConsentHint && (
+          <div className="mt-2 flex items-start justify-between gap-3 rounded-md border border-gray-300 bg-gray-50 text-gray-800 px-3 py-2 text-xs">
+            <p className="leading-relaxed">
+              광고 시청 전{' '}
+              <span className="font-semibold">
+                광고 제공사(파트너) 동의 팝업
+              </span>
+              이 영어로 한 번 표시될 수 있습니다. 해당 창에서{' '}
+              <span className="font-semibold">I Agree</span>를 눌러 주시면
+              이후부터는 다시 표시되지 않으며 정상적으로 보상이 지급됩니다.
+              언제든지 사이트 하단의 개인정보 처리방침에서 동의를 변경하실 수
+              있습니다.
+            </p>
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              onClick={handleDismissConsentHint}
+            >
+              확인
+            </Button>
+          </div>
+        )}
+
         <div className="space-y-4 mt-4">
           <ApplixirRewardAdComponent
             maxHeight={adMaxHeight}
+            disabled={showConsentHint}
             onAdCompleted={handleAdCompleted}
             onAdError={handleAdError}
           />

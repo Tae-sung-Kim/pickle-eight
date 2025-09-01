@@ -34,6 +34,7 @@ export function ApplixirRewardAdComponent({
   onAdCompleted,
   onAdError,
   maxHeight,
+  disabled,
 }: ApplixirRewardAdType) {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -448,7 +449,7 @@ export function ApplixirRewardAdComponent({
       <div className="flex justify-center gap-2">
         <Button
           onClick={handleWatchAd}
-          disabled={!canWatchAd || isLoading}
+          disabled={disabled || !canWatchAd || isLoading}
           className="min-w-[200px]"
         >
           {isLoading
