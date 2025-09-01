@@ -1,23 +1,107 @@
 import type { NextConfig } from 'next';
 
-const csp = [
-  "default-src 'self'",
-  // Scripts (Applixir + Google + Kakao/Daum AdFit + IMA/DFP + CMP)
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.applixir.com https://pagead2.googlesyndication.com https://t1.daumcdn.net https://*.kakaocdn.net https://*.daumcdn.net https://imasdk.googleapis.com https://securepubads.g.doubleclick.net https://sdk.privacy-center.org https://s0.2mdn.net https://www.googletagmanager.com https://vercel.live",
-  // Some browsers consult script-src-elem separately
-  "script-src-elem 'self' 'unsafe-inline' https://cdn.applixir.com https://pagead2.googlesyndication.com https://t1.daumcdn.net https://*.kakaocdn.net https://*.daumcdn.net https://imasdk.googleapis.com https://securepubads.g.doubleclick.net https://sdk.privacy-center.org https://s0.2mdn.net https://www.googletagmanager.com https://vercel.live",
-  // Styles (allow Applixir CSS hosted on S3 and their CDN)
-  "style-src 'self' 'unsafe-inline' https://s3.us-east-1.amazonaws.com https://cdn.applixir.com",
-  "style-src-elem 'self' 'unsafe-inline' https://s3.us-east-1.amazonaws.com https://cdn.applixir.com",
-  // Images used by ads/SDKs
-  "img-src 'self' data: blob: https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https://*.daumcdn.net https://*.kakaocdn.net https://*.g.doubleclick.net https://securepubads.g.doubleclick.net https://s0.2mdn.net https://cdn.applixir.com",
-  // Media (allow Applixir video placeholder)
-  "media-src 'self' blob: data: https://cdn.applixir.com https://*.googlevideo.com https://*.gvt1.com",
-  // Frames (Applixir player + Google ads + Kakao/Daum frames incl. daumcdn + IMA)
-  "frame-src 'self' https://cdn.applixir.com https://*.applixir.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https://securepubads.g.doubleclick.net https://imasdk.googleapis.com http://imasdk.googleapis.com https://*.daum.net https://*.kakao.com https://t1.daumcdn.net https://*.daumcdn.net https://*.kakaocdn.net",
-  // XHR/WebSocket
-  "connect-src 'self' https: https://www.google-analytics.com https://vercel.live",
-].join('; ');
+const isProd =
+  process.env.VERCEL_ENV === 'production' ||
+  process.env.NODE_ENV === 'production';
+
+function buildCsp(): string {
+  const vercelLive = 'https://vercel.live';
+  const scriptSrc = [
+    "'self'",
+    "'unsafe-inline'",
+    "'unsafe-eval'",
+    'https://cdn.applixir.com',
+    'https://pagead2.googlesyndication.com',
+    'https://t1.daumcdn.net',
+    'https://*.kakaocdn.net',
+    'https://*.daumcdn.net',
+    'https://imasdk.googleapis.com',
+    'https://securepubads.g.doubleclick.net',
+    'https://sdk.privacy-center.org',
+    'https://s0.2mdn.net',
+    'https://www.googletagmanager.com',
+  ];
+  const scriptSrcElem = [
+    "'self'",
+    "'unsafe-inline'",
+    'https://cdn.applixir.com',
+    'https://pagead2.googlesyndication.com',
+    'https://t1.daumcdn.net',
+    'https://*.kakaocdn.net',
+    'https://*.daumcdn.net',
+    'https://imasdk.googleapis.com',
+    'https://securepubads.g.doubleclick.net',
+    'https://sdk.privacy-center.org',
+    'https://s0.2mdn.net',
+    'https://www.googletagmanager.com',
+  ];
+  const styleSrc = [
+    "'self'",
+    "'unsafe-inline'",
+    'https://s3.us-east-1.amazonaws.com',
+    'https://cdn.applixir.com',
+  ];
+  const imgSrc = [
+    "'self'",
+    'data:',
+    'blob:',
+    'https://tpc.googlesyndication.com',
+    'https://pagead2.googlesyndication.com',
+    'https://*.daumcdn.net',
+    'https://*.kakaocdn.net',
+    'https://*.g.doubleclick.net',
+    'https://securepubads.g.doubleclick.net',
+    'https://s0.2mdn.net',
+    'https://cdn.applixir.com',
+  ];
+  const mediaSrc = [
+    "'self'",
+    'blob:',
+    'data:',
+    'https://cdn.applixir.com',
+    'https://*.googlevideo.com',
+    'https://*.gvt1.com',
+  ];
+  const frameSrc = [
+    "'self'",
+    'https://cdn.applixir.com',
+    'https://*.applixir.com',
+    'https://googleads.g.doubleclick.net',
+    'https://tpc.googlesyndication.com',
+    'https://pagead2.googlesyndication.com',
+    'https://securepubads.g.doubleclick.net',
+    'https://imasdk.googleapis.com',
+    'http://imasdk.googleapis.com',
+    'https://*.daum.net',
+    'https://*.kakao.com',
+    'https://t1.daumcdn.net',
+    'https://*.daumcdn.net',
+    'https://*.kakaocdn.net',
+  ];
+  const connectSrc = ["'self'", 'https:', 'https://www.google-analytics.com'];
+
+  if (!isProd) {
+    scriptSrc.push(vercelLive);
+    scriptSrcElem.push(vercelLive);
+    frameSrc.push(vercelLive);
+    connectSrc.push(vercelLive);
+  }
+
+  const directives = [
+    `default-src 'self'`,
+    `script-src ${scriptSrc.join(' ')}`,
+    `script-src-elem ${scriptSrcElem.join(' ')}`,
+    `style-src ${styleSrc.join(' ')}`,
+    `style-src-elem ${styleSrc.join(' ')}`,
+    `img-src ${imgSrc.join(' ')}`,
+    `media-src ${mediaSrc.join(' ')}`,
+    `frame-src ${frameSrc.join(' ')}`,
+    `connect-src ${connectSrc.join(' ')}`,
+  ];
+  return directives.join('; ');
+}
+
+const csp = buildCsp();
 
 // Restrict vercel.live to non-production if desired
 // "connect-src 'self' https: https://www.google-analytics.com #ifdef process.env.NODE_ENV !== 'production' https://vercel.live #endif",

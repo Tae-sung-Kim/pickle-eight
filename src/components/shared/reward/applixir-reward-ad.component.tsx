@@ -22,6 +22,7 @@ const ASPECT_WIDTH: number = 16;
 const ASPECT_HEIGHT: number = 9;
 const VIEWPORT_HEIGHT_RATIO: number = 0.9;
 const MIN_WRAPPER_HEIGHT: number = 200;
+const CLOSE_WITHOUT_REWARD_MS: number = 60_000; // 60s after which we allow closing without reward
 
 /**
  * Applixir 보상형 광고 컴포넌트
@@ -40,6 +41,8 @@ export function ApplixirRewardAdComponent({
   const [containerKey, setContainerKey] = useState<number>(0); // 스킵/중단 후 강제 리셋용
   const observerRef = useRef<MutationObserver | null>(null);
   const serverTokenRef = useRef<string | null>(null);
+  const adStartTimeRef = useRef<number | null>(null);
+  const [elapsedMs, setElapsedMs] = useState<number>(0);
   const { onEarn, todayEarned, lastEarnedAt } = useCreditStore();
   const { state } = useConsentContext();
   const adEvent = useAdEventMutation();
@@ -79,6 +82,8 @@ export function ApplixirRewardAdComponent({
     setContainerKey((k) => k + 1);
     setIsLoading(false);
     serverTokenRef.current = null;
+    adStartTimeRef.current = null;
+    setElapsedMs(0);
   };
 
   const startContainerObserver = (): void => {
@@ -93,6 +98,19 @@ export function ApplixirRewardAdComponent({
     });
   };
 
+  // Track elapsed time while ad is running
+  useEffect(() => {
+    if (!isLoading || adStartTimeRef.current === null) return;
+    const tick = (): void => {
+      if (adStartTimeRef.current !== null) {
+        setElapsedMs(Date.now() - adStartTimeRef.current);
+      }
+    };
+    const id = setInterval(tick, 250);
+    tick();
+    return () => clearInterval(id);
+  }, [isLoading]);
+
   const handleAdStatusCallback = async (status: {
     type: CreditAdStatusType;
   }): Promise<void> => {
@@ -103,6 +121,10 @@ export function ApplixirRewardAdComponent({
       status: status.type,
       aid,
       cid: String(containerKey),
+      watchedMs:
+        adStartTimeRef.current !== null
+          ? Date.now() - adStartTimeRef.current
+          : 0,
     });
 
     switch (status.type) {
@@ -111,6 +133,7 @@ export function ApplixirRewardAdComponent({
       case 'start':
       case 'ad-started':
         toast.info('광고가 시작되었습니다.');
+        adStartTimeRef.current = Date.now();
         break;
       case 'complete':
       case 'ad-watched':
@@ -133,6 +156,10 @@ export function ApplixirRewardAdComponent({
             reason,
             aid,
             cid: String(containerKey),
+            watchedMs:
+              adStartTimeRef.current !== null
+                ? Date.now() - adStartTimeRef.current
+                : 0,
           });
           return;
         }
@@ -145,6 +172,10 @@ export function ApplixirRewardAdComponent({
             kind: 'complete_granted',
             aid,
             cid: String(containerKey),
+            watchedMs:
+              adStartTimeRef.current !== null
+                ? Date.now() - adStartTimeRef.current
+                : 0,
           });
         }
         break;
@@ -152,10 +183,28 @@ export function ApplixirRewardAdComponent({
       case 'skip':
       case 'ad-skipped':
         toast.info('광고가 스킵되었습니다. 크레딧은 지급되지 않습니다.');
+        void adEvent.mutateAsync({
+          kind: 'skipped',
+          aid,
+          cid: String(containerKey),
+          watchedMs:
+            adStartTimeRef.current !== null
+              ? Date.now() - adStartTimeRef.current
+              : 0,
+        });
         resetPlayer();
         break;
       case 'ad-interrupted':
         toast.warning('광고가 중단되었습니다. 다시 시도할 수 있습니다.');
+        void adEvent.mutateAsync({
+          kind: 'interrupted',
+          aid,
+          cid: String(containerKey),
+          watchedMs:
+            adStartTimeRef.current !== null
+              ? Date.now() - adStartTimeRef.current
+              : 0,
+        });
         resetPlayer();
         break;
       case 'fb-started':
@@ -278,6 +327,8 @@ export function ApplixirRewardAdComponent({
     }
 
     setIsLoading(true);
+    adStartTimeRef.current = null;
+    setElapsedMs(0);
 
     try {
       // Prevent gpp-library errors by ensuring CMP stubs exist
@@ -394,7 +445,7 @@ export function ApplixirRewardAdComponent({
         }
       `}</style>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-2">
         <Button
           onClick={handleWatchAd}
           disabled={!canWatchAd || isLoading}
@@ -408,6 +459,25 @@ export function ApplixirRewardAdComponent({
             ? `쿨다운 ${cooldownLabel()}`
             : `광고 보고 크레딧 받기 (+${CREDIT_POLICY.rewardAmount})`}
         </Button>
+        {false && isLoading && elapsedMs >= CLOSE_WITHOUT_REWARD_MS && (
+          <Button
+            variant="secondary"
+            onClick={() => {
+              toast.info(
+                '보상 없이 광고를 종료했습니다. 다시 시도할 수 있습니다.'
+              );
+              void adEvent.mutateAsync({
+                kind: 'closed_without_reward',
+                aid: getAnonymousId(),
+                cid: String(containerKey),
+                watchedMs: elapsedMs,
+              });
+              resetPlayer();
+            }}
+          >
+            60초 경과, 닫기 (보상 없음)
+          </Button>
+        )}
       </div>
 
       <div className="text-xs text-muted-foreground text-center space-y-1">
@@ -419,6 +489,7 @@ export function ApplixirRewardAdComponent({
           {Math.floor(CREDIT_POLICY.dailyCap / CREDIT_POLICY.rewardAmount)}
           회까지 시청 가능합니다.
         </p>
+        {isLoading && <p>시청 시간: {(elapsedMs / 1000).toFixed(0)}초</p>}
       </div>
     </div>
   );
