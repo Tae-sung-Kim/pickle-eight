@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCreditStore } from '@/stores';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-// import { RewardModalComponent } from '@/components';
+import { RewardModalComponent } from '@/components';
 import { CREDIT_POLICY } from '@/constants';
 import {
   Tooltip,
@@ -23,7 +23,7 @@ export function CreditBalancePillComponent({
   showLabel = true,
 }: CreditBalancePillType) {
   const { total, todayEarned, lastEarnedAt } = useCreditStore();
-  // const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [cooldownMsLeft, setCooldownMsLeft] = useState<number>(0);
   const reachedDailyCap = todayEarned >= CREDIT_POLICY.dailyCap;
   const remaining = Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
@@ -73,7 +73,7 @@ export function CreditBalancePillComponent({
       e.stopPropagation();
       return;
     }
-    // setOpen(true);
+    setOpen(true);
   };
 
   const handleTriggerKeyDown = (
@@ -87,9 +87,6 @@ export function CreditBalancePillComponent({
   return (
     <div
       className={cn(
-        // Mobile-safe: allow shrinking, avoid overflow, slightly tighter sizes
-        // Also push to the right on small screens to avoid overlapping primary buttons in rows
-        // Add a small right margin on mobile to prevent card edge clipping when parent has overflow-hidden
         'inline-flex max-w-full items-center gap-1.5 rounded-full border px-2 py-1 text-[11px] text-muted-foreground overflow-hidden ml-auto mr-2 md:ml-0 md:mr-0 sm:text-xs sm:px-2.5 sm:py-1.5',
         className
       )}
@@ -145,7 +142,7 @@ export function CreditBalancePillComponent({
               )}회`}
         </TooltipContent>
       </Tooltip>
-      {/* {open && <RewardModalComponent onOpenChange={setOpen} />} */}
+      {open && <RewardModalComponent onOpenChange={setOpen} />}
     </div>
   );
 }

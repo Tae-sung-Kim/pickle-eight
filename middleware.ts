@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server';
 const RATE_LIMIT_PER_MIN = 10 as const; // adjust as needed
 const WINDOW_MS = 60_000 as const;
 const COOKIE_NAME = 'iprl' as const;
+const AID_COOKIE = 'aid' as const;
 
 const textEncoder = new TextEncoder();
 
@@ -34,21 +35,26 @@ function getClientIp(req: NextRequest): string | null {
 }
 
 export async function middleware(req: NextRequest): Promise<NextResponse> {
-  // Only enforce for the target path; matcher below should already scope this.
+  // Only enforce for matched paths (see config.matcher)
   const url = new URL(req.url);
-  if (url.pathname !== '/api/credits/claim') {
+  const pathname = url.pathname;
+  const isAdStart: boolean = pathname === '/api/ad/start';
+  const isAdComplete: boolean = pathname === '/api/ad/complete';
+  const isCreditsClaim: boolean = pathname === '/api/credits/claim';
+  const inScope: boolean = isAdStart || isAdComplete || isCreditsClaim;
+  if (!inScope) {
     return NextResponse.next();
   }
 
-  const ip = getClientIp(req) ?? 'unknown';
+  const ip: string = getClientIp(req) ?? 'unknown';
   // Bind secret to process.env; do NOT fall back to dev-secret in production.
-  const secret = process.env.DEVICE_COOKIE_SECRET || 'dev-secret';
+  const secret: string = process.env.DEVICE_COOKIE_SECRET || 'dev-secret';
 
   const cookie = req.cookies.get(COOKIE_NAME)?.value;
-  const now = Date.now();
+  const now: number = Date.now();
 
-  let resetAt = now + WINDOW_MS;
-  let count = 0;
+  let resetAt: number = now + WINDOW_MS;
+  let count: number = 0;
 
   if (cookie) {
     const [raw, sig] = cookie.split('.');
@@ -81,21 +87,70 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Increment and re-issue signed cookie (httpOnly, secure)
+  // Prepare downstream request headers (to inject cookies immediately)
   count += 1;
-  const raw = `${resetAt}:${count}`;
-  const sig = await hmacSHA256Hex(secret, `${ip}|${raw}`);
-  const res = NextResponse.next();
-  res.cookies.set(COOKIE_NAME, `${raw}.${sig}`, {
+  const rateRaw: string = `${resetAt}:${count}`;
+  const rateSig: string = await hmacSHA256Hex(secret, `${ip}|${rateRaw}`);
+  const reqHeaders: Headers = new Headers(req.headers);
+  let cookieHeaderWorking: string = reqHeaders.get('cookie') || '';
+
+  // Generate AID cookie if needed for ad routes and inject into request header
+  let generatedAid: string | null = null;
+  const hasAidCookie: boolean = Boolean(req.cookies.get(AID_COOKIE)?.value);
+  let currentAid: string | null = hasAidCookie
+    ? req.cookies.get(AID_COOKIE)!.value
+    : null;
+  if ((isAdStart || isAdComplete) && !hasAidCookie) {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    const aidHex: string = Array.from(bytes)
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+    generatedAid = aidHex;
+    currentAid = aidHex;
+    const newCookiePart = `${AID_COOKIE}=${aidHex}`;
+    cookieHeaderWorking = cookieHeaderWorking
+      ? `${cookieHeaderWorking}; ${newCookiePart}`
+      : newCookiePart;
+    reqHeaders.set('cookie', cookieHeaderWorking);
+  }
+
+  // Always propagate AID via request header for downstream handlers
+  if (currentAid) {
+    reqHeaders.set('x-aid', currentAid);
+  }
+
+  // Create response with mutated request headers
+  const res = NextResponse.next({ request: { headers: reqHeaders } });
+
+  // Debug headers to verify middleware execution and AID propagation
+  res.headers.set('x-mw', '1');
+  if (currentAid) res.headers.set('x-mw-aid-present', '1');
+  if (generatedAid) res.headers.set('x-mw-aid-generated', '1');
+
+  // Set rate-limit cookie on response
+  res.cookies.set(COOKIE_NAME, `${rateRaw}.${rateSig}`, {
     httpOnly: true,
     sameSite: 'lax',
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: 60 * 5, // keep short; sliding window
   });
+
+  // If AID was generated, set it on the response too
+  if (generatedAid) {
+    res.cookies.set(AID_COOKIE, generatedAid, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365, // 1y
+    });
+  }
+
   return res;
 }
 
 export const config = {
-  matcher: ['/api/credits/claim'],
+  matcher: ['/api/:path*'],
 };

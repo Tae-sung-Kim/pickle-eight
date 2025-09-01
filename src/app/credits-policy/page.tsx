@@ -71,10 +71,8 @@ export default function CreditsPolicyPage(): JSX.Element {
             <span className="text-muted-foreground"> (자정에 리셋)</span>
           </li>
           <li>
-            광고는 화면에{' '}
-            <strong>{CREDIT_POLICY.visibleSecondsRequired}초</strong> 이상
-            노출되고, 가시성 비율이{' '}
-            <strong>{CREDIT_POLICY.visibleRatioRequired}</strong> 이상이어야 함
+            광고 네트워크 기준에 따라 <strong>전체 시청 완료</strong> 시 보상
+            지급
           </li>
           <li>
             하루 최대 획득 한도: <strong>{CREDIT_POLICY.dailyCap}</strong>{' '}

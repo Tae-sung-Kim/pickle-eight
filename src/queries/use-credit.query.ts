@@ -1,15 +1,27 @@
-import type {
-  QueryClient,
-  UseMutationOptions,
-  UseQueryOptions,
+import {
+  type QueryClient,
+  type UseMutationOptions,
+  type UseQueryOptions,
 } from '@tanstack/react-query';
 import { getAnalyticsClient } from '@/lib/firebase-config';
 import {
   claimCredits,
   getUserCredits,
   normalizeClaimErrorCode,
+  postAdEvent,
+  startAdSession,
+  completeAdSession,
 } from '@/services';
-import type { CreditClaimResponseType, UserCreditsType } from '@/types';
+import type {
+  CreditClaimResponseType,
+  UserCreditsType,
+  AdEventPayloadType,
+  StartAdSessionInputType,
+  StartAdSessionOutputType,
+  CompleteAdSessionInputType,
+  CompleteAdSessionOutputType,
+} from '@/types';
+import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
 /**
  * Factory: UseQuery options for current user's credits
@@ -62,4 +74,44 @@ export function claimCreditsMutation(
       );
     },
   };
+}
+
+// Ad event mutation hook
+export function useAdEventMutation(): UseMutationResult<
+  void,
+  Error,
+  AdEventPayloadType
+> {
+  return useMutation<void, Error, AdEventPayloadType>({
+    mutationKey: ['ad', 'event'],
+    mutationFn: (p) => postAdEvent(p),
+  });
+}
+
+// Start ad session mutation hook
+export function useStartAdSessionMutation(): UseMutationResult<
+  StartAdSessionOutputType,
+  Error,
+  StartAdSessionInputType
+> {
+  return useMutation<StartAdSessionOutputType, Error, StartAdSessionInputType>({
+    mutationKey: ['ad', 'start'],
+    mutationFn: (p) => startAdSession(p),
+  });
+}
+
+// Complete ad session mutation hook
+export function useCompleteAdSessionMutation(): UseMutationResult<
+  CompleteAdSessionOutputType,
+  Error,
+  CompleteAdSessionInputType
+> {
+  return useMutation<
+    CompleteAdSessionOutputType,
+    Error,
+    CompleteAdSessionInputType
+  >({
+    mutationKey: ['ad', 'complete'],
+    mutationFn: (p) => completeAdSession(p),
+  });
 }

@@ -2,3 +2,7 @@
 # IMPORTANT: Replace the following line with the exact value provided in Kakao AdFit console.
 # Example format (do NOT use this as-is):
 # kakao.com, PUB-XXXXXXXXXXXXXXXX, DIRECT
+
+# Applixir ads.txt
+# Add Applixir authorized digital sellers information
+# applixir.com, [YOUR_APPLIXIR_PUBLISHER_ID], DIRECT
