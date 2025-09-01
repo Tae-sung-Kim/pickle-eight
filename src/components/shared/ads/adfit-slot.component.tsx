@@ -2,12 +2,14 @@
 
 import React, { useEffect, useId, useState } from 'react';
 import { useConsentContext } from '@/providers';
+import { useLoadingStore } from '@/stores';
 
 /**
  * Kakao AdFit slot. Loads script after consent and triggers SPA re-exec.
  */
 
 export function AdFitSlotComponent() {
+  const { showLoading, hideLoading } = useLoadingStore();
   const { state } = useConsentContext();
   const key = useId();
 
@@ -30,35 +32,65 @@ export function AdFitSlotComponent() {
   }, []);
 
   useEffect(() => {
-    // Only load script when consent is accepted and ads are not disabled
+    // Only proceed when consent is explicitly accepted
     if (adsDisabledOverride || state !== 'accepted') return;
 
+    showLoading();
+
     const src = 'https://t1.daumcdn.net/kas/static/ba.min.js';
-    const exists = document.querySelector(`script[src="${src}"]`);
-    if (!exists) {
-      const s = document.createElement('script');
-      s.async = true;
-      s.src = src;
-      s.type = 'text/javascript';
-      document.body.appendChild(s);
-      s.onload = () => {
-        try {
-          window.kakaoAsyncAdFit = window.kakaoAsyncAdFit || [];
-          // re-exec for SPA mounts
-          (window.kakaoAsyncAdFit as unknown[]).push({});
-        } catch {
-          /* noop */
-        }
-      };
-    } else {
+
+    const ensureQueue = () => {
       try {
-        window.kakaoAsyncAdFit = window.kakaoAsyncAdFit || [];
-        (window.kakaoAsyncAdFit as unknown[]).push({});
+        (window as unknown as { kakaoAsyncAdFit?: unknown[] }).kakaoAsyncAdFit =
+          (window as unknown as { kakaoAsyncAdFit?: unknown[] })
+            .kakaoAsyncAdFit || [];
       } catch {
         /* noop */
       }
-    }
-  }, [state, adsDisabledOverride]);
+    };
+
+    const ensureScript = () =>
+      new Promise<void>((resolve) => {
+        const exists = document.querySelector(`script[src="${src}"]`);
+        if (exists) {
+          ensureQueue();
+          resolve();
+          return;
+        }
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = src;
+        s.type = 'text/javascript';
+        s.onload = () => {
+          ensureQueue();
+          resolve();
+        };
+        document.body.appendChild(s);
+      });
+
+    ensureScript()
+      .then(() => {
+        // consent is accepted; safe to request AdFit
+        if (state === 'accepted') {
+          try {
+            if (
+              Array.isArray(
+                (window as unknown as { kakaoAsyncAdFit?: unknown[] })
+                  .kakaoAsyncAdFit
+              )
+            ) {
+              (window.kakaoAsyncAdFit as unknown[]).push({});
+            }
+          } catch {
+            /* noop */
+          }
+        }
+      })
+      .catch(() => {
+        /* noop */
+      })
+      .finally(() => hideLoading());
+  }, [state, adsDisabledOverride, showLoading, hideLoading]);
 
   // Always render AdFit area for ad review compliance
   // Script loading is controlled by useEffect above
