@@ -19,19 +19,18 @@ export type AdFitSlotType = {
 /**
  * Kakao AdFit slot. Loads script after consent and triggers SPA re-exec.
  */
-export function AdFitSlotComponent({
-  unitId,
-  width = 250,
-  height = 250,
-  className,
-  fallback,
-}: AdFitSlotType) {
+
+export function AdFitSlotComponent({ fallback }: AdFitSlotType) {
   const { state, onOpen } = useConsentContext();
   const key = useId();
 
+  const unitId = process.env.NEXT_PUBLIC_ADFIT_UNIT_ID;
+  const width = 320;
+  const height = 100;
+
   // Only serve ads in production
   const adsDisabled = useMemo<boolean>(() => {
-    return process.env.NODE_ENV !== 'production';
+    return false; // process.env.NODE_ENV !== 'production';
   }, []);
 
   // 임의로 광고 노출하지 않을 경우 - SSR에서 localStorage 접근 금지
@@ -50,12 +49,11 @@ export function AdFitSlotComponent({
 
   // Reason is environment only
   const disabledReason = useMemo<'env' | null>(() => {
-    return process.env.NODE_ENV !== 'production' ? 'env' : null;
+    return null; // process.env.NODE_ENV !== 'production' ? 'env' : null;
   }, []);
 
   useEffect(() => {
     if (adsDisabledOverride || adsDisabled || state !== 'accepted') return;
-    if (!unitId) return; // do not load script when no unit id configured
 
     const src = 'https://t1.daumcdn.net/kas/static/ba.min.js';
     const exists = document.querySelector(`script[src="${src}"]`);
@@ -82,28 +80,24 @@ export function AdFitSlotComponent({
         /* noop */
       }
     }
-  }, [state, adsDisabled, adsDisabledOverride, unitId]);
+  }, [state, adsDisabled, adsDisabledOverride]);
 
   // When ads are disabled, render a subtle placeholder to preserve layout
   if (adsDisabledOverride) {
     return (
-      <div className={className} style={{ width, height }}>
-        <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
-          <div className="text-xs text-muted-foreground">
-            임의로 광고가 비활성화되었습니다
-          </div>
+      <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
+        <div className="text-xs text-muted-foreground">
+          임의로 광고가 비활성화되었습니다
         </div>
       </div>
     );
   }
   if (adsDisabled) {
     return (
-      <div className={className} style={{ width, height }}>
-        <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
-          <div className="text-xs text-muted-foreground">
-            {disabledReason === 'env' &&
-              '개발/프리뷰 환경에서는 광고가 비활성화됩니다'}
-          </div>
+      <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
+        <div className="text-xs text-muted-foreground">
+          {disabledReason === 'env' &&
+            '개발/프리뷰 환경에서는 광고가 비활성화됩니다'}
         </div>
       </div>
     );
@@ -113,19 +107,17 @@ export function AdFitSlotComponent({
     if (fallback) return <>{fallback}</>;
     // Default non-tracking placeholder with consent reopen CTA
     return (
-      <div className={className} style={{ width, height }}>
-        <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
-          <div className="text-xs text-muted-foreground">
-            광고가 비활성화되어 있습니다.
-            <span className="hidden sm:inline">
-              {' '}
-              동의 시 무료 서비스 운영을 도울 수 있어요.
-            </span>
-          </div>
-          <Button type="button" size="sm" variant="secondary" onClick={onOpen}>
-            광고 설정 열기
-          </Button>
+      <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
+        <div className="text-xs text-muted-foreground">
+          광고가 비활성화되어 있습니다.
+          <span className="hidden sm:inline">
+            {' '}
+            동의 시 무료 서비스 운영을 도울 수 있어요.
+          </span>
         </div>
+        <Button type="button" size="sm" variant="secondary" onClick={onOpen}>
+          광고 설정 열기
+        </Button>
       </div>
     );
   }
@@ -133,11 +125,9 @@ export function AdFitSlotComponent({
   // When no unit id is configured yet, render a neutral placeholder preserving layout
   if (!unitId) {
     return (
-      <div className={className} style={{ width, height }}>
-        <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-center p-2">
-          <div className="text-xs text-muted-foreground">
-            광고 설정 준비중입니다
-          </div>
+      <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-center p-2">
+        <div className="text-xs text-muted-foreground">
+          광고 설정 준비중입니다
         </div>
       </div>
     );
@@ -147,7 +137,7 @@ export function AdFitSlotComponent({
     // AdFit requires display:none initially; script will size/insert iframe
     <ins
       key={key}
-      className={`kakao_ad_area ${className ?? ''}`}
+      className="kakao_ad_area"
       style={{ display: 'none' }}
       data-ad-unit={unitId}
       data-ad-width={String(width)}

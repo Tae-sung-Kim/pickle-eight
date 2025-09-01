@@ -9,11 +9,6 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    match /configs/ads {
-      allow read: if true;
-      allow write: if false;
-    }
-
     // 다른 공개 컬렉션이 있다면 여기에 추가:
     // match /public-collection/{docId} { allow read: if true; allow write: if false; }
 

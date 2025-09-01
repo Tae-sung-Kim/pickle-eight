@@ -5,8 +5,7 @@ import {
   CookieConsentComponent,
   FooterLayout,
   HeaderLayout,
-  AdFitMobileTopSlotComponent,
-  AdFitDesktopSideSlotComponent,
+  AdFitSlotComponent,
 } from '@/components';
 import { Toaster } from 'sonner';
 import {
@@ -147,22 +146,12 @@ export default function RootLayout({
               <AgeGateProvider>
                 <HeaderLayout />
                 {/* 모바일 상단 전용 배너 (데스크톱에서는 숨김: 컴포넌트 내부 md:hidden) */}
-                <div className="w-full flex justify-center py-2">
-                  <AdFitMobileTopSlotComponent />
+                <div className="w-full flex justify-center p-6 pb-0">
+                  <AdFitSlotComponent />
                 </div>
                 <main className="flex-1 py-8">
                   <div className="mx-auto w-full max-w-8xl px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] xl:grid-cols-[200px_minmax(0,1fr)_200px] gap-6">
-                      {/* 데스크톱 왼쪽 사이드 전용 배너 (모바일에서는 숨김: 컴포넌트 내부 hidden md:block) */}
-                      <aside className="hidden md:block md:sticky md:top-4 md:self-start">
-                        <div className="w-[200px]">
-                          <AdFitDesktopSideSlotComponent />
-                        </div>
-                      </aside>
-                      <div className="min-w-0">{children}</div>
-                      {/* 우측 시각적 균형용 스페이서 (광고 없음) */}
-                      <div className="hidden xl:block w-[200px]" aria-hidden />
-                    </div>
+                    {children}
                   </div>
                 </main>
                 <FooterLayout />
