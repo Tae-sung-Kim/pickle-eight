@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import {
   LoadingComponent,
   AnalyticsClientComponent,
@@ -140,6 +141,11 @@ export default function RootLayout({
         />
       </head>
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
+        {/* Applixir Script */}
+        <Script
+          src="https://cdn.applixir.com/applixir.app.v6.0.1.js"
+          strategy="afterInteractive"
+        />
         <QueryClientProviderWrapper>
           <ConsentProvider>
             <AuthProvider>
