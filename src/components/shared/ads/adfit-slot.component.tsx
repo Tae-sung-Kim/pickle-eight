@@ -33,7 +33,7 @@ export function AdFitSlotComponent() {
 
   useEffect(() => {
     // Only proceed when consent is explicitly accepted
-    // if (adsDisabledOverride || state !== 'accepted') return;
+    if (adsDisabledOverride || state !== 'accepted') return;
 
     showLoading();
 
