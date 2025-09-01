@@ -1,14 +1,10 @@
 'use client';
 
-import {
-  ComponentProps,
-  useMemo,
-  // useState
-} from 'react';
+import { ComponentProps, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useCreditStore } from '@/stores';
 import { SPEND_COST } from '@/constants';
-// import { RewardModalComponent } from '@/components';
+import { RewardModalComponent } from '@/components';
 
 export type CreditGateButtonType = {
   readonly variant?: ComponentProps<typeof Button>['variant'];
@@ -27,7 +23,7 @@ export function CreditGateButtonComponent({
   onProceed,
   amountOverride,
 }: CreditGateButtonType) {
-  // const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const { total, canSpend, onSpend } = useCreditStore();
   const amount = useMemo<number>(
     () =>
@@ -41,12 +37,12 @@ export function CreditGateButtonComponent({
   const handleClick = (): void => {
     // 부족하면 보상 모달을 열어 충전 유도
     if (insufficient) {
-      // setOpen(true);
+      setOpen(true);
       return;
     }
     const check = canSpend(amount);
     if (!check.canSpend) {
-      // setOpen(true);
+      setOpen(true);
       return;
     }
     const res = onSpend(amount);
@@ -65,7 +61,7 @@ export function CreditGateButtonComponent({
       >
         {label}
       </Button>
-      {/* {open && <RewardModalComponent onOpenChange={setOpen} />} */}
+      {open && <RewardModalComponent onOpenChange={setOpen} />}
     </>
   );
 }
