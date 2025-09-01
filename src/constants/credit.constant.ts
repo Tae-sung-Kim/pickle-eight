@@ -1,11 +1,14 @@
 import type { CreditPolicyType, SpendCostType } from '@/types';
 
+// 개발모드일때
+const envMode =
+  (process.env.NEXT_PUBLIC_CREDIT_RESET_MODE || '').toLowerCase() === 'minute';
+
 export const CREDIT_POLICY: CreditPolicyType = {
   rewardAmount: 5,
-  dailyCap: 50,
-  cooldownMs: 1.5 * 60 * 1000,
+  dailyCap: envMode ? 10 : 50,
+  cooldownMs: envMode ? 5000 : 1.5 * 60 * 1000,
   visibleRatioRequired: 0.5,
-  visibleSecondsRequired: 20,
   baseDaily: 5,
 } as const;
 

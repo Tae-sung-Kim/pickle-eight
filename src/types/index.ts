@@ -1,6 +1,15 @@
 declare global {
   interface Window {
     kakaoAsyncAdFit?: unknown[];
+    initializeAndOpenPlayer?: (options: {
+      apiKey: string;
+      injectionElementId: string;
+      adStatusCallbackFn: (status: { type: string }) => void;
+      adErrorCallbackFn: (error: {
+        getError: () => { data: { type: string }; errorMessage: string };
+      }) => void;
+      adOptions?: { customId?: string };
+    }) => void;
   }
 }
 

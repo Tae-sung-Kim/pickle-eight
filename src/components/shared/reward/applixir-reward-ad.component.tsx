@@ -5,33 +5,26 @@ import { Button } from '@/components/ui/button';
 import { useCreditStore } from '@/stores';
 import { CREDIT_POLICY } from '@/constants';
 import { toast } from 'sonner';
-
-declare global {
-  interface Window {
-    initializeAndOpenPlayer?: (options: {
-      apiKey: string;
-      injectionElementId: string;
-      adStatusCallbackFn: (status: { type: string }) => void;
-      adErrorCallbackFn: (error: {
-        getError: () => { data: { type: string }; errorMessage: string };
-      }) => void;
-    }) => void;
-  }
-}
+import { useConsentContext } from '@/providers';
 
 export type ApplixirRewardAdType = {
   readonly onAdCompleted?: () => void;
   readonly onAdError?: (error: string) => void;
+  readonly maxHeight?: number; // modal이 계산한 가용 높이 전달(선택)
 };
 
 export function ApplixirRewardAdComponent({
   onAdCompleted,
   onAdError,
+  maxHeight,
 }: ApplixirRewardAdType) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [adStatus, setAdStatus] = useState<string>('');
+  const [containerKey, setContainerKey] = useState<number>(0); // 스킵/중단 후 강제 리셋용
   const { onEarn, todayEarned, lastEarnedAt } = useCreditStore();
+  const { state } = useConsentContext();
 
   // Cooldown 계산
   const [cooldownMsLeft, setCooldownMsLeft] = useState<number>(0);
@@ -58,6 +51,13 @@ export function ApplixirRewardAdComponent({
     return `${m}m${s}s`;
   };
 
+  const resetPlayer = (): void => {
+    // 컨테이너를 강제로 재생성하여 SDK 내부 상태를 초기화
+    setContainerKey((k) => k + 1);
+    setAdStatus('');
+    setIsLoading(false);
+  };
+
   const handleAdStatusCallback = (status: { type: string }): void => {
     console.log('Applixir Ad Status:', status.type);
     setAdStatus(status.type);
@@ -78,9 +78,13 @@ export function ApplixirRewardAdComponent({
         }
         setIsLoading(false);
         break;
+      case 'ad-skipped':
+        toast.info('광고가 스킵되었습니다. 크레딧은 지급되지 않습니다.');
+        resetPlayer();
+        break;
       case 'ad-interrupted':
-        toast.warning('광고가 중단되었습니다.');
-        setIsLoading(false);
+        toast.warning('광고가 중단되었습니다. 다시 시도할 수 있습니다.');
+        resetPlayer();
         break;
       case 'fb-started':
         toast.info('대체 광고가 시작되었습니다.');
@@ -124,11 +128,35 @@ export function ApplixirRewardAdComponent({
 
     toast.error(errorMessage);
     onAdError?.(errorMessage);
-    setIsLoading(false);
+    resetPlayer();
   };
 
-  const handleWatchAd = (): void => {
+  const ensureApplixirLoaded = async (): Promise<void> => {
+    if (typeof window === 'undefined') return;
+    if (window.initializeAndOpenPlayer) return;
+    await new Promise<void>((resolve, reject) => {
+      const id = 'applixir-sdk-script';
+      const existing = document.getElementById(id) as HTMLScriptElement | null;
+      if (existing && typeof window.initializeAndOpenPlayer === 'function') {
+        resolve();
+        return;
+      }
+      const s = document.createElement('script');
+      s.id = id;
+      s.src = 'https://cdn.applixir.com/applixir.app.v6.0.1.js';
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('Failed to load Applixir SDK'));
+      document.body.appendChild(s);
+    });
+  };
+
+  const handleWatchAd = async (): Promise<void> => {
     if (!canWatchAd) return;
+    if (state !== 'accepted') {
+      toast.info('광고/쿠키 동의 후 이용할 수 있습니다.');
+      return;
+    }
     if (!process.env.NEXT_PUBLIC_APPLIXIR_API_KEY) {
       toast.error('Applixir API 키가 설정되지 않았습니다.');
       return;
@@ -137,39 +165,32 @@ export function ApplixirRewardAdComponent({
     setIsLoading(true);
     setAdStatus('loading');
 
-    // Applixir 광고 초기화 및 실행
-    if (window.initializeAndOpenPlayer) {
-      try {
-        const anonymousId = getAnonymousId();
-        window.initializeAndOpenPlayer({
-          apiKey: process.env.NEXT_PUBLIC_APPLIXIR_API_KEY,
-          injectionElementId: 'applixir-ad-container',
-          adStatusCallbackFn: handleAdStatusCallback,
-          adErrorCallbackFn: handleAdErrorCallback,
-          // SDK가 지원할 경우 커스텀 식별자 전달 (지원하지 않으면 무시됨)
-          // @ts-expect-error: 외부 SDK 확장 필드 가능성
-          adOptions: {
-            customId: anonymousId,
-          },
-        });
-      } catch (error) {
-        console.error('Applixir initialization error:', error);
-        toast.error('광고 초기화에 실패했습니다.');
-        setIsLoading(false);
+    try {
+      await ensureApplixirLoaded();
+      if (!window.initializeAndOpenPlayer) {
+        throw new Error('SDK not initialized');
       }
-    } else {
-      toast.error('Applixir 스크립트가 로드되지 않았습니다.');
-      setIsLoading(false);
+      const anonymousId = getAnonymousId();
+      window.initializeAndOpenPlayer({
+        apiKey: process.env.NEXT_PUBLIC_APPLIXIR_API_KEY,
+        injectionElementId: 'applixir-ad-container',
+        adStatusCallbackFn: handleAdStatusCallback,
+        adErrorCallbackFn: handleAdErrorCallback,
+        // customId에 시도 카운터를 추가하여 세션 캐싱/중복 문제 방지
+        adOptions: { customId: `${anonymousId}:${containerKey}` },
+      });
+    } catch (e) {
+      console.error('Applixir dynamic load/init error:', e);
+      toast.error('광고 SDK 로드에 실패했습니다.');
+      resetPlayer();
     }
   };
 
-  // 브라우저별 익명 ID (localStorage에 영구 저장)
   const getAnonymousId = (): string => {
     try {
       const key = 'AID';
       const existing = localStorage.getItem(key);
       if (existing) return existing;
-      // 16바이트 랜덤(hex 32자리)
       const buf =
         typeof window !== 'undefined' && window.crypto?.getRandomValues
           ? (() => {
@@ -180,7 +201,6 @@ export function ApplixirRewardAdComponent({
                 .join('');
             })()
           : (() => {
-              // 폴백: Math.random 기반(보안 강도 낮음)
               let s = '';
               for (let i = 0; i < 16; i++) {
                 s += Math.floor(Math.random() * 256)
@@ -192,28 +212,68 @@ export function ApplixirRewardAdComponent({
       localStorage.setItem(key, buf);
       return buf;
     } catch {
-      // 실패 시 타임스탬프 폴백
       return `aid_${Date.now()}`;
     }
   };
 
+  // 래퍼 박스를 사용해 16:9 유지 + 가용 높이 내에 맞춤(최대 90vh)
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const apply = () => {
+      const w = el.clientWidth;
+      const hByWidth = (w * 9) / 16;
+      const capByViewport = Math.floor(window.innerHeight * 0.9);
+      const cap = Math.min(capByViewport, maxHeight ?? capByViewport);
+      const h = Math.max(200, Math.min(hByWidth, cap));
+      el.style.height = `${h}px`;
+    };
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    window.addEventListener('resize', apply);
+    apply();
+    return () => {
+      window.removeEventListener('resize', apply);
+      ro.disconnect();
+    };
+  }, [maxHeight]);
+
   return (
     <div className="space-y-4">
-      {/* Applixir 광고 컨테이너 */}
+      {/* 비율 박스: 내부 미디어는 contain으로 표시되어 잘리지 않음 */}
       <div
-        id="applixir-ad-container"
-        ref={containerRef}
-        className="min-h-[200px]"
-      />
+        ref={wrapperRef}
+        className="relative w-full bg-black rounded-md overflow-hidden"
+      >
+        <div
+          key={containerKey}
+          id="applixir-ad-container"
+          ref={containerRef}
+          className="absolute inset-0"
+        />
+      </div>
 
-      {/* 상태 표시 */}
+      {/* 주입되는 비디오/캔버스/iframe이 부모 크기를 채우고 잘리지 않도록 강제 */}
+      <style jsx global>{`
+        #applixir-ad-container,
+        #applixir-ad-container * {
+          max-width: 100% !important;
+        }
+        #applixir-ad-container video,
+        #applixir-ad-container canvas,
+        #applixir-ad-container iframe {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: contain !important;
+        }
+      `}</style>
+
       {adStatus && (
         <div className="text-sm text-muted-foreground text-center">
           상태: {adStatus}
         </div>
       )}
 
-      {/* 광고 시청 버튼 */}
       <div className="flex justify-center">
         <Button
           onClick={handleWatchAd}
@@ -230,7 +290,6 @@ export function ApplixirRewardAdComponent({
         </Button>
       </div>
 
-      {/* 안내 메시지 */}
       <div className="text-xs text-muted-foreground text-center space-y-1">
         <p>
           광고 시청 완료 시 크레딧 {CREDIT_POLICY.rewardAmount}개가 지급됩니다.

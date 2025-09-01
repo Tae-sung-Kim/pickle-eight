@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import Script from 'next/script';
 import {
   LoadingComponent,
   AnalyticsClientComponent,
@@ -141,11 +140,6 @@ export default function RootLayout({
         />
       </head>
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
-        {/* Applixir Script */}
-        <Script
-          src="https://cdn.applixir.com/applixir.app.v6.0.1.js"
-          strategy="afterInteractive"
-        />
         <QueryClientProviderWrapper>
           <ConsentProvider>
             <AuthProvider>
@@ -156,7 +150,7 @@ export default function RootLayout({
                   <AdFitSlotComponent />
                 </div>
                 <main className="flex-1 py-8">
-                  <div className="mx-auto w-full max-w-8xl px-4 sm:px-6 lg:px-8">
+                  <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
                     {children}
                   </div>
                 </main>

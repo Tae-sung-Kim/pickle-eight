@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -18,37 +18,62 @@ export type RewardModalType = {
 export function RewardModalComponent({ onOpenChange }: RewardModalType) {
   const onClose = (): void => onOpenChange(false);
 
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const actionsRef = useRef<HTMLDivElement | null>(null);
+  const [adMaxHeight, setAdMaxHeight] = useState<number>(0);
+
+  useEffect(() => {
+    const calc = (): void => {
+      const viewportCap = Math.floor(window.innerHeight * 0.9); // 90vh 상한
+      const headerH = headerRef.current?.offsetHeight ?? 0;
+      const actionsH = actionsRef.current?.offsetHeight ?? 0;
+      // 모달 내부 여백(상하 margin/padding) 보정치
+      const padding = 24; // 대략치
+      const available = Math.max(
+        200,
+        viewportCap - headerH - actionsH - padding
+      );
+      setAdMaxHeight(available);
+    };
+    calc();
+    window.addEventListener('resize', calc);
+    return () => window.removeEventListener('resize', calc);
+  }, []);
+
   const handleAdCompleted = (): void => {
-    // 광고 시청 완료 후 모달 닫기
     onOpenChange(false);
   };
 
   const handleAdError = (error: string): void => {
     console.error('Reward ad error:', error);
-    // 에러 발생 시에도 모달은 열어둠 (사용자가 다시 시도할 수 있도록)
   };
 
   return (
     <Dialog open={true} onOpenChange={onOpenChange}>
       <DialogContent
-        className="sm:max-w-2xl max-h-[80vh] overflow-auto"
+        ref={contentRef}
+        className="sm:max-w-3xl max-h-[90vh] overflow-auto"
         showCloseButton={false}
       >
-        <DialogHeader>
+        <DialogHeader
+          ref={headerRef as unknown as React.RefObject<HTMLDivElement>}
+        >
           <DialogTitle>광고 보기로 크레딧 받기</DialogTitle>
+          <DialogDescription>
+            광고를 끝까지 시청하시면 크레딧이 지급됩니다.
+          </DialogDescription>
         </DialogHeader>
-        <DialogDescription>
-          광고를 끝까지 시청하시면 크레딧이 지급됩니다.
-        </DialogDescription>
 
         <div className="space-y-4 mt-4">
           <ApplixirRewardAdComponent
+            maxHeight={adMaxHeight}
             onAdCompleted={handleAdCompleted}
             onAdError={handleAdError}
           />
 
           {/* 액션 영역 */}
-          <div className="flex justify-end gap-2 pt-2">
+          <div ref={actionsRef} className="flex justify-end gap-2 pt-2">
             <Button type="button" variant="secondary" onClick={onClose}>
               닫기
             </Button>

@@ -18,7 +18,6 @@ export type CreditPolicyType = {
   readonly dailyCap: number;
   readonly cooldownMs: number;
   readonly visibleRatioRequired: number;
-  readonly visibleSecondsRequired: number;
   readonly baseDaily: number;
 };
 
