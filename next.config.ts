@@ -1,8 +1,6 @@
 import type { NextConfig } from 'next';
 
-const isProd =
-  process.env.VERCEL_ENV === 'production' ||
-  process.env.NODE_ENV === 'production';
+const isProd = process.env.VERCEL_ENV === 'production';
 
 function buildCsp(): string {
   const vercelLive = 'https://vercel.live';
