@@ -65,6 +65,15 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
           </DialogDescription>
         </DialogHeader>
 
+        {/* 강조 안내 박스: 스킵 시 미지급 경고 */}
+        <div className="mt-2 rounded-md border border-amber-300 bg-amber-50 text-amber-900 px-3 py-2 text-sm">
+          <p>
+            <span className="font-semibold">중요</span> — 광고를{' '}
+            <span className="font-semibold">끝까지 시청</span>해야 보상이
+            지급됩니다. 스킵하거나 중단하면 보상이 지급되지 않습니다.
+          </p>
+        </div>
+
         <div className="space-y-4 mt-4">
           <ApplixirRewardAdComponent
             maxHeight={adMaxHeight}

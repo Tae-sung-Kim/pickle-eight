@@ -23,6 +23,7 @@ export function ApplixirRewardAdComponent({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [adStatus, setAdStatus] = useState<string>('');
   const [containerKey, setContainerKey] = useState<number>(0); // 스킵/중단 후 강제 리셋용
+  const observerRef = useRef<MutationObserver | null>(null);
   const { onEarn, todayEarned, lastEarnedAt } = useCreditStore();
   const { state } = useConsentContext();
 
@@ -53,6 +54,10 @@ export function ApplixirRewardAdComponent({
 
   const resetPlayer = (): void => {
     // 컨테이너를 강제로 재생성하여 SDK 내부 상태를 초기화
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+      observerRef.current = null;
+    }
     setContainerKey((k) => k + 1);
     setAdStatus('');
     setIsLoading(false);
@@ -63,6 +68,10 @@ export function ApplixirRewardAdComponent({
     setAdStatus(status.type);
 
     switch (status.type) {
+      case 'loaded':
+        // ignore
+        break;
+      case 'start':
       case 'ad-started':
         toast.info('광고가 시작되었습니다.');
         break;
@@ -76,8 +85,13 @@ export function ApplixirRewardAdComponent({
         } else {
           toast.error('크레딧 지급에 실패했습니다.');
         }
+        if (observerRef.current) {
+          observerRef.current.disconnect();
+          observerRef.current = null;
+        }
         setIsLoading(false);
         break;
+      case 'skip':
       case 'ad-skipped':
         toast.info('광고가 스킵되었습니다. 크레딧은 지급되지 않습니다.');
         resetPlayer();
@@ -96,7 +110,16 @@ export function ApplixirRewardAdComponent({
           toast.success(`크레딧 ${CREDIT_POLICY.rewardAmount}개를 받았습니다!`);
           onAdCompleted?.();
         }
+        if (observerRef.current) {
+          observerRef.current.disconnect();
+          observerRef.current = null;
+        }
         setIsLoading(false);
+        break;
+      case 'allAdsCompleted':
+      case 'thankYouModalClosed':
+        // 완료/스킵 이후의 마무리 이벤트: 상태만 정리
+        if (isLoading) resetPlayer();
         break;
       default:
         break;
@@ -151,6 +174,39 @@ export function ApplixirRewardAdComponent({
     });
   };
 
+  const ensurePrivacyStubs = (): void => {
+    if (typeof window === 'undefined') return;
+    // GPP stub
+    const win = window as unknown as {
+      __gpp?: unknown;
+      __gppQueue?: unknown[];
+      __tcfapi?: unknown;
+      __tcfapiQueue?: unknown[];
+      __uspapi?: unknown;
+      __uspapiQueue?: unknown[];
+    };
+    if (typeof win.__gpp !== 'function') {
+      win.__gppQueue = win.__gppQueue || [];
+      win.__gpp = function (...args: unknown[]) {
+        (win.__gppQueue as unknown[]).push(args);
+      } as unknown as () => void;
+    }
+    // TCF v2 stub
+    if (typeof win.__tcfapi !== 'function') {
+      win.__tcfapiQueue = win.__tcfapiQueue || [];
+      win.__tcfapi = function (...args: unknown[]) {
+        (win.__tcfapiQueue as unknown[]).push(args);
+      } as unknown as () => void;
+    }
+    // US Privacy stub
+    if (typeof win.__uspapi !== 'function') {
+      win.__uspapiQueue = win.__uspapiQueue || [];
+      win.__uspapi = function (...args: unknown[]) {
+        (win.__uspapiQueue as unknown[]).push(args);
+      } as unknown as () => void;
+    }
+  };
+
   const handleWatchAd = async (): Promise<void> => {
     if (!canWatchAd) return;
     if (state !== 'accepted') {
@@ -166,11 +222,26 @@ export function ApplixirRewardAdComponent({
     setAdStatus('loading');
 
     try {
+      // Prevent gpp-library errors by ensuring CMP stubs exist
+      ensurePrivacyStubs();
       await ensureApplixirLoaded();
       if (!window.initializeAndOpenPlayer) {
         throw new Error('SDK not initialized');
       }
       const anonymousId = getAnonymousId();
+      // DOM 변화 감시: 광고 iframe이 제거되면(유저가 닫거나 스킵해 종료되는 케이스 포함) 로딩 상태를 정리
+      if (containerRef.current && !observerRef.current) {
+        observerRef.current = new MutationObserver(() => {
+          const hasChild = !!containerRef.current?.firstChild;
+          if (!hasChild && isLoading) {
+            resetPlayer();
+          }
+        });
+        observerRef.current.observe(containerRef.current, {
+          childList: true,
+          subtree: false,
+        });
+      }
       window.initializeAndOpenPlayer({
         apiKey: process.env.NEXT_PUBLIC_APPLIXIR_API_KEY,
         injectionElementId: 'applixir-ad-container',
