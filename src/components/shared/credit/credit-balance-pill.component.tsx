@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCreditStore } from '@/stores';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { RewardModalComponent } from '@/components';
+import { ApplixirRewardAdComponent } from '@/components';
 import { CREDIT_POLICY } from '@/constants';
 import {
   Tooltip,
@@ -145,7 +145,14 @@ export function CreditBalancePillComponent({
               )}회`}
         </TooltipContent>
       </Tooltip>
-      {open && <RewardModalComponent onOpenChange={setOpen} />}
+      {open && (
+        <div className="mt-4 border rounded-md p-4 bg-card">
+          <ApplixirRewardAdComponent
+            onAdCompleted={() => setOpen(false)}
+            onAdError={() => setOpen(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }
