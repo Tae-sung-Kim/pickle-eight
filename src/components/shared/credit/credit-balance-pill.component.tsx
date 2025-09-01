@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCreditStore } from '@/stores';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { RewardModalComponent } from '@/components';
+// import { RewardModalComponent } from '@/components';
 import { CREDIT_POLICY } from '@/constants';
 import {
   Tooltip,
@@ -23,7 +23,7 @@ export function CreditBalancePillComponent({
   showLabel = true,
 }: CreditBalancePillType) {
   const { total, todayEarned, lastEarnedAt } = useCreditStore();
-  const [open, setOpen] = useState<boolean>(false);
+  // const [open, setOpen] = useState<boolean>(false);
   const [cooldownMsLeft, setCooldownMsLeft] = useState<number>(0);
   const reachedDailyCap = todayEarned >= CREDIT_POLICY.dailyCap;
   const remaining = Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
@@ -73,7 +73,7 @@ export function CreditBalancePillComponent({
       e.stopPropagation();
       return;
     }
-    setOpen(true);
+    // setOpen(true);
   };
 
   const handleTriggerKeyDown = (
@@ -145,7 +145,7 @@ export function CreditBalancePillComponent({
               )}회`}
         </TooltipContent>
       </Tooltip>
-      {open && <RewardModalComponent onOpenChange={setOpen} />}
+      {/* {open && <RewardModalComponent onOpenChange={setOpen} />} */}
     </div>
   );
 }
