@@ -1,11 +1,15 @@
 import { getKoreaTime } from '@/utils';
 import Link from 'next/link';
-import { CookieSettingsButtonComponent } from '../shared';
+import {
+  CookieSettingsButtonComponent,
+  ConsentNudgeComponent,
+} from '../shared';
 
 export function FooterLayout() {
   return (
     <footer className="w-full border-t border-border/40 py-6">
       <div className="px-4 sm:px-6">
+        <ConsentNudgeComponent variant="gentle" />
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-center text-sm text-muted-foreground">
             {getKoreaTime().getFullYear()} {process.env.NEXT_PUBLIC_SITE_NAME}.

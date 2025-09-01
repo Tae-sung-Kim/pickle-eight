@@ -1,37 +1,19 @@
 'use client';
 
-import React, { useEffect, useId, useMemo, useState } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import { useConsentContext } from '@/providers';
-import { Button } from '@/components/ui/button';
-
-export type AdFitSlotType = {
-  readonly unitId?: string;
-  readonly width?: number;
-  readonly height?: number;
-  readonly className?: string;
-  /**
-   * Optional fallback rendered when consent is not accepted.
-   * If not provided, a default CTA with a button to reopen consent is shown.
-   */
-  readonly fallback?: React.ReactNode;
-};
 
 /**
  * Kakao AdFit slot. Loads script after consent and triggers SPA re-exec.
  */
 
-export function AdFitSlotComponent({ fallback }: AdFitSlotType) {
-  const { state, onOpen } = useConsentContext();
+export function AdFitSlotComponent() {
+  const { state } = useConsentContext();
   const key = useId();
 
-  const unitId = process.env.NEXT_PUBLIC_ADFIT_UNIT_ID;
+  const unitId = process.env.NEXT_PUBLIC_ADFIT_UNIT_ID ?? 'DAN-placeholder';
   const width = 320;
   const height = 100;
-
-  // Only serve ads in production
-  const adsDisabled = useMemo<boolean>(() => {
-    return false; // process.env.NODE_ENV !== 'production';
-  }, []);
 
   // 임의로 광고 노출하지 않을 경우 - SSR에서 localStorage 접근 금지
   const [adsDisabledOverride, setAdsDisabledOverride] =
@@ -47,13 +29,9 @@ export function AdFitSlotComponent({ fallback }: AdFitSlotType) {
     }
   }, []);
 
-  // Reason is environment only
-  const disabledReason = useMemo<'env' | null>(() => {
-    return null; // process.env.NODE_ENV !== 'production' ? 'env' : null;
-  }, []);
-
   useEffect(() => {
-    if (adsDisabledOverride || adsDisabled || state !== 'accepted') return;
+    // Only load script when consent is accepted and ads are not disabled
+    if (adsDisabledOverride || state !== 'accepted') return;
 
     const src = 'https://t1.daumcdn.net/kas/static/ba.min.js';
     const exists = document.querySelector(`script[src="${src}"]`);
@@ -80,59 +58,10 @@ export function AdFitSlotComponent({ fallback }: AdFitSlotType) {
         /* noop */
       }
     }
-  }, [state, adsDisabled, adsDisabledOverride]);
+  }, [state, adsDisabledOverride]);
 
-  // When ads are disabled, render a subtle placeholder to preserve layout
-  if (adsDisabledOverride) {
-    return (
-      <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
-        <div className="text-xs text-muted-foreground">
-          임의로 광고가 비활성화되었습니다
-        </div>
-      </div>
-    );
-  }
-  if (adsDisabled) {
-    return (
-      <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
-        <div className="text-xs text-muted-foreground">
-          {disabledReason === 'env' &&
-            '개발/프리뷰 환경에서는 광고가 비활성화됩니다'}
-        </div>
-      </div>
-    );
-  }
-
-  if (state !== 'accepted') {
-    if (fallback) return <>{fallback}</>;
-    // Default non-tracking placeholder with consent reopen CTA
-    return (
-      <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-between gap-3 p-2">
-        <div className="text-xs text-muted-foreground">
-          광고가 비활성화되어 있습니다.
-          <span className="hidden sm:inline">
-            {' '}
-            동의 시 무료 서비스 운영을 도울 수 있어요.
-          </span>
-        </div>
-        <Button type="button" size="sm" variant="secondary" onClick={onOpen}>
-          광고 설정 열기
-        </Button>
-      </div>
-    );
-  }
-
-  // When no unit id is configured yet, render a neutral placeholder preserving layout
-  if (!unitId) {
-    return (
-      <div className="h-full w-full rounded-md border border-dashed bg-muted/30 flex items-center justify-center p-2">
-        <div className="text-xs text-muted-foreground">
-          광고 설정 준비중입니다
-        </div>
-      </div>
-    );
-  }
-
+  // Always render AdFit area for ad review compliance
+  // Script loading is controlled by useEffect above
   return (
     // AdFit requires display:none initially; script will size/insert iframe
     <ins
