@@ -4,7 +4,7 @@ import { ComponentProps, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useCreditStore } from '@/stores';
 import { SPEND_COST } from '@/constants';
-import { ApplixirRewardAdComponent } from '@/components';
+import { RewardModalComponent } from '@/components';
 
 export type CreditGateButtonType = {
   readonly variant?: ComponentProps<typeof Button>['variant'];
@@ -35,7 +35,7 @@ export function CreditGateButtonComponent({
   const insufficient = useMemo<boolean>(() => total < amount, [total, amount]);
 
   const handleClick = (): void => {
-    // 부족하면 보상 패널을 열어 충전 유도
+    // 부족하면 보상 모달을 열어 충전 유도
     if (insufficient) {
       setOpen(true);
       return;
@@ -61,14 +61,7 @@ export function CreditGateButtonComponent({
       >
         {label}
       </Button>
-      {open && (
-        <div className="mt-4 border rounded-md p-4 bg-card">
-          <ApplixirRewardAdComponent
-            onAdCompleted={() => setOpen(false)}
-            onAdError={() => setOpen(false)}
-          />
-        </div>
-      )}
+      {open && <RewardModalComponent onOpenChange={setOpen} />}
     </>
   );
 }
