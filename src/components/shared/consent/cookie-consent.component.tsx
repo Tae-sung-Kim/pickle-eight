@@ -17,15 +17,17 @@ export function CookieConsentComponent() {
       <div className="mx-auto w-full max-w-3xl md:max-w-4xl lg:max-w-5xl rounded-2xl border bg-background/90 shadow-xl ring-1 ring-border backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="flex flex-col items-stretch gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between md:gap-4">
           <p className="flex-1 text-xs sm:text-sm leading-6 text-muted-foreground">
-            분석/광고 쿠키를 사용하여 서비스 품질을 개선하고 맞춤형 콘텐츠를
-            제공합니다. 자세한 내용은{' '}
+            본 서비스는 필수 쿠키 외에 분석 및 광고(개인화 포함) 쿠키/유사
+            기술을 사용할 수 있습니다. 비필수 쿠키는 동의 시에만 활성화되며,
+            거부 시 비필수 쿠키는 저장·수집되지 않고 광고는 비개인화 또는
+            미표시될 수 있습니다. 자세한 내용과 설정 방법은{' '}
             <Link
-              href="/privacy"
+              href="/privacy#cookies-consent"
               className="font-medium text-indigo-600 underline underline-offset-4 transition-colors hover:text-indigo-700"
             >
               개인정보처리방침
             </Link>
-            을 확인하세요.
+            의 &apos;쿠키 및 동의 관리&apos;를 참고하세요.
           </p>
           <div className="flex shrink-0 flex-wrap items-center gap-2 md:flex-nowrap md:justify-end">
             <Button

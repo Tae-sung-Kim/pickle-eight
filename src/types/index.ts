@@ -1,12 +1,17 @@
+import { CreditAdErrorType, CreditAdStatusType } from './credit.type';
+
 declare global {
   interface Window {
     kakaoAsyncAdFit?: unknown[];
     initializeAndOpenPlayer?: (options: {
       apiKey: string;
       injectionElementId: string;
-      adStatusCallbackFn: (status: { type: string }) => void;
+      adStatusCallbackFn: (status: { type: CreditAdStatusType }) => void;
       adErrorCallbackFn: (error: {
-        getError: () => { data: { type: string }; errorMessage: string };
+        getError: () => {
+          data: { type: CreditAdErrorType };
+          errorMessage: string;
+        };
       }) => void;
       adOptions?: { customId?: string };
     }) => void;

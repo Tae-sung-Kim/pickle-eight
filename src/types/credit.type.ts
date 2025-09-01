@@ -73,3 +73,41 @@ export type CreditClaimResponseType = {
 };
 
 export type UserCreditsType = { credits: number; lastClaimDate?: string };
+
+// Ad status types observed from Applixir callbacks
+export type CreditAdStatusType =
+  | 'loaded'
+  | 'start'
+  | 'ad-started'
+  | 'complete'
+  | 'ad-watched'
+  | 'skip'
+  | 'ad-skipped'
+  | 'ad-interrupted'
+  | 'fb-started'
+  | 'fb-watched'
+  | 'allAdsCompleted'
+  | 'thankYouModalClosed';
+
+// Error types observed from Applixir error callback
+export type CreditAdErrorType =
+  | 'adsRequestNetworkError'
+  | 'consentManagementProviderNotReady'
+  | 'ads-unavailable'
+  | string;
+
+// ===== Ad services =====
+
+export type AdEventPayloadType = Readonly<Record<string, unknown>>;
+
+export type StartAdSessionInputType = Readonly<{ cid: string }>;
+export type StartAdSessionOutputType = Readonly<{ token: string }>;
+
+export type CompleteAdSessionInputType = Readonly<{ token: string }>;
+export type CompleteAdSessionOutputType = Readonly<{ ok: boolean }>;
+
+export type ApplixirRewardAdType = {
+  readonly onAdCompleted?: () => void;
+  readonly onAdError?: (error: string) => void;
+  readonly maxHeight?: number; // modal이 계산한 가용 높이 전달(선택)
+};
