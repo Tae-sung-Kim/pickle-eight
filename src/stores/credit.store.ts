@@ -77,12 +77,6 @@ export const useCreditStore = create<CreditStateType>()(
           const now = Date.now();
           const last = s.lastEarnedAt ?? 0;
           const since = now - last;
-          if (s.todayEarned >= CREDIT_POLICY.dailyCap) {
-            return {
-              canEarn: false,
-              reason: 'daily_cap',
-            } as EarnCheckResultType;
-          }
           if (since < CREDIT_POLICY.cooldownMs) {
             return {
               canEarn: false,
@@ -94,10 +88,8 @@ export const useCreditStore = create<CreditStateType>()(
             typeof amount === 'number' && amount > 0
               ? amount
               : CREDIT_POLICY.rewardAmount;
-          const willEarn = Math.min(
-            base,
-            CREDIT_POLICY.dailyCap - s.todayEarned
-          );
+          // Allow exceeding daily cap: earn full base amount
+          const willEarn = base;
           const next: CreditBalanceType = {
             total: s.total + willEarn,
             todayEarned: s.todayEarned + willEarn,

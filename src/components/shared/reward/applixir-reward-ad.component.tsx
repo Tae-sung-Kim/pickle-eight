@@ -42,7 +42,9 @@ export function ApplixirRewardAdComponent({
   const [containerKey, setContainerKey] = useState<number>(0); // 스킵/중단 후 강제 리셋용
   const observerRef = useRef<MutationObserver | null>(null);
   const serverTokenRef = useRef<string | null>(null);
-  const adStartTimeRef = useRef<number | null>(null);
+  const adStartTimeRef = useRef<number | null>(null); // 현재 재생 시작 시각
+  const accumulatedMsRef = useRef<number>(0); // 누적 시청 시간(일시정지 포함)
+  const isPlayingRef = useRef<boolean>(false); // 실제 재생 중 여부
   const startedRef = useRef<boolean>(false);
   const [elapsedMs, setElapsedMs] = useState<number>(0);
   const lastNotifiedAmountRef = useRef<number>(CREDIT_POLICY.rewardAmount);
@@ -86,59 +88,49 @@ export function ApplixirRewardAdComponent({
     setIsLoading(false);
     serverTokenRef.current = null;
     adStartTimeRef.current = null;
+    accumulatedMsRef.current = 0;
+    isPlayingRef.current = false;
     startedRef.current = false;
     setElapsedMs(0);
     lastNotifiedAmountRef.current = CREDIT_POLICY.rewardAmount;
   };
 
-  // IMPORTANT: do NOT read React state here to avoid stale-closure issues in setTimeout/MutationObserver
+  // IMPORTANT: React state 읽지 않음. 첫 시작/재개 모두 처리. 토스트는 최초 1회만.
   const ensureStarted = (): void => {
-    if (startedRef.current) return;
-    adStartTimeRef.current = Date.now();
-    startedRef.current = true;
-    // Debug: force confirm start path
-    console.debug(
-      '[Applixir] ensureStarted(): timer begins at',
-      adStartTimeRef.current
-    );
-    toast.info('광고가 시작되었습니다.');
-    setElapsedMs(0);
+    const now = Date.now();
+    if (!startedRef.current) {
+      startedRef.current = true;
+      toast.info('광고가 시작되었습니다.');
+    }
+    if (!isPlayingRef.current) {
+      adStartTimeRef.current = now;
+      isPlayingRef.current = true;
+    }
   };
 
-  const startContainerObserver = (): void => {
-    if (!containerRef.current || observerRef.current) return;
-    observerRef.current = new MutationObserver(() => {
-      const hasChild = !!containerRef.current?.firstChild;
-      // 자식이 처음 주입되었고 아직 시작 처리되지 않았다면 폴백 시작
-      if (hasChild && !startedRef.current) {
-        ensureStarted();
-      }
-      // 재생 이벤트 기반 보장: 주입된 video가 play되면 시작 처리
-      const videos = containerRef.current?.querySelectorAll('video');
-      videos?.forEach((v) => {
-        // 중복 리스너 방지용 플래그
-        const anyV = v as unknown as { __apx_bound?: boolean };
-        if (anyV.__apx_bound) return;
-        anyV.__apx_bound = true;
-        v.addEventListener('play', () => {
-          if (!startedRef.current) ensureStarted();
-        });
-      });
-      // 자식이 잠시 사라지는 경우가 있어 즉시 reset하지 않음. 종료 콜백에서만 reset.
-    });
-    observerRef.current.observe(containerRef.current, {
-      childList: true,
-      subtree: false,
-    });
+  const handlePause = (): void => {
+    if (!isPlayingRef.current) return;
+    const now = Date.now();
+    if (adStartTimeRef.current !== null) {
+      accumulatedMsRef.current += now - adStartTimeRef.current;
+    }
+    adStartTimeRef.current = null;
+    isPlayingRef.current = false;
+    setElapsedMs(accumulatedMsRef.current);
+  };
+
+  const getWatchedMs = (): number => {
+    if (isPlayingRef.current && adStartTimeRef.current !== null) {
+      return accumulatedMsRef.current + (Date.now() - adStartTimeRef.current);
+    }
+    return accumulatedMsRef.current;
   };
 
   // Track elapsed time while ad is running
   useEffect(() => {
     if (!isLoading) return;
     const tick = (): void => {
-      if (adStartTimeRef.current !== null) {
-        setElapsedMs(Date.now() - adStartTimeRef.current);
-      }
+      setElapsedMs(getWatchedMs());
     };
     const id = setInterval(tick, 250);
     tick();
@@ -188,10 +180,7 @@ export function ApplixirRewardAdComponent({
       status: type as CreditAdStatusType,
       aid,
       cid: String(containerKey),
-      watchedMs:
-        adStartTimeRef.current !== null
-          ? Date.now() - adStartTimeRef.current
-          : 0,
+      watchedMs: getWatchedMs(),
     });
 
     switch ((type || '').toLowerCase()) {
@@ -204,6 +193,17 @@ export function ApplixirRewardAdComponent({
       case 'ad-start':
       case 'impression':
       case 'ad-impression':
+        ensureStarted();
+        break;
+      case 'pause':
+      case 'paused':
+      case 'ad-paused':
+        handlePause();
+        break;
+      case 'resume':
+      case 'resumed':
+      case 'ad-resumed':
+      case 'playing':
         ensureStarted();
         break;
       case 'complete':
@@ -227,18 +227,12 @@ export function ApplixirRewardAdComponent({
             reason,
             aid,
             cid: String(containerKey),
-            watchedMs:
-              adStartTimeRef.current !== null
-                ? Date.now() - adStartTimeRef.current
-                : 0,
+            watchedMs: getWatchedMs(),
           });
           return;
         }
         // 로컬 스토어도 동기화(서버가 승인했을 때만)
-        const watchedMs =
-          adStartTimeRef.current !== null
-            ? Date.now() - adStartTimeRef.current
-            : 0;
+        const watchedMs = getWatchedMs();
         const dynamicAmount = computeRewardByWatch(watchedMs);
         const result = onEarn(dynamicAmount);
         if (result.canEarn) {
@@ -248,10 +242,8 @@ export function ApplixirRewardAdComponent({
             kind: 'complete_granted',
             aid,
             cid: String(containerKey),
-            watchedMs:
-              adStartTimeRef.current !== null
-                ? Date.now() - adStartTimeRef.current
-                : 0,
+            watchedMs,
+            grantedAmount: dynamicAmount,
           });
         }
         break;
@@ -263,10 +255,7 @@ export function ApplixirRewardAdComponent({
           kind: 'skipped',
           aid,
           cid: String(containerKey),
-          watchedMs:
-            adStartTimeRef.current !== null
-              ? Date.now() - adStartTimeRef.current
-              : 0,
+          watchedMs: getWatchedMs(),
         });
         resetPlayer();
         break;
@@ -276,10 +265,7 @@ export function ApplixirRewardAdComponent({
           kind: 'interrupted',
           aid,
           cid: String(containerKey),
-          watchedMs:
-            adStartTimeRef.current !== null
-              ? Date.now() - adStartTimeRef.current
-              : 0,
+          watchedMs: getWatchedMs(),
         });
         resetPlayer();
         break;
@@ -338,6 +324,39 @@ export function ApplixirRewardAdComponent({
     resetPlayer();
   };
 
+  function startContainerObserver(): void {
+    if (!containerRef.current || observerRef.current) return;
+    observerRef.current = new MutationObserver(() => {
+      const hasChild = !!containerRef.current?.firstChild;
+      // 광고 DOM 주입 직후 시작 보장
+      if (hasChild && !startedRef.current) {
+        ensureStarted();
+      }
+      // 재생 이벤트 기반 보장: 주입된 video가 play되면 시작 처리
+      const videos = containerRef.current?.querySelectorAll('video');
+      videos?.forEach((v) => {
+        // 중복 리스너 방지용 플래그
+        const anyV = v as unknown as { __apx_bound?: boolean };
+        if (anyV.__apx_bound) return;
+        anyV.__apx_bound = true;
+        v.addEventListener('play', () => {
+          if (!startedRef.current || !isPlayingRef.current) ensureStarted();
+        });
+        v.addEventListener('pause', () => {
+          handlePause();
+        });
+        v.addEventListener('ended', () => {
+          handlePause();
+        });
+      });
+      // 종료 콜백에서만 reset
+    });
+    observerRef.current.observe(containerRef.current, {
+      childList: true,
+      subtree: false,
+    });
+  }
+
   const ensureApplixirLoaded = async (): Promise<void> => {
     if (typeof window === 'undefined') return;
     if (window.initializeAndOpenPlayer) return;
@@ -392,7 +411,12 @@ export function ApplixirRewardAdComponent({
   };
 
   const handleWatchAd = async (): Promise<void> => {
-    if (!canWatchAd) return;
+    if (!canWatchAd) {
+      if (reachedDailyCap) {
+        toast.info('오늘 시청 한도에 도달했습니다. 내일 0시에 초기화됩니다.');
+      }
+      return;
+    }
     if (state !== 'accepted') {
       toast.info('광고/쿠키 동의 후 이용할 수 있습니다.');
       return;
@@ -518,7 +542,7 @@ export function ApplixirRewardAdComponent({
         {isLoading && (
           <div className="pointer-events-none absolute right-2 top-2 z-[2147483647]">
             <span className="inline-flex items-center gap-1 rounded bg-emerald-600/85 text-white px-2 py-1 text-[11px] shadow">
-              {(elapsedMs / 1000).toFixed(0)}초 · 예상 +
+              {(elapsedMs / 1000).toFixed(0)}초 · 예상 획득 +
               {computeRewardByWatch(elapsedMs)}
             </span>
           </div>
@@ -585,7 +609,7 @@ export function ApplixirRewardAdComponent({
       <div className="text-xs text-muted-foreground text-center space-y-1">
         {isLoading && (
           <p>
-            시청 시간: {(elapsedMs / 1000).toFixed(0)}초 · 현재 예상 보상:{' '}
+            시청 시간: {(elapsedMs / 1000).toFixed(0)}초 · 현재 예상 획득량:{' '}
             {computeRewardByWatch(elapsedMs)}개
           </p>
         )}
