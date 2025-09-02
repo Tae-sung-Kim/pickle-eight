@@ -118,7 +118,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       const overCap = todayEarned >= CREDIT_POLICY.dailyCap;
       const allowOverCapOnce =
         (nonce.baselineResetAt ?? resetKey) === resetKey &&
-        (nonce.baselineEarned ?? 0) < CREDIT_POLICY.dailyCap;
+        (nonce.baselineEarned ?? 0) <= CREDIT_POLICY.dailyCap;
       if (since < CREDIT_POLICY.cooldownMs) {
         return {
           ok: false,
