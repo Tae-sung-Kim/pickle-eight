@@ -483,13 +483,20 @@ export function ApplixirRewardAdComponent({
           disabled={disabled || !canWatchAd || isLoading}
           className="min-w-[200px]"
         >
-          {isLoading
-            ? '광고 로딩 중...'
-            : reachedDailyCap
-            ? '오늘 시청 한도 도달'
-            : inCooldown
-            ? `쿨다운 ${cooldownLabel()}`
-            : '광고 보고 크레딧 받기'}
+          {isLoading ? (
+            <span className="inline-flex items-center gap-2">
+              광고 시청 중...
+              <span className="ml-1 rounded px-1.5 py-0.5 text-[11px] border bg-muted text-muted-foreground">
+                예상 +{computeRewardByWatch(elapsedMs)}
+              </span>
+            </span>
+          ) : reachedDailyCap ? (
+            '오늘 시청 한도 도달'
+          ) : inCooldown ? (
+            `쿨다운 ${cooldownLabel()}`
+          ) : (
+            '광고 보고 크레딧 받기'
+          )}
         </Button>
         {false && isLoading && elapsedMs >= CLOSE_WITHOUT_REWARD_MS && (
           <Button

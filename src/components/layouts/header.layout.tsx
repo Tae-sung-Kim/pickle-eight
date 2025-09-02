@@ -131,7 +131,7 @@ export function HeaderLayout() {
                 <span className="tabular-nums font-semibold">{total}</span>
                 {/* 남은 충전 횟수 (모바일 표시) */}
                 <span className="ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border">
-                  {remainingCharges}회 남음
+                  최소 남은 시청 가능 횟수 {remainingCharges}회
                 </span>
                 <span className="ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border">
                   ↻ {remainingLabel}
