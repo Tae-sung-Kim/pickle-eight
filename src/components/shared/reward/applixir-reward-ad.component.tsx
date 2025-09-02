@@ -44,7 +44,7 @@ export function ApplixirRewardAdComponent({
   const serverTokenRef = useRef<string | null>(null);
   const adStartTimeRef = useRef<number | null>(null);
   const [elapsedMs, setElapsedMs] = useState<number>(0);
-  const lastNotifiedStepRef = useRef<number>(0);
+  const lastNotifiedAmountRef = useRef<number>(CREDIT_POLICY.rewardAmount);
   const { onEarn, todayEarned, lastEarnedAt } = useCreditStore();
   const { state } = useConsentContext();
   const adEvent = useAdEventMutation();
@@ -92,7 +92,13 @@ export function ApplixirRewardAdComponent({
     if (!containerRef.current || observerRef.current) return;
     observerRef.current = new MutationObserver(() => {
       const hasChild = !!containerRef.current?.firstChild;
+      // 자식이 사라졌는데 로딩 상태면 리셋
       if (!hasChild && isLoading) resetPlayer();
+      // 자식이 처음 주입되었고 아직 시작 시간이 없다면 폴백으로 시작 처리
+      if (hasChild && adStartTimeRef.current === null) {
+        adStartTimeRef.current = Date.now();
+        toast.info('광고가 시작되었습니다.');
+      }
     });
     observerRef.current.observe(containerRef.current, {
       childList: true,
@@ -113,19 +119,18 @@ export function ApplixirRewardAdComponent({
     return () => clearInterval(id);
   }, [isLoading]);
 
-  // 분 단위 추가 보상 안내 토스트: 2분 초과 시부터 매 분마다 +5 알림
+  // 추가 보상 안내 토스트: 기준(2×step) 초과 이후 증가할 때마다 +N 안내 (maxPerAd까지)
   useEffect(() => {
     if (!isLoading) return;
     const sec = Math.floor(elapsedMs / 1000);
     const stepSec = CREDIT_POLICY.stepReward; // 운영: 60초, 개발: 5초
-    const inc = CREDIT_POLICY.rewardAmount; // 스텝당 +크레딧(기본 5)
-    if (sec <= 2 * stepSec) return; // 기준(2스텝) 이전은 알림 없음
-    const currentStep = Math.floor(sec / stepSec) - 1; // 기준(2스텝) 초과분부터 1,2,3...
-    if (currentStep > lastNotifiedStepRef.current) {
-      const added = inc * (currentStep - lastNotifiedStepRef.current);
-      const totalExtra = inc * currentStep;
-      toast.info(`+${added} 크레딧 추가 예정 (누적 +${totalExtra})`);
-      lastNotifiedStepRef.current = currentStep;
+    if (sec <= 2 * stepSec) return; // 기준 이전은 알림 없음
+    const currentAmount = computeRewardByWatch(elapsedMs); // 이미 maxPerAd로 클램프됨
+    const prevAmount = lastNotifiedAmountRef.current;
+    if (currentAmount > prevAmount) {
+      const added = currentAmount - prevAmount;
+      toast.info(`+${added} 크레딧 추가 예정 (누적 ${currentAmount})`);
+      lastNotifiedAmountRef.current = currentAmount;
     }
   }, [elapsedMs, isLoading]);
 
@@ -133,9 +138,10 @@ export function ApplixirRewardAdComponent({
     const sec = Math.floor(watchedMs / 1000);
     const stepSec = CREDIT_POLICY.stepReward; // 운영: 60초, 개발: 5초
     const inc = CREDIT_POLICY.rewardAmount; // 스텝당 +크레딧(기본 5)
-    if (sec <= 2 * stepSec) return inc; // 기준(2스텝) 이전: 기본 보상
+    if (sec <= 2 * stepSec) return Math.min(inc, CREDIT_POLICY.maxPerAd); // 기준(2스텝) 이전: 기본 보상
     const steps = Math.floor(sec / stepSec) - 1; // 기준(2스텝) 초과분부터 스텝 카운트
-    return inc + steps * inc;
+    const amount = inc + steps * inc;
+    return Math.min(amount, CREDIT_POLICY.maxPerAd);
   };
 
   const handleAdStatusCallback = async (status: {
@@ -156,6 +162,13 @@ export function ApplixirRewardAdComponent({
 
     switch (status.type) {
       case 'loaded':
+        // 일부 환경에서 'start' 콜백이 누락되는 경우가 있어 폴백 처리
+        setTimeout(() => {
+          if (isLoading && adStartTimeRef.current === null) {
+            adStartTimeRef.current = Date.now();
+            toast.info('광고가 시작되었습니다.');
+          }
+        }, 1000);
         break;
       case 'start':
       case 'ad-started':
@@ -460,6 +473,16 @@ export function ApplixirRewardAdComponent({
           ref={containerRef}
           className="absolute inset-0"
         />
+        {/* 상단 고정 안내 배지: 광고 위에 떠서 가려지지 않도록 표시 */}
+        <div className="pointer-events-none absolute left-2 top-2 z-[9999]">
+          <span className="inline-flex items-center gap-1 rounded bg-black/65 text-white px-2 py-1 text-[11px] shadow">
+            기본 {CREDIT_POLICY.rewardAmount}개 · {CREDIT_POLICY.stepReward}
+            초마다 +{CREDIT_POLICY.rewardAmount}
+            <span className="ml-1 opacity-90">
+              (최대 {CREDIT_POLICY.maxPerAd}개)
+            </span>
+          </span>
+        </div>
       </div>
 
       {/* 주입되는 비디오/캔버스/iframe이 부모 크기를 채우고 잘리지 않도록 강제 */}
@@ -529,7 +552,8 @@ export function ApplixirRewardAdComponent({
         <p>
           보상 정책: 기본 {CREDIT_POLICY.rewardAmount}개, 이후{' '}
           <span className="font-semibold">{CREDIT_POLICY.stepReward}초</span>
-          마다 +{CREDIT_POLICY.rewardAmount}씩 증가합니다.
+          마다 +{CREDIT_POLICY.rewardAmount}씩 증가하며, 광고 1회 최대{' '}
+          {CREDIT_POLICY.maxPerAd}개까지 지급됩니다.
         </p>
         <p>
           오늘 남은 획득 가능 크레딧:{' '}

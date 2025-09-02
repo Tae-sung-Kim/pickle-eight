@@ -81,6 +81,9 @@ export default function CreditsPolicyPage(): JSX.Element {
             <strong>{CREDIT_POLICY.rewardAmount}</strong>씩 증가
           </li>
           <li>
+            광고 1회 최대 지급: <strong>{CREDIT_POLICY.maxPerAd}</strong>개
+          </li>
+          <li>
             하루 최대 획득 한도: <strong>{CREDIT_POLICY.dailyCap}</strong>{' '}
             크레딧
           </li>

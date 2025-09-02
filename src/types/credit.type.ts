@@ -20,6 +20,7 @@ export type CreditPolicyType = {
   readonly visibleRatioRequired: number;
   readonly baseDaily: number;
   readonly stepReward: number;
+  readonly maxPerAd: number;
 };
 
 export type SpendCostType = {
