@@ -71,7 +71,7 @@ export const useCreditStore = create<CreditStateType>()(
             lastResetAt: key,
           } as CreditBalanceType);
         },
-        onEarn: () => {
+        onEarn: (amount?: number) => {
           ensureReset();
           const s = get();
           const now = Date.now();
@@ -90,8 +90,12 @@ export const useCreditStore = create<CreditStateType>()(
               msToNext: CREDIT_POLICY.cooldownMs - since,
             } as EarnCheckResultType;
           }
+          const base =
+            typeof amount === 'number' && amount > 0
+              ? amount
+              : CREDIT_POLICY.rewardAmount;
           const willEarn = Math.min(
-            CREDIT_POLICY.rewardAmount,
+            base,
             CREDIT_POLICY.dailyCap - s.todayEarned
           );
           const next: CreditBalanceType = {

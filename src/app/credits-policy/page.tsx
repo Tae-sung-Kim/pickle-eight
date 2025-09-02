@@ -75,6 +75,12 @@ export default function CreditsPolicyPage(): JSX.Element {
             지급
           </li>
           <li>
+            보상량은 시청 시간에 따라 가변 적용: 기본
+            <strong> {CREDIT_POLICY.rewardAmount}</strong>개, 이후
+            <strong> {CREDIT_POLICY.stepReward}초</strong>마다 +
+            <strong>{CREDIT_POLICY.rewardAmount}</strong>씩 증가
+          </li>
+          <li>
             하루 최대 획득 한도: <strong>{CREDIT_POLICY.dailyCap}</strong>{' '}
             크레딧
           </li>

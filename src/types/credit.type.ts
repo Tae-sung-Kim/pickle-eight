@@ -19,6 +19,7 @@ export type CreditPolicyType = {
   readonly cooldownMs: number;
   readonly visibleRatioRequired: number;
   readonly baseDaily: number;
+  readonly stepReward: number;
 };
 
 export type SpendCostType = {
@@ -46,7 +47,7 @@ export type CreditCostLabelType = {
 };
 
 export type CreditStateType = {
-  onEarn: () => EarnCheckResultType;
+  onEarn: (amount?: number) => EarnCheckResultType;
   onSpend: (amount: number) => SpendCheckResultType;
   canSpend: (amount: number) => SpendCheckResultType;
   syncReset: () => void;

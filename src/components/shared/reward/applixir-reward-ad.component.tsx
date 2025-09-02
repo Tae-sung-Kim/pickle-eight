@@ -44,6 +44,7 @@ export function ApplixirRewardAdComponent({
   const serverTokenRef = useRef<string | null>(null);
   const adStartTimeRef = useRef<number | null>(null);
   const [elapsedMs, setElapsedMs] = useState<number>(0);
+  const lastNotifiedStepRef = useRef<number>(0);
   const { onEarn, todayEarned, lastEarnedAt } = useCreditStore();
   const { state } = useConsentContext();
   const adEvent = useAdEventMutation();
@@ -112,6 +113,31 @@ export function ApplixirRewardAdComponent({
     return () => clearInterval(id);
   }, [isLoading]);
 
+  // 분 단위 추가 보상 안내 토스트: 2분 초과 시부터 매 분마다 +5 알림
+  useEffect(() => {
+    if (!isLoading) return;
+    const sec = Math.floor(elapsedMs / 1000);
+    const stepSec = CREDIT_POLICY.stepReward; // 운영: 60초, 개발: 5초
+    const inc = CREDIT_POLICY.rewardAmount; // 스텝당 +크레딧(기본 5)
+    if (sec <= 2 * stepSec) return; // 기준(2스텝) 이전은 알림 없음
+    const currentStep = Math.floor(sec / stepSec) - 1; // 기준(2스텝) 초과분부터 1,2,3...
+    if (currentStep > lastNotifiedStepRef.current) {
+      const added = inc * (currentStep - lastNotifiedStepRef.current);
+      const totalExtra = inc * currentStep;
+      toast.info(`+${added} 크레딧 추가 예정 (누적 +${totalExtra})`);
+      lastNotifiedStepRef.current = currentStep;
+    }
+  }, [elapsedMs, isLoading]);
+
+  const computeRewardByWatch = (watchedMs: number): number => {
+    const sec = Math.floor(watchedMs / 1000);
+    const stepSec = CREDIT_POLICY.stepReward; // 운영: 60초, 개발: 5초
+    const inc = CREDIT_POLICY.rewardAmount; // 스텝당 +크레딧(기본 5)
+    if (sec <= 2 * stepSec) return inc; // 기준(2스텝) 이전: 기본 보상
+    const steps = Math.floor(sec / stepSec) - 1; // 기준(2스텝) 초과분부터 스텝 카운트
+    return inc + steps * inc;
+  };
+
   const handleAdStatusCallback = async (status: {
     type: CreditAdStatusType;
   }): Promise<void> => {
@@ -165,9 +191,14 @@ export function ApplixirRewardAdComponent({
           return;
         }
         // 로컬 스토어도 동기화(서버가 승인했을 때만)
-        const result = onEarn();
+        const watchedMs =
+          adStartTimeRef.current !== null
+            ? Date.now() - adStartTimeRef.current
+            : 0;
+        const dynamicAmount = computeRewardByWatch(watchedMs);
+        const result = onEarn(dynamicAmount);
         if (result.canEarn) {
-          toast.success(`크레딧 ${CREDIT_POLICY.rewardAmount}개를 받았습니다!`);
+          toast.success(`크레딧 ${dynamicAmount}개를 받았습니다!`);
           onAdCompleted?.();
           void adEvent.mutateAsync({
             kind: 'complete_granted',
@@ -458,7 +489,7 @@ export function ApplixirRewardAdComponent({
             ? '오늘 시청 한도 도달'
             : inCooldown
             ? `쿨다운 ${cooldownLabel()}`
-            : `광고 보고 크레딧 받기 (+${CREDIT_POLICY.rewardAmount})`}
+            : '광고 보고 크레딧 받기'}
         </Button>
         {false && isLoading && elapsedMs >= CLOSE_WITHOUT_REWARD_MS && (
           <Button
@@ -482,15 +513,21 @@ export function ApplixirRewardAdComponent({
       </div>
 
       <div className="text-xs text-muted-foreground text-center space-y-1">
+        {isLoading && (
+          <p>
+            시청 시간: {(elapsedMs / 1000).toFixed(0)}초 · 현재 예상 보상:{' '}
+            {computeRewardByWatch(elapsedMs)}개
+          </p>
+        )}
         <p>
-          광고 시청 완료 시 크레딧 {CREDIT_POLICY.rewardAmount}개가 지급됩니다.
+          보상 정책: 기본 {CREDIT_POLICY.rewardAmount}개, 이후{' '}
+          <span className="font-semibold">{CREDIT_POLICY.stepReward}초</span>
+          마다 +{CREDIT_POLICY.rewardAmount}씩 증가합니다.
         </p>
         <p>
-          하루 최대{' '}
-          {Math.floor(CREDIT_POLICY.dailyCap / CREDIT_POLICY.rewardAmount)}
-          회까지 시청 가능합니다.
+          오늘 남은 획득 가능 크레딧:{' '}
+          {Math.max(0, CREDIT_POLICY.dailyCap - todayEarned)}개
         </p>
-        {isLoading && <p>시청 시간: {(elapsedMs / 1000).toFixed(0)}초</p>}
       </div>
     </div>
   );
