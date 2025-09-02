@@ -91,11 +91,16 @@ export function ApplixirRewardAdComponent({
     lastNotifiedAmountRef.current = CREDIT_POLICY.rewardAmount;
   };
 
+  // IMPORTANT: do NOT read React state here to avoid stale-closure issues in setTimeout/MutationObserver
   const ensureStarted = (): void => {
-    if (!isLoading) return;
     if (startedRef.current) return;
     adStartTimeRef.current = Date.now();
     startedRef.current = true;
+    // Debug: force confirm start path
+    console.debug(
+      '[Applixir] ensureStarted(): timer begins at',
+      adStartTimeRef.current
+    );
     toast.info('광고가 시작되었습니다.');
     setElapsedMs(0);
   };
@@ -108,6 +113,17 @@ export function ApplixirRewardAdComponent({
       if (hasChild && !startedRef.current) {
         ensureStarted();
       }
+      // 재생 이벤트 기반 보장: 주입된 video가 play되면 시작 처리
+      const videos = containerRef.current?.querySelectorAll('video');
+      videos?.forEach((v) => {
+        // 중복 리스너 방지용 플래그
+        const anyV = v as unknown as { __apx_bound?: boolean };
+        if (anyV.__apx_bound) return;
+        anyV.__apx_bound = true;
+        v.addEventListener('play', () => {
+          if (!startedRef.current) ensureStarted();
+        });
+      });
       // 자식이 잠시 사라지는 경우가 있어 즉시 reset하지 않음. 종료 콜백에서만 reset.
     });
     observerRef.current.observe(containerRef.current, {
@@ -154,14 +170,22 @@ export function ApplixirRewardAdComponent({
     return Math.min(amount, CREDIT_POLICY.maxPerAd);
   };
 
-  const handleAdStatusCallback = async (status: {
-    type: CreditAdStatusType;
-  }): Promise<void> => {
-    console.log('Applixir Ad Status:', status.type);
+  const handleAdStatusCallback = async (
+    status: { type?: CreditAdStatusType } | string
+  ): Promise<void> => {
+    const raw = status as unknown;
+    const t: string =
+      typeof raw === 'string'
+        ? raw
+        : (raw as { type?: string; status?: string })?.type ||
+          (raw as { type?: string; status?: string })?.status ||
+          '';
+    const type = (t || '').toString();
+    console.log('Applixir Ad Status (normalized):', type);
     const aid = getAnonymousId();
     void adEvent.mutateAsync({
       kind: 'status',
-      status: status.type,
+      status: type as CreditAdStatusType,
       aid,
       cid: String(containerKey),
       watchedMs:
@@ -170,17 +194,16 @@ export function ApplixirRewardAdComponent({
           : 0,
     });
 
-    switch (status.type) {
+    switch ((type || '').toLowerCase()) {
       case 'loaded':
-        // 일부 환경에서 'start' 콜백이 누락되는 경우가 있어 폴백 처리
-        setTimeout(() => {
-          if (isLoading && !startedRef.current) {
-            ensureStarted();
-          }
-        }, 1000);
+        // 로딩 완료. 실제 시작은 start/ad-started/impression 또는 video.play에서 처리
         break;
       case 'start':
       case 'ad-started':
+      case 'adstarted':
+      case 'ad-start':
+      case 'impression':
+      case 'ad-impression':
         ensureStarted();
         break;
       case 'complete':
@@ -263,8 +286,8 @@ export function ApplixirRewardAdComponent({
       case 'fb-started':
         toast.info('대체 광고가 시작되었습니다.');
         break;
-      case 'allAdsCompleted':
-      case 'thankYouModalClosed':
+      case 'alladscompleted':
+      case 'thankyoumodalclosed':
         if (isLoading) resetPlayer();
         break;
       default:
