@@ -105,6 +105,8 @@ export function ApplixirRewardAdComponent({
     if (!isPlayingRef.current) {
       adStartTimeRef.current = now;
       isPlayingRef.current = true;
+      // Force immediate UI update so resume reflects right away
+      setElapsedMs(getWatchedMs());
     }
   };
 
@@ -146,8 +148,8 @@ export function ApplixirRewardAdComponent({
     const currentAmount = computeRewardByWatch(elapsedMs); // 이미 maxPerAd로 클램프됨
     const prevAmount = lastNotifiedAmountRef.current;
     if (currentAmount > prevAmount) {
-      const added = currentAmount - prevAmount;
-      toast.info(`+${added} 크레딧 추가 예정 (누적 ${currentAmount})`);
+      // const added = currentAmount - prevAmount;
+      // toast.info(`+${added} 크레딧 추가 예정 (누적 ${currentAmount})`);
       lastNotifiedAmountRef.current = currentAmount;
     }
   }, [elapsedMs, isLoading]);
@@ -342,6 +344,9 @@ export function ApplixirRewardAdComponent({
         v.addEventListener('play', () => {
           if (!startedRef.current || !isPlayingRef.current) ensureStarted();
         });
+        v.addEventListener('playing', () => {
+          if (!startedRef.current || !isPlayingRef.current) ensureStarted();
+        });
         v.addEventListener('pause', () => {
           handlePause();
         });
@@ -353,7 +358,7 @@ export function ApplixirRewardAdComponent({
     });
     observerRef.current.observe(containerRef.current, {
       childList: true,
-      subtree: false,
+      subtree: true,
     });
   }
 
