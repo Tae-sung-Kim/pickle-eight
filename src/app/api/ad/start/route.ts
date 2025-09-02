@@ -39,6 +39,33 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const now = Date.now();
     const ttl = 10 * 60 * 1000; // 10m
+
+    // Snapshot current earned to decide over-cap allowance at completion time
+    const todayMidnightTs = (ts: number): number => {
+      const d = new Date(ts);
+      d.setHours(0, 0, 0, 0);
+      return d.getTime();
+    };
+    const resetKey = todayMidnightTs(now);
+    let baselineEarned = 0;
+    let baselineResetAt = resetKey;
+    try {
+      const countersRef = adminDb.collection('ad_counters').doc(aid);
+      const countersSnap = await countersRef.get();
+      if (countersSnap.exists) {
+        const d = countersSnap.data() as {
+          todayEarned?: number;
+          lastResetAt?: number;
+        };
+        const lr = d.lastResetAt ?? resetKey;
+        baselineResetAt = lr === resetKey ? lr : resetKey;
+        baselineEarned = lr === resetKey ? d.todayEarned ?? 0 : 0;
+      }
+    } catch {
+      baselineEarned = 0;
+      baselineResetAt = resetKey;
+    }
+
     const payload: AdStartPayload = { aid, cid, iat: now, exp: now + ttl };
     const token = signToken(payload);
 
@@ -59,6 +86,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ua,
         origin,
         referer,
+        baselineEarned,
+        baselineResetAt,
       },
       { merge: true }
     );

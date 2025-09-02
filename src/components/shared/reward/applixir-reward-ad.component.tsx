@@ -612,12 +612,12 @@ export function ApplixirRewardAdComponent({
       </div>
 
       <div className="text-xs text-muted-foreground text-center space-y-1">
-        {isLoading && (
+        {/* {isLoading && (
           <p>
             시청 시간: {(elapsedMs / 1000).toFixed(0)}초 · 현재 예상 획득량:{' '}
             {computeRewardByWatch(elapsedMs)}개
           </p>
-        )}
+        )} */}
         <p>
           보상 정책: 기본 {CREDIT_POLICY.rewardAmount}개, 이후{' '}
           <span className="font-semibold">{CREDIT_POLICY.stepReward}초</span>

@@ -57,6 +57,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       ua?: string | null;
       origin?: string | null;
       referer?: string | null;
+      baselineEarned?: number;
+      baselineResetAt?: number;
     };
     if (nonce.status !== 'issued')
       return NextResponse.json(
@@ -108,9 +110,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       lastResetAt = resetKey;
     }
 
-    // Enforce caps
+    // Enforce caps (with one-time over-cap allowance if session started before cap on same day)
     const since = now - (lastEarnedAt || 0);
-    if (todayEarned >= CREDIT_POLICY.dailyCap) {
+    const overCap = todayEarned >= CREDIT_POLICY.dailyCap;
+    const allowOverCapOnce =
+      (nonce.baselineResetAt ?? resetKey) === resetKey &&
+      (nonce.baselineEarned ?? 0) < CREDIT_POLICY.dailyCap;
+    if (overCap && !allowOverCapOnce) {
       return NextResponse.json(
         { ok: false, error: 'daily_cap' },
         { status: 429 }
@@ -134,10 +140,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       if (n.data()?.status !== 'issued') throw new Error('nonce_already_used');
       tx.update(nonceRef, { status: 'redeemed', redeemedAt: now });
 
-      const willEarn = Math.min(
-        CREDIT_POLICY.rewardAmount,
-        CREDIT_POLICY.dailyCap - todayEarned
-      );
+      // Allow over-cap for this completion (no clamp by remaining)
+      const willEarn = CREDIT_POLICY.rewardAmount;
       tx.set(
         aidRef,
         { todayEarned: todayEarned + willEarn, lastEarnedAt: now, lastResetAt },
