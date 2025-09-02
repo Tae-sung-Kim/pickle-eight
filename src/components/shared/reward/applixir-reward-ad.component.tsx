@@ -43,6 +43,7 @@ export function ApplixirRewardAdComponent({
   const observerRef = useRef<MutationObserver | null>(null);
   const serverTokenRef = useRef<string | null>(null);
   const adStartTimeRef = useRef<number | null>(null);
+  const startedRef = useRef<boolean>(false);
   const [elapsedMs, setElapsedMs] = useState<number>(0);
   const lastNotifiedAmountRef = useRef<number>(CREDIT_POLICY.rewardAmount);
   const { onEarn, todayEarned, lastEarnedAt } = useCreditStore();
@@ -85,6 +86,17 @@ export function ApplixirRewardAdComponent({
     setIsLoading(false);
     serverTokenRef.current = null;
     adStartTimeRef.current = null;
+    startedRef.current = false;
+    setElapsedMs(0);
+    lastNotifiedAmountRef.current = CREDIT_POLICY.rewardAmount;
+  };
+
+  const ensureStarted = (): void => {
+    if (!isLoading) return;
+    if (startedRef.current) return;
+    adStartTimeRef.current = Date.now();
+    startedRef.current = true;
+    toast.info('광고가 시작되었습니다.');
     setElapsedMs(0);
   };
 
@@ -92,13 +104,11 @@ export function ApplixirRewardAdComponent({
     if (!containerRef.current || observerRef.current) return;
     observerRef.current = new MutationObserver(() => {
       const hasChild = !!containerRef.current?.firstChild;
-      // 자식이 사라졌는데 로딩 상태면 리셋
-      if (!hasChild && isLoading) resetPlayer();
-      // 자식이 처음 주입되었고 아직 시작 시간이 없다면 폴백으로 시작 처리
-      if (hasChild && adStartTimeRef.current === null) {
-        adStartTimeRef.current = Date.now();
-        toast.info('광고가 시작되었습니다.');
+      // 자식이 처음 주입되었고 아직 시작 처리되지 않았다면 폴백 시작
+      if (hasChild && !startedRef.current) {
+        ensureStarted();
       }
+      // 자식이 잠시 사라지는 경우가 있어 즉시 reset하지 않음. 종료 콜백에서만 reset.
     });
     observerRef.current.observe(containerRef.current, {
       childList: true,
@@ -108,7 +118,7 @@ export function ApplixirRewardAdComponent({
 
   // Track elapsed time while ad is running
   useEffect(() => {
-    if (!isLoading || adStartTimeRef.current === null) return;
+    if (!isLoading) return;
     const tick = (): void => {
       if (adStartTimeRef.current !== null) {
         setElapsedMs(Date.now() - adStartTimeRef.current);
@@ -164,16 +174,14 @@ export function ApplixirRewardAdComponent({
       case 'loaded':
         // 일부 환경에서 'start' 콜백이 누락되는 경우가 있어 폴백 처리
         setTimeout(() => {
-          if (isLoading && adStartTimeRef.current === null) {
-            adStartTimeRef.current = Date.now();
-            toast.info('광고가 시작되었습니다.');
+          if (isLoading && !startedRef.current) {
+            ensureStarted();
           }
         }, 1000);
         break;
       case 'start':
       case 'ad-started':
-        toast.info('광고가 시작되었습니다.');
-        adStartTimeRef.current = Date.now();
+        ensureStarted();
         break;
       case 'complete':
       case 'ad-watched':
@@ -474,7 +482,7 @@ export function ApplixirRewardAdComponent({
           className="absolute inset-0"
         />
         {/* 상단 고정 안내 배지: 광고 위에 떠서 가려지지 않도록 표시 */}
-        <div className="pointer-events-none absolute left-2 top-2 z-[9999]">
+        <div className="pointer-events-none absolute left-2 top-2 z-[2147483647]">
           <span className="inline-flex items-center gap-1 rounded bg-black/65 text-white px-2 py-1 text-[11px] shadow">
             기본 {CREDIT_POLICY.rewardAmount}개 · {CREDIT_POLICY.stepReward}
             초마다 +{CREDIT_POLICY.rewardAmount}
@@ -483,6 +491,15 @@ export function ApplixirRewardAdComponent({
             </span>
           </span>
         </div>
+        {/* 우상단 진행 배지: 경과시간/예상보상 실시간 표시 */}
+        {isLoading && (
+          <div className="pointer-events-none absolute right-2 top-2 z-[2147483647]">
+            <span className="inline-flex items-center gap-1 rounded bg-emerald-600/85 text-white px-2 py-1 text-[11px] shadow">
+              {(elapsedMs / 1000).toFixed(0)}초 · 예상 +
+              {computeRewardByWatch(elapsedMs)}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* 주입되는 비디오/캔버스/iframe이 부모 크기를 채우고 잘리지 않도록 강제 */}

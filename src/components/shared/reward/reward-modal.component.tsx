@@ -18,7 +18,7 @@ export type RewardModalType = {
 const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_apxConsentHintShown';
 const isAdsDisabled =
   typeof window !== 'undefined' &&
-  window.localStorage?.getItem('adfit-disabled') === 'true';
+  window.localStorage?.getItem('applixir-disabled') === 'true';
 
 export function RewardModalComponent({ onOpenChange }: RewardModalType) {
   const onClose = (): void => onOpenChange(false);
