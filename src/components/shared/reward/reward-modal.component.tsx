@@ -16,6 +16,9 @@ export type RewardModalType = {
 };
 
 const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_apxConsentHintShown';
+const isAdsDisabled =
+  typeof window !== 'undefined' &&
+  window.localStorage?.getItem('applixir-disabled') === 'true';
 
 export function RewardModalComponent({ onOpenChange }: RewardModalType) {
   const onClose = (): void => onOpenChange(false);
@@ -136,7 +139,7 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
         <div className="space-y-4 mt-4">
           <ApplixirRewardAdComponent
             maxHeight={adMaxHeight}
-            disabled={showConsentHint}
+            disabled={showConsentHint || isAdsDisabled}
             onAdCompleted={handleAdCompleted}
             onAdError={handleAdError}
           />

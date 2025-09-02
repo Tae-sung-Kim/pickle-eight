@@ -39,7 +39,10 @@ export const apiInstance: AxiosInstance = axios.create({
  */
 apiInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    if (!isServer) {
+    const h = (config.headers || {}) as Record<string, unknown>;
+    const skipLoading =
+      h['x-skip-loading'] === '1' || h['X-Skip-Loading'] === '1';
+    if (!isServer && !skipLoading) {
       useLoadingStore.getState().showLoading();
     }
     const token = await getAuthToken();
@@ -58,13 +61,19 @@ apiInstance.interceptors.request.use(
  */
 apiInstance.interceptors.response.use(
   (response) => {
-    if (!isServer) {
+    const h = (response.config.headers || {}) as Record<string, unknown>;
+    const skipLoading =
+      h['x-skip-loading'] === '1' || h['X-Skip-Loading'] === '1';
+    if (!isServer && !skipLoading) {
       useLoadingStore.getState().hideLoading();
     }
     return response;
   },
   (error: AxiosError) => {
-    if (!isServer) {
+    const h = (error.config?.headers || {}) as Record<string, unknown>;
+    const skipLoading =
+      h['x-skip-loading'] === '1' || h['X-Skip-Loading'] === '1';
+    if (!isServer && !skipLoading) {
       useLoadingStore.getState().hideLoading();
     }
     // 예: 401 에러 시 자동 로그아웃, 알림 등 처리 가능

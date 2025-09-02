@@ -83,6 +83,8 @@ function buildCsp(): string {
     scriptSrcElem.push(vercelLive);
     frameSrc.push(vercelLive);
     connectSrc.push(vercelLive);
+    // Allow Pusher (used by vercel.live dev overlay) in development only
+    connectSrc.push('wss://*.pusher.com', 'https://*.pusher.com');
   }
 
   const directives = [

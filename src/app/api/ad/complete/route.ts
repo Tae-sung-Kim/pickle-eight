@@ -57,6 +57,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       ua?: string | null;
       origin?: string | null;
       referer?: string | null;
+      baselineEarned?: number;
+      baselineResetAt?: number;
     };
     if (nonce.status !== 'issued')
       return NextResponse.json(
@@ -81,63 +83,66 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Load per-AID counters
     const aidRef = adminDb.collection('ad_counters').doc(payload.aid);
-    const snap = await aidRef.get();
     const now = Date.now();
     const resetKey = todayMidnightTs(now);
 
-    let todayEarned = 0;
-    let lastEarnedAt = 0;
-    let lastResetAt = resetKey;
-    if (snap.exists) {
-      const d = snap.data() as {
-        todayEarned?: number;
-        lastEarnedAt?: number;
-        lastResetAt?: number;
-      };
-      todayEarned = d.todayEarned ?? 0;
-      lastEarnedAt = d.lastEarnedAt ?? 0;
-      lastResetAt = d.lastResetAt ?? resetKey;
-    }
-
-    // Reset at midnight
-    if (lastResetAt !== resetKey) {
-      todayEarned = 0;
-      lastEarnedAt = 0;
-      lastResetAt = resetKey;
-    }
-
-    // Enforce caps
-    const since = now - (lastEarnedAt || 0);
-    if (todayEarned >= CREDIT_POLICY.dailyCap) {
-      return NextResponse.json(
-        { ok: false, error: 'daily_cap' },
-        { status: 429 }
-      );
-    }
-    if (since < CREDIT_POLICY.cooldownMs) {
-      return NextResponse.json(
-        {
-          ok: false,
-          error: 'cooldown',
-          msToNext: CREDIT_POLICY.cooldownMs - since,
-        },
-        { status: 429 }
-      );
-    }
-
-    // Mark nonce redeemed and update counters atomically
-    await adminDb.runTransaction(async (tx) => {
+    // Mark nonce redeemed and update counters atomically, with fresh reads inside tx
+    const capResult = await adminDb.runTransaction(async (tx) => {
       const n = await tx.get(nonceRef);
       if (!n.exists) throw new Error('nonce_missing');
       if (n.data()?.status !== 'issued') throw new Error('nonce_already_used');
-      tx.update(nonceRef, { status: 'redeemed', redeemedAt: now });
 
-      const willEarn = Math.min(
-        CREDIT_POLICY.rewardAmount,
-        CREDIT_POLICY.dailyCap - todayEarned
-      );
+      // Read counters fresh
+      const cs = await tx.get(aidRef);
+      let todayEarned = 0;
+      let lastEarnedAt = 0;
+      let lastResetAt = resetKey;
+      if (cs.exists) {
+        const d = cs.data() as {
+          todayEarned?: number;
+          lastEarnedAt?: number;
+          lastResetAt?: number;
+        };
+        todayEarned = d.todayEarned ?? 0;
+        lastEarnedAt = d.lastEarnedAt ?? 0;
+        lastResetAt = d.lastResetAt ?? resetKey;
+      }
+      if (lastResetAt !== resetKey) {
+        todayEarned = 0;
+        lastEarnedAt = 0;
+        lastResetAt = resetKey;
+      }
+
+      const since = now - (lastEarnedAt || 0);
+      const overCap = todayEarned >= CREDIT_POLICY.dailyCap;
+      const allowOverCapOnce =
+        (nonce.baselineResetAt ?? resetKey) === resetKey &&
+        (nonce.baselineEarned ?? 0) <= CREDIT_POLICY.dailyCap;
+      if (since < CREDIT_POLICY.cooldownMs) {
+        return {
+          ok: false,
+          error: 'cooldown' as const,
+          msToNext: CREDIT_POLICY.cooldownMs - since,
+        };
+      }
+      if (overCap && !allowOverCapOnce) {
+        return {
+          ok: false,
+          error: 'daily_cap' as const,
+          debug: {
+            todayEarned,
+            dailyCap: CREDIT_POLICY.dailyCap,
+            baselineEarned: nonce.baselineEarned ?? null,
+            baselineResetAt: nonce.baselineResetAt ?? null,
+            resetKey,
+          },
+        };
+      }
+
+      // Proceed to redeem
+      tx.update(nonceRef, { status: 'redeemed', redeemedAt: now });
+      const willEarn = CREDIT_POLICY.rewardAmount;
       tx.set(
         aidRef,
         { todayEarned: todayEarned + willEarn, lastEarnedAt: now, lastResetAt },
@@ -152,7 +157,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         token,
         amount: willEarn,
       });
+      return { ok: true as const };
     });
+
+    if (!capResult.ok) {
+      if (capResult.error === 'cooldown') {
+        return NextResponse.json(
+          { ok: false, error: 'cooldown', msToNext: capResult.msToNext },
+          { status: 429 }
+        );
+      }
+      // daily_cap with debug information
+      return NextResponse.json(
+        {
+          ok: false,
+          error: 'daily_cap',
+          ...(capResult.debug ? { debug: capResult.debug } : {}),
+        },
+        { status: 429 }
+      );
+    }
 
     return NextResponse.json({ ok: true });
   } catch (e) {

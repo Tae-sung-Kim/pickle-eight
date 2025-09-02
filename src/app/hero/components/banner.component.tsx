@@ -22,9 +22,14 @@ export function HeroBannerComponent() {
             랜덤 추첨·게임, 이름/자리·사다리·주사위, AI 추천·퀴즈까지 한 곳에서!
           </span>
           <span className="block text-xs text-muted-foreground mt-1">
-            {/* PWA 지원으로 빠르게, 로그인·즐겨찾기와 */}
             결과 공유/저장까지 편리하게.
-            {/* 광고/수익화 정책은 투명하게 안내합니다. */}
+          </span>
+          <span className="block text-xs text-muted-foreground mt-1">
+            로또 분석·고급 번호 생성·통계는 <strong>크레딧 소모</strong>가
+            발생합니다.{' '}
+            <a href="/credits-policy" className="underline underline-offset-2">
+              정책 보기
+            </a>
           </span>
           <ul className="list-disc pl-6 mt-3 space-y-1 text-sm text-muted-foreground">
             {HERO_FEATURE_LIST.map((item, idx) => (

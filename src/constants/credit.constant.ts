@@ -10,6 +10,8 @@ export const CREDIT_POLICY: CreditPolicyType = {
   cooldownMs: envMode ? 5000 : 1.5 * 60 * 1000,
   visibleRatioRequired: 0.5,
   baseDaily: 5,
+  stepReward: envMode ? 5 : 60,
+  maxPerAd: 20,
 } as const;
 
 export const SPEND_COST: SpendCostType = {

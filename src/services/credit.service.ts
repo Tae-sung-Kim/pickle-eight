@@ -68,7 +68,7 @@ export function normalizeClaimErrorCode(
  */
 export async function postAdEvent(payload: AdEventPayloadType): Promise<void> {
   await apiInstance.post('ad/events', payload, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-skip-loading': '1' },
   });
 }
 
