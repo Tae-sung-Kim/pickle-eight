@@ -48,7 +48,7 @@ export function ApplixirRewardAdComponent({
   const startedRef = useRef<boolean>(false);
   const [elapsedMs, setElapsedMs] = useState<number>(0);
   const lastNotifiedAmountRef = useRef<number>(CREDIT_POLICY.rewardAmount);
-  const { onEarn, todayEarned, lastEarnedAt } = useCreditStore();
+  const { onEarn, todayEarned, lastEarnedAt, overCapLocked } = useCreditStore();
   const { state } = useConsentContext();
   const adEvent = useAdEventMutation();
   const startAd = useStartAdSessionMutation();
@@ -69,7 +69,8 @@ export function ApplixirRewardAdComponent({
   }, [lastEarnedAt]);
 
   const inCooldown = cooldownMsLeft > 0;
-  const reachedDailyCap = todayEarned >= CREDIT_POLICY.dailyCap;
+  const reachedDailyCap =
+    overCapLocked || todayEarned >= CREDIT_POLICY.dailyCap;
   const canWatchAd = !inCooldown && !reachedDailyCap;
 
   const cooldownLabel = (): string => {

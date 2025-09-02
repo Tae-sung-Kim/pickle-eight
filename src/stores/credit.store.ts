@@ -42,6 +42,7 @@ const initialBalance: CreditBalanceType = {
   todayEarned: 0,
   lastEarnedAt: 0,
   lastResetAt: currentResetKey(),
+  overCapLocked: false,
 };
 
 export const useCreditStore = create<CreditStateType>()(
@@ -56,6 +57,7 @@ export const useCreditStore = create<CreditStateType>()(
             todayEarned: 0,
             lastEarnedAt: 0,
             lastResetAt: key,
+            overCapLocked: false,
           } as CreditBalanceType);
         }
       };
@@ -69,6 +71,7 @@ export const useCreditStore = create<CreditStateType>()(
             todayEarned: 0,
             lastEarnedAt: 0,
             lastResetAt: key,
+            overCapLocked: false,
           } as CreditBalanceType);
         },
         onEarn: (amount?: number) => {
@@ -88,13 +91,17 @@ export const useCreditStore = create<CreditStateType>()(
             typeof amount === 'number' && amount > 0
               ? amount
               : CREDIT_POLICY.rewardAmount;
-          // Allow exceeding daily cap: earn full base amount
+          // Allow exceeding daily cap once: client will lock further attempts
           const willEarn = base;
+          const overCapCrossed =
+            s.todayEarned < CREDIT_POLICY.dailyCap &&
+            s.todayEarned + willEarn > CREDIT_POLICY.dailyCap;
           const next: CreditBalanceType = {
             total: s.total + willEarn,
             todayEarned: s.todayEarned + willEarn,
             lastEarnedAt: now,
             lastResetAt: s.lastResetAt,
+            overCapLocked: s.overCapLocked || overCapCrossed,
           } as CreditBalanceType;
           set(next);
           return { canEarn: true, reason: 'ok' } as EarnCheckResultType;
@@ -119,6 +126,7 @@ export const useCreditStore = create<CreditStateType>()(
             todayEarned: s.todayEarned,
             lastEarnedAt: s.lastEarnedAt,
             lastResetAt: s.lastResetAt,
+            overCapLocked: s.overCapLocked,
           } as CreditBalanceType;
           set(next);
           return { canSpend: true } as SpendCheckResultType;
@@ -135,6 +143,7 @@ export const useCreditStore = create<CreditStateType>()(
         todayEarned: s.todayEarned,
         lastEarnedAt: s.lastEarnedAt,
         lastResetAt: s.lastResetAt,
+        overCapLocked: s.overCapLocked,
       }),
       migrate: (persisted) => persisted as CreditBalanceType,
       // Ensure midnight reset on hydration
@@ -146,6 +155,7 @@ export const useCreditStore = create<CreditStateType>()(
             todayEarned: 0,
             lastEarnedAt: 0,
             lastResetAt: key,
+            overCapLocked: false,
           } as Partial<CreditBalanceType>);
         }
       },

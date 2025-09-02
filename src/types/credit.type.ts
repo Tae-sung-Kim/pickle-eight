@@ -11,6 +11,7 @@ export type CreditBalanceType = {
   readonly todayEarned: number;
   readonly lastEarnedAt?: number;
   readonly lastResetAt?: number;
+  readonly overCapLocked?: boolean;
 };
 
 export type CreditPolicyType = {
