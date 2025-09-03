@@ -25,7 +25,6 @@ import {
 } from '@/constants';
 import { HomeMenuFeatureItemComponent } from './feature-item.component';
 import { MenuSectionKeyType } from '@/types';
-import { ConsentNudgeComponent } from '@/components';
 
 const ICONS: Record<string, LucideIcon> = {
   Ticket,
@@ -50,7 +49,6 @@ const ICONS: Record<string, LucideIcon> = {
 export function HomeMenuGridComponent() {
   return (
     <section className="max-w-4xl mx-auto py-10 px-2">
-      <ConsentNudgeComponent variant="value" />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {MENU_LIST.map((data) => {
           const groupName = data.group as MenuSectionKeyType;
