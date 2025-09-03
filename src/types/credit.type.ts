@@ -18,7 +18,6 @@ export type CreditPolicyType = {
   readonly rewardAmount: number;
   readonly dailyCap: number;
   readonly cooldownMs: number;
-  readonly visibleRatioRequired: number;
   readonly baseDaily: number;
   readonly stepReward: number;
   readonly maxPerAd: number;
