@@ -1,6 +1,7 @@
 import { HeroBannerComponent, HeroTodayMessageComponent } from './components';
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
+import { ConsentNudgeComponent } from '@/components';
 
 export const metadata: Metadata = {
   title: '오늘의 추천 · 메시지 - Pickle Eight',
@@ -45,6 +46,7 @@ export default function HeroPage() {
   return (
     <>
       <HeroBannerComponent />
+      <ConsentNudgeComponent variant="value" />
       <HeroTodayMessageComponent />
     </>
   );
