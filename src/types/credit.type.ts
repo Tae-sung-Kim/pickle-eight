@@ -1,10 +1,10 @@
-import { CREDIT_RESET_MODE_ENUM, SPEND_COST } from '@/constants';
-
-export type CreditEventType =
-  | 'reward_complete'
-  | 'spend_analysis'
-  | 'spend_simulator'
-  | 'spend_advanced';
+import {
+  CREDIT_AD_STATUS_ENUM,
+  CREDIT_ADERROR_ENUM,
+  CREDIT_CLAIM_ERROR_CODE_ENUM,
+  CREDIT_RESET_MODE_ENUM,
+  SPEND_COST,
+} from '@/constants';
 
 export type CreditBalanceType = {
   readonly total: number;
@@ -22,21 +22,24 @@ export type CreditPolicyType = {
   readonly baseDaily: number;
   readonly stepReward: number;
   readonly maxPerAd: number;
+  readonly maxPerIpPerDay: number;
+  readonly maxPerDevicePerDay: number;
+  readonly deviceCookie: string;
 };
 
-export type SpendCostType = {
+export type CreditSpendCostType = {
   readonly analysis: number;
   readonly simulator: number;
   readonly advanced: number;
 };
 
-export type EarnCheckResultType = {
+export type CreditEarnCheckResultType = {
   readonly canEarn: boolean;
   readonly reason?: 'cooldown' | 'daily_cap' | 'ok';
   readonly msToNext?: number;
 };
 
-export type SpendCheckResultType = {
+export type CreditSpendCheckResultType = {
   readonly canSpend: boolean;
   readonly shortBy?: number;
 };
@@ -49,9 +52,9 @@ export type CreditCostLabelType = {
 };
 
 export type CreditStateType = {
-  onEarn: (amount?: number) => EarnCheckResultType;
-  onSpend: (amount: number) => SpendCheckResultType;
-  canSpend: (amount: number) => SpendCheckResultType;
+  onEarn: (amount?: number) => CreditEarnCheckResultType;
+  onSpend: (amount: number) => CreditSpendCheckResultType;
+  canSpend: (amount: number) => CreditSpendCheckResultType;
   syncReset: () => void;
 } & CreditBalanceType;
 
@@ -60,14 +63,7 @@ export type CreditResetModeType =
   (typeof CREDIT_RESET_MODE_ENUM)[keyof typeof CREDIT_RESET_MODE_ENUM];
 
 export type CreditClaimErrorCodeType =
-  | 'appcheck/missing'
-  | 'appcheck/invalid'
-  | 'auth/missing'
-  | 'auth/invalid'
-  | 'limit/device'
-  | 'limit/ip'
-  | 'internal'
-  | 'request_failed';
+  (typeof CREDIT_CLAIM_ERROR_CODE_ENUM)[keyof typeof CREDIT_CLAIM_ERROR_CODE_ENUM];
 
 export type CreditClaimResponseType = {
   ok: boolean;
@@ -79,37 +75,24 @@ export type UserCreditsType = { credits: number; lastClaimDate?: string };
 
 // Ad status types observed from Applixir callbacks
 export type CreditAdStatusType =
-  | 'loaded'
-  | 'start'
-  | 'ad-started'
-  | 'complete'
-  | 'ad-watched'
-  | 'skip'
-  | 'ad-skipped'
-  | 'ad-interrupted'
-  | 'fb-started'
-  | 'fb-watched'
-  | 'allAdsCompleted'
-  | 'thankYouModalClosed';
+  (typeof CREDIT_AD_STATUS_ENUM)[keyof typeof CREDIT_AD_STATUS_ENUM];
 
 // Error types observed from Applixir error callback
 export type CreditAdErrorType =
-  | 'adsRequestNetworkError'
-  | 'consentManagementProviderNotReady'
-  | 'ads-unavailable'
+  | (typeof CREDIT_ADERROR_ENUM)[keyof typeof CREDIT_ADERROR_ENUM]
   | string;
 
 // ===== Ad services =====
 
-export type AdEventPayloadType = Readonly<Record<string, unknown>>;
+export type CreditAdEventPayloadType = Readonly<Record<string, unknown>>;
 
-export type StartAdSessionInputType = Readonly<{ cid: string }>;
-export type StartAdSessionOutputType = Readonly<{ token: string }>;
+export type CreditStartAdSessionInputType = Readonly<{ cid: string }>;
+export type CreditStartAdSessionOutputType = Readonly<{ token: string }>;
 
-export type CompleteAdSessionInputType = Readonly<{ token: string }>;
-export type CompleteAdSessionOutputType = Readonly<{ ok: boolean }>;
+export type CreditCompleteAdSessionInputType = Readonly<{ token: string }>;
+export type CreditCompleteAdSessionOutputType = Readonly<{ ok: boolean }>;
 
-export type ApplixirRewardAdType = {
+export type CreditApplixirRewardAdType = {
   readonly onAdCompleted?: () => void;
   readonly onAdError?: (error: string) => void;
   readonly maxHeight?: number; // modal이 계산한 가용 높이 전달(선택)

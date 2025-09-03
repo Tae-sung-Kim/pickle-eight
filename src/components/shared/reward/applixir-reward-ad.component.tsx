@@ -7,7 +7,7 @@ import { CREDIT_POLICY } from '@/constants';
 import { toast } from 'sonner';
 import { useConsentContext } from '@/providers';
 import {
-  ApplixirRewardAdType,
+  CreditApplixirRewardAdType,
   CreditAdErrorType,
   CreditAdStatusType,
 } from '@/types';
@@ -35,7 +35,7 @@ export function ApplixirRewardAdComponent({
   onAdError,
   maxHeight,
   disabled,
-}: ApplixirRewardAdType) {
+}: CreditApplixirRewardAdType) {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);

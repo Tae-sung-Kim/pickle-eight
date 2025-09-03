@@ -15,11 +15,11 @@ import {
 import type {
   CreditClaimResponseType,
   UserCreditsType,
-  AdEventPayloadType,
-  StartAdSessionInputType,
-  StartAdSessionOutputType,
-  CompleteAdSessionInputType,
-  CompleteAdSessionOutputType,
+  CreditAdEventPayloadType,
+  CreditStartAdSessionInputType,
+  CreditStartAdSessionOutputType,
+  CreditCompleteAdSessionInputType,
+  CreditCompleteAdSessionOutputType,
 } from '@/types';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
@@ -80,9 +80,9 @@ export function claimCreditsMutation(
 export function useAdEventMutation(): UseMutationResult<
   void,
   Error,
-  AdEventPayloadType
+  CreditAdEventPayloadType
 > {
-  return useMutation<void, Error, AdEventPayloadType>({
+  return useMutation<void, Error, CreditAdEventPayloadType>({
     mutationKey: ['ad', 'event'],
     mutationFn: (p) => postAdEvent(p),
   });
@@ -90,11 +90,15 @@ export function useAdEventMutation(): UseMutationResult<
 
 // Start ad session mutation hook
 export function useStartAdSessionMutation(): UseMutationResult<
-  StartAdSessionOutputType,
+  CreditStartAdSessionOutputType,
   Error,
-  StartAdSessionInputType
+  CreditStartAdSessionInputType
 > {
-  return useMutation<StartAdSessionOutputType, Error, StartAdSessionInputType>({
+  return useMutation<
+    CreditStartAdSessionOutputType,
+    Error,
+    CreditStartAdSessionInputType
+  >({
     mutationKey: ['ad', 'start'],
     mutationFn: (p) => startAdSession(p),
   });
@@ -102,14 +106,14 @@ export function useStartAdSessionMutation(): UseMutationResult<
 
 // Complete ad session mutation hook
 export function useCompleteAdSessionMutation(): UseMutationResult<
-  CompleteAdSessionOutputType,
+  CreditCompleteAdSessionOutputType,
   Error,
-  CompleteAdSessionInputType
+  CreditCompleteAdSessionInputType
 > {
   return useMutation<
-    CompleteAdSessionOutputType,
+    CreditCompleteAdSessionOutputType,
     Error,
-    CompleteAdSessionInputType
+    CreditCompleteAdSessionInputType
   >({
     mutationKey: ['ad', 'complete'],
     mutationFn: (p) => completeAdSession(p),

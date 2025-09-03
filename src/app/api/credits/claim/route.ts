@@ -3,11 +3,7 @@ import { cookies } from 'next/headers';
 import { randomUUID, createHmac } from 'crypto';
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
 import type { DocumentSnapshot } from 'firebase-admin/firestore';
-
-const CREDIT_AMOUNT = 5 as const; // 하루 기본 지급 크레딧
-const MAX_PER_IP_PER_DAY = 3 as const;
-const MAX_PER_DEVICE_PER_DAY = 1 as const;
-const DEVICE_COOKIE = 'did' as const;
+import { CREDIT_POLICY } from '@/constants';
 
 const dateKey = (): string => {
   const now = new Date();
@@ -39,7 +35,7 @@ const parseOrIssueDeviceId = async (): Promise<{
   set?: string;
 }> => {
   const store = await cookies();
-  const existing = store.get(DEVICE_COOKIE)?.value;
+  const existing = store.get(CREDIT_POLICY.deviceCookie)?.value;
   if (existing) {
     const [raw, sig] = existing.split('.');
     if (raw && sig && sign(raw) === sig) {
@@ -113,13 +109,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
       // 장치 제한
       const deviceCount = getCountFromSnap(deviceSnap);
-      if (deviceCount >= MAX_PER_DEVICE_PER_DAY) {
+      if (deviceCount >= CREDIT_POLICY.maxPerDevicePerDay) {
         return { ok: false, code: 'limit/device' } as const;
       }
 
       // IP 제한
       const ipCount = ipSnap ? getCountFromSnap(ipSnap) : 0;
-      if (ipCount >= MAX_PER_IP_PER_DAY) {
+      if (ipCount >= CREDIT_POLICY.maxPerIpPerDay) {
         return { ok: false, code: 'limit/ip' } as const;
       }
 
@@ -127,14 +123,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       // 유저 문서
       if (!userSnap.exists) {
         tx.set(userRef, {
-          credits: CREDIT_AMOUNT,
+          credits: CREDIT_POLICY.baseDaily,
           createdAt: now,
           updatedAt: now,
           lastClaimDate: day,
         });
       } else {
         const prev = userSnap.data();
-        const credits = (prev?.credits as number) + CREDIT_AMOUNT;
+        const credits = (prev?.credits as number) + CREDIT_POLICY.baseDaily;
         tx.update(userRef, { credits, updatedAt: now, lastClaimDate: day });
       }
 
@@ -145,7 +141,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ip: ip ?? 'unknown',
         ua,
         deviceId,
-        amount: CREDIT_AMOUNT,
+        amount: CREDIT_POLICY.baseDaily,
         createdAt: now,
       });
 
@@ -168,7 +164,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const res = NextResponse.json(result, { status: 200 });
     if (set) {
-      res.cookies.set(DEVICE_COOKIE, set, {
+      res.cookies.set(CREDIT_POLICY.deviceCookie, set, {
         httpOnly: true,
         sameSite: 'lax',
         secure: true,
