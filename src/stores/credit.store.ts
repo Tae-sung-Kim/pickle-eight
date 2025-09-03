@@ -5,8 +5,8 @@ import type {
   CreditBalanceType,
   CreditResetModeType,
   CreditStateType,
-  EarnCheckResultType,
-  SpendCheckResultType,
+  CreditEarnCheckResultType,
+  CreditSpendCheckResultType,
 } from '@/types';
 
 const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_credits:v2';
@@ -85,7 +85,7 @@ export const useCreditStore = create<CreditStateType>()(
               canEarn: false,
               reason: 'cooldown',
               msToNext: CREDIT_POLICY.cooldownMs - since,
-            } as EarnCheckResultType;
+            } as CreditEarnCheckResultType;
           }
           const base =
             typeof amount === 'number' && amount > 0
@@ -104,17 +104,17 @@ export const useCreditStore = create<CreditStateType>()(
             overCapLocked: s.overCapLocked || overCapCrossed,
           } as CreditBalanceType;
           set(next);
-          return { canEarn: true, reason: 'ok' } as EarnCheckResultType;
+          return { canEarn: true, reason: 'ok' } as CreditEarnCheckResultType;
         },
         canSpend: (amount: number) => {
           ensureReset();
           const s = get();
           if (s.total >= amount)
-            return { canSpend: true } as SpendCheckResultType;
+            return { canSpend: true } as CreditSpendCheckResultType;
           return {
             canSpend: false,
             shortBy: Math.max(0, amount - s.total),
-          } as SpendCheckResultType;
+          } as CreditSpendCheckResultType;
         },
         onSpend: (amount: number) => {
           ensureReset();
@@ -129,7 +129,7 @@ export const useCreditStore = create<CreditStateType>()(
             overCapLocked: s.overCapLocked,
           } as CreditBalanceType;
           set(next);
-          return { canSpend: true } as SpendCheckResultType;
+          return { canSpend: true } as CreditSpendCheckResultType;
         },
       };
     },

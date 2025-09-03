@@ -4,13 +4,14 @@ import {
   CreditClaimResponseType,
   UserCreditsType,
   CreditClaimErrorCodeType,
-  AdEventPayloadType,
-  StartAdSessionInputType,
-  StartAdSessionOutputType,
-  CompleteAdSessionInputType,
-  CompleteAdSessionOutputType,
+  CreditAdEventPayloadType,
+  CreditStartAdSessionInputType,
+  CreditStartAdSessionOutputType,
+  CreditCompleteAdSessionInputType,
+  CreditCompleteAdSessionOutputType,
 } from '@/types';
 import { apiInstance } from './axios-instance';
+import { CREDIT_CLAIM_ERROR_CODE_ENUM } from '@/constants';
 
 /**
  * Claim daily credits via secure API. Client-only.
@@ -49,24 +50,29 @@ export async function getUserCredits(): Promise<UserCreditsType | null> {
 export function normalizeClaimErrorCode(
   err: unknown
 ): CreditClaimErrorCodeType {
-  const code = err instanceof Error ? err.message : 'request_failed';
+  const code =
+    err instanceof Error
+      ? err.message
+      : CREDIT_CLAIM_ERROR_CODE_ENUM.REQUEST_FAILED;
   const allowList = [
-    'auth/missing',
-    'auth/invalid',
-    'limit/device',
-    'limit/ip',
-    'internal',
-    'request_failed',
+    CREDIT_CLAIM_ERROR_CODE_ENUM.AUTH_MISSING,
+    CREDIT_CLAIM_ERROR_CODE_ENUM.AUTH_INVALID,
+    CREDIT_CLAIM_ERROR_CODE_ENUM.LIMIT_DEVICE,
+    CREDIT_CLAIM_ERROR_CODE_ENUM.LIMIT_IP,
+    CREDIT_CLAIM_ERROR_CODE_ENUM.INTERNAL,
+    CREDIT_CLAIM_ERROR_CODE_ENUM.REQUEST_FAILED,
   ] as const;
   return (allowList as readonly string[]).includes(code)
     ? (code as CreditClaimErrorCodeType)
-    : 'request_failed';
+    : CREDIT_CLAIM_ERROR_CODE_ENUM.REQUEST_FAILED;
 }
 
 /**
  * Send ad telemetry/event to server.
  */
-export async function postAdEvent(payload: AdEventPayloadType): Promise<void> {
+export async function postAdEvent(
+  payload: CreditAdEventPayloadType
+): Promise<void> {
   await apiInstance.post('ad/events', payload, {
     headers: { 'Content-Type': 'application/json', 'x-skip-loading': '1' },
   });
@@ -76,8 +82,8 @@ export async function postAdEvent(payload: AdEventPayloadType): Promise<void> {
  * Start an ad session and receive a server token.
  */
 export async function startAdSession(
-  input: StartAdSessionInputType
-): Promise<StartAdSessionOutputType> {
+  input: CreditStartAdSessionInputType
+): Promise<CreditStartAdSessionOutputType> {
   const res = await apiInstance.post<{ ok?: boolean; token?: string }>(
     'ad/start',
     { cid: input.cid },
@@ -92,8 +98,8 @@ export async function startAdSession(
  * Complete an ad session using previously issued token.
  */
 export async function completeAdSession(
-  input: CompleteAdSessionInputType
-): Promise<CompleteAdSessionOutputType> {
+  input: CreditCompleteAdSessionInputType
+): Promise<CreditCompleteAdSessionOutputType> {
   const res = await apiInstance.post<{ ok?: boolean; error?: string }>(
     'ad/complete',
     { token: input.token },
