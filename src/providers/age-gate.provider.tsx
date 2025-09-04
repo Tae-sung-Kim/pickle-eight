@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { useRouter } from 'next/navigation';
-import AgeGateDialogComponent from '@/components/shared/lotto/age-gate-dialog.component';
+import { AgeGateDialogComponent } from '@/components';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
 import { LottoAgeGateModeType } from '@/types';
 

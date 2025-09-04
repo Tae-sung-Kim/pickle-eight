@@ -1,39 +1,85 @@
-# 🥒 Pickle-eight - 랜덤 추첨 & AI 퀴즈 서비스
+# 🥒 Pickle-eight - 랜덤 추첨 & 로또 & AI 퀴즈/추천 서비스
 
-Pickle-eight은 다양한 랜덤 추첨 기능(로또, 항목 추첨, 자리 배정, 사다리타기 등)과 OpenAI API를 활용한 상식·영어·사자성어 퀴즈, 오늘의 추천/운세 등 엔터테인먼트 요소를 제공하는 웹 애플리케이션입니다.
-간편하고 직관적인 UI, 모바일 최적화, 공유 기능, 광고 수익화 등 실사용에 필요한 기능을 모두 갖추기 위해 개발 중에 있습니다.
+Pickle-eight은 로또, 다양한 랜덤 추첨 기능(항목 추첨, 자리 배정, 사다리타기 등), OpenAI API를 활용한 상식·영어·사자성어 퀴즈, 오늘의 추천/운세/메뉴 등 엔터테인먼트 요소를 제공하는 웹 애플리케이션입니다.
+간편하고 직관적인 UI, 모바일 최적화, 공유 기능, 광고 수익화를 갖추었으며, 지속적인 기능 확장을 진행 중입니다.
 
 ---
 
-## ✨ 주요 기능
+## 📚 Table of Contents
 
-### AI 기반 퀴즈/추천
+- 소개 및 하이라이트
+- 신규/핵심 기능 한눈에 보기
+- 전체 기능 개요 (코어/MVP/확장)
+- 빠른 이동(로또)
+- 기술 스택
+- 프로젝트 구조
+- 시작하기(설치/실행)
+- 팔레트 → 의미 토큰 가이드
+- 환경 변수(.env)
+- 크레딧 & 보상형 광고 정책 (Applixir)
+- Consent(쿠키 동의) & Age Gate & 프라이버시
+- SEO 가이드
+- 스크립트
+- 배포
+- 기여 가이드
+- 로드맵
+- 주의 & 책임
+- 라이선스 / 크레딧 / 통계 / 개인정보 / 문의
 
-- **OpenAI API를 활용한 상식, 영어, 사자성어, 오늘의 응원/운세/할일/메뉴 추천 등**
+---
 
-### 랜덤 추첨
+## ✨ 신규/핵심 기능 한눈에 보기
 
-- **로또 번호 자동 생성, 사용자 지정 범위 내 숫자 추첨, 이름/항목 무작위 추첨, 경품 뽑기**
+- **로또(Lotto) 통합 기능**
+  - 번호 생성기: 일반 생성, **고급 생성(필터·패턴·빈도 가중치)**
+  - 결과 확인: 내 번호 당첨 여부/순위 계산, 상세 결과 카드
+  - 통계/분석: 번호 빈도, 패턴, 최근 회차 기반 제외/가중치 적용
+  - 시뮬레이터: 대량 추첨 시뮬레이션, 비용·횟수 기반 빠른 검증
+  - 회차별 이력: 지난 회차별 번호/판매액/1등 당첨 정보
+- **오늘의 추천 시리즈 (OpenAI 연동)**
+  - 오늘의 추천 메뉴, 오늘의 운세/응원 문구, 오늘의 할 일, 대화형 프롬프트 기반 추천
+  - 사용자 입력(키워드·기분·날씨 등)에 따라 맞춤 생성
+- **게임/퀴즈**
+  - 숫자 맞추기 게임(스코어·랭킹 확장 예정)
+  - 사자성어/영단어/상식 퀴즈(빈칸 채우기/선다형)
+- **결과 공유 & 캡처**
+  - 이미지 캡처 다운로드, 공유 가능한 링크 생성, 소셜 미디어 연동
+- **수익화 & 운영**
+  - 보상형 광고(Applixir) + **크레딧 시스템**
+  - 쿠키 동의/연령 확인(Age Gate) + Firebase Analytics
 
-### 자리 배정기
+---
 
-- **입력한 이름을 랜덤하게 자리 배치, 시각적 자리 배치도 제공**
+## 🧩 전체 기능 개요
 
-### 사다리 타기
+- 코어(Random 픽커/유틸)
+  - 로또 번호 생성(일반/고급), 번호 범위 추첨기(예: 1~100 중 N개)
+  - 이름 추첨기(다중 입력 → 당첨자 수 지정, 경품 추첨)
+  - 자리 배정기(이름+자리 수 → 랜덤 배치, 시각화)
+  - 사다리 타기(참여자/결과 입력, 애니메이션)
+  - 주사위 굴리기(동점 규칙: 동일 수 페어 우선, 높은 페어 우선)
+  - 순서 정하기 뽑기(최종 개수에 따른 원형 UI, 사용자 직접 선택)
+- AI/게임/콘텐츠
+  - 오늘의 추천(메뉴/운세/문구 등), 점심/술자리 메뉴 추천
+  - 챗GPT 기반 빈칸 채우기 게임, 사자성어·영단어·상식 퀴즈
+  - 숫자 맞추기 게임(랭킹/확장 예정)
+- 공유/저장/확장
+  - 결과 캡처, 공유 URL, 소셜 공유
+  - (예정) 사용자 저장/즐겨찾기, 로그인 유저 기능, 클라우드 동기화
+- 운영/수익화
+  - Applixir 보상형 광고, 직접 배너/제휴 네트워크(계획), ads.txt 구성
+  - Firebase Analytics 또는 Plausible(선택)
 
-- **커스텀 사다리 생성, 결과 입력 및 애니메이션 지원**
+---
 
-### 주사위 굴리기
+## 빠른 이동(로또)
 
-- **주사위를 굴려서 결과 결정, 동점 처리 우선순위 로직 구현**
-
-### 로또 번호 생성
-
-- **로또 번호를 랜덤으로 생성성 (한번에 최대 10개)**
-
-### 결과 공유
-
-- **캡처 이미지 다운로드, 공유 가능한 링크 생성, 소셜 미디어 연동**
+- 로또 일반 생성기: `/lotto/normal-generator`
+- 로또 고급 생성기: `/lotto/advanced-generator`
+- 로또 분석: `/lotto/analysis`
+- 로또 시뮬레이터: `/lotto/simulator`
+- 로또 회차 이력: `/lotto/history`
+- 로또 결과 확인: `/lotto/check`
 
 ---
 
@@ -44,7 +90,7 @@ Pickle-eight은 다양한 랜덤 추첨 기능(로또, 항목 추첨, 자리 배
 - **Tailwind CSS + Shadcn UI**
 - **TanStack Query (react-query)**
 - **Zustand**
-- **Firebase (Authentication, Firestore)**
+- **Firebase (Authentication, Firestore, Analytics)**
 - **Vercel 배포**
 - **OpenAI API (퀴즈/추천)**
 
@@ -87,6 +133,8 @@ Pickle-eight은 다양한 랜덤 추첨 기능(로또, 항목 추첨, 자리 배
   /schemas                 # Zod 스키마
 ```
 
+---
+
 # 🚀 프로젝트 특징 및 차별점
 
 ## 실제 사용자 경험 중심 설계
@@ -96,7 +144,8 @@ Pickle-eight은 다양한 랜덤 추첨 기능(로또, 항목 추첨, 자리 배
 
 ## AI 활용 확장성
 
-- **OpenAI API 연동으로 단순 추첨을 넘어 지능형 추천/퀴즈/게임 기능 제공**
+- **OpenAI API 연동으로 지능형 추천/퀴즈/게임 기능 제공**
+- 프롬프트 템플릿 기반 추천(날씨/기분/상황 등)
 
 ## 클린 코드 & 확장성
 
@@ -105,11 +154,13 @@ Pickle-eight은 다양한 랜덤 추첨 기능(로또, 항목 추첨, 자리 배
 
 ## 수익화 및 통계
 
-- **광고 삽입(예정), 프리미엄 기능 계획, Firebase Analytics 연동**
+- **보상형 Applixir 광고 + 크레딧 시스템**, Firebase Analytics 연동
 
 ## SEO 및 접근성
 
-- **메타 태그 고려**
+- **메타 태그, 구조화 데이터(JSON-LD), 브레드크럼, 접근성 고려**
+
+---
 
 # 🏆 담당 역할 및 기여도
 
@@ -117,6 +168,8 @@ Pickle-eight은 다양한 랜덤 추첨 기능(로또, 항목 추첨, 자리 배
 - **주요 서비스(랜덤 추첨, AI 퀴즈, 자리 배정, 사다리 등) 개발 및 UI/UX 설계**
 - **Firebase 인증/DB/Analytics 연동, 배포 자동화(Vercel)**
 - **광고 삽입, SEO 최적화**
+
+---
 
 # ⚡️ 시작하기
 
@@ -131,6 +184,8 @@ pnpm install
 ```bash
 pnpm run dev
 ```
+
+---
 
 ## Palette -> Token Migration Guide (팔레트 → 의미 토큰 가이드)
 
@@ -180,3 +235,132 @@ Conventions:
 - Replace gradients with solid semantic backgrounds for consistency.
 - Keep logic/structure unchanged; patches should be minimal and stable.
 - Validate in both light/dark themes.
+
+---
+
+## 🔐 환경 변수(.env) 설정
+
+`.env.sample`를 참고해 다음과 같은 환경 변수를 설정하세요.
+
+- **Firebase**
+  - `NEXT_PUBLIC_FIREBASE_API_KEY`
+  - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+  - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+  - `NEXT_PUBLIC_FIREBASE_APP_ID`
+  - (선택) `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID`
+- **OpenAI**
+  - `OPENAI_API_KEY`
+- **Applixir (보상형 광고)**
+  - `NEXT_PUBLIC_APPLIXIR_API_KEY`
+
+프로덕션 배포 시에는 모든 키를 환경에 안전하게 설정하고, 코드에 하드코딩하지 않습니다.
+
+---
+
+## 💳 크레딧 & 보상형 광고 정책
+
+- **보상 방식**: 영상 광고 시청 시간에 따라 단계별 보상 (운영 값 기준 `rewardAmount`, `stepReward`, `maxPerAd` 적용)
+- **제한 정책**:
+  - 쿨다운: `cooldownMs` 동안 재시청 불가
+  - 일일 상한: `dailyCap` 도달 시 추가 적립 불가
+- **구현 개요**:
+  - 훅: `src/hooks/use-ad-credit.hook.ts` (쿨다운, 일일한도, 재생/일시정지 트래킹, 보상 계산)
+  - 유틸: `src/utils/ad-credit.util.ts` (`computeRewardByWatch`, `formatCooldown`, `getAnonymousId`)
+  - UI: `CreditBalancePillComponent`, `RewardModalComponent` 등
+  - 광고 네트워크: Applixir 연동, 승인 대기/부족 재고 등 상태 메시지 처리
+- **승인/재고 안내**:
+  - 매체 심사 보류(`mediaReviewPending`), 사이트 미승인(`siteNotApproved`), 광고 없음/재고 부족(`ads-unavailable`) 시, 모달과 UI에서 명확히 안내합니다. 승인이 완료되면 정상 시청/적립이 가능합니다.
+
+---
+
+## 🍪 Consent(쿠키 동의) & Age Gate & 프라이버시
+
+- **Cookie Consent**: 전역 `ConsentProvider`에서 동의 상태(`unknown | accepted | declined`)를 관리합니다.
+  - 동의 이전에는 분석/광고 관련 기능이 제한될 수 있습니다.
+  - 하단의 `CookieSettingsButton`으로 언제든 배너를 다시 열어 상태를 변경할 수 있습니다.
+- **Analytics**: 동의 상태가 `accepted`일 때만 Firebase Analytics가 활성화됩니다.
+- **연령 확인(Age Gate)**: 로또 경로(`/lotto`)에서 연령 확인 모달을 제공하며, TTL 방식으로 일정 기간 재확인을 생략합니다(레거시 `true` 플래그 지원).
+- **정책 페이지**: 약관/개인정보/크레딧 정책 페이지에 API 사용, 비제휴 고지, 광고/수익화, 책임 이용 고지 등을 포함합니다.
+
+---
+
+## 🔎 SEO 가이드
+
+- **JSON-LD 표준화**: `JsonLd` 컴포넌트와 `@/lib`의 `canonicalUrl`, `jsonLdBreadcrumb`, `jsonLdWebSite`를 사용해 상세/허브 페이지에 구조화 데이터를 삽입합니다.
+- **메타/로봇 메타**: 랜덤 픽커/퀴즈 상세 페이지에서도 일관된 메타 패턴을 적용합니다.
+- **국문 키워드 최적화**: 한글 키워드를 적극 반영하고, 브레드크럼을 통해 탐색성을 강화합니다.
+
+---
+
+## 📜 스크립트
+
+```bash
+pnpm run dev       # 개발 서버 실행
+pnpm run build     # 프로덕션 빌드
+pnpm run start     # 프로덕션 서버 실행
+pnpm run lint      # ESLint 검사 (Airbnb 기반)
+pnpm run format    # prettier 포맷
+```
+
+---
+
+## ☁️ 배포
+
+- **Vercel**에 배포하며, 환경 변수는 Vercel Project Settings에 등록합니다.
+- 빌드 후 기본적으로 Edge/SSR 혼합 구조를 사용합니다(App Router).
+
+---
+
+## 🤝 기여 가이드
+
+- **코드 스타일**: Airbnb + Prettier, 함수는 단일 책임/짧은 길이 유지, 매직 넘버 상수화.
+- **명명 규칙**: 파일/디렉터리 `kebab-case`, 변수/함수 `camelCase`, 클래스 `PascalCase`.
+- **타입**: 모든 공개 API/컴포넌트/훅에 타입 명시, `any` 지양.
+- **UI**: Tailwind + Shadcn UI 사용, 토큰 기반 색상(팔레트 직접 사용 지양).
+- **데이터**: React Query/TanStack Query로 서버 상태, Zustand로 클라이언트 상태 관리.
+
+---
+
+## 🗺️ 로드맵(요약)
+
+- [x] 로또/랜덤 추첨/자리 배정/사다리/주사위
+- [x] 결과 공유(이미지 캡처/링크)
+- [x] 보상형 광고(Applixir) + 크레딧 시스템
+- [x] 동의/연령 확인 모달, Analytics 연동
+- [x] SEO 표준화(JSON-LD/브레드크럼)
+- [ ] 저장/즐겨찾기(계정 연동)
+- [ ] PWA/모바일 앱 확장
+- [ ] 프리미엄 테마(광고 제거) 및 수익화 고도화
+
+---
+
+## ⚠️ 주의 & 책임
+
+- 본 서비스는 오락/정보 제공용입니다. 복권/도박과 관련된 법령을 준수하고 책임감 있게 이용해주세요.
+- 본 서비스는 어떠한 기관과도 제휴/보증 관계가 없습니다. (비공식)
+
+---
+
+## 📄 라이선스
+
+- 추후 공개 예정(또는 사내 전용)입니다. 필요 시 문의해주세요.
+
+## 🙏 크레딧
+
+- Pickle-eight은 다양한 오픈소스 프로젝트와 라이브러리의 도움을 받았습니다. 이 프로젝트에 기여해주신 모든 분께 감사드립니다.
+
+## 📈 보상형 광고
+
+- Pickle-eight은 Applixir의 보상형 광고를 사용하고 있습니다. 광고 시청에 대한 보상을 받으실 수 있습니다.
+
+## 📊 통계
+
+- Pickle-eight은 Firebase Analytics를 사용하여 사용자 통계를 수집하고 있습니다. 통계는 서비스 개선에 사용됩니다.
+
+## 📝 개인정보처리방침
+
+- Pickle-eight은 사용자의 개인정보를 보호하기 위해 최선을 다하고 있습니다. 개인정보처리방침은 서비스 이용약관에 따라 적용됩니다.
+
+## 📞 문의
+
+- Pickle-eight에 대한 문의는 사이트 하단의 링크를 통해서 가능합니다.
