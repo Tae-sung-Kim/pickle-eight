@@ -12,10 +12,16 @@ export function useLottoDrawsQuery({
   to,
   enabled = true,
 }: LottoDrawsParamsType) {
+  const safeEnabled =
+    Boolean(enabled) &&
+    Number.isInteger(from as number) &&
+    Number.isInteger(to as number) &&
+    (from as number) > 0 &&
+    (to as number) >= (from as number);
   return useQuery<LottoDrawType[], Error>({
     queryKey: ['lotto-draws', from, to],
     queryFn: () => getLottoDraws({ from, to }),
-    enabled,
+    enabled: safeEnabled,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { DhLottoApiResponse, LottoDrawType } from '@/types';
+import { LOTTO_MAX_HISTORY_RANGE } from '@/constants';
 
 // ===== Constants =====
 const DH_LOTTO_ENDPOINT =
@@ -10,7 +11,6 @@ const MINUTE = 60 * SECOND;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 const REVALIDATE_SECONDS = DAY; // 1 day
-const MAX_RANGE = 200 as const; // safety guard
 const RATE_LIMIT_WINDOW_MS = 60_000 as const; // 1 minute
 const RATE_LIMIT_MAX = 60 as const; // max requests per IP per window
 
@@ -94,6 +94,29 @@ async function existsDhDraw(drwNo: number): Promise<boolean> {
   }
 }
 
+async function getLatestDrawNumber(): Promise<number> {
+  let lo = 1;
+  let hi = 1;
+  while (await existsDhDraw(hi)) {
+    lo = hi;
+    hi *= 2;
+    if (hi > 100_000) break;
+  }
+  let left = lo;
+  let right = hi - 1;
+  let best = lo;
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (await existsDhDraw(mid)) {
+      best = mid;
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return best;
+}
+
 // ===== Query parsing =====
 export type GetQuery =
   | { readonly kind: 'latest' }
@@ -129,8 +152,11 @@ function parseQuery(url: string): GetQuery | { error: string; status: number } {
       return { error: 'Invalid from/to', status: 400 };
     }
     const count = to - from + 1;
-    if (count > MAX_RANGE) {
-      return { error: `Range too large. Max ${MAX_RANGE}`, status: 400 };
+    if (count > LOTTO_MAX_HISTORY_RANGE) {
+      return {
+        error: `Range too large. Max ${LOTTO_MAX_HISTORY_RANGE}`,
+        status: 400,
+      };
     }
     return { kind: 'range', from, to };
   }
@@ -176,12 +202,36 @@ async function handleSingle(drwNo: number): Promise<NextResponse> {
 }
 
 async function handleRange(from: number, to: number): Promise<NextResponse> {
-  const tasks: Promise<LottoDrawType>[] = [];
-  for (let n = from; n <= to; n += 1) tasks.push(fetchDhDraw(n));
-  const list = await Promise.all(tasks);
-  const count = to - from + 1;
+  // Clamp upper bound to latest draw to avoid querying non-existing future draws
+  const latest = await getLatestDrawNumber();
+  const safeTo = Math.min(to, latest);
+  const safeFrom = Math.max(1, Math.min(from, safeTo));
+
+  const results: LottoDrawType[] = [];
+  let failed = 0;
+  // Sequential fetch to avoid hammering external API and reduce flakiness
+  for (let n = safeFrom; n <= safeTo; n += 1) {
+    try {
+      // small spacing to be gentle on remote API (1~2ms ~ event loop tick)
+      const item = await fetchDhDraw(n);
+      results.push(item);
+    } catch {
+      failed += 1;
+      // continue on individual failure
+    }
+  }
+  const requestedCount = safeTo - safeFrom + 1;
+  const partial = failed > 0;
   return NextResponse.json(
-    { data: list, meta: { type: 'range' as const, count } },
+    {
+      data: results,
+      meta: {
+        type: 'range' as const,
+        count: results.length,
+        requested: requestedCount,
+        partial,
+      },
+    },
     { status: 200 }
   );
 }

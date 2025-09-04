@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { LottoCheckTicketRowType } from '@/types';
+import { Fragment } from 'react';
 
 export function LottoCheckTicketRowComponent({
   index,
@@ -15,7 +16,7 @@ export function LottoCheckTicketRowComponent({
       </span>
       <div className="flex flex-wrap items-center gap-2">
         {(['n1', 'n2', 'n3', 'n4', 'n5', 'n6'] as const).map((name) => (
-          <>{renderInput(name)}</>
+          <Fragment key={name}>{renderInput(name)}</Fragment>
         ))}
       </div>
       <div className="ml-auto">

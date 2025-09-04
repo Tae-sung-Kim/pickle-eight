@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { LottoDrawType } from '@/types';
@@ -23,6 +23,7 @@ import {
   useLatestLottoDrawQuery,
   useLottoDrawByNumberMutation,
 } from '@/queries';
+import { toast } from 'sonner';
 
 // 문자열(빈 값 포함)을 숫자로 전처리하는 유틸 스키마
 const toNumber = (min: number, max?: number) =>
@@ -93,12 +94,45 @@ export function LottoCheckComponent() {
     clearErrors,
   } = useForm<FormValuesInput>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      tickets: [
+        {
+          n1: undefined as unknown as number,
+          n2: undefined as unknown as number,
+          n3: undefined as unknown as number,
+          n4: undefined as unknown as number,
+          n5: undefined as unknown as number,
+          n6: undefined as unknown as number,
+        },
+      ],
+    },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'tickets',
   });
+
+  // 실시간 티켓 개수 감지 (fields는 렌더 후 갱신되므로 useWatch 사용)
+  const ticketsWatch = useWatch({ control, name: 'tickets' });
+  const ticketsLen = (ticketsWatch?.length ?? 0) as number;
+
+  // 티켓 추가
+  const handleTicketRowAdd = useCallback(() => {
+    if (ticketsLen >= 5) {
+      toast.error('최대 5개의 티켓까지만 추가할 수 있습니다.');
+      return;
+    }
+
+    append({
+      n1: undefined as unknown as number,
+      n2: undefined as unknown as number,
+      n3: undefined as unknown as number,
+      n4: undefined as unknown as number,
+      n5: undefined as unknown as number,
+      n6: undefined as unknown as number,
+    });
+  }, [append, ticketsLen]);
 
   // const ticketsWatch = watch('tickets');
   // const selectedSet = useMemo(() => {
@@ -265,16 +299,7 @@ export function LottoCheckComponent() {
                   type="button"
                   variant="outline"
                   className="gap-2 border-primary text-primary hover:bg-primary/10 hover:text-primary"
-                  onClick={() =>
-                    append({
-                      n1: undefined as unknown as number,
-                      n2: undefined as unknown as number,
-                      n3: undefined as unknown as number,
-                      n4: undefined as unknown as number,
-                      n5: undefined as unknown as number,
-                      n6: undefined as unknown as number,
-                    })
-                  }
+                  onClick={handleTicketRowAdd}
                 >
                   <Plus className="h-4 w-4" />
                   추가
