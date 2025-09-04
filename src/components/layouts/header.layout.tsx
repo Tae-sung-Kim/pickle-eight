@@ -1,8 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Coins } from 'lucide-react';
-import { MobileMenuLayout, PcMenuLayout } from '@/components';
+import { Home, Coins, PlayCircle } from 'lucide-react';
+import {
+  MobileMenuLayout,
+  PcMenuLayout,
+  RewardModalComponent,
+} from '@/components';
+import { Button } from '@/components/ui/button';
 import { useCreditStore } from '@/stores';
 import {
   Tooltip,
@@ -93,6 +98,8 @@ export function HeaderLayout() {
     return Math.floor(left / CREDIT_POLICY.rewardAmount);
   }, [todayEarned]);
 
+  const [rewardOpen, setRewardOpen] = useState<boolean>(false);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 sm:px-6">
@@ -121,6 +128,15 @@ export function HeaderLayout() {
             </TooltipTrigger>
             <TooltipContent sideOffset={6}>{tooltipText}</TooltipContent>
           </Tooltip>
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
+            className="ml-2 h-7 px-2.5 text-xs"
+            onClick={() => setRewardOpen(true)}
+          >
+            <PlayCircle className="h-4 w-4 mr-1" /> 광고 시청
+          </Button>
         </div>
         {/* 모바일 메뉴 */}
         <div className="md:hidden flex items-center gap-2">
@@ -131,7 +147,7 @@ export function HeaderLayout() {
                 <span className="tabular-nums font-semibold">{total}</span>
                 {/* 남은 충전 횟수 (모바일 표시) */}
                 <span className="ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border">
-                  최소 남은 시청 가능 횟수 {remainingCharges}회
+                  시청 가능 횟수 {remainingCharges}회
                 </span>
                 <span className="ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border">
                   ↻ {remainingLabel}
@@ -140,8 +156,18 @@ export function HeaderLayout() {
             </TooltipTrigger>
             <TooltipContent sideOffset={6}>{tooltipText}</TooltipContent>
           </Tooltip>
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
+            className="h-7 px-2.5 text-xs"
+            onClick={() => setRewardOpen(true)}
+          >
+            <PlayCircle className="h-4 w-4 mr-1" /> 시청
+          </Button>
           <MobileMenuLayout />
         </div>
+        {rewardOpen && <RewardModalComponent onOpenChange={setRewardOpen} />}
       </div>
     </header>
   );
