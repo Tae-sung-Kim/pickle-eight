@@ -79,6 +79,18 @@ export function jsonLdWebSite(): Record<string, unknown> {
   } as const;
 }
 
+/** Organization JSON-LD for brand/entity signals */
+export function jsonLdOrganization(): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: `${SITE_URL}/og-image.svg`,
+    sameAs: ['https://github.com/Tae-sung-Kim'],
+  } as const;
+}
+
 /** BreadcrumbList JSON-LD */
 export function jsonLdBreadcrumb(
   pathItems: ReadonlyArray<{ name: string; item: string }>

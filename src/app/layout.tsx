@@ -6,6 +6,7 @@ import {
   FooterLayout,
   HeaderLayout,
   AdFitSlotComponent,
+  JsonLd,
 } from '@/components';
 import { Toaster } from 'sonner';
 import {
@@ -14,7 +15,7 @@ import {
   AuthProvider,
   AgeGateProvider,
 } from '@/providers';
-import { jsonLdWebSite } from '@/lib';
+import { jsonLdWebSite, jsonLdOrganization, SITE_NAME, SITE_URL } from '@/lib';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -24,19 +25,15 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    (
-      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pickle-eight.vercel.app'
-    ).replace(/\/+$/, '')
-  ),
+  metadataBase: new URL(SITE_URL),
   title: {
-    template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME}`,
-    default: `${process.env.NEXT_PUBLIC_SITE_NAME} : 랜덤(random) 추첨, 게임, 로또, AI 퀴즈의 모든 것`,
+    template: `%s | ${SITE_NAME}`,
+    default: `${SITE_NAME} : 랜덤(random) 추첨, 게임, 로또, AI 퀴즈의 모든 것`,
   },
   icons: {
     icon: '/icon.svg',
   },
-  description: `온라인에서 쉽고 빠르게 이름, 상품, 자리, 메뉴, 사다리, 주사위 등 다양한 항목을 랜덤으로 추첨하고 결과를 공유하세요. 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천, 빈칸 채우기 퀴즈, 숫자 맞추기 게임 등 다양한 랜덤 도구와 재미있는 게임을 ${process.env.NEXT_PUBLIC_SITE_NAME}에서 무료로 즐겨보세요!`,
+  description: `온라인에서 쉽고 빠르게 이름, 상품, 자리, 메뉴, 사다리, 주사위 등 다양한 항목을 랜덤으로 추첨하고 결과를 공유하세요. 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천, 빈칸 채우기 퀴즈, 숫자 맞추기 게임 등 다양한 랜덤 도구와 재미있는 게임을 ${SITE_NAME}에서 무료로 즐겨보세요!`,
   keywords: [
     '로또',
     '로또 채점',
@@ -79,20 +76,20 @@ export const metadata: Metadata = {
     'pickle random',
   ],
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL,
+    canonical: SITE_URL,
   },
   openGraph: {
     title: {
-      template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME}`,
-      default: `${process.env.NEXT_PUBLIC_SITE_NAME} : 랜덤(random) 추첨, 게임, 로또, AI 퀴즈의 모든 것`,
+      template: `%s | ${SITE_NAME}`,
+      default: `${SITE_NAME} : 랜덤(random) 추첨, 게임, 로또, AI 퀴즈의 모든 것`,
     },
     description:
       '이름(상품) 추첨, 자리 배정, 사다리 타기, 주사위 굴리기, 로또 번호 생성, 로또 번호 추천, 로또 결과 등 다양한 랜덤 추첨 도구를 한 곳에서 편리하게 이용해보세요! 경품 추첨, 자리 배정, 팀 나누기, 오늘의 운세, 메뉴 추천, 시간대별 추천 메뉴, 할일, 시간대별 할일 등 다양한 기능 제공.',
-    url: process.env.NEXT_PUBLIC_SITE_URL,
-    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
+    url: SITE_URL,
+    siteName: SITE_NAME,
     images: [
       {
-        url: process.env.NEXT_PUBLIC_SITE_URL + '/og-image.svg',
+        url: SITE_URL + '/og-image.svg',
         width: 1200,
         height: 630,
         alt: 'Pickle-eight 대표 이미지',
@@ -104,12 +101,12 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: {
-      template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME}`,
-      default: `${process.env.NEXT_PUBLIC_SITE_NAME} :  랜덤(random) 추첨, 게임, 로또, AI 퀴즈의 모든 것`,
+      template: `%s | ${SITE_NAME}`,
+      default: `${SITE_NAME} :  랜덤(random) 추첨, 게임, 로또, AI 퀴즈의 모든 것`,
     },
     description:
       '온라인에서 쉽고 빠르게 이름, 상품, 자리, 사다리, 주사위, 할일, 행운, 응원, 메뉴 등 다양한 항목을 랜덤으로 추첨하고 결과를 공유하세요.',
-    images: ['https://pickle-eight.vercel.app/og-image.svg'],
+    images: [SITE_URL + '/og-image.svg'],
   },
   authors: [
     {
@@ -133,11 +130,8 @@ export default function RootLayout({
           name="naver-site-verification"
           content="3b2951ae643e0dd91af8ba5dedd85cb450a7018a"
         />
-        {/* JSON-LD: WebSite */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebSite()) }}
-        />
+        {/* JSON-LD: WebSite + Organization */}
+        <JsonLd data={[jsonLdWebSite(), jsonLdOrganization()]} />
       </head>
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
         <QueryClientProviderWrapper>
