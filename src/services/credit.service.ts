@@ -4,11 +4,11 @@ import {
   CreditClaimResponseType,
   UserCreditsType,
   CreditClaimErrorCodeType,
-  CreditAdEventPayloadType,
-  CreditStartAdSessionInputType,
-  CreditStartAdSessionOutputType,
-  CreditCompleteAdSessionInputType,
-  CreditCompleteAdSessionOutputType,
+  CreditApplixirEventPayloadType,
+  CreditStartApplixirSessionInputType,
+  CreditStartApplixirSessionOutputType,
+  CreditCompleteApplixirSessionInputType,
+  CreditCompleteApplixirSessionOutputType,
 } from '@/types';
 import { apiInstance } from './axios-instance';
 import { CREDIT_CLAIM_ERROR_CODE_ENUM } from '@/constants';
@@ -68,44 +68,44 @@ export function normalizeClaimErrorCode(
 }
 
 /**
- * Send ad telemetry/event to server.
+ * Send applixir telemetry/event to server.
  */
 export async function postAdEvent(
-  payload: CreditAdEventPayloadType
+  payload: CreditApplixirEventPayloadType
 ): Promise<void> {
-  await apiInstance.post('ad/events', payload, {
+  await apiInstance.post('applixir/events', payload, {
     headers: { 'Content-Type': 'application/json', 'x-skip-loading': '1' },
   });
 }
 
 /**
- * Start an ad session and receive a server token.
+ * Start an applixir session and receive a server token.
  */
 export async function startAdSession(
-  input: CreditStartAdSessionInputType
-): Promise<CreditStartAdSessionOutputType> {
+  input: CreditStartApplixirSessionInputType
+): Promise<CreditStartApplixirSessionOutputType> {
   const res = await apiInstance.post<{ ok?: boolean; token?: string }>(
-    'ad/start',
+    'applixir/start',
     { cid: input.cid },
     { headers: { 'Content-Type': 'application/json' } }
   );
   const json = res.data;
-  if (!json?.ok || !json?.token) throw new Error('ad_start_failed');
+  if (!json?.ok || !json?.token) throw new Error('applixir_start_failed');
   return { token: json.token };
 }
 
 /**
- * Complete an ad session using previously issued token.
+ * Complete an applixir session using previously issued token.
  */
 export async function completeAdSession(
-  input: CreditCompleteAdSessionInputType
-): Promise<CreditCompleteAdSessionOutputType> {
+  input: CreditCompleteApplixirSessionInputType
+): Promise<CreditCompleteApplixirSessionOutputType> {
   const res = await apiInstance.post<{ ok?: boolean; error?: string }>(
-    'ad/complete',
+    'applixir/complete',
     { token: input.token },
     { headers: { 'Content-Type': 'application/json' } }
   );
   const json = res.data;
-  if (!json?.ok) throw new Error(json?.error || 'ad_complete_failed');
+  if (!json?.ok) throw new Error(json?.error || 'applixir_complete_failed');
   return { ok: true };
 }

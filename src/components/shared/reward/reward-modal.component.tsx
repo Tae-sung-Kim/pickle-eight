@@ -69,12 +69,12 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
     setShowConsentHint(false);
   };
 
-  const handleAdCompleted = (): void => {
+  const handleApplixirCompleted = (): void => {
     onOpenChange(false);
   };
 
-  const handleAdError = (error: string): void => {
-    console.error('Reward ad error:', error);
+  const handleApplixirError = (error: string): void => {
+    console.error('Applixir error:', error);
   };
 
   return (
@@ -140,8 +140,8 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
           <ApplixirRewardAdComponent
             maxHeight={adMaxHeight}
             disabled={showConsentHint || isAdsDisabled}
-            onAdCompleted={handleAdCompleted}
-            onAdError={handleAdError}
+            onApplixirCompleted={handleApplixirCompleted}
+            onApplixirError={handleApplixirError}
           />
 
           {/* 액션 영역 */}

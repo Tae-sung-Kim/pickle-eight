@@ -1,37 +1,56 @@
 import { MetadataRoute } from 'next';
+import { MENU_LIST } from '@/constants';
+import { SITE_URL } from '@/lib';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = (
-    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pickle-eight.vercel.app'
-  ).replace(/\/+$/, '');
+const RECENT_DRAWS = 200 as const; // 최근 N개 회차 포함
+const STATS_TYPES = ['frequency', 'range', 'odd-even'] as const; // stats/[type]
 
-  // 정적 페이지 목록
-  const staticRoutes = [
-    '/',
-    '/lotto',
-    '/lotto/normal-generator',
-    // '/lotto/analysis',
-    '/lotto/history',
-    '/lotto/check',
-    // '/lotto/simulator',
-    // '/lotto/advanced-generator',
-    '/quiz',
-    '/quiz/english-word-quiz',
-    '/quiz/four-idiom-quiz',
-    '/quiz/trivia-quiz',
-    '/quiz/number-match-game',
-    '/quiz/emoji-translation',
-    '/random-picker',
-    '/random-picker/dice-game',
-    '/random-picker/draw-order',
-    '/random-picker/ladder-game',
-    '/random-picker/name-random',
-    '/random-picker/seat-assignment',
-    '/random-picker/team-assignment',
-    '/privacy',
-    '/terms',
-    '/credits-policy',
-  ];
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const siteUrl = SITE_URL;
+
+  // 정적 필수 페이지
+  const staticRoutes: string[] = ['/', '/privacy', '/terms', '/credits-policy'];
+
+  // 메뉴 기반 동적 경로 (그룹 + 각 아이템)
+  const menuRoutes: string[] = MENU_LIST.flatMap((group) => [
+    group.href,
+    ...group.items.map((it) => it.href),
+  ]).filter((href): href is string => typeof href === 'string');
+
+  // 동적: 로또 최신 회차 조회 후 최근 N개 생성
+  const dynamicLottoDraws: string[] = [];
+  try {
+    const res = await fetch(`${siteUrl}/api/lotto/draws?latest=1`, {
+      // sitemap은 서버 실행 → 캐시 길게
+      next: { revalidate: 60 * 60 },
+    });
+    if (res.ok) {
+      const json = (await res.json()) as {
+        data?: { lastDrawNumber?: number };
+      };
+      const last: number | undefined = json.data?.lastDrawNumber;
+      if (typeof last === 'number' && last > 0) {
+        const from = Math.max(1, last - RECENT_DRAWS + 1);
+        for (let n = from; n <= last; n += 1)
+          dynamicLottoDraws.push(`/lotto/${n}`);
+      }
+    }
+  } catch {
+    // 네트워크 실패 시 동적 회차는 생략 (정적/메뉴 경로만 포함)
+  }
+
+  // 동적: 로또 통계 타입
+  const dynamicLottoStats = STATS_TYPES.map((t) => `/lotto/stats/${t}`);
+
+  // 경로 중복 제거
+  const allRoutes = Array.from(
+    new Set([
+      ...staticRoutes,
+      ...menuRoutes,
+      ...dynamicLottoDraws,
+      ...dynamicLottoStats,
+    ])
+  );
 
   const priorityByRoute = (route: string): number => {
     if (route === '/') return 1.0;
@@ -44,7 +63,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return 0.6;
   };
 
-  const sitemapEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
+  const sitemapEntries: MetadataRoute.Sitemap = allRoutes.map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',

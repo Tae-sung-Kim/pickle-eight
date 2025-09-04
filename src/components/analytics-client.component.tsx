@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { usePageView } from '@/hooks';
 import { usePathname } from 'next/navigation';
 import { useConsentContext } from '@/providers';
+import { getCachedData, setCachedData } from '@/utils';
 
 function AnalyticsRunner({ pathname }: { pathname: string }) {
   usePageView(pathname);
@@ -13,17 +14,17 @@ function AnalyticsRunner({ pathname }: { pathname: string }) {
 function TelegramRunner({ pathname }: { pathname: string }) {
   useEffect(() => {
     try {
-      const today = new Date().toISOString().slice(0, 10);
-      const storageKey = `${process.env.NEXT_PUBLIC_SITE_NAME}_telegram-notified-date`;
-      const notifiedDate = localStorage.getItem(storageKey);
-      if (notifiedDate !== today) {
+      const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? 'pickle-eight';
+      const storageKey = `${siteName}_telegram-notified`;
+      const alreadyNotified = getCachedData(storageKey);
+      if (!alreadyNotified) {
         fetch('/api/notify-telegram', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: `📢 Someone visited: ${pathname}` }),
         }).finally(() => {
           try {
-            localStorage.setItem(storageKey, today);
+            setCachedData(storageKey, '1'); // 다음날 자정까지 유효
           } catch {
             /* noop */
           }

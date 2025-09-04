@@ -1,3 +1,5 @@
+import { SITE_URL } from '@/lib';
+
 export function getKoreaTime(date = new Date()): Date {
   const utc = date.getTime();
   const localOffset = date.getTimezoneOffset() * 60 * 1000;
@@ -55,7 +57,7 @@ export function generateOgImageUrl(
   const params = new URLSearchParams({ title, subtitle: description });
   if (tag) params.set('tag', tag);
   return {
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/og-image?${params}`,
+    url: `${SITE_URL}/api/og-image?${params}`,
     width: 1200,
     height: 630,
     alt,

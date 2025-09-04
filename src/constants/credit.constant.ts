@@ -29,15 +29,15 @@ export enum CREDIT_RESET_MODE_ENUM {
   MINUTE = 'minute',
 }
 
-export enum CREDIT_AD_STATUS_ENUM {
+export enum CREDIT_APPLIXIR_STATUS_ENUM {
   LOADED = 'loaded',
   START = 'start',
-  AD_STARTED = 'ad-started',
+  APPLIXIR_STARTED = 'applixir-started',
   COMPLETE = 'complete',
-  AD_WATCHED = 'ad-watched',
+  APPLIXIR_WATCHED = 'applixir-watched',
   SKIP = 'skip',
-  AD_SKIPPED = 'ad-skipped',
-  AD_INTERRUPTED = 'ad-interrupted',
+  APPLIXIR_SKIPPED = 'applixir-skipped',
+  APPLIXIR_INTERRUPTED = 'applixir-interrupted',
   FB_STARTED = 'fb-started',
   FB_WATCHED = 'fb-watched',
   ALL_ADS_COMPLETED = 'allAdsCompleted',
@@ -55,8 +55,8 @@ export enum CREDIT_CLAIM_ERROR_CODE_ENUM {
   REQUEST_FAILED = 'request_failed',
 }
 
-export enum CREDIT_ADERROR_ENUM {
-  ADS_REQUEST_NETWORK_ERROR = 'adsRequestNetworkError',
+export enum CREDIT_APPLIXIR_ERROR_ENUM {
+  APPLIXIR_REQUEST_NETWORK_ERROR = 'applixirRequestNetworkError',
   CONSENT_MANAGEMENT_PROVIDER_NOT_READY = 'consentManagementProviderNotReady',
-  ADS_UNAVAILABLE = 'ads-unavailable',
+  APPLIXIR_UNAVAILABLE = 'applixir-unavailable',
 }
