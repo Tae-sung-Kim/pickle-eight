@@ -1,16 +1,12 @@
 'use client';
 
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useConsentContext } from '@/providers';
-
-interface ConsentNudgeProps {
-  readonly variant?: 'gratitude' | 'value' | 'transparent' | 'gentle';
-}
+import { ConsentNudgeType } from '@/types';
 
 export function ConsentNudgeComponent({
   variant = 'gratitude',
-}: ConsentNudgeProps) {
+}: ConsentNudgeType) {
   const { state, onAccept } = useConsentContext();
 
   // Don't show if already accepted

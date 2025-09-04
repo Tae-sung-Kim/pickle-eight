@@ -1,17 +1,7 @@
-import { ReactElement } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LottoBallComponent } from '@/components';
 import { LottoDrawStatsComponent } from './stats.component';
-
-export type LottoDrawCardType = {
-  readonly drawNumber: number;
-  readonly drawDate: string;
-  readonly numbers: readonly number[];
-  readonly bonusNumber?: number;
-  readonly firstWinCount?: number;
-  readonly firstPrizeAmount?: number;
-  readonly totalSalesAmount?: number;
-};
+import { LottoDrawCardType } from '@/types';
 
 export function LottoDrawCardComponent({
   drawNumber,
@@ -21,7 +11,7 @@ export function LottoDrawCardComponent({
   firstWinCount,
   firstPrizeAmount,
   totalSalesAmount,
-}: LottoDrawCardType): ReactElement {
+}: LottoDrawCardType) {
   return (
     <Card className="border border-border shadow-sm">
       <CardHeader className="pb-3">

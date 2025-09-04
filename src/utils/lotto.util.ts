@@ -1,10 +1,10 @@
 import type {
-  GenerateFiltersType,
+  LottoGenerateFiltersType,
   LottoCheckResultType,
   LottoDrawType,
   LottoStatsType,
   LottoTicketType,
-  WeightingOptionsType,
+  LottoWeightingOptionsType,
 } from '@/types';
 
 function uniqueSortedSix(
@@ -150,7 +150,7 @@ function hasTooLongConsecutive(
 
 function passesFilters(
   nums: readonly number[],
-  filters?: GenerateFiltersType
+  filters?: LottoGenerateFiltersType
 ): boolean {
   if (!filters) return true;
   const isComplete = nums.length === 6;
@@ -205,8 +205,8 @@ function weightedSample(
 }
 
 function generateOne(
-  filters?: GenerateFiltersType,
-  weighting?: WeightingOptionsType
+  filters?: LottoGenerateFiltersType,
+  weighting?: LottoWeightingOptionsType
 ): LottoTicketType {
   const pool: number[] = [];
   for (let n = 1; n <= 45; n += 1) pool.push(n);
@@ -263,8 +263,8 @@ function buildFrequencyFromDraws(
 export const LottoGenerator = {
   generate(
     count: number,
-    filters?: GenerateFiltersType,
-    weighting?: WeightingOptionsType
+    filters?: LottoGenerateFiltersType,
+    weighting?: LottoWeightingOptionsType
   ): readonly LottoTicketType[] {
     const out: LottoTicketType[] = [];
     for (let i = 0; i < count; i += 1)

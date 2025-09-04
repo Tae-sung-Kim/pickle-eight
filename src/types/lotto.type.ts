@@ -144,7 +144,7 @@ export type LottoAnalysisVariantValueType =
 
 export type LottoWarningAlertSpaceType = 'none' | 'sm' | 'md' | 'lg';
 
-export type GenerateFiltersType = {
+export type LottoGenerateFiltersType = {
   readonly sumMin?: number;
   readonly sumMax?: number;
   readonly maxConsecutive?: number; // 0=금지, 1=허용, 2=최대 2연속 ...
@@ -153,7 +153,7 @@ export type GenerateFiltersType = {
   readonly excludeRecentNumbers?: readonly number[]; // 최근 회차에서 제외할 번호들
 };
 
-export type WeightingOptionsType = {
+export type LottoWeightingOptionsType = {
   /** frequency[1..45], 가중치로 사용 */
   readonly frequency?: Readonly<Record<number, number>>;
   /** 0(완전랜덤) ~ 1(빈도에 완전 의존) */
@@ -161,3 +161,57 @@ export type WeightingOptionsType = {
 };
 
 export type LottoAgeGateModeType = 'always' | 'session' | 'ttl';
+
+export type LottoDrawCardType = {
+  readonly drawNumber: number;
+  readonly drawDate: string;
+  readonly numbers: readonly number[];
+  readonly bonusNumber?: number;
+  readonly firstWinCount?: number;
+  readonly firstPrizeAmount?: number;
+  readonly totalSalesAmount?: number;
+};
+
+export type LottoGenerateControlsType = {
+  readonly count: number;
+  readonly filters: LottoGenerateFiltersType;
+  readonly onChangeCount: (next: number) => void;
+  readonly onChangeFilters: (
+    updater: (prev: LottoGenerateFiltersType) => LottoGenerateFiltersType
+  ) => void;
+};
+
+export type LottoGeneratedItemType = {
+  readonly numbers: readonly [number, number, number, number, number, number];
+};
+
+export type LottoGeneratedListType = {
+  readonly items: ReadonlyArray<LottoGeneratedItemType>;
+};
+
+export type LottoWeightingControlsType = {
+  readonly useWeight: boolean;
+  readonly loading: boolean;
+  readonly from: number;
+  readonly to: number;
+  readonly excludeLatest: boolean;
+  readonly onToggleUseWeight: (next: boolean) => void;
+  readonly onChangeFrom: (next: number) => void;
+  readonly onChangeTo: (next: number) => void;
+  readonly onToggleExcludeLatest: (next: boolean) => void;
+};
+
+export type LottoAnalysisControlsType = {
+  readonly from: number;
+  readonly to: number;
+  readonly setFrom: (v: number) => void;
+  readonly setTo: (v: number) => void;
+  readonly isFetching: boolean;
+  readonly onAnalyze: () => void;
+};
+
+export type LottoAgeGateDialogType = Readonly<{
+  open: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+}>;

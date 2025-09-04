@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { CREDIT_POLICY } from '@/constants';
+import { CREDIT_POLICY, SPEND_COST } from '@/constants';
 import { useCreditStore } from '@/stores';
 import { computeRewardByWatch } from '@/utils';
-import { AdCreditReturn } from '@/types';
+import { AdCreditReturn, CreditCostLabelType } from '@/types';
 
 export function useAdCredit(): AdCreditReturn {
   const { todayEarned, lastEarnedAt, overCapLocked } = useCreditStore();
@@ -29,6 +29,21 @@ export function useAdCredit(): AdCreditReturn {
   const reachedDailyCap: boolean =
     overCapLocked || todayEarned >= CREDIT_POLICY.dailyCap;
   const canWatchAd: boolean = !inCooldown && !reachedDailyCap;
+
+  const buildCostLabel = ({
+    spendKey,
+    baseLabel,
+    isBusy = false,
+    busyLabel = `${baseLabel} 중…`,
+    amountOverride,
+  }: CreditCostLabelType & { amountOverride?: number }): string => {
+    if (isBusy) return busyLabel;
+    const amount: number =
+      typeof amountOverride === 'number'
+        ? amountOverride
+        : SPEND_COST[spendKey];
+    return `${baseLabel}(-${amount})`;
+  };
 
   const getWatchedMs = (): number => {
     if (isPlayingRef.current && adStartTimeRef.current !== null)
@@ -101,5 +116,6 @@ export function useAdCredit(): AdCreditReturn {
     playing,
     hasStarted,
     bindMediaElement,
+    buildCostLabel,
   };
 }

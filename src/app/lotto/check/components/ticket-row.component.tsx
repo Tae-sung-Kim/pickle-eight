@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { LottoCheckTicketRowType } from '@/types';
@@ -16,7 +15,7 @@ export function LottoCheckTicketRowComponent({
       </span>
       <div className="flex flex-wrap items-center gap-2">
         {(['n1', 'n2', 'n3', 'n4', 'n5', 'n6'] as const).map((name) => (
-          <React.Fragment key={name}>{renderInput(name)}</React.Fragment>
+          <>{renderInput(name)}</>
         ))}
       </div>
       <div className="ml-auto">

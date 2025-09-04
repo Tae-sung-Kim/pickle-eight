@@ -1,5 +1,3 @@
-import React from 'react';
-
 export type JsonLdProps = {
   readonly data:
     | Record<string, unknown>
