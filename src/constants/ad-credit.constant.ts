@@ -4,6 +4,16 @@ import type { CreditPolicyType, CreditSpendCostType } from '@/types';
 const envMode =
   (process.env.NEXT_PUBLIC_CREDIT_RESET_MODE || '').toLowerCase() === 'minute';
 
+// Constants to avoid magic numbers
+
+export const AD_APX = {
+  ASPECT_WIDTH: 16,
+  ASPECT_HEIGHT: 9,
+  VIEWPORT_HEIGHT_RATIO: 0.9,
+  MIN_WRAPPER_HEIGHT: 200,
+  CLOSE_WITHOUT_REWARD_MS: 60_000, // 60s after which we allow closing without reward
+} as const;
+
 export const CREDIT_POLICY: CreditPolicyType = {
   rewardAmount: 5, // 기본 보상 크레딧
   dailyCap: envMode

@@ -105,9 +105,10 @@ export function RewardModalComponent({ onOpenChange }: RewardModalType) {
         {/* 정보 안내 박스: 광고 재고/심사 상태 */}
         <div className="mt-2 rounded-md border border-blue-300 bg-blue-50 text-blue-900 px-3 py-2 text-xs">
           <p>
-            현재 광고 재고가 부족하거나 매체 심사 진행 중인 경우 광고가 표시되지
-            않을 수 있습니다. 이 경우 잠시 후 다시 시도해 주세요. 매체 심사 완료
-            후에는 정상적으로 광고 시청이 가능합니다.
+            현재 광고 재고가 부족하거나{' '}
+            <span className="font-medium">매체 심사 보류</span> 상태일 수 있어
+            광고가 표시되지 않을 수 있습니다. 이 경우 잠시 후 다시 시도해
+            주세요. 심사가 완료되면 정상적으로 광고 시청 및 보상이 가능합니다.
           </p>
         </div>
 
