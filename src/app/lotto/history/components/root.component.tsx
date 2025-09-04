@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLatestLottoDrawQuery, useLottoDrawsQuery } from '@/queries';
 import LottoHistorySearchComponent from './search.component';
 import LottoHistoryResultComponent from './result.component';
+import { LOTTO_MAX_HISTORY_RANGE } from '@/constants';
 
 export function LottoHistoryComponent() {
   const { data: latestDraw } = useLatestLottoDrawQuery();
@@ -19,7 +20,16 @@ export function LottoHistoryComponent() {
     to: number;
     enabled: boolean;
   }) => {
-    setSearchData(searchData);
+    // 입력 정규화 + 최대 200회 클램프
+    const to = Math.max(1, Math.floor(searchData.to));
+    const fromRaw = Math.max(1, Math.floor(searchData.from));
+    const normalizedFrom = Math.min(fromRaw, to);
+    const count = to - normalizedFrom + 1;
+    const clampedFrom =
+      count > LOTTO_MAX_HISTORY_RANGE
+        ? Math.max(1, to - LOTTO_MAX_HISTORY_RANGE + 1)
+        : normalizedFrom;
+    setSearchData({ from: clampedFrom, to, enabled: searchData.enabled });
   };
 
   const { data, isError, error } = useLottoDrawsQuery(searchData);
@@ -28,7 +38,8 @@ export function LottoHistoryComponent() {
     const latest = latestDraw?.lastDrawNumber;
     if (!latest || latest <= 0) return;
     const next = {
-      from: Math.max(1, latest - 11 + 1), // 최근 12주 예시 -> 필요시 조정 가능; 현재는 10개면 latest-9
+      // 초기값: 최근 10회 (포함 범위 → latest-9 ~ latest)
+      from: Math.max(1, latest - 9),
       to: latest,
       enabled: true,
     };

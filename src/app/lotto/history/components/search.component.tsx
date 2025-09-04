@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@radix-ui/react-label';
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { LOTTO_MAX_HISTORY_RANGE } from '@/constants';
 
 export function LottoHistorySearchComponent({
   initRange,
@@ -95,6 +96,9 @@ export function LottoHistorySearchComponent({
         >
           조회
         </Button>
+      </div>
+      <div className="sm:col-span-3 text-xs text-muted-foreground">
+        최대 {LOTTO_MAX_HISTORY_RANGE}회차까지 조회됩니다.
       </div>
     </div>
   );
