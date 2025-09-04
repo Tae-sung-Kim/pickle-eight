@@ -6,6 +6,40 @@ import {
   SPEND_COST,
 } from '@/constants';
 
+declare global {
+  interface Window {
+    kakaoAsyncAdFit?: unknown[];
+    initializeAndOpenPlayer?: (options: {
+      apiKey: string;
+      injectionElementId: string;
+      adStatusCallbackFn: (status: { type: CreditApplixirStatusType }) => void;
+      adErrorCallbackFn: (error: {
+        getError: () => {
+          data: { type: CreditApplixirErrorType };
+          errorMessage: string;
+        };
+      }) => void;
+      adOptions?: { customId?: string };
+    }) => void;
+  }
+}
+
+export type AdCreditReturn = {
+  readonly cooldownMsLeft: number;
+  readonly inCooldown: boolean;
+  readonly reachedDailyCap: boolean;
+  readonly canWatchAd: boolean;
+  readonly elapsedMs: number;
+  readonly currentReward: number;
+  readonly playing: boolean;
+  readonly hasStarted: boolean;
+  ensureStarted: () => void;
+  handlePause: () => void;
+  getWatchedMs: () => number;
+  resetElapsed: () => void;
+  bindMediaElement: (el: HTMLMediaElement) => void;
+};
+
 export type CreditBalanceType = {
   readonly total: number;
   readonly todayEarned: number;

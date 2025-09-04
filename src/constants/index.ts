@@ -6,4 +6,4 @@ export * from './number-match-game.constant';
 export * from './theme.constant';
 export * from './lotto.constant';
 export * from './four-idiom-quiz.constant';
-export * from './credit.constant';
+export * from './ad-credit.constant';

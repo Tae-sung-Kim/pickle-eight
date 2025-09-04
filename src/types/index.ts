@@ -1,26 +1,3 @@
-import {
-  CreditApplixirErrorType,
-  CreditApplixirStatusType,
-} from './credit.type';
-
-declare global {
-  interface Window {
-    kakaoAsyncAdFit?: unknown[];
-    initializeAndOpenPlayer?: (options: {
-      apiKey: string;
-      injectionElementId: string;
-      adStatusCallbackFn: (status: { type: CreditApplixirStatusType }) => void;
-      adErrorCallbackFn: (error: {
-        getError: () => {
-          data: { type: CreditApplixirErrorType };
-          errorMessage: string;
-        };
-      }) => void;
-      adOptions?: { customId?: string };
-    }) => void;
-  }
-}
-
 export * from './ladder-game.type';
 export * from './dice-game.type';
 export * from './draw-order.type';
@@ -33,4 +10,4 @@ export * from './number-match-game.type';
 export * from './lotto.type';
 export * from './emoji-translation.type';
 export * from './theme.type';
-export * from './credit.type';
+export * from './ad-credit.type';

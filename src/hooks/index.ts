@@ -6,3 +6,4 @@ export * from './use-capture.hook';
 export * from './use-number-match-game.hook';
 export * from './use-reward-visibility.hook';
 export * from './use-credit-cost-label.hook';
+export * from './use-ad-credit.hook';
