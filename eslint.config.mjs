@@ -19,6 +19,12 @@ const eslintConfig = [
     rules: {
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      'no-explicit-any': 'error',
+      'max-lines-per-function': [
+        'warn',
+        { max: 20, skipBlankLines: true, skipComments: true, IIFEs: true },
+      ],
+      'max-exports-per-file': ['warn', { max: 1 }],
     },
   },
 ];
