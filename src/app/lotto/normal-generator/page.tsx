@@ -13,7 +13,7 @@ import {
   jsonLdBreadcrumb,
   jsonLdWebSite,
 } from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
 
 const baseMeta = buildMetadata({
   title: '로또 번호 생성기 - 추천하는 행운의 번호',
@@ -67,7 +67,7 @@ export default function LottoPage() {
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <LottoWarningAlertComponent
         className="mt-4"
-        tone="danger"
+        tone={LOTTO_WARNING_TONE_ENUM.DANGER}
         includeAgeNotice
       />
       <JsonLd data={[jsonLdWebSite(), crumbs]} />

@@ -8,7 +8,7 @@ import {
   JsonLd,
 } from '@/components';
 import { generateOgImageUrl } from '@/utils';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -68,7 +68,7 @@ export default function LottoCheckPage() {
 
       <LottoWarningAlertComponent
         className="mt-4"
-        tone="danger"
+        tone={LOTTO_WARNING_TONE_ENUM.DANGER}
         includeAgeNotice
       />
       <div className="mx-auto max-w-5xl p-8">

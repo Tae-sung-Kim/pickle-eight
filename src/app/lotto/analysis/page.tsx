@@ -1,4 +1,4 @@
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
 import { LottoAnalysisComponent } from './components';
 import {
   ContentWrapperComponent,
@@ -71,7 +71,7 @@ export default function LottoAnalysisPage() {
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <LottoWarningAlertComponent
         className="mt-4"
-        tone="danger"
+        tone={LOTTO_WARNING_TONE_ENUM.DANGER}
         includeAgeNotice
       />
       <div className="mx-auto max-w-5xl p-8">

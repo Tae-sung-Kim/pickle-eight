@@ -1,4 +1,7 @@
-import { LOTTO_ANALYSIS_VARIANT_ENUM } from '@/constants';
+import {
+  LOTTO_ANALYSIS_VARIANT_ENUM,
+  LOTTO_WARNING_TONE_ENUM,
+} from '@/constants';
 import { ReactNode } from 'react';
 
 export type LottoGeneratorControlsPropsType = {
@@ -114,7 +117,8 @@ export type LottoDrawsParamsType = {
   readonly enabled?: boolean;
 };
 
-export type LottoWarningToneType = 'warning' | 'danger' | 'muted';
+export type LottoWarningToneType =
+  (typeof LOTTO_WARNING_TONE_ENUM)[keyof typeof LOTTO_WARNING_TONE_ENUM];
 
 export type LottoCheckResultCardType = {
   readonly draw: LottoDrawType;

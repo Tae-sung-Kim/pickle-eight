@@ -8,7 +8,7 @@ import {
   JsonLd,
 } from '@/components';
 import { ReactElement } from 'react';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
 import { LottoDrawCardComponent } from './components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
@@ -116,7 +116,7 @@ export default async function LottoDrawPage({
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <LottoWarningAlertComponent
         className="mt-4"
-        tone="warning"
+        tone={LOTTO_WARNING_TONE_ENUM.WARNING}
         includeAgeNotice
       />
 
