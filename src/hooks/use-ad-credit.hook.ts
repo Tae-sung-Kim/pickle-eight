@@ -101,5 +101,5 @@ export function useAdCredit(): AdCreditReturn {
     playing,
     hasStarted,
     bindMediaElement,
-  } as const;
+  };
 }
