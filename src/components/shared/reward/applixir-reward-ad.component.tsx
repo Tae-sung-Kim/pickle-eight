@@ -8,13 +8,13 @@ import { toast } from 'sonner';
 import { useConsentContext } from '@/providers';
 import {
   CreditApplixirRewardAdType,
-  CreditAdErrorType,
-  CreditAdStatusType,
+  CreditApplixirErrorType,
+  CreditApplixirStatusType,
 } from '@/types';
 import {
-  useAdEventMutation,
-  useStartAdSessionMutation,
-  useCompleteAdSessionMutation,
+  useApplixirEventMutation,
+  useStartApplixirSessionMutation,
+  useCompleteApplixirSessionMutation,
 } from '@/queries';
 
 // Constants to avoid magic numbers
@@ -31,8 +31,8 @@ const CLOSE_WITHOUT_REWARD_MS: number = 60_000; // 60s after which we allow clos
  * - 스킵/중단 시 안전한 리셋 처리
  */
 export function ApplixirRewardAdComponent({
-  onAdCompleted,
-  onAdError,
+  onApplixirCompleted,
+  onApplixirError,
   maxHeight,
   disabled,
 }: CreditApplixirRewardAdType) {
@@ -50,9 +50,9 @@ export function ApplixirRewardAdComponent({
   const lastNotifiedAmountRef = useRef<number>(CREDIT_POLICY.rewardAmount);
   const { onEarn, todayEarned, lastEarnedAt, overCapLocked } = useCreditStore();
   const { state } = useConsentContext();
-  const adEvent = useAdEventMutation();
-  const startAd = useStartAdSessionMutation();
-  const completeAd = useCompleteAdSessionMutation();
+  const applixirEvent = useApplixirEventMutation();
+  const startApplixir = useStartApplixirSessionMutation();
+  const completeApplixir = useCompleteApplixirSessionMutation();
 
   // Cooldown 계산
   const [cooldownMsLeft, setCooldownMsLeft] = useState<number>(0);
@@ -129,7 +129,7 @@ export function ApplixirRewardAdComponent({
     return accumulatedMsRef.current;
   };
 
-  // Track elapsed time while ad is running
+  // Track elapsed time while applixir is running
   useEffect(() => {
     if (!isLoading) return;
     const tick = (): void => {
@@ -166,7 +166,7 @@ export function ApplixirRewardAdComponent({
   };
 
   const handleAdStatusCallback = async (
-    status: { type?: CreditAdStatusType } | string
+    status: { type?: CreditApplixirStatusType } | string
   ): Promise<void> => {
     const raw = status as unknown;
     const t: string =
@@ -178,9 +178,9 @@ export function ApplixirRewardAdComponent({
     const type = (t || '').toString();
     console.log('Applixir Ad Status (normalized):', type);
     const aid = getAnonymousId();
-    void adEvent.mutateAsync({
+    void applixirEvent.mutateAsync({
       kind: 'status',
-      status: type as CreditAdStatusType,
+      status: type as CreditApplixirStatusType,
       aid,
       cid: String(containerKey),
       watchedMs: getWatchedMs(),
@@ -188,29 +188,29 @@ export function ApplixirRewardAdComponent({
 
     switch ((type || '').toLowerCase()) {
       case 'loaded':
-        // 로딩 완료. 실제 시작은 start/ad-started/impression 또는 video.play에서 처리
+        // 로딩 완료. 실제 시작은 start/applixir-started/impression 또는 video.play에서 처리
         break;
       case 'start':
-      case 'ad-started':
+      case 'applixir-started':
       case 'adstarted':
-      case 'ad-start':
+      case 'applixir-start':
       case 'impression':
-      case 'ad-impression':
+      case 'applixir-impression':
         ensureStarted();
         break;
       case 'pause':
       case 'paused':
-      case 'ad-paused':
+      case 'applixir-paused':
         handlePause();
         break;
       case 'resume':
       case 'resumed':
-      case 'ad-resumed':
+      case 'applixir-resumed':
       case 'playing':
         ensureStarted();
         break;
       case 'complete':
-      case 'ad-watched':
+      case 'applixir-watched':
       case 'fb-watched': {
         // 서버 검증 요청
         const token = serverTokenRef.current;
@@ -220,12 +220,12 @@ export function ApplixirRewardAdComponent({
           break;
         }
         try {
-          await completeAd.mutateAsync({ token });
+          await completeApplixir.mutateAsync({ token });
         } catch (err: unknown) {
           const reason: string =
             err instanceof Error ? err.message : 'verification_failed';
           toast.error('크레딧 지급이 거절되었습니다.');
-          void adEvent.mutateAsync({
+          void applixirEvent.mutateAsync({
             kind: 'complete_denied',
             reason,
             aid,
@@ -240,8 +240,8 @@ export function ApplixirRewardAdComponent({
         const result = onEarn(dynamicAmount);
         if (result.canEarn) {
           toast.success(`크레딧 ${dynamicAmount}개를 받았습니다!`);
-          onAdCompleted?.();
-          void adEvent.mutateAsync({
+          onApplixirCompleted?.();
+          void applixirEvent.mutateAsync({
             kind: 'complete_granted',
             aid,
             cid: String(containerKey),
@@ -252,9 +252,9 @@ export function ApplixirRewardAdComponent({
         break;
       }
       case 'skip':
-      case 'ad-skipped':
+      case 'applixir-skipped':
         toast.info('광고가 스킵되었습니다. 크레딧은 지급되지 않습니다.');
-        void adEvent.mutateAsync({
+        void applixirEvent.mutateAsync({
           kind: 'skipped',
           aid,
           cid: String(containerKey),
@@ -262,9 +262,9 @@ export function ApplixirRewardAdComponent({
         });
         resetPlayer();
         break;
-      case 'ad-interrupted':
+      case 'applixir-interrupted':
         toast.warning('광고가 중단되었습니다. 다시 시도할 수 있습니다.');
-        void adEvent.mutateAsync({
+        void applixirEvent.mutateAsync({
           kind: 'interrupted',
           aid,
           cid: String(containerKey),
@@ -285,11 +285,14 @@ export function ApplixirRewardAdComponent({
   };
 
   const handleAdErrorCallback = (error: {
-    getError: () => { data: { type: CreditAdErrorType }; errorMessage: string };
+    getError: () => {
+      data: { type: CreditApplixirErrorType };
+      errorMessage: string;
+    };
   }): void => {
     const errorInfo = error.getError();
     console.error('Applixir Ad Error:', errorInfo);
-    void adEvent.mutateAsync({
+    void applixirEvent.mutateAsync({
       kind: 'error',
       error: errorInfo,
       cid: String(containerKey),
@@ -307,13 +310,13 @@ export function ApplixirRewardAdComponent({
         '매체 심사 진행 중입니다. 승인 완료 후 광고 시청이 가능합니다.';
     }
     switch (errorInfo.data.type) {
-      case 'adsRequestNetworkError':
+      case 'applixirRequestNetworkError':
         errorMessage = '네트워크 오류로 광고를 불러올 수 없습니다.';
         break;
       case 'consentManagementProviderNotReady':
         errorMessage = '광고 동의 설정이 준비되지 않았습니다.';
         break;
-      case 'ads-unavailable':
+      case 'applixir-unavailable':
         errorMessage =
           '현재 시청 가능한 광고가 없습니다. 잠시 후 다시 시도해 주세요.';
         break;
@@ -323,7 +326,7 @@ export function ApplixirRewardAdComponent({
     }
 
     toast.error(errorMessage);
-    onAdError?.(errorMessage);
+    onApplixirError?.(errorMessage);
     resetPlayer();
   };
 
@@ -445,7 +448,9 @@ export function ApplixirRewardAdComponent({
       }
 
       // 1) 서버에서 토큰 발급
-      const start = await startAd.mutateAsync({ cid: String(containerKey) });
+      const start = await startApplixir.mutateAsync({
+        cid: String(containerKey),
+      });
       serverTokenRef.current = start.token;
 
       // 2) DOM 관찰 시작
@@ -454,7 +459,7 @@ export function ApplixirRewardAdComponent({
       // 3) 플레이어 열기
       window.initializeAndOpenPlayer({
         apiKey: process.env.NEXT_PUBLIC_APPLIXIR_API_KEY,
-        injectionElementId: 'applixir-ad-container',
+        injectionElementId: 'applixir-applixir-container',
         adStatusCallbackFn: handleAdStatusCallback,
         adErrorCallbackFn: handleAdErrorCallback,
         // customId에 시도 카운터를 추가하여 세션 캐싱/중복 문제 방지
@@ -530,7 +535,7 @@ export function ApplixirRewardAdComponent({
       >
         <div
           key={containerKey}
-          id="applixir-ad-container"
+          id="applixir-applixir-container"
           ref={containerRef}
           className="absolute inset-0"
         />
@@ -557,13 +562,13 @@ export function ApplixirRewardAdComponent({
 
       {/* 주입되는 비디오/캔버스/iframe이 부모 크기를 채우고 잘리지 않도록 강제 */}
       <style jsx global>{`
-        #applixir-ad-container,
-        #applixir-ad-container * {
+        #applixir-applixir-container,
+        #applixir-applixir-container * {
           max-width: 100% !important;
         }
-        #applixir-ad-container video,
-        #applixir-ad-container canvas,
-        #applixir-ad-container iframe {
+        #applixir-applixir-container video,
+        #applixir-applixir-container canvas,
+        #applixir-applixir-container iframe {
           width: 100% !important;
           height: 100% !important;
           object-fit: contain !important;
@@ -598,7 +603,7 @@ export function ApplixirRewardAdComponent({
               toast.info(
                 '보상 없이 광고를 종료했습니다. 다시 시도할 수 있습니다.'
               );
-              void adEvent.mutateAsync({
+              void applixirEvent.mutateAsync({
                 kind: 'closed_without_reward',
                 aid: getAnonymousId(),
                 cid: String(containerKey),

@@ -38,10 +38,11 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   // Only enforce for matched paths (see config.matcher)
   const url = new URL(req.url);
   const pathname = url.pathname;
-  const isAdStart: boolean = pathname === '/api/ad/start';
-  const isAdComplete: boolean = pathname === '/api/ad/complete';
+  const isApplixirStart: boolean = pathname === '/api/applixir/start';
+  const isApplixirComplete: boolean = pathname === '/api/applixir/complete';
   const isCreditsClaim: boolean = pathname === '/api/credits/claim';
-  const inScope: boolean = isAdStart || isAdComplete || isCreditsClaim;
+  const inScope: boolean =
+    isApplixirStart || isApplixirComplete || isCreditsClaim;
   if (!inScope) {
     return NextResponse.next();
   }
@@ -94,13 +95,13 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const reqHeaders: Headers = new Headers(req.headers);
   let cookieHeaderWorking: string = reqHeaders.get('cookie') || '';
 
-  // Generate AID cookie if needed for ad routes and inject into request header
+  // Generate AID cookie if needed for applixir routes and inject into request header
   let generatedAid: string | null = null;
   const hasAidCookie: boolean = Boolean(req.cookies.get(AID_COOKIE)?.value);
   let currentAid: string | null = hasAidCookie
     ? req.cookies.get(AID_COOKIE)!.value
     : null;
-  if ((isAdStart || isAdComplete) && !hasAidCookie) {
+  if ((isApplixirStart || isApplixirComplete) && !hasAidCookie) {
     const bytes = new Uint8Array(16);
     crypto.getRandomValues(bytes);
     const aidHex: string = Array.from(bytes)

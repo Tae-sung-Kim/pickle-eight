@@ -44,7 +44,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     // Ensure nonce is still issued and unused
-    const nonceRef = adminDb.collection('ad_nonces').doc(token);
+    const nonceRef = adminDb.collection('applixir_nonces').doc(token);
     const nonceSnap = await nonceRef.get();
     if (!nonceSnap.exists)
       return NextResponse.json(
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    const aidRef = adminDb.collection('ad_counters').doc(payload.aid);
+    const aidRef = adminDb.collection('applixir_counters').doc(payload.aid);
     const now = Date.now();
     const resetKey = todayMidnightTs(now);
 
@@ -148,7 +148,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { todayEarned: todayEarned + willEarn, lastEarnedAt: now, lastResetAt },
         { merge: true }
       );
-      const events = adminDb.collection('ad_events');
+      const events = adminDb.collection('applixir_events');
       tx.set(events.doc(), {
         ts: now,
         kind: 'reward_granted',
@@ -180,7 +180,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     return NextResponse.json({ ok: true });
   } catch (e) {
-    console.error('[api/ad/complete] error', e);
+    console.error('[api/applixir/complete] error', e);
     return NextResponse.json(
       { ok: false, error: 'server_error' },
       { status: 500 }

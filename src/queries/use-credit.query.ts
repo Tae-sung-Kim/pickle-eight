@@ -15,11 +15,11 @@ import {
 import type {
   CreditClaimResponseType,
   UserCreditsType,
-  CreditAdEventPayloadType,
-  CreditStartAdSessionInputType,
-  CreditStartAdSessionOutputType,
-  CreditCompleteAdSessionInputType,
-  CreditCompleteAdSessionOutputType,
+  CreditApplixirEventPayloadType,
+  CreditStartApplixirSessionInputType,
+  CreditStartApplixirSessionOutputType,
+  CreditCompleteApplixirSessionInputType,
+  CreditCompleteApplixirSessionOutputType,
 } from '@/types';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
@@ -77,45 +77,45 @@ export function claimCreditsMutation(
 }
 
 // Ad event mutation hook
-export function useAdEventMutation(): UseMutationResult<
+export function useApplixirEventMutation(): UseMutationResult<
   void,
   Error,
-  CreditAdEventPayloadType
+  CreditApplixirEventPayloadType
 > {
-  return useMutation<void, Error, CreditAdEventPayloadType>({
-    mutationKey: ['ad', 'event'],
+  return useMutation<void, Error, CreditApplixirEventPayloadType>({
+    mutationKey: ['applixir', 'event'],
     mutationFn: (p) => postAdEvent(p),
   });
 }
 
-// Start ad session mutation hook
-export function useStartAdSessionMutation(): UseMutationResult<
-  CreditStartAdSessionOutputType,
+// Start applixir session mutation hook
+export function useStartApplixirSessionMutation(): UseMutationResult<
+  CreditStartApplixirSessionOutputType,
   Error,
-  CreditStartAdSessionInputType
+  CreditStartApplixirSessionInputType
 > {
   return useMutation<
-    CreditStartAdSessionOutputType,
+    CreditStartApplixirSessionOutputType,
     Error,
-    CreditStartAdSessionInputType
+    CreditStartApplixirSessionInputType
   >({
-    mutationKey: ['ad', 'start'],
+    mutationKey: ['applixir', 'start'],
     mutationFn: (p) => startAdSession(p),
   });
 }
 
-// Complete ad session mutation hook
-export function useCompleteAdSessionMutation(): UseMutationResult<
-  CreditCompleteAdSessionOutputType,
+// Complete applixir session mutation hook
+export function useCompleteApplixirSessionMutation(): UseMutationResult<
+  CreditCompleteApplixirSessionOutputType,
   Error,
-  CreditCompleteAdSessionInputType
+  CreditCompleteApplixirSessionInputType
 > {
   return useMutation<
-    CreditCompleteAdSessionOutputType,
+    CreditCompleteApplixirSessionOutputType,
     Error,
-    CreditCompleteAdSessionInputType
+    CreditCompleteApplixirSessionInputType
   >({
-    mutationKey: ['ad', 'complete'],
+    mutationKey: ['applixir', 'complete'],
     mutationFn: (p) => completeAdSession(p),
   });
 }

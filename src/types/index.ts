@@ -1,4 +1,7 @@
-import { CreditAdErrorType, CreditAdStatusType } from './credit.type';
+import {
+  CreditApplixirErrorType,
+  CreditApplixirStatusType,
+} from './credit.type';
 
 declare global {
   interface Window {
@@ -6,10 +9,10 @@ declare global {
     initializeAndOpenPlayer?: (options: {
       apiKey: string;
       injectionElementId: string;
-      adStatusCallbackFn: (status: { type: CreditAdStatusType }) => void;
+      adStatusCallbackFn: (status: { type: CreditApplixirStatusType }) => void;
       adErrorCallbackFn: (error: {
         getError: () => {
-          data: { type: CreditAdErrorType };
+          data: { type: CreditApplixirErrorType };
           errorMessage: string;
         };
       }) => void;

@@ -50,7 +50,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     let baselineEarned = 0;
     let baselineResetAt = resetKey;
     try {
-      const countersRef = adminDb.collection('ad_counters').doc(aid);
+      const countersRef = adminDb.collection('applixir_counters').doc(aid);
       const countersSnap = await countersRef.get();
       if (countersSnap.exists) {
         const d = countersSnap.data() as {
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const origin = req.headers.get('origin') || null;
     const referer = req.headers.get('referer') || null;
 
-    const docRef = adminDb.collection('ad_nonces').doc(token);
+    const docRef = adminDb.collection('applixir_nonces').doc(token);
     await docRef.set(
       {
         status: 'issued',
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
     return res;
   } catch (e) {
-    console.error('[api/ad/start] error', e);
+    console.error('[api/applixir/start] error', e);
     return NextResponse.json(
       { ok: false, error: 'server_error' },
       { status: 500 }
