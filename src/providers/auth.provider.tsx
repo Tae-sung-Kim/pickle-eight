@@ -10,7 +10,7 @@ import React, {
 import type { User } from 'firebase/auth';
 import { ensureAnonymousUser, subscribeAuth } from '@/services';
 
-export type AuthContextValue = {
+type AuthContextValue = {
   readonly user: User | null;
   readonly loading: boolean;
 };

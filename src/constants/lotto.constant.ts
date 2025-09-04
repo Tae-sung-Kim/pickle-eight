@@ -71,3 +71,9 @@ export const LOTTO_WARNING_X_PADDING: Record<string, string> = {
 } as const;
 
 export const LOTTO_MAX_CUSTOM_TICKETS = 50 as const;
+
+export enum LOTTO_WARNING_TONE_ENUM {
+  WARNING = 'warning',
+  DANGER = 'danger',
+  MUTED = 'muted',
+}

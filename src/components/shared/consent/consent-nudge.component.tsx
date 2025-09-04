@@ -1,16 +1,12 @@
 'use client';
 
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useConsentContext } from '@/providers';
-
-interface ConsentNudgeProps {
-  readonly variant?: 'gratitude' | 'value' | 'transparent' | 'gentle';
-}
+import { ConsentNudgeType } from '@/types';
 
 export function ConsentNudgeComponent({
   variant = 'gratitude',
-}: ConsentNudgeProps) {
+}: ConsentNudgeType) {
   const { state, onAccept } = useConsentContext();
 
   // Don't show if already accepted
@@ -25,30 +21,28 @@ export function ConsentNudgeComponent({
       case 'gratitude':
         return {
           emoji: '🎉',
-          title: '결과가 마음에 드시나요?',
-          description:
-            '이런 무료 도구들을 계속 제공하려면 광고 수익이 필요해요',
-          buttonText: '무료 서비스 지원하기',
+          title: '결과가 마음에 드셨나요?',
+          description: '광고 동의로 이 무료 도구가 계속 운영될 수 있어요',
+          buttonText: '광고 동의하고 지원하기',
           bgClass: 'bg-gradient-to-r from-green-50 to-blue-50',
         };
 
       case 'value':
         return {
           emoji: '💡',
-          title: '무료 서비스를 계속 이용하세요',
-          description:
-            '광고 수익으로 서버 비용을 충당하여 모든 기능을 무료로 제공합니다',
-          buttonText: '동의하기',
+          title: '광고 동의로 모든 기능을 계속 무료로',
+          description: '광고 수익으로 서버·유지 비용을 충당하고 있어요',
+          buttonText: '광고에 동의',
           bgClass: 'bg-blue-50 border border-blue-200',
         };
 
       case 'transparent':
         return {
           emoji: '📊',
-          title: '서비스 운영 현황',
+          title: '운영 투명성',
           description:
-            '월 서버 비용 ~50,000원 | 이용자 1,000명+ | 여러분의 동의가 큰 도움이 됩니다',
-          buttonText: '서비스 지원하기',
+            '월 서버비 약 50,000원 · 이용자 1,000+ · 광고 동의가 큰 힘이 됩니다',
+          buttonText: '광고 동의로 지원',
           bgClass: 'bg-gray-50 border border-gray-200',
         };
 
@@ -57,8 +51,8 @@ export function ConsentNudgeComponent({
         return {
           emoji: '💝',
           title: '',
-          description: '광고 동의로 무료 서비스를 지원해주세요',
-          buttonText: '동의',
+          description: '광고 동의로 무료 서비스 유지를 함께해 주세요',
+          buttonText: '동의하기',
           bgClass: 'bg-yellow-50',
         };
     }

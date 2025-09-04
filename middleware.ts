@@ -48,8 +48,16 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   }
 
   const ip: string = getClientIp(req) ?? 'unknown';
-  // Bind secret to process.env; do NOT fall back to dev-secret in production.
-  const secret: string = process.env.DEVICE_COOKIE_SECRET || 'dev-secret';
+  // Harden secret usage: production must have a secret, otherwise block
+  const envSecret = process.env.DEVICE_COOKIE_SECRET;
+  const isProd = process.env.NODE_ENV === 'production';
+  if (isProd && !envSecret) {
+    return NextResponse.json(
+      { ok: false, code: 'config/missing-device-cookie-secret' },
+      { status: 500 }
+    );
+  }
+  const secret: string = envSecret || 'dev-secret';
 
   const cookie = req.cookies.get(COOKIE_NAME)?.value;
   const now: number = Date.now();

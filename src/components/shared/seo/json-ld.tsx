@@ -1,6 +1,4 @@
-import React from 'react';
-
-export type JsonLdProps = {
+export type JsonLdComponentType = {
   readonly data:
     | Record<string, unknown>
     | ReadonlyArray<Record<string, unknown>>;
@@ -9,7 +7,7 @@ export type JsonLdProps = {
 /**
  * Renders a JSON-LD script tag. Accepts a single object or an array of objects.
  */
-export function JsonLd(props: JsonLdProps) {
+export function JsonLdComponent(props: JsonLdComponentType) {
   const payload = Array.isArray(props.data) ? props.data : [props.data];
   const json =
     payload.length === 1 ? JSON.stringify(payload[0]) : JSON.stringify(payload);
@@ -20,5 +18,3 @@ export function JsonLd(props: JsonLdProps) {
     />
   );
 }
-
-export default JsonLd;

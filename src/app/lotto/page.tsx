@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
-import { JsonLd, CreditIndicatorComponent } from '@/components';
+import { JsonLdComponent, CreditIndicatorComponent } from '@/components';
 import {
   buildMetadata,
   canonicalUrl,
@@ -66,8 +66,8 @@ export default function LottoHubPage() {
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
-      <JsonLd
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent
         data={[
           {
             '@context': 'https://schema.org',

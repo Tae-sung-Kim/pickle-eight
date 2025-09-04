@@ -7,8 +7,9 @@ import {
   CreditBalancePillComponent,
   CreditGateButtonComponent,
 } from '@/components';
-import { useCreditCostLabel } from '@/hooks';
+import { useAdCredit } from '@/hooks';
 import { useEffect, useState } from 'react';
+import { LottoAnalysisControlsType } from '@/types';
 
 export function LottoAnalysisControlsComponent({
   from,
@@ -17,14 +18,7 @@ export function LottoAnalysisControlsComponent({
   setTo,
   isFetching,
   onAnalyze,
-}: {
-  from: number;
-  to: number;
-  setFrom: (v: number) => void;
-  setTo: (v: number) => void;
-  isFetching: boolean;
-  onAnalyze: () => void;
-}) {
+}: LottoAnalysisControlsType) {
   const [fromText, setFromText] = useState<string>(String(from ?? ''));
   const [toText, setToText] = useState<string>(String(to ?? ''));
   useEffect(() => {
@@ -51,8 +45,9 @@ export function LottoAnalysisControlsComponent({
   const liveIncrements =
     liveCapped > 0 ? Math.floor((Math.max(1, liveCapped) - 1) / 30) : 0;
   const amountOverride = 3 + liveIncrements; // SPEND_COST.analysis=3 기준
+  const { buildCostLabel } = useAdCredit();
 
-  const label = useCreditCostLabel({
+  const label = buildCostLabel({
     spendKey: 'analysis',
     baseLabel: '분석',
     isBusy: isFetching,

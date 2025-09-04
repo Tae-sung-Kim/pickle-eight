@@ -11,3 +11,4 @@ export * from './lotto.type';
 export * from './emoji-translation.type';
 export * from './theme.type';
 export * from './ad-credit.type';
+export * from './consent.type';

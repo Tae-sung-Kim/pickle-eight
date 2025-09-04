@@ -38,6 +38,9 @@ export type AdCreditReturn = {
   getWatchedMs: () => number;
   resetElapsed: () => void;
   bindMediaElement: (el: HTMLMediaElement) => void;
+  buildCostLabel: (
+    args: CreditCostLabelType & { amountOverride?: number }
+  ) => string;
 };
 
 export type CreditBalanceType = {

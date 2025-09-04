@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { JsonLd } from '@/components';
+import { JsonLdComponent } from '@/components';
 import {
   buildMetadata,
   canonicalUrl,
@@ -28,7 +28,7 @@ export default function SupportPage() {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <header className="mb-8">
         <h1 className="text-2xl font-bold">후원</h1>
         <p className="mt-2 text-sm text-muted-foreground">

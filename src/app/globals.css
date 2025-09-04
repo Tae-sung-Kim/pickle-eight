@@ -141,4 +141,16 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Applixir player container: ensure injected media fills parent without overflow */
+  #applixir-applixir-container,
+  #applixir-applixir-container * {
+    max-width: 100% !important;
+  }
+  #applixir-applixir-container video,
+  #applixir-applixir-container canvas,
+  #applixir-applixir-container iframe {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
 }

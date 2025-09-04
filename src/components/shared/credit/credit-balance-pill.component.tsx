@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useCreditStore } from '@/stores';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import { Button } from '@/components/ui/button';
 import { RewardModalComponent } from '@/components';
 import { CREDIT_POLICY } from '@/constants';
@@ -12,6 +12,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useConsentContext } from '@/providers';
+import { useAdCredit } from '@/hooks';
 
 export type CreditBalancePillType = {
   className?: string;
@@ -22,40 +23,16 @@ export function CreditBalancePillComponent({
   className,
   showLabel = true,
 }: CreditBalancePillType) {
-  const { total, todayEarned, lastEarnedAt } = useCreditStore();
+  const { total, todayEarned } = useCreditStore();
   const [open, setOpen] = useState<boolean>(false);
-  const [cooldownMsLeft, setCooldownMsLeft] = useState<number>(0);
-  const reachedDailyCap = todayEarned >= CREDIT_POLICY.dailyCap;
-  const remaining = Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
+  const { cooldownMsLeft, reachedDailyCap, canWatchAd, inCooldown } =
+    useAdCredit();
 
   const { state, onOpen } = useConsentContext();
 
-  useEffect(() => {
-    const updateLeft = (): void => {
-      const last: number = lastEarnedAt ?? 0;
-      const since: number = Date.now() - last;
-      const left: number = Math.max(0, CREDIT_POLICY.cooldownMs - since);
-      setCooldownMsLeft(left);
-    };
-    updateLeft();
-    const id = setInterval(updateLeft, 1000);
-    return () => clearInterval(id);
-  }, [lastEarnedAt]);
-
-  const inCooldown = useMemo<boolean>(
-    () => cooldownMsLeft > 0,
-    [cooldownMsLeft]
-  );
-  const cooldownLabel = useMemo<string>(() => {
-    const totalSec = Math.ceil(cooldownMsLeft / 1000);
-    const m = Math.floor(totalSec / 60);
-    const s = totalSec % 60;
-    return `${m}m${s}s`;
-  }, [cooldownMsLeft]);
-
   const disabledNow = useMemo<boolean>(
-    () => reachedDailyCap || inCooldown,
-    [reachedDailyCap, inCooldown]
+    () => reachedDailyCap || !canWatchAd,
+    [reachedDailyCap, canWatchAd]
   );
 
   const handleTriggerClick = (
@@ -83,6 +60,17 @@ export function CreditBalancePillComponent({
       handleTriggerClick(e);
     }
   };
+
+  const cooldownLabel = useMemo<string>(() => {
+    const totalSec = Math.ceil(cooldownMsLeft / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${m}m${s}s`;
+  }, [cooldownMsLeft]);
+
+  const remaining = useMemo<number>(() => {
+    return Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
+  }, [todayEarned]);
 
   return (
     <div

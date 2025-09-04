@@ -7,7 +7,7 @@ function buildCsp(): string {
   const scriptSrc = [
     "'self'",
     "'unsafe-inline'",
-    "'unsafe-eval'",
+    // Note: 'unsafe-eval' will be added only in development below
     'https://cdn.applixir.com',
     'https://pagead2.googlesyndication.com',
     'https://t1.daumcdn.net',
@@ -79,7 +79,8 @@ function buildCsp(): string {
   const connectSrc = ["'self'", 'https:', 'https://www.google-analytics.com'];
 
   if (!isProd) {
-    scriptSrc.push(vercelLive);
+    // Dev-only allowances
+    scriptSrc.push("'unsafe-eval'", vercelLive);
     scriptSrcElem.push(vercelLive);
     frameSrc.push(vercelLive);
     connectSrc.push(vercelLive);

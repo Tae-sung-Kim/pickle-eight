@@ -1,14 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import React from 'react';
 import { Button } from '@/components/ui/button';
-
-export type AgeGateDialogPropsType = Readonly<{
-  open: boolean;
-  onConfirm: () => void;
-  onCancel: () => void;
-}>;
+import { LottoAgeGateDialogType } from '@/types';
 
 /**
  * Controlled age-gate dialog used for pre-navigation verification.
@@ -18,7 +12,7 @@ export function AgeGateDialogComponent({
   open,
   onConfirm,
   onCancel,
-}: AgeGateDialogPropsType) {
+}: LottoAgeGateDialogType) {
   if (!open) return null;
   return (
     <div

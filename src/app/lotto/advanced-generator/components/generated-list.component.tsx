@@ -2,18 +2,11 @@
 
 import { LottoBallComponent } from '@/components';
 import { Card } from '@/components/ui/card';
-
-type GeneratedItemType = {
-  readonly numbers: readonly [number, number, number, number, number, number];
-};
-
-type GeneratedListType = {
-  readonly items: ReadonlyArray<GeneratedItemType>;
-};
+import { LottoGeneratedListType } from '@/types';
 
 export function LottoAdvancedGeneratedListComponent({
   items,
-}: GeneratedListType) {
+}: LottoGeneratedListType) {
   if (!items || items.length === 0) return null;
   return (
     <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">

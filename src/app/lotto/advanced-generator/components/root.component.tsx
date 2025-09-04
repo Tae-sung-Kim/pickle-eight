@@ -3,13 +3,13 @@
 import { useMemo, useState, useEffect } from 'react';
 import { useLottoDrawsQuery, useLatestLottoDrawQuery } from '@/queries';
 import { LottoGenerator } from '@/utils';
-import { GenerateFiltersType, WeightingOptionsType } from '@/types';
+import { LottoGenerateFiltersType, LottoWeightingOptionsType } from '@/types';
 import { LottoAdvancedGenerateControlsComponent } from './generate-controls.component';
 import { LottoAdvancedWeightingControlsComponent } from './weighting-controls.component';
 import { LottoAdvancedGeneratedListComponent } from './generated-list.component';
 import { Card } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useCreditCostLabel } from '@/hooks';
+import { useAdCredit } from '@/hooks';
 import {
   CreditBalancePillComponent,
   CreditGateButtonComponent,
@@ -18,7 +18,7 @@ import { SPEND_COST } from '@/constants';
 
 export function LottoAdvancedGeneratorComponent() {
   const [count, setCount] = useState<number>(3);
-  const [filters, setFilters] = useState<GenerateFiltersType>({
+  const [filters, setFilters] = useState<LottoGenerateFiltersType>({
     sumMin: 100,
     sumMax: 200,
     maxConsecutive: 2,
@@ -33,11 +33,14 @@ export function LottoAdvancedGeneratorComponent() {
   const { data: latestDraw, isFetching } = useLatestLottoDrawQuery({
     enabled: useWeight,
   });
+
+  const { buildCostLabel } = useAdCredit();
+
   const amountOverride =
     SPEND_COST.advanced +
     (useWeight ? 2 : 0) +
     Math.floor(Math.max(0, count - 1) / 3); // +1 per every +3 tickets
-  const label = useCreditCostLabel({
+  const label = buildCostLabel({
     spendKey: 'advanced',
     baseLabel: '생성',
     isBusy: isFetching,
@@ -73,7 +76,7 @@ export function LottoAdvancedGeneratorComponent() {
 
   const { data: draws } = useLottoDrawsQuery({ from, to, enabled });
 
-  const weighting: WeightingOptionsType | undefined = useMemo(() => {
+  const weighting: LottoWeightingOptionsType | undefined = useMemo(() => {
     if (!useWeight || !draws) return undefined;
     const freq: Record<number, number> = {};
     for (let n = 1; n <= 45; n += 1) freq[n] = 0;
@@ -112,7 +115,7 @@ export function LottoAdvancedGeneratorComponent() {
     const f = {
       ...filters,
       excludeRecentNumbers: excludeNumbers,
-    } as GenerateFiltersType;
+    } as LottoGenerateFiltersType;
     try {
       const safeCount = Math.max(1, Math.min(50, count));
       const list = LottoGenerator.generate(safeCount, f, weighting);

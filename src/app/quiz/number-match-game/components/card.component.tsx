@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { NumberMatchGameCardType } from '@/types';
 import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from '@/constants';

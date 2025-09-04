@@ -44,6 +44,7 @@ export function ApplixirRewardAdComponent({
   const applixirEvent = useApplixirEventMutation();
   const startApplixir = useStartApplixirSessionMutation();
   const completeApplixir = useCompleteApplixirSessionMutation();
+  const hadChildRef = useRef<boolean>(false);
 
   // Centralized credit + watch-time management
   const {
@@ -202,6 +203,25 @@ export function ApplixirRewardAdComponent({
         });
         resetPlayer();
         break;
+      case 'closed':
+      case 'close':
+      case 'ad-closed':
+      case 'adclosed':
+      case 'applixir-closed':
+      case 'player-closed':
+      case 'user-closed': {
+        // 사용자가 플레이어 X 버튼 등으로 닫은 경우
+        handlePause();
+        toast.info('광고가 종료되었습니다.');
+        void applixirEvent.mutateAsync({
+          kind: 'closed_by_user',
+          aid,
+          cid: String(containerKey),
+          watchedMs: getWatchedMs(),
+        });
+        resetPlayer();
+        break;
+      }
       case 'fb-started':
         toast.info('대체 광고가 시작되었습니다.');
         break;
@@ -283,6 +303,19 @@ export function ApplixirRewardAdComponent({
       if (hasChild && !hasStarted) {
         ensureStartedWithToast();
       }
+      // 광고 DOM이 사라진 경우(사용자 닫기 버튼 등) 안전 정지/리셋 처리
+      if (!hasChild && hadChildRef.current && isLoading) {
+        handlePause();
+        toast.info('광고가 종료되었습니다.');
+        void applixirEvent.mutateAsync({
+          kind: 'closed_by_dom',
+          aid: getAnonymousId(),
+          cid: String(containerKey),
+          watchedMs: getWatchedMs(),
+        });
+        resetPlayer();
+      }
+      hadChildRef.current = hasChild;
       // 재생 이벤트 기반 보장: 주입된 video가 play되면 시작 처리
       const videos = containerRef.current?.querySelectorAll('video');
       videos?.forEach((v) => bindMediaElementWithToast(v));
@@ -291,43 +324,6 @@ export function ApplixirRewardAdComponent({
     observerRef.current.observe(containerRef.current, {
       childList: true,
       subtree: true,
-    });
-  };
-
-  const ensureApplixirLoaded = async (): Promise<void> => {
-    if (typeof window === 'undefined') return;
-    if (window.initializeAndOpenPlayer) return;
-    await new Promise<void>((resolve, reject) => {
-      const id = 'applixir-sdk-script';
-      const existing = document.getElementById(id) as HTMLScriptElement | null;
-      // If a script tag already exists, wait for it instead of injecting a duplicate
-      if (existing) {
-        if (typeof window.initializeAndOpenPlayer === 'function') {
-          resolve();
-          return;
-        }
-        const onLoad = () => {
-          existing.removeEventListener('load', onLoad);
-          existing.removeEventListener('error', onError);
-          resolve();
-        };
-        const onError = () => {
-          existing.removeEventListener('load', onLoad);
-          existing.removeEventListener('error', onError);
-          reject(new Error('Failed to load Applixir SDK'));
-        };
-        existing.addEventListener('load', onLoad);
-        existing.addEventListener('error', onError);
-        return;
-      }
-      // No existing script: inject once
-      const s = document.createElement('script');
-      s.id = id;
-      s.src = 'https://cdn.applixir.com/applixir.app.v6.0.1.js';
-      s.async = true;
-      s.onload = () => resolve();
-      s.onerror = () => reject(new Error('Failed to load Applixir SDK'));
-      document.body.appendChild(s);
     });
   };
 
@@ -416,6 +412,44 @@ export function ApplixirRewardAdComponent({
     }
   };
 
+  // Applixir SDK 동적 로더 (누락 복원)
+  const ensureApplixirLoaded = async (): Promise<void> => {
+    if (typeof window === 'undefined') return;
+    if (window.initializeAndOpenPlayer) return;
+    await new Promise<void>((resolve, reject) => {
+      const id = 'applixir-sdk-script';
+      const existing = document.getElementById(id) as HTMLScriptElement | null;
+      // 이미 스크립트 태그가 있다면, 중복 주입 대신 로드 완료만 기다림
+      if (existing) {
+        if (typeof window.initializeAndOpenPlayer === 'function') {
+          resolve();
+          return;
+        }
+        const onLoad = () => {
+          existing.removeEventListener('load', onLoad);
+          existing.removeEventListener('error', onError);
+          resolve();
+        };
+        const onError = () => {
+          existing.removeEventListener('load', onLoad);
+          existing.removeEventListener('error', onError);
+          reject(new Error('Failed to load Applixir SDK'));
+        };
+        existing.addEventListener('load', onLoad);
+        existing.addEventListener('error', onError);
+        return;
+      }
+      // 최초 1회만 삽입
+      const s = document.createElement('script');
+      s.id = id;
+      s.src = 'https://cdn.applixir.com/applixir.app.v6.0.1.js';
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('Failed to load Applixir SDK'));
+      document.body.appendChild(s);
+    });
+  };
+
   // 래퍼 박스를 사용해 16:9 유지 + 가용 높이 내에 맞춤(최대 90vh)
   useEffect(() => {
     const el = wrapperRef.current;
@@ -474,21 +508,6 @@ export function ApplixirRewardAdComponent({
           </div>
         )}
       </div>
-
-      {/* 주입되는 비디오/캔버스/iframe이 부모 크기를 채우고 잘리지 않도록 강제 */}
-      <style jsx global>{`
-        #applixir-applixir-container,
-        #applixir-applixir-container * {
-          max-width: 100% !important;
-        }
-        #applixir-applixir-container video,
-        #applixir-applixir-container canvas,
-        #applixir-applixir-container iframe {
-          width: 100% !important;
-          height: 100% !important;
-          object-fit: contain !important;
-        }
-      `}</style>
 
       <div className="flex justify-center gap-2">
         <Button

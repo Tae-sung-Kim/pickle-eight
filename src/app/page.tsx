@@ -3,7 +3,7 @@ import HeroPage from './hero/page';
 import HomePage from './home/page';
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
-import { JsonLd } from '@/components';
+import { JsonLdComponent } from '@/components';
 import { buildMetadata, jsonLdWebSite } from '@/lib';
 
 const baseMeta = buildMetadata({
@@ -40,8 +40,8 @@ export const metadata: Metadata = {
 export default function RootPage() {
   return (
     <>
-      <JsonLd data={[jsonLdWebSite()]} />
-      <JsonLd
+      <JsonLdComponent data={[jsonLdWebSite()]} />
+      <JsonLdComponent
         data={[
           {
             '@context': 'https://schema.org',

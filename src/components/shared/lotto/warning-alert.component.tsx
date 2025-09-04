@@ -1,16 +1,16 @@
-import React from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
 import { LottoWarningAlertSpaceType, LottoWarningToneType } from '@/types';
 import {
   LOTTO_ALERT_TONE_STYLES,
   LOTTO_WARNING_SPACING,
+  LOTTO_WARNING_TONE_ENUM,
   LOTTO_WARNING_X_PADDING,
 } from '@/constants';
 
 export function LottoWarningAlertComponent({
   className,
-  tone = 'warning',
+  tone = LOTTO_WARNING_TONE_ENUM.WARNING,
   includeAgeNotice = true,
   space = 'md',
   xSpace = 'md',

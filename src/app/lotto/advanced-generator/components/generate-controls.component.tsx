@@ -1,25 +1,16 @@
 'use client';
 
-import { GenerateFiltersType } from '@/types';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useEffect, useState } from 'react';
-
-export type GenerateControlsType = {
-  readonly count: number;
-  readonly filters: GenerateFiltersType;
-  readonly onChangeCount: (next: number) => void;
-  readonly onChangeFilters: (
-    updater: (prev: GenerateFiltersType) => GenerateFiltersType
-  ) => void;
-};
+import { LottoGenerateControlsType } from '@/types';
 
 export function LottoAdvancedGenerateControlsComponent({
   count,
   filters,
   onChangeCount,
   onChangeFilters,
-}: GenerateControlsType) {
+}: LottoGenerateControlsType) {
   const [countText, setCountText] = useState<string>(String(count ?? ''));
   const [sumMinText, setSumMinText] = useState<string>(
     filters.sumMin === undefined ? '' : String(filters.sumMin)

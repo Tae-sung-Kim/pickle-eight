@@ -6,10 +6,10 @@ import {
   BackHubPageComponent,
   LottoWarningAlertComponent,
   TitleWrapperComponent,
-  JsonLd,
+  JsonLdComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '로또 고급 번호 생성기 - 필터·패턴·빈도 기반 | Pickle Eight',
@@ -82,11 +82,11 @@ export default function AdvancedGeneratorPage() {
 
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <LottoWarningAlertComponent
         className="mt-4"
-        tone="danger"
+        tone={LOTTO_WARNING_TONE_ENUM.DANGER}
         includeAgeNotice
       />
       <div className="mx-auto max-w-5xl p-8">

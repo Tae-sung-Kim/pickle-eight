@@ -4,18 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { useEffect, useState } from 'react';
-
-export type WeightingControlsType = {
-  readonly useWeight: boolean;
-  readonly loading: boolean;
-  readonly from: number;
-  readonly to: number;
-  readonly excludeLatest: boolean;
-  readonly onToggleUseWeight: (next: boolean) => void;
-  readonly onChangeFrom: (next: number) => void;
-  readonly onChangeTo: (next: number) => void;
-  readonly onToggleExcludeLatest: (next: boolean) => void;
-};
+import { LottoWeightingControlsType } from '@/types';
 
 export function LottoAdvancedWeightingControlsComponent({
   useWeight,
@@ -27,7 +16,7 @@ export function LottoAdvancedWeightingControlsComponent({
   onChangeFrom,
   onChangeTo,
   onToggleExcludeLatest,
-}: WeightingControlsType) {
+}: LottoWeightingControlsType) {
   const [fromText, setFromText] = useState<string>(String(from ?? ''));
   const [toText, setToText] = useState<string>(String(to ?? ''));
   useEffect(() => setFromText(String(from ?? '')), [from]);

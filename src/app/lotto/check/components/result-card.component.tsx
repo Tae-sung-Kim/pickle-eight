@@ -1,4 +1,3 @@
-import React from 'react';
 import type { LottoCheckResultCardType, LottoLankType } from '@/types';
 import {
   Card,
