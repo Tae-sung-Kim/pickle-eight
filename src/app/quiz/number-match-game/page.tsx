@@ -4,7 +4,7 @@ import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
   BackHubPageComponent,
   ContentWrapperComponent,
-  JsonLd,
+  JsonLdComponent,
   TitleWrapperComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
@@ -92,7 +92,7 @@ export default function NumberMatchGamePage() {
       />
       {/* Content */}
       <section className="mx-auto max-w-5xl p-8">
-        <JsonLd data={[jsonLdWebSite(), crumbs]} />
+        <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
         <NumberMatchGameComponent />
       </section>
     </ContentWrapperComponent>

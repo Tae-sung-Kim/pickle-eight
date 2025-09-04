@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { JsonLd } from '@/components';
+import { JsonLdComponent } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
@@ -60,7 +60,7 @@ export default async function LottoStatsTypePage({
   ]);
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       {valid ? (
         <>
           <h1 className="text-2xl font-bold tracking-tight">통계: {type}</h1>

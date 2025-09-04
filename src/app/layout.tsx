@@ -6,7 +6,7 @@ import {
   FooterLayout,
   HeaderLayout,
   AdFitSlotComponent,
-  JsonLd,
+  JsonLdComponent,
 } from '@/components';
 import { Toaster } from 'sonner';
 import {
@@ -131,7 +131,7 @@ export default function RootLayout({
           content="3b2951ae643e0dd91af8ba5dedd85cb450a7018a"
         />
         {/* JSON-LD: WebSite + Organization */}
-        <JsonLd data={[jsonLdWebSite(), jsonLdOrganization()]} />
+        <JsonLdComponent data={[jsonLdWebSite(), jsonLdOrganization()]} />
       </head>
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
         <QueryClientProviderWrapper>

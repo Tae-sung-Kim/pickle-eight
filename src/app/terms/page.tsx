@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
-import { JsonLd } from '@/components';
+import { JsonLdComponent } from '@/components';
 import {
   buildMetadata,
   canonicalUrl,
@@ -46,7 +46,7 @@ export default function TermsPage() {
   ]);
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <h1 className="text-2xl font-semibold">이용약관</h1>
       <p className="mt-1 text-xs text-muted-foreground">
         시행일: {EFFECTIVE_DATE}

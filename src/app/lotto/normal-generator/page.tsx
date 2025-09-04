@@ -3,7 +3,7 @@ import { LottoNormalGeneratorComponent } from './components';
 import { generateOgImageUrl } from '@/utils';
 import {
   LottoWarningAlertComponent,
-  JsonLd,
+  JsonLdComponent,
   ContentWrapperComponent,
   BackHubPageComponent,
 } from '@/components';
@@ -70,7 +70,7 @@ export default function LottoPage() {
         tone={LOTTO_WARNING_TONE_ENUM.DANGER}
         includeAgeNotice
       />
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <div className="mx-auto max-w-5xl p-8">
         <LottoNormalGeneratorComponent />
       </div>

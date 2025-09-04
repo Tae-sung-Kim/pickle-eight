@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import {
   BackHubPageComponent,
   ContentWrapperComponent,
-  JsonLd,
+  JsonLdComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
@@ -86,7 +86,7 @@ export default function TeamAssignmentPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}>
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER} />
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <TeamAssignmentComponent />
     </ContentWrapperComponent>
   );

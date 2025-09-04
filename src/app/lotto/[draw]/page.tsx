@@ -5,7 +5,7 @@ import {
   BackHubPageComponent,
   ContentWrapperComponent,
   LottoWarningAlertComponent,
-  JsonLd,
+  JsonLdComponent,
 } from '@/components';
 import { ReactElement } from 'react';
 import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
@@ -112,7 +112,7 @@ export default async function LottoDrawPage({
 
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
-      <JsonLd data={[jsonLdWebSite(), crumbs, webPage]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs, webPage]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <LottoWarningAlertComponent
         className="mt-4"

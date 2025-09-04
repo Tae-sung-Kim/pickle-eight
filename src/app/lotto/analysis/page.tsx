@@ -5,7 +5,7 @@ import {
   BackHubPageComponent,
   LottoWarningAlertComponent,
   TitleWrapperComponent,
-  JsonLd,
+  JsonLdComponent,
 } from '@/components';
 
 import type { Metadata } from 'next';
@@ -66,7 +66,7 @@ export default function LottoAnalysisPage() {
   ]);
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       {/* <></> */}
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <LottoWarningAlertComponent

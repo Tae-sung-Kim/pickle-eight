@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
-import { JsonLd } from '@/components';
+import { JsonLdComponent } from '@/components';
 import {
   buildMetadata,
   canonicalUrl,
@@ -57,7 +57,7 @@ export default function CreditsPolicyPage(): JSX.Element {
 
   return (
     <main className="container mx-auto max-w-3xl px-4 py-10">
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <h1 className="text-2xl font-bold mb-6">크레딧 정책</h1>
       <p className="mt-1 text-xs text-muted-foreground">
         시행일: {EFFECTIVE_DATE}

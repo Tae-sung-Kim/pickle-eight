@@ -3,7 +3,7 @@ import {
   BackHubPageComponent,
   LottoWarningAlertComponent,
   TitleWrapperComponent,
-  JsonLd,
+  JsonLdComponent,
 } from '@/components';
 import { LottoSimulatorComponent } from './components';
 import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
@@ -66,7 +66,7 @@ export default function LottoSimulatorPage() {
   ]);
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <LottoWarningAlertComponent
         className="mt-4"

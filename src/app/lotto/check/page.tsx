@@ -5,7 +5,7 @@ import {
   ContentWrapperComponent,
   LottoWarningAlertComponent,
   TitleWrapperComponent,
-  JsonLd,
+  JsonLdComponent,
 } from '@/components';
 import { generateOgImageUrl } from '@/utils';
 import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
@@ -63,7 +63,7 @@ export default function LottoCheckPage() {
   ]);
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
-      <JsonLd data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
 
       <LottoWarningAlertComponent

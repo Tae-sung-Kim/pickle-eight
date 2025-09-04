@@ -4,7 +4,7 @@ import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
   BackHubPageComponent,
   ContentWrapperComponent,
-  JsonLd,
+  JsonLdComponent,
   TitleWrapperComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
@@ -90,7 +90,7 @@ export default function TriviaQuizPage() {
       />
       {/* Content */}
       <section className="mx-auto max-w-5xl px-4 pb-16">
-        <JsonLd data={[jsonLdWebSite(), crumbs]} />
+        <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
         <TriviaQuizComponent />
       </section>
     </ContentWrapperComponent>

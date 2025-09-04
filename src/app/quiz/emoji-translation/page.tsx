@@ -4,7 +4,7 @@ import { EmojiTranslationComponent } from './components';
 import {
   BackHubPageComponent,
   ContentWrapperComponent,
-  JsonLd,
+  JsonLdComponent,
   TitleWrapperComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
@@ -87,7 +87,7 @@ export default function EmojiTranslationPage() {
       {/* Content */}
       <section className="mx-auto max-w-5xl px-4 pb-16">
         <div className="mt-2">
-          <JsonLd data={[jsonLdWebSite(), crumbs]} />
+          <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
           <EmojiTranslationComponent />
         </div>
       </section>
