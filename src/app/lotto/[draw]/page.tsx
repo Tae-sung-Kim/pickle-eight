@@ -4,11 +4,10 @@ import { getLottoDrawByNumber } from '@/services';
 import {
   BackHubPageComponent,
   ContentWrapperComponent,
-  LottoWarningAlertComponent,
   JsonLdComponent,
 } from '@/components';
 import { ReactElement } from 'react';
-import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 import { LottoDrawCardComponent } from './components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
@@ -114,11 +113,6 @@ export default async function LottoDrawPage({
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <JsonLdComponent data={[jsonLdWebSite(), crumbs, webPage]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
-      <LottoWarningAlertComponent
-        className="mt-4"
-        tone={LOTTO_WARNING_TONE_ENUM.WARNING}
-        includeAgeNotice
-      />
 
       {!valid && (
         <>

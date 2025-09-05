@@ -1,0 +1,6 @@
+{
+  "crons": [
+    { "path": "/api/lotto/sync?forward", "schedule": "30 12 * * SAT" },
+    { "path": "/api/lotto/sync?forward", "schedule": "0 18 * * SAT" }
+  ]
+}

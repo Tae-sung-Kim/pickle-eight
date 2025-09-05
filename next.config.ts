@@ -103,6 +103,7 @@ function buildCsp(): string {
 }
 
 const csp = buildCsp();
+const cspReportOnly = `${csp}; report-uri /api/csp-report`;
 
 // Restrict vercel.live to non-production if desired
 // "connect-src 'self' https: https://www.google-analytics.com #ifdef process.env.NODE_ENV !== 'production' https://vercel.live #endif",
@@ -122,6 +123,9 @@ const nextConfig: NextConfig = {
             value: 'geolocation=(), microphone=(), camera=()',
           },
           { key: 'Content-Security-Policy', value: csp },
+          // Reporting endpoints (modern and fallback)
+          { key: 'Reporting-Endpoints', value: 'default="/api/csp-report"' },
+          { key: 'Content-Security-Policy-Report-Only', value: cspReportOnly },
         ],
       },
     ];

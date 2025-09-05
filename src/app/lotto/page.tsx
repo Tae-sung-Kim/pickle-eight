@@ -75,7 +75,7 @@ export default function LottoHubPage() {
             mainEntity: [
               {
                 '@type': 'Question',
-                name: '로또 번호 추천은 어떻게 이루어지나요?',
+                name: '로또 번호 추천(로또 번호 무작위 생성)은 어떻게 이루어지나요?',
                 acceptedAnswer: {
                   '@type': 'Answer',
                   text: '무작위 생성과 과거 빈도·패턴 등 통계 정보를 참고해 조합을 제안합니다. 특정 당첨을 보장하지 않으며 참고용입니다.',
@@ -98,6 +98,21 @@ export default function LottoHubPage() {
                 },
               },
             ],
+          },
+        ]}
+      />
+      <JsonLdComponent
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            itemListElement: lottoItems.map((it, idx) => ({
+              '@type': 'ListItem',
+              position: idx + 1,
+              url: canonicalUrl(it.href),
+              name: it.label,
+              description: it.desc,
+            })),
           },
         ]}
       />

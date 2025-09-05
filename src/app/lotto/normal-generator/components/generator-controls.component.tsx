@@ -24,7 +24,7 @@ export function LottoGeneratorControlsComponent({
           <div>
             <h2 className="text-xl font-bold">로또 번호 생성</h2>
             <p className="text-sm text-muted-foreground">
-              AI가 추천하는 행운의 번호를 생성합니다
+              {orderCount}개의 무작위(랜덤) 번호를 생성합니다
             </p>
           </div>
           <div className="flex h-12 w-16 items-center justify-center rounded-full bg-muted text-lg font-bold text-primary">
@@ -70,7 +70,7 @@ export function LottoGeneratorControlsComponent({
         ) : (
           <span className="flex items-center">
             <Sparkles className="mr-2 h-5 w-5" />
-            행운의 번호 뽑기
+            무작위 번호 뽑기
           </span>
         )}
       </Button>

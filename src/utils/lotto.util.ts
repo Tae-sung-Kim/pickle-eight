@@ -280,9 +280,39 @@ export const LottoGenerator = {
 
 // 로또 랜덤 번호 추출
 export function generateLottoNumbers(): number[] {
+  // Use Web Crypto if available for better randomness (unbiased via rejection sampling)
+  const hasWebCrypto =
+    typeof globalThis !== 'undefined' &&
+    typeof (globalThis as unknown as { crypto?: Crypto }).crypto !==
+      'undefined' &&
+    typeof (globalThis as unknown as { crypto: Crypto }).crypto
+      .getRandomValues === 'function';
+
+  const pickUnbiased = (maxInclusive: number): number => {
+    if (hasWebCrypto) {
+      // Rejection sampling to avoid modulo bias
+      const range = maxInclusive + 1; // [0, maxInclusive]
+      const maxUint32 = 0xffffffff;
+      const threshold = Math.floor((maxUint32 + 1) / range) * range - 1;
+      const buf = new Uint32Array(1);
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        (globalThis as unknown as { crypto: Crypto }).crypto.getRandomValues(
+          buf
+        );
+        const r = buf[0];
+        if (r <= threshold) return r % range; // uniform in [0, maxInclusive]
+      }
+    }
+    // Fallback
+    return Math.floor(Math.random() * (maxInclusive + 1));
+  };
+
   const numbers = new Set<number>();
   while (numbers.size < 6) {
-    numbers.add(Math.floor(Math.random() * 45) + 1);
+    // pick in [1,45]
+    const n = pickUnbiased(45 - 1) + 1;
+    numbers.add(n);
   }
   return Array.from(numbers).sort((a, b) => a - b);
 }

@@ -4,11 +4,10 @@ import { generateOgImageUrl } from '@/utils';
 import {
   BackHubPageComponent,
   ContentWrapperComponent,
-  LottoWarningAlertComponent,
   TitleWrapperComponent,
   JsonLdComponent,
 } from '@/components';
-import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -73,12 +72,6 @@ export default function LottoHistoryPage() {
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
-
-      <LottoWarningAlertComponent
-        className="mt-4"
-        tone={LOTTO_WARNING_TONE_ENUM.DANGER}
-        includeAgeNotice
-      />
 
       <div className="mx-auto max-w-5xl py-4 p-4">
         <TitleWrapperComponent

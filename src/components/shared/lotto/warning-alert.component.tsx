@@ -30,22 +30,22 @@ export function LottoWarningAlertComponent({
   return (
     <div className={xPaddingClass}>
       <Alert
-        className={`${toneClass} ${spacingClass} rounded-xl p-4 md:p-5 shadow-sm ring-1 ring-black/5 ${
+        className={`${toneClass} ${spacingClass} rounded-lg p-3 md:p-3.5 ${
           className ?? ''
         }`.trim()}
       >
-        <AlertTriangle className={iconClass} />
-        <AlertTitle>중요 안내</AlertTitle>
-        <AlertDescription className="leading-relaxed">
+        <AlertTriangle className={`${iconClass} h-4 w-4`} />
+        <AlertTitle className="sr-only text-[13px] font-medium">
+          유의사항
+        </AlertTitle>
+        <AlertDescription className="text-[12px] leading-relaxed">
           {includeAgeNotice && (
             <p>
-              본 서비스는 만 19세 이상 이용 가능합니다. 건전한 이용을 권장하며,
-              과도한 구매는 금물입니다.
+              본 서비스는 만 19세 이상 대상입니다. 책임 있는 이용을 권장합니다.
             </p>
           )}
           <p>
-            본 서비스의 결과는 참고용입니다. 시스템을 100% 신뢰하지 마시고
-            반드시 매장 또는 공식 채널에서 다시 확인해 주세요.
+            제공되는 결과는 참고용이며, 최신 정보는 공식 채널에서 확인하세요.
           </p>
         </AlertDescription>
       </Alert>
