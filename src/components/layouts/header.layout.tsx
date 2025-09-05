@@ -28,6 +28,7 @@ export function HeaderLayout() {
     envMode === CREDIT_RESET_MODE_ENUM.MINUTE
       ? CREDIT_RESET_MODE_ENUM.MINUTE
       : CREDIT_RESET_MODE_ENUM.MIDNIGHT;
+  const isMinuteMode = resetMode === CREDIT_RESET_MODE_ENUM.MINUTE;
 
   const calcNextResetTs = useCallback(() => {
     const now = new Date();
@@ -74,6 +75,15 @@ export function HeaderLayout() {
     return () => clearInterval(id);
   }, [resetMode, syncReset, nextResetTs, calcNextResetTs]);
 
+  useEffect(() => {
+    if (isMinuteMode) {
+      // Developer-visible warning in console to avoid accidental production usage
+      console.warn(
+        '[Credits] NEXT_PUBLIC_CREDIT_RESET_MODE=minute is active. Credits reset every minute (TEST MODE).'
+      );
+    }
+  }, [isMinuteMode]);
+
   const remainingLabel = useMemo<string>(() => {
     if (remainingMs < 0) return '';
     const totalSec = Math.ceil(remainingMs / 1000);
@@ -87,11 +97,12 @@ export function HeaderLayout() {
   }, [remainingMs]);
 
   const tooltipText = useMemo<string>(() => {
-    if (todayEarned >= CREDIT_POLICY.dailyCap) {
-      return `오늘 획득 ${todayEarned}/${CREDIT_POLICY.dailyCap} · 일일 한도 도달 · 리셋까지 ${remainingLabel}`;
-    }
-    return `오늘 획득 ${todayEarned}/${CREDIT_POLICY.dailyCap} · 리셋까지 ${remainingLabel}`;
-  }, [todayEarned, remainingLabel]);
+    const base =
+      todayEarned >= CREDIT_POLICY.dailyCap
+        ? `오늘 획득 ${todayEarned}/${CREDIT_POLICY.dailyCap} · 일일 한도 도달 · 리셋까지 ${remainingLabel}`
+        : `오늘 획득 ${todayEarned}/${CREDIT_POLICY.dailyCap} · 리셋까지 ${remainingLabel}`;
+    return isMinuteMode ? `${base} · 테스트 모드(1분 리셋)` : base;
+  }, [todayEarned, remainingLabel, isMinuteMode]);
 
   const remainingCharges = useMemo<number>(() => {
     const left = Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
