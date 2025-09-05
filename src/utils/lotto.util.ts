@@ -295,7 +295,6 @@ export function generateLottoNumbers(): number[] {
       const maxUint32 = 0xffffffff;
       const threshold = Math.floor((maxUint32 + 1) / range) * range - 1;
       const buf = new Uint32Array(1);
-      // eslint-disable-next-line no-constant-condition
       while (true) {
         (globalThis as unknown as { crypto: Crypto }).crypto.getRandomValues(
           buf

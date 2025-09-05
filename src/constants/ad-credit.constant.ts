@@ -32,6 +32,7 @@ export const SPEND_COST: CreditSpendCostType = {
   analysis: 3,
   simulator: 2,
   advanced: 3,
+  csv: 3,
 } as const;
 
 export enum CREDIT_RESET_MODE_ENUM {

@@ -9,6 +9,7 @@ import LottoAnalysisOddEvenSectionComponent from './odd-even-section.component';
 import LottoAnalysisSumSectionComponent from './sum-section.component';
 import LottoAnalysisConsecutiveSectionComponent from './consecutive-section.component';
 import { useLottoDrawsQuery, useLatestLottoDrawQuery } from '@/queries';
+import { CsvExportButtonComponent } from '@/components';
 
 export function LottoAnalysisComponent() {
   const [from, setFrom] = useState<number>(1);
@@ -80,14 +81,21 @@ export function LottoAnalysisComponent() {
         </div>
       ) : (
         <>
-          <LottoAnalysisControlsComponent
-            from={from}
-            to={to}
-            setFrom={setFrom}
-            setTo={setTo}
-            isFetching={isFetching}
-            onAnalyze={() => refetch()}
-          />
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <LottoAnalysisControlsComponent
+              from={from}
+              to={to}
+              setFrom={setFrom}
+              setTo={setTo}
+              isFetching={isFetching}
+              onAnalyze={() => refetch()}
+            />
+            <CsvExportButtonComponent
+              className="shrink-0"
+              from={from}
+              to={to}
+            />
+          </div>
 
           <div className="mt-6 space-y-8 bg-white rounded-md shadow p-4">
             {isError && (
