@@ -1,40 +1,17 @@
+'use client';
 import { useMemo, useState } from 'react';
 import { CreditGateButtonComponent } from '@/components';
 import { useAdCredit } from '@/hooks';
+import { exportLottoCsv } from '@/services';
+import { LottoCsvUtils } from '@/utils';
+import { useCreditStore } from '@/stores';
+import { SPEND_COST } from '@/constants';
 
 export type CsvExportButtonProps = {
   readonly className?: string;
   readonly from?: number;
   readonly to?: number;
 };
-
-function buildExportUrl(from?: number, to?: number): string {
-  const base: string = '/api/lotto/export';
-  const hasFrom: boolean =
-    Number.isInteger(from as number) && (from as number) > 0;
-  const hasTo: boolean = Number.isInteger(to as number) && (to as number) > 0;
-  if (hasFrom && hasTo) return `${base}?from=${from}&to=${to}`;
-  return base;
-}
-
-async function downloadCsv(url: string): Promise<void> {
-  const res: Response = await fetch(url, { method: 'GET' });
-  if (!res.ok) throw new Error(`Export failed: ${res.status}`);
-  const blob: Blob = await res.blob();
-  const cd: string | null = res.headers.get('Content-Disposition');
-  let filename: string = 'lotto_export.csv';
-  if (cd) {
-    const m = cd.match(/filename="?([^";]+)"?/i);
-    if (m && m[1]) filename = m[1];
-  }
-  const link: HTMLAnchorElement = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(link.href);
-}
 
 export function CsvExportButtonComponent({
   className,
@@ -43,6 +20,8 @@ export function CsvExportButtonComponent({
 }: CsvExportButtonProps) {
   const { buildCostLabel } = useAdCredit();
   const [busy, setBusy] = useState<boolean>(false);
+  const { onSpend } = useCreditStore();
+  const amount: number = SPEND_COST.csv;
   const label: string = useMemo<string>(
     () =>
       buildCostLabel({
@@ -57,8 +36,9 @@ export function CsvExportButtonComponent({
   const handleProceed = async () => {
     try {
       setBusy(true);
-      const url: string = buildExportUrl(from, to);
-      await downloadCsv(url);
+      const { blob, filename } = await exportLottoCsv({ from, to });
+      LottoCsvUtils.triggerDownload(blob, filename || 'lotto_export.csv');
+      onSpend(amount);
     } finally {
       setBusy(false);
     }
@@ -70,6 +50,8 @@ export function CsvExportButtonComponent({
       label={label}
       spendKey="csv"
       onProceed={handleProceed}
+      confirmMessage={`CSV를 내보내시겠어요? (-${amount} 크레딧)`}
+      deferSpend
     />
   );
 }

@@ -324,3 +324,40 @@ export function getNumberColor(num: number): string {
   if (num <= 40) return 'bg-gray-100 text-gray-800';
   return 'bg-green-100 text-green-800';
 }
+
+/**
+ * CSV utility helpers for building and downloading CSV files.
+ */
+function csvEscapeCell(v: string | number): string {
+  const s: string = String(v ?? '');
+  if (s.includes(',') || s.includes('"') || s.includes('\n'))
+    return '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+
+function buildCsvFrom(
+  headers: readonly string[],
+  rows: ReadonlyArray<readonly (string | number)[]>
+): string {
+  const head: string = headers.map(csvEscapeCell).join(',');
+  const body: string = rows
+    .map((r) => r.map(csvEscapeCell).join(','))
+    .join('\n');
+  return [head, body].filter(Boolean).join('\n');
+}
+
+function triggerDownload(blob: Blob, filename: string): void {
+  const link: HTMLAnchorElement = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(link.href);
+}
+
+export const LottoCsvUtils = {
+  csvEscapeCell,
+  buildCsvFrom,
+  triggerDownload,
+} as const;

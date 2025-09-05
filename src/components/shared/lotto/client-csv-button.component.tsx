@@ -1,6 +1,11 @@
+'use client';
+
 import { useMemo, useState } from 'react';
 import { CreditGateButtonComponent } from '@/components';
 import { useAdCredit } from '@/hooks';
+import { LottoCsvUtils } from '@/utils';
+import { useCreditStore } from '@/stores';
+import { SPEND_COST } from '@/constants';
 
 export type ClientCsvButtonProps = {
   readonly className?: string;
@@ -9,34 +14,6 @@ export type ClientCsvButtonProps = {
   readonly filename?: string;
   readonly baseLabel?: string;
 };
-
-function toCsvCell(v: string | number): string {
-  const s: string = String(v ?? '');
-  if (s.includes(',') || s.includes('"') || s.includes('\n')) {
-    return '"' + s.replace(/"/g, '""') + '"';
-  }
-  return s;
-}
-
-function buildCsv(
-  headers: readonly string[],
-  rows: ReadonlyArray<readonly (string | number)[]>
-): string {
-  const head: string = headers.map(toCsvCell).join(',');
-  const body: string = rows.map((r) => r.map(toCsvCell).join(',')).join('\n');
-  return [head, body].filter(Boolean).join('\n');
-}
-
-function download(content: string, filename: string): void {
-  const blob: Blob = new Blob([content], { type: 'text/csv;charset=utf-8' });
-  const link: HTMLAnchorElement = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(link.href);
-}
 
 export function ClientCsvButtonComponent({
   className,
@@ -47,6 +24,8 @@ export function ClientCsvButtonComponent({
 }: ClientCsvButtonProps) {
   const { buildCostLabel } = useAdCredit();
   const [busy, setBusy] = useState<boolean>(false);
+  const { onSpend } = useCreditStore();
+  const amount: number = SPEND_COST.csv;
   const label: string = useMemo<string>(
     () =>
       buildCostLabel({
@@ -61,8 +40,10 @@ export function ClientCsvButtonComponent({
   const handleProceed = async () => {
     try {
       setBusy(true);
-      const csv: string = buildCsv(headers, rows);
-      download(csv, filename);
+      const csv: string = LottoCsvUtils.buildCsvFrom(headers, rows);
+      const blob: Blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      LottoCsvUtils.triggerDownload(blob, filename);
+      onSpend(amount);
     } finally {
       setBusy(false);
     }
@@ -74,6 +55,8 @@ export function ClientCsvButtonComponent({
       label={label}
       spendKey="csv"
       onProceed={handleProceed}
+      confirmMessage={`CSV를 내보내시겠어요? (-${amount} 크레딧)`}
+      deferSpend
     />
   );
 }

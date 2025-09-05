@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { callOpenAI } from '@/services';
 
-export const runtime = 'edge';
-
 export async function POST() {
   const prompt = `
     You are a precise English teacher who creates one multiple-choice word quiz.

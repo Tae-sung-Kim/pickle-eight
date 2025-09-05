@@ -13,6 +13,8 @@ export type CreditGateButtonType = {
   readonly spendKey: keyof typeof SPEND_COST;
   readonly onProceed: () => void;
   readonly amountOverride?: number;
+  readonly confirmMessage?: string; // optional confirm before proceeding
+  readonly deferSpend?: boolean; // if true, do not deduct here (caller will deduct after success)
 };
 
 export function CreditGateButtonComponent({
@@ -22,6 +24,8 @@ export function CreditGateButtonComponent({
   spendKey,
   onProceed,
   amountOverride,
+  confirmMessage,
+  deferSpend,
 }: CreditGateButtonType) {
   const [open, setOpen] = useState<boolean>(false);
   const { total, canSpend, onSpend } = useCreditStore();
@@ -43,6 +47,16 @@ export function CreditGateButtonComponent({
     const check = canSpend(amount);
     if (!check.canSpend) {
       setOpen(true);
+      return;
+    }
+    // Optional confirm
+    if (typeof confirmMessage === 'string' && confirmMessage.length > 0) {
+      const ok = window.confirm(confirmMessage);
+      if (!ok) return;
+    }
+    // Defer spending to caller if requested
+    if (deferSpend) {
+      onProceed();
       return;
     }
     const res = onSpend(amount);

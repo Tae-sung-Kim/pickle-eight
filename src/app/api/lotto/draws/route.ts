@@ -29,8 +29,6 @@ function checkRate(req: Request): boolean {
   return true;
 }
 
-// No external fetch helpers: we rely on Firestore as source of truth.
-
 // ===== Query parsing =====
 export type GetQuery =
   | { readonly kind: 'latest' }
