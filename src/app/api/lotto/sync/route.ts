@@ -5,6 +5,12 @@ import { DH_LOTTO_ENDPOINT } from '@/constants';
 
 function requireCronSecret(req: Request): void {
   const configured = process.env.CRON_SECRET;
+  // Option B: Allow Vercel Cron runs without secret by detecting Vercel env + x-vercel-cron header
+  const isVercel = !!process.env.VERCEL;
+  const xVercelCron = req.headers.get('x-vercel-cron');
+  if (isVercel && xVercelCron) {
+    return; // permit Vercel Cron invocation
+  }
   if (!configured) {
     throw new Error('Unauthorized');
   }
