@@ -1,18 +1,11 @@
 import { NextResponse } from 'next/server';
-import type { DhLottoApiResponse, LottoDrawType } from '@/types';
-import { LOTTO_MAX_HISTORY_RANGE } from '@/constants';
-
-// ===== Constants =====
-const DH_LOTTO_ENDPOINT =
-  'https://www.dhlottery.co.kr/common.do?method=getLottoNumber' as const;
-// time units (avoid magic numbers)
-const SECOND = 1;
-const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
-const DAY = 24 * HOUR;
-const REVALIDATE_SECONDS = DAY; // 1 day
-const RATE_LIMIT_WINDOW_MS = 60_000 as const; // 1 minute
-const RATE_LIMIT_MAX = 60 as const; // max requests per IP per window
+import { LottoDrawType } from '@/types';
+import { lottoRepository } from '@/services/lotto-repository';
+import {
+  LOTTO_MAX_HISTORY_RANGE,
+  LOTTO_RATE_LIMIT_MAX,
+  LOTTO_RATE_LIMIT_WINDOW_MS,
+} from '@/constants';
 
 // ===== Simple in-memory rate limiter =====
 const rateMap = new Map<string, { count: number; resetAt: number }>();
@@ -28,93 +21,12 @@ function checkRate(req: Request): boolean {
   const now = Date.now();
   const rec = rateMap.get(ip);
   if (!rec || now > rec.resetAt) {
-    rateMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    rateMap.set(ip, { count: 1, resetAt: now + LOTTO_RATE_LIMIT_WINDOW_MS });
     return true;
   }
-  if (rec.count >= RATE_LIMIT_MAX) return false;
+  if (rec.count >= LOTTO_RATE_LIMIT_MAX) return false;
   rec.count += 1;
   return true;
-}
-
-// ===== Mapping & fetch helpers =====
-function mapToLottoDraw(raw: DhLottoApiResponse): LottoDrawType {
-  if (raw.returnValue !== 'success') throw new Error('DH API returned fail');
-  const drawNumber = raw.drwNo ?? 0;
-  const drawDate = raw.drwNoDate ?? '';
-  const numbers = [
-    raw.drwtNo1,
-    raw.drwtNo2,
-    raw.drwtNo3,
-    raw.drwtNo4,
-    raw.drwtNo5,
-    raw.drwtNo6,
-  ];
-  const bonusNumber = raw.bnusNo ?? 0;
-  if (numbers.some((n) => typeof n !== 'number'))
-    throw new Error('Invalid numbers');
-  if (typeof bonusNumber !== 'number') throw new Error('Invalid bonus number');
-  const sorted = (numbers as number[]).slice().sort((a, b) => a - b) as [
-    number,
-    number,
-    number,
-    number,
-    number,
-    number
-  ];
-  return {
-    drawNumber,
-    drawDate,
-    numbers: sorted,
-    bonusNumber,
-    firstWinCount: raw.firstPrzwnerCo,
-    firstPrizeAmount: raw.firstWinamnt,
-    totalSalesAmount: raw.totSellamnt,
-  };
-}
-
-async function fetchDhDraw(drwNo: number): Promise<LottoDrawType> {
-  const url = `${DH_LOTTO_ENDPOINT}&drwNo=${encodeURIComponent(String(drwNo))}`;
-  const res = await fetch(url, { next: { revalidate: REVALIDATE_SECONDS } });
-  if (!res.ok) throw new Error(`Failed to fetch draw ${drwNo}`);
-  const json = (await res.json()) as DhLottoApiResponse;
-  return mapToLottoDraw(json);
-}
-
-async function existsDhDraw(drwNo: number): Promise<boolean> {
-  try {
-    const url = `${DH_LOTTO_ENDPOINT}&drwNo=${encodeURIComponent(
-      String(drwNo)
-    )}`;
-    const res = await fetch(url, { next: { revalidate: REVALIDATE_SECONDS } });
-    if (!res.ok) return false;
-    const json = (await res.json()) as DhLottoApiResponse;
-    return json.returnValue === 'success';
-  } catch {
-    return false;
-  }
-}
-
-async function getLatestDrawNumber(): Promise<number> {
-  let lo = 1;
-  let hi = 1;
-  while (await existsDhDraw(hi)) {
-    lo = hi;
-    hi *= 2;
-    if (hi > 100_000) break;
-  }
-  let left = lo;
-  let right = hi - 1;
-  let best = lo;
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-    if (await existsDhDraw(mid)) {
-      best = mid;
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-  return best;
 }
 
 // ===== Query parsing =====
@@ -166,62 +78,62 @@ function parseQuery(url: string): GetQuery | { error: string; status: number } {
 
 // ===== Handlers =====
 async function handleLatest(): Promise<NextResponse> {
-  // Find latest draw number using exponential search to find upper bound, then binary search.
-  let lo = 1;
-  let hi = 1;
-  while (await existsDhDraw(hi)) {
-    lo = hi;
-    hi *= 2; // 1,2,4,8,... exponential growth
-    if (hi > 100_000) break; // hard safety
-  }
-  // Binary search in (lo, hi) for last existing
-  let left = lo;
-  let right = hi - 1;
-  let best = lo;
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-    if (await existsDhDraw(mid)) {
-      best = mid;
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
+  const latest = await lottoRepository.getLatestDrawNumber();
   return NextResponse.json(
-    { data: { lastDrawNumber: best }, meta: { type: 'latest' as const } },
-    { status: 200 }
+    {
+      data: { lastDrawNumber: latest ?? 0 },
+      meta: { type: 'latest' as const },
+    },
+    {
+      status: 200,
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60',
+        'CDN-Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60',
+        'Surrogate-Control': 'public, s-maxage=300, stale-while-revalidate=60',
+      },
+    }
   );
 }
 
 async function handleSingle(drwNo: number): Promise<NextResponse> {
-  const data = await fetchDhDraw(drwNo);
+  const data = await lottoRepository.getDrawByNumber(drwNo);
+  if (!data) {
+    return NextResponse.json(
+      { error: 'Not Found. Please sync this draw first.' },
+      {
+        status: 404,
+        headers: { 'Cache-Control': 'no-store' },
+      }
+    );
+  }
   return NextResponse.json(
     { data, meta: { type: 'single' as const } },
-    { status: 200 }
+    {
+      status: 200,
+      headers: {
+        'Cache-Control':
+          'public, s-maxage=86400, stale-while-revalidate=604800, immutable',
+        'CDN-Cache-Control':
+          'public, s-maxage=86400, stale-while-revalidate=604800, immutable',
+        'Surrogate-Control':
+          'public, s-maxage=86400, stale-while-revalidate=604800, immutable',
+      },
+    }
   );
 }
 
 async function handleRange(from: number, to: number): Promise<NextResponse> {
-  // Clamp upper bound to latest draw to avoid querying non-existing future draws
-  const latest = await getLatestDrawNumber();
+  // Clamp upper bound to latest stored draw
+  const latest = (await lottoRepository.getLatestDrawNumber()) ?? 0;
   const safeTo = Math.min(to, latest);
   const safeFrom = Math.max(1, Math.min(from, safeTo));
 
-  const results: LottoDrawType[] = [];
-  let failed = 0;
-  // Sequential fetch to avoid hammering external API and reduce flakiness
-  for (let n = safeFrom; n <= safeTo; n += 1) {
-    try {
-      // small spacing to be gentle on remote API (1~2ms ~ event loop tick)
-      const item = await fetchDhDraw(n);
-      results.push(item);
-    } catch {
-      failed += 1;
-      // continue on individual failure
-    }
-  }
+  const results: LottoDrawType[] = await lottoRepository.getDrawsRange(
+    safeFrom,
+    safeTo
+  );
   const requestedCount = safeTo - safeFrom + 1;
-  const partial = failed > 0;
+  const partial = results.length !== requestedCount;
   return NextResponse.json(
     {
       data: results,
@@ -232,7 +144,14 @@ async function handleRange(from: number, to: number): Promise<NextResponse> {
         partial,
       },
     },
-    { status: 200 }
+    {
+      status: 200,
+      headers: {
+        'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=300',
+        'CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=300',
+        'Surrogate-Control': 'public, s-maxage=600, stale-while-revalidate=300',
+      },
+    }
   );
 }
 
@@ -242,7 +161,10 @@ export async function GET(request: Request) {
     if (!checkRate(request)) {
       return NextResponse.json(
         { error: 'Too Many Requests' },
-        { status: 429, headers: { 'Retry-After': '60' } }
+        {
+          status: 429,
+          headers: { 'Retry-After': '60', 'Cache-Control': 'no-store' },
+        }
       );
     }
 
@@ -250,7 +172,7 @@ export async function GET(request: Request) {
     if ('error' in query) {
       return NextResponse.json(
         { error: query.error },
-        { status: query.status }
+        { status: query.status, headers: { 'Cache-Control': 'no-store' } }
       );
     }
 
@@ -259,6 +181,9 @@ export async function GET(request: Request) {
     return handleRange(query.from, query.to);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: message },
+      { status: 500, headers: { 'Cache-Control': 'no-store' } }
+    );
   }
 }

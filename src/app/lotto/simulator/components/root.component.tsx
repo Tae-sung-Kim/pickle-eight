@@ -10,6 +10,7 @@ import { SimulatorBestPerformanceComponent } from './best-performance.component'
 import { LottoLankType } from '@/types';
 import { SimulatorCustomTicketsComponent } from './custom-tickets.component';
 import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants';
+import { ClientCsvButtonComponent } from '@/components';
 
 function generateRandomDraw() {
   const pool: number[] = [];
@@ -221,6 +222,26 @@ export function LottoSimulatorComponent() {
             ranks={result.ranks}
           />
           <SimulatorBestPerformanceComponent best={result.best} />
+          <div className="mt-2 flex items-center justify-end gap-2">
+            <ClientCsvButtonComponent
+              headers={['rank', 'count', 'probability']}
+              rows={([0, 1, 2, 3, 4, 5] as number[]).map((rk) => [
+                rk,
+                result.ranks[rk as LottoLankType] ?? 0,
+                (
+                  (result.ranks[rk as LottoLankType] ?? 0) / result.total
+                ).toFixed(6),
+              ])}
+              filename="simulation_summary.csv"
+              baseLabel="시뮬레이션 요약 CSV"
+            />
+            <ClientCsvButtonComponent
+              headers={['no1', 'no2', 'no3', 'no4', 'no5', 'no6']}
+              rows={result.sampleTicket}
+              filename="simulation_tickets_sample.csv"
+              baseLabel="표본 티켓 CSV"
+            />
+          </div>
         </div>
       )}
     </>

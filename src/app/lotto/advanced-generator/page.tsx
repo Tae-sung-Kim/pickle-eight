@@ -4,17 +4,16 @@ import { generateOgImageUrl } from '@/utils';
 import {
   ContentWrapperComponent,
   BackHubPageComponent,
-  LottoWarningAlertComponent,
   TitleWrapperComponent,
   JsonLdComponent,
 } from '@/components';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
-import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
-  title: '로또 고급 번호 생성기 - 필터·패턴·빈도 기반 | Pickle Eight',
+  title: '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | Pickle Eight',
   description:
-    '제외 번호, 구간, 패턴, 빈도 분석을 활용한 고급 로또 번호 생성. 맞춤형 조합으로 당첨 확률을 높여보세요.',
+    '제외 번호, 구간, 홀짝, 연속수, 가중치 등 고급 필터로 로또 번호를 생성하세요. 통계 참고용 조합 제안이며 당첨 보장 없음.',
   keywords: [
     '로또',
     '번호 생성',
@@ -26,30 +25,30 @@ export const metadata: Metadata = {
     '분석',
   ],
   openGraph: {
-    title: '로또 고급 번호 생성기 - 필터·패턴·빈도 기반 | Pickle Eight',
+    title: '로또 고급 번호 생성기 - 필터·가중치 | Pickle Eight',
     description:
-      '제외 번호, 구간, 패턴, 빈도 분석을 활용한 고급 로또 번호 생성. 맞춤형 조합으로 당첨 확률을 높여보세요.',
+      '빈도/패턴 기준과 사용자 지정 제약으로 맞춤형 조합 생성. 참고용 번호이며 당첨을 보장하지 않습니다.',
     url: canonicalUrl(`${MENU_GROUP_NAME_ENUM.LOTTO}/advanced-generator`),
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
     images: [
       generateOgImageUrl(
-        '로또 고급 번호 생성기 - 필터·패턴·빈도 기반 | Pickle Eight',
-        '제외 번호, 구간, 패턴, 빈도 분석을 활용한 고급 로또 번호 생성. 맞춤형 조합으로 당첨 확률을 높여보세요.',
+        '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | Pickle Eight',
+        '제외 번호, 구간, 홀짝, 연속수, 가중치 등 고급 필터로 로또 번호를 생성하세요. 통계 참고용 조합 제안이며 당첨 보장 없음.',
         '로또 고급 생성기'
       ),
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '로또 고급 번호 생성기 - 필터·패턴·빈도 기반 | Pickle Eight',
+    title: '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | Pickle Eight',
     description:
-      '제외 번호, 구간, 패턴, 빈도 분석을 활용한 고급 로또 번호 생성. 맞춤형 조합으로 당첨 확률을 높여보세요.',
+      '제외·구간·홀짝·연속·가중치 필터로 번호 생성. 통계 참고용 제안이며 당첨 보장 없음.',
     images: [
       generateOgImageUrl(
-        '로또 고급 번호 생성기 - 필터·패턴·빈도 기반 | Pickle Eight',
-        '제외 번호, 구간, 패턴, 빈도 분석을 활용한 고급 로또 번호 생성. 맞춤형 조합으로 당첨 확률을 높여보세요.',
+        '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | Pickle Eight',
+        '제외·구간·홀짝·연속·가중치 필터로 번호 생성. 통계 참고용 제안이며 당첨 보장 없음.',
         '로또 고급 생성기'
       ),
     ],
@@ -83,17 +82,38 @@ export default function AdvancedGeneratorPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
-      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
-      <LottoWarningAlertComponent
-        className="mt-4"
-        tone={LOTTO_WARNING_TONE_ENUM.DANGER}
-        includeAgeNotice
+      <JsonLdComponent
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: '제약/가중치가 당첨을 보장하나요?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '아니요. 제약과 가중치는 선호 조합을 만드는 도구이며 특정 당첨을 보장하지 않습니다.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '생성기는 어떤 데이터를 참고하나요?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '서버에서 동기화된 로또 당첨 기록과 선택한 필터/가중치 조건을 참고합니다.',
+                },
+              },
+            ],
+          },
+        ]}
       />
+      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <div className="mx-auto max-w-5xl p-8">
         <TitleWrapperComponent
           type={MENU_GROUP_NAME_ENUM.LOTTO}
           title="로또 고급 번호 생성기"
-          description="필터와 가중치를 사용하여 번호를 생성하세요."
+          description="선호 조건(제외·구간·홀짝·연속·가중치)을 적용해 번호를 생성하세요. 참고용 조합이며 당첨을 보장하지 않습니다."
         />
         <LottoAdvancedGeneratorComponent />
       </div>

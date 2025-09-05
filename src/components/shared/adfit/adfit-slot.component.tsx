@@ -92,18 +92,29 @@ export function AdFitSlotComponent() {
       .finally(() => hideLoading());
   }, [state, adsDisabledOverride, showLoading, hideLoading]);
 
-  // Always render AdFit area for ad review compliance
-  // Script loading is controlled by useEffect above
+  // Render labeled container for compliance. Script loading is gated above.
   return (
-    // AdFit requires display:none initially; script will size/insert iframe
-    <ins
-      key={key}
-      className="kakao_ad_area"
-      style={{ display: 'none' }}
-      data-ad-unit={unitId}
-      data-ad-width={String(width)}
-      data-ad-height={String(height)}
-    />
+    <div
+      role="region"
+      aria-label="advertisement"
+      className="flex w-full flex-col items-center gap-1"
+    >
+      <div
+        className="self-start rounded bg-muted px-1.5 py-0.5 text-[10px] leading-none text-muted-foreground"
+        aria-hidden
+      >
+        광고
+      </div>
+      {/* AdFit requires display:none initially; script will size/insert iframe */}
+      <ins
+        key={key}
+        className="kakao_ad_area"
+        style={{ display: 'none' }}
+        data-ad-unit={unitId}
+        data-ad-width={String(width)}
+        data-ad-height={String(height)}
+      />
+    </div>
   );
 }
 

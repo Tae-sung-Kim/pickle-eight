@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { LottoNormalGeneratorComponent } from './components';
 import { generateOgImageUrl } from '@/utils';
 import {
-  LottoWarningAlertComponent,
   JsonLdComponent,
   ContentWrapperComponent,
   BackHubPageComponent,
@@ -13,7 +12,7 @@ import {
   jsonLdBreadcrumb,
   jsonLdWebSite,
 } from '@/lib';
-import { LOTTO_WARNING_TONE_ENUM, MENU_GROUP_NAME_ENUM } from '@/constants';
+import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 const baseMeta = buildMetadata({
   title: '로또 번호 생성기 - 추천하는 행운의 번호',
@@ -65,11 +64,7 @@ export default function LottoPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
-      <LottoWarningAlertComponent
-        className="mt-4"
-        tone={LOTTO_WARNING_TONE_ENUM.DANGER}
-        includeAgeNotice
-      />
+
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <div className="mx-auto max-w-5xl p-8">
         <LottoNormalGeneratorComponent />

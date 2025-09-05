@@ -79,3 +79,10 @@ export enum LOTTO_WARNING_TONE_ENUM {
   DANGER = 'danger',
   MUTED = 'muted',
 }
+
+// ===== Constants =====
+// External endpoint is no longer called on user path; data must be pre-synced via /api/lotto/sync.
+export const LOTTO_RATE_LIMIT_WINDOW_MS = 60_000 as const; // 1 minute
+export const LOTTO_RATE_LIMIT_MAX = 60 as const; // max requests per IP per window
+export const DH_LOTTO_ENDPOINT =
+  'https://www.dhlottery.co.kr/common.do?method=getLottoNumber' as const;

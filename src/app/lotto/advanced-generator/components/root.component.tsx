@@ -15,6 +15,7 @@ import {
   CreditGateButtonComponent,
 } from '@/components';
 import { SPEND_COST } from '@/constants';
+import { ClientCsvButtonComponent } from '@/components';
 
 export function LottoAdvancedGeneratorComponent() {
   const [count, setCount] = useState<number>(3);
@@ -176,6 +177,18 @@ export function LottoAdvancedGeneratorComponent() {
           />
           <CreditBalancePillComponent />
         </div>
+
+        {generated.length > 0 && (
+          <div className="flex items-center justify-end gap-3">
+            <ClientCsvButtonComponent
+              className="ml-auto"
+              headers={['no1', 'no2', 'no3', 'no4', 'no5', 'no6']}
+              rows={generated.map((g) => g.numbers)}
+              filename="advanced_generated_numbers.csv"
+              baseLabel="생성 결과 CSV"
+            />
+          </div>
+        )}
 
         <LottoAdvancedGeneratedListComponent items={generated} />
       </div>

@@ -12,6 +12,8 @@ export function LottoNormalGeneratorComponent() {
   const [orderCount, setOrderCount] = useState(1);
   const [lottoNumberList, setLottoNumberList] = useState<number[][]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedAt, setGeneratedAt] = useState<string>('');
+  const [rngLabel, setRngLabel] = useState<string>('');
 
   const handleOrderCountChange = (newValue: number) => {
     setOrderCount(newValue);
@@ -30,6 +32,21 @@ export function LottoNormalGeneratorComponent() {
     });
 
     setLottoNumberList(newLottoNumberList);
+
+    // 생성 기준 메타데이터 설정
+    const hasWebCrypto =
+      typeof globalThis !== 'undefined' &&
+      typeof (globalThis as unknown as { crypto?: Crypto }).crypto !==
+        'undefined' &&
+      typeof (globalThis as unknown as { crypto: Crypto }).crypto
+        .getRandomValues === 'function';
+    setRngLabel(
+      hasWebCrypto ? 'crypto.getRandomValues' : 'Math.random (fallback)'
+    );
+    const now = new Date();
+    const ts = `${now.toLocaleString('ko-KR', { hour12: false })}`;
+    setGeneratedAt(ts);
+
     setIsGenerating(false);
   }, [orderCount]);
 
@@ -44,8 +61,8 @@ export function LottoNormalGeneratorComponent() {
         >
           <TitleWrapperComponent
             type={MENU_GROUP_NAME_ENUM.LOTTO}
-            title="로또 번호 생성기"
-            description="추천하는 행운의 번호로 당첨의 기회를 잡아보세요!"
+            title="로또 번호 무작위 생성기"
+            description="무작위(랜덤) 번호를 생성합니다. AI 예측이 아니며 통계·패턴 분석을 사용하지 않습니다."
           />
         </motion.div>
 
@@ -65,6 +82,12 @@ export function LottoNormalGeneratorComponent() {
                   onGenerate={handleRandomLottoNumber}
                 />
               </div>
+
+              {generatedAt && (
+                <p className="px-6 text-xs text-muted-foreground">
+                  생성 기준: {generatedAt} · RNG: {rngLabel}
+                </p>
+              )}
 
               <LottoNumberListComponent
                 numbersList={lottoNumberList}

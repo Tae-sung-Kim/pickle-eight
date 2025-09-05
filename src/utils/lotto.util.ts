@@ -280,9 +280,38 @@ export const LottoGenerator = {
 
 // 로또 랜덤 번호 추출
 export function generateLottoNumbers(): number[] {
+  // Use Web Crypto if available for better randomness (unbiased via rejection sampling)
+  const hasWebCrypto =
+    typeof globalThis !== 'undefined' &&
+    typeof (globalThis as unknown as { crypto?: Crypto }).crypto !==
+      'undefined' &&
+    typeof (globalThis as unknown as { crypto: Crypto }).crypto
+      .getRandomValues === 'function';
+
+  const pickUnbiased = (maxInclusive: number): number => {
+    if (hasWebCrypto) {
+      // Rejection sampling to avoid modulo bias
+      const range = maxInclusive + 1; // [0, maxInclusive]
+      const maxUint32 = 0xffffffff;
+      const threshold = Math.floor((maxUint32 + 1) / range) * range - 1;
+      const buf = new Uint32Array(1);
+      while (true) {
+        (globalThis as unknown as { crypto: Crypto }).crypto.getRandomValues(
+          buf
+        );
+        const r = buf[0];
+        if (r <= threshold) return r % range; // uniform in [0, maxInclusive]
+      }
+    }
+    // Fallback
+    return Math.floor(Math.random() * (maxInclusive + 1));
+  };
+
   const numbers = new Set<number>();
   while (numbers.size < 6) {
-    numbers.add(Math.floor(Math.random() * 45) + 1);
+    // pick in [1,45]
+    const n = pickUnbiased(45 - 1) + 1;
+    numbers.add(n);
   }
   return Array.from(numbers).sort((a, b) => a - b);
 }
@@ -295,3 +324,40 @@ export function getNumberColor(num: number): string {
   if (num <= 40) return 'bg-gray-100 text-gray-800';
   return 'bg-green-100 text-green-800';
 }
+
+/**
+ * CSV utility helpers for building and downloading CSV files.
+ */
+function csvEscapeCell(v: string | number): string {
+  const s: string = String(v ?? '');
+  if (s.includes(',') || s.includes('"') || s.includes('\n'))
+    return '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+
+function buildCsvFrom(
+  headers: readonly string[],
+  rows: ReadonlyArray<readonly (string | number)[]>
+): string {
+  const head: string = headers.map(csvEscapeCell).join(',');
+  const body: string = rows
+    .map((r) => r.map(csvEscapeCell).join(','))
+    .join('\n');
+  return [head, body].filter(Boolean).join('\n');
+}
+
+function triggerDownload(blob: Blob, filename: string): void {
+  const link: HTMLAnchorElement = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(link.href);
+}
+
+export const LottoCsvUtils = {
+  csvEscapeCell,
+  buildCsvFrom,
+  triggerDownload,
+} as const;

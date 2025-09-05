@@ -17,10 +17,10 @@ export const AD_APX = {
 export const CREDIT_POLICY: CreditPolicyType = {
   rewardAmount: 5, // 기본 보상 크레딧
   dailyCap: envMode
-    ? 10
+    ? 100
     : Number(process.env.NEXT_PUBLIC_CREDIT_DAILY_CAP) ?? 50, // 하루 최대치 크레딧
   cooldownMs: envMode ? 5000 : 1.5 * 60 * 1000, // 광고 재시청 쿨다운
-  baseDaily: 5, //기본 시작 크레딧
+  baseDaily: envMode ? 50 : 5, //기본 시작 크레딧
   stepReward: envMode ? 5 : 60, // seconds(초)
   maxPerAd: 20, // 한번에 얻을수 있는 최대 크레딧
   maxPerIpPerDay: 3, // 하루에 얻을수 있는 최대 크레딧
@@ -32,6 +32,7 @@ export const SPEND_COST: CreditSpendCostType = {
   analysis: 3,
   simulator: 2,
   advanced: 3,
+  csv: 1,
 } as const;
 
 export enum CREDIT_RESET_MODE_ENUM {

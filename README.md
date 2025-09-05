@@ -83,59 +83,57 @@ Pickle-eight은 로또, 다양한 랜덤 추첨 기능(항목 추첨, 자리 배
 
 ---
 
-## 🛠️ 기술 스택
+## 🔎 무작위성 & 컴플라이언스 요약
 
-- **Next.js 15 (App Router)**
-- **TypeScript**
-- **Tailwind CSS + Shadcn UI**
-- **TanStack Query (react-query)**
-- **Zustand**
-- **Firebase (Authentication, Firestore, Analytics)**
-- **Vercel 배포**
-- **OpenAI API (퀴즈/추천)**
+- 무작위 생성: 일반 생성기는 브라우저 Web Crypto의 `crypto.getRandomValues`(거절 샘플링으로 모듈로 바이어스 제거)를 사용합니다. 미지원 환경에서는 안전 폴백(`Math.random`)을 사용합니다.
+- 비예측/비분석: AI 예측이나 통계·패턴 분석을 사용하지 않습니다. 결과는 순수 무작위이며 참고용입니다.
+- 투명성 표기: 생성 시 UI에 "생성 기준: [시각] · RNG: [crypto/Math.random]"을 표시합니다.
+- 연령/동의: 로또 경로에 Age Gate(연령 확인), 전역 Cookie Consent(동의 전 분석/광고 제한)를 적용합니다.
+- 광고 표기: 모든 광고 영역에 상시 "광고" 라벨을 노출하며, 사용자 동의 후에만 광고 스크립트를 로드합니다.
 
 ---
 
 ## 📁 프로젝트 구조
 
 ```plaintext
-/app
-  /(auth)                  # 인증 라우트
-    /login
-      page.tsx
-    /signup
-      page.tsx
-  /dashboard
-    /[id]                  # 다이나믹 라우트
-      page.tsx
-    layout.tsx
-  /api
-    /normal-generator
-      route.ts
-  layout.tsx
-  page.tsx
-  loading.tsx
-  error.tsx
-  not-found.tsx
-
 /src
-  /components              # 공용 컴포넌트
-    /ui                    # Shadcn/ui
-    /features              # 기능별 분리
-  /hooks                   # 커스텀 훅
-  /providers               # Context/Provider
-  /stores                  # Zustand 스토어
-  /types                   # 타입 정의
-  /styles                  # 전역 스타일
-  /services                # API 서비스
-  /constants               # 상수
-  /utils                   # 유틸 함수
-  /schemas                 # Zod 스키마
+  app/                          # App Router (pages, layouts, api)
+    lotto/
+      normal-generator/
+      advanced-generator/
+      analysis/
+      simulator/
+      history/
+      check/
+    api/
+      lotto/
+        draws/                  # GET /api/lotto/draws
+        sync/                   # POST /api/lotto/sync
+        export/                 # GET /api/lotto/export
+    (auth)/
+    layout.tsx
+    page.tsx
+    loading.tsx
+    error.tsx
+    not-found.tsx
+  components/                   # 공용 컴포넌트
+    ui/                         # Shadcn UI
+    shared/
+    layouts/
+  hooks/
+  providers/
+  stores/
+  types/
+  styles/
+  services/
+  constants/
+  utils/
+  schemas/
 ```
 
 ---
 
-# 🚀 프로젝트 특징 및 차별점
+## 🚀 프로젝트 특징 및 차별점
 
 ## 실제 사용자 경험 중심 설계
 
@@ -162,101 +160,6 @@ Pickle-eight은 로또, 다양한 랜덤 추첨 기능(항목 추첨, 자리 배
 
 ---
 
-# 🏆 담당 역할 및 기여도
-
-- **전체 아키텍처 설계 및 기술 스택 선정**
-- **주요 서비스(랜덤 추첨, AI 퀴즈, 자리 배정, 사다리 등) 개발 및 UI/UX 설계**
-- **Firebase 인증/DB/Analytics 연동, 배포 자동화(Vercel)**
-- **광고 삽입, SEO 최적화**
-
----
-
-# ⚡️ 시작하기
-
-## 의존성 설치
-
-```bash
-pnpm install
-```
-
-## 개발 서버 실행
-
-```bash
-pnpm run dev
-```
-
----
-
-## Palette -> Token Migration Guide (팔레트 → 의미 토큰 가이드)
-
-The UI now prefers semantic tokens over hardcoded Tailwind palette colors to ensure theme consistency (light/dark) and maintainability.
-
-- **Text**
-  - text-gray-600 → text-muted-foreground
-  - text-slate-800 → text-foreground
-  - text-blue-600 / text-pink-600 → text-primary
-  - text-red-600 → text-destructive
-- **Background / Surface**
-  - bg-white → bg-surface-card (cards, elevated surfaces)
-  - bg-gray-50/100 → bg-muted (muted blocks, panels)
-  - Gradients (from-_, to-_) → prefer solid tokens (bg-muted, bg-surface-card, bg-primary) unless brand-critical
-- **Border / Ring**
-  - border-gray-200 / border-slate-200 → border-border
-  - ring-emerald-200 → ring-primary/30
-  - hover:ring-emerald-300 → hover:ring-primary/40
-- **Buttons**
-  - Solid brand: bg-primary text-primary-foreground hover:bg-primary/90
-  - Outline brand: border-primary text-primary hover:bg-primary/10
-  - Destructive: text-destructive (or use variant if provided by ui library)
-- **Badges / Chips**
-  - Default chip: bg-muted text-foreground ring-1 ring-border
-  - Highlight chip (bonus, selected): bg-primary/20 text-primary ring-1 ring-primary/30
-- **Alerts / Errors**
-  - Error text: text-destructive
-  - Info text: text-muted-foreground
-
-Examples:
-
-```tsx
-// Before
-<p className="text-gray-600">Description</p>
-<div className="border border-gray-200 bg-white" />
-<span className="bg-yellow-200/60 text-yellow-900 ring-1 ring-yellow-300" />
-
-// After
-<p className="text-muted-foreground">Description</p>
-<div className="border border-border bg-surface-card" />
-<span className="bg-muted text-foreground ring-1 ring-border" />
-```
-
-Conventions:
-
-- Prefer semantic tokens first; avoid direct palette classes.
-- Replace gradients with solid semantic backgrounds for consistency.
-- Keep logic/structure unchanged; patches should be minimal and stable.
-- Validate in both light/dark themes.
-
----
-
-## 🔐 환경 변수(.env) 설정
-
-`.env.sample`를 참고해 다음과 같은 환경 변수를 설정하세요.
-
-- **Firebase**
-  - `NEXT_PUBLIC_FIREBASE_API_KEY`
-  - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
-  - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
-  - `NEXT_PUBLIC_FIREBASE_APP_ID`
-  - (선택) `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID`
-- **OpenAI**
-  - `OPENAI_API_KEY`
-- **Applixir (보상형 광고)**
-  - `NEXT_PUBLIC_APPLIXIR_API_KEY`
-
-프로덕션 배포 시에는 모든 키를 환경에 안전하게 설정하고, 코드에 하드코딩하지 않습니다.
-
----
-
 ## 💳 크레딧 & 보상형 광고 정책
 
 - **보상 방식**: 영상 광고 시청 시간에 따라 단계별 보상 (운영 값 기준 `rewardAmount`, `stepReward`, `maxPerAd` 적용)
@@ -270,37 +173,8 @@ Conventions:
   - 광고 네트워크: Applixir 연동, 승인 대기/부족 재고 등 상태 메시지 처리
 - **승인/재고 안내**:
   - 매체 심사 보류(`mediaReviewPending`), 사이트 미승인(`siteNotApproved`), 광고 없음/재고 부족(`ads-unavailable`) 시, 모달과 UI에서 명확히 안내합니다. 승인이 완료되면 정상 시청/적립이 가능합니다.
-
----
-
-## 🍪 Consent(쿠키 동의) & Age Gate & 프라이버시
-
-- **Cookie Consent**: 전역 `ConsentProvider`에서 동의 상태(`unknown | accepted | declined`)를 관리합니다.
-  - 동의 이전에는 분석/광고 관련 기능이 제한될 수 있습니다.
-  - 하단의 `CookieSettingsButton`으로 언제든 배너를 다시 열어 상태를 변경할 수 있습니다.
-- **Analytics**: 동의 상태가 `accepted`일 때만 Firebase Analytics가 활성화됩니다.
-- **연령 확인(Age Gate)**: 로또 경로(`/lotto`)에서 연령 확인 모달을 제공하며, TTL 방식으로 일정 기간 재확인을 생략합니다(레거시 `true` 플래그 지원).
-- **정책 페이지**: 약관/개인정보/크레딧 정책 페이지에 API 사용, 비제휴 고지, 광고/수익화, 책임 이용 고지 등을 포함합니다.
-
----
-
-## 🔎 SEO 가이드
-
-- **JSON-LD 표준화**: `JsonLd` 컴포넌트와 `@/lib`의 `canonicalUrl`, `jsonLdBreadcrumb`, `jsonLdWebSite`를 사용해 상세/허브 페이지에 구조화 데이터를 삽입합니다.
-- **메타/로봇 메타**: 랜덤 픽커/퀴즈 상세 페이지에서도 일관된 메타 패턴을 적용합니다.
-- **국문 키워드 최적화**: 한글 키워드를 적극 반영하고, 브레드크럼을 통해 탐색성을 강화합니다.
-
----
-
-## 📜 스크립트
-
-```bash
-pnpm run dev       # 개발 서버 실행
-pnpm run build     # 프로덕션 빌드
-pnpm run start     # 프로덕션 서버 실행
-pnpm run lint      # ESLint 검사 (Airbnb 기반)
-pnpm run format    # prettier 포맷
-```
+- **동의 및 라벨링**:
+  - 사용자 동의(`accepted`) 후에만 광고 스크립트를 로드하며, 모든 광고 컴포넌트에 상시 "광고" 라벨을 표기합니다.
 
 ---
 
@@ -338,12 +212,15 @@ pnpm run format    # prettier 포맷
 
 - 본 서비스는 오락/정보 제공용입니다. 복권/도박과 관련된 법령을 준수하고 책임감 있게 이용해주세요.
 - 본 서비스는 어떠한 기관과도 제휴/보증 관계가 없습니다. (비공식)
+- 로또 번호 생성은 CSPRNG(Web Crypto) 기반의 순수 무작위이며, AI 예측이나 통계·패턴 분석을 사용하지 않습니다.
 
 ---
 
 ## 📄 라이선스
 
-- 추후 공개 예정(또는 사내 전용)입니다. 필요 시 문의해주세요.
+- 본 프로젝트는 MIT License를 따릅니다. 자세한 내용은 루트의 `LICENSE` 파일을 참고하세요.
+- 서드파티 라이선스 고지는 `THIRD_PARTY_NOTICES.md`를 참고하세요.
+- 크롤링/수집 정책은 `public/robots.txt`와 각 페이지 하단/정책 문서를 참고하세요.
 
 ## 🙏 크레딧
 
@@ -364,3 +241,59 @@ pnpm run format    # prettier 포맷
 ## 📞 문의
 
 - Pickle-eight에 대한 문의는 사이트 하단의 링크를 통해서 가능합니다.
+
+---
+
+## 🔄 Lotto 데이터 동기화/백업 가이드
+
+본 서비스는 사용자 경로에서 외부 로또 API를 직접 호출하지 않습니다. 서버 측 크론 작업으로 데이터를 동기화하여 Firestore(`lotto_draws`)에 저장하고, API는 저장된 데이터만 제공합니다. 이는 상업적 이용 시 외부 서비스 약관 위반 소지를 줄이기 위한 설계입니다.
+
+- 동기화 엔드포인트: `POST /api/lotto/sync`
+
+  - 보안 헤더: `x-cron-secret: $CRON_SECRET`
+  - 모드
+    - 단일: `POST /api/lotto/sync?drwNo=1234`
+    - 범위: `POST /api/lotto/sync?from=1&to=1100`
+    - 전진 동기화(기본): `POST /api/lotto/sync?forward` 또는 쿼리 없이 호출 → 저장된 최신 회차 이후부터 연속 조회하여 더 이상 발행된 회차가 없을 때까지 저장
+  - 주의: 외부 데이터 소스는 약관/저작권/접근정책이 적용되며, 상업적 이용/수집/크롤링에 제약이 있을 수 있습니다. 이용 약관과 robots.txt를 확인하고, 필요한 경우 사전 서면 허가를 받으세요.
+
+- 조회 엔드포인트: `GET /api/lotto/draws`
+
+  - 최신 회차 번호: `GET /api/lotto/draws?latest`
+  - 단일 회차: `GET /api/lotto/draws?drwNo=1234`
+  - 범위: `GET /api/lotto/draws?from=1000&to=1100`
+  - 모든 응답은 Firestore에 사전 저장된 데이터만 반환합니다. 저장되지 않은 회차는 404 또는 부분 응답으로 표시됩니다.
+
+- CSV 내보내기: `GET /api/lotto/export`
+  - 전체(기본): `GET /api/lotto/export` → `1..latest` 범위
+  - 범위 지정: `GET /api/lotto/export?from=1000&to=1100`
+  - 응답 헤더: `Content-Type: text/csv`, `Content-Disposition: attachment; filename="lotto_draws_..."`
+
+### 환경 변수
+
+- `.env`에 다음을 추가하세요:
+  - `CRON_SECRET`: 크론 잡에서 `x-cron-secret` 헤더로 전달할 비밀값
+
+### Vercel Cron 설정 예시
+
+Vercel 프로젝트의 Settings → Cron Jobs에서 다음과 같이 구성합니다.
+
+- Path: `/api/lotto/sync?forward`
+- Schedule: `30 12 * * SAT` (UTC) → KST 토요일 21:30
+- Schedule: `0 18 * * SAT` (UTC) → KST 일요일 03:00 (백업 실행)
+- Headers:
+  - Key: `x-cron-secret`, Value: `${CRON_SECRET}`
+
+필요 시 초기 적재를 위해 일회성으로 `?from=1&to=<초기범위>`를 등록하고 완료 후 제거하세요.
+
+### Firestore 권한/인덱스
+
+- 컬렉션: `lotto_draws`
+- 문서 ID: 문자열 `"<drawNumber>"`
+- 읽기 인덱스: `orderBy(drawNumber)`와 `where(drawNumber, >= / <=)` 조합 조회가 있으므로 인덱스가 필요할 수 있습니다. Firebase 콘솔의 인덱스 에러 안내에 따라 생성하세요.
+
+### 법적 유의사항(비제휴 고지)
+
+- 본 서비스는 로또 운영기관/판매사와 제휴되어 있지 않습니다.
+- 외부 데이터 소스는 약관/저작권/접근정책이 적용되며, 상업적 이용 전 반드시 정책을 확인하세요.
+- 본 저장/동기화 구조는 사용자 요청 경로에서의 직접 호출을 피하고, 최소 빈도/지연을 둔 서버 측 동기화(레이트 리밋 포함)로 트래픽·정책 리스크를 낮추도록 설계되었습니다. 다만, 최종 법적 판단은 별도 검토가 필요합니다.

@@ -79,7 +79,7 @@ export type LottoStatsType = {
 /**
  * DH Lottery raw API response for a single draw. Fields are optional for safety.
  */
-export type DhLottoApiResponse = {
+export type DhLottoApiResponseType = {
   returnValue?: 'success' | 'fail';
   drwNo?: number; // 회차
   drwNoDate?: string; // yyyy-mm-dd
