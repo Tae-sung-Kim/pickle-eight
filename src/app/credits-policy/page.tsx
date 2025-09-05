@@ -109,6 +109,9 @@ export default function CreditsPolicyPage(): JSX.Element {
           <li>
             고급 기능: <strong>{SPEND_COST.advanced}</strong>
           </li>
+          <li>
+            CSV 내보내기: <strong>{SPEND_COST.csv}</strong>
+          </li>
         </ul>
       </section>
 
