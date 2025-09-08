@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { toPng } from 'html-to-image';
+import { toBlob } from 'html-to-image';
 import download from 'downloadjs';
 
 /**
@@ -32,7 +32,7 @@ export function useCapture() {
         const computedBg = getComputedStyle(document.body).backgroundColor;
         const backgroundColor = computedBg || 'white';
 
-        const dataUrl = await toPng(elementRef.current, {
+        const blob = await toBlob(elementRef.current, {
           quality: 1,
           backgroundColor,
           filter: (node) => {
@@ -42,10 +42,12 @@ export function useCapture() {
             return true;
           },
         });
-        const blob = await (await fetch(dataUrl)).blob();
-        const file = new File([blob], options?.fileName || 'capture.png', {
-          type: blob.type,
-        });
+
+        if (!blob) throw new Error('capture/blob-null');
+
+        const mime = blob.type || 'image/png';
+        const fileName = options?.fileName || 'capture.png';
+        const file = new File([blob], fileName, { type: mime });
 
         if (
           navigator.share &&
@@ -58,7 +60,8 @@ export function useCapture() {
             text: options?.shareText || '',
           });
         } else {
-          download(dataUrl, options?.fileName || 'capture.png');
+          // downloadjs supports Blob input
+          download(blob, fileName, mime);
         }
       } catch (err) {
         console.error('이미지 캡처/공유 실패:', err);
