@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useCapture } from '@/hooks';
 import { TodayMessageCardType } from '@/types';
+import { toast } from 'sonner';
 
 export function MessageCardComponent({
   title,
@@ -76,18 +77,14 @@ export function MessageCardComponent({
       if (!url) return;
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(url);
-      } else {
-        const textarea = document.createElement('textarea');
-        textarea.value = url;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
+        toast.info('주소가 복사 되었습니다.');
+        return;
       }
-    } catch {}
+      // Fallback without deprecated execCommand: show prompt to let user copy manually
+      window.prompt('주소를 복사해 주세요 (길게 눌러 전체 선택 후 복사):', url);
+    } catch {
+      // noop
+    }
   };
 
   // const handleShareOnX = (): void => {
