@@ -6,14 +6,7 @@ import { useAdCredit } from '@/hooks';
 import { LottoCsvUtils } from '@/utils';
 import { useCreditStore } from '@/stores';
 import { SPEND_COST } from '@/constants';
-
-export type ClientCsvButtonProps = {
-  readonly className?: string;
-  readonly headers: readonly string[];
-  readonly rows: ReadonlyArray<readonly (string | number)[]>;
-  readonly filename?: string;
-  readonly baseLabel?: string;
-};
+import { LottoClientCsvButtonType } from '@/types';
 
 export function ClientCsvButtonComponent({
   className,
@@ -21,7 +14,7 @@ export function ClientCsvButtonComponent({
   rows,
   filename = 'export.csv',
   baseLabel = 'CSV 내보내기',
-}: ClientCsvButtonProps) {
+}: LottoClientCsvButtonType) {
   const { buildCostLabel } = useAdCredit();
   const [busy, setBusy] = useState<boolean>(false);
   const { onSpend } = useCreditStore();

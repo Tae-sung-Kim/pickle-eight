@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useCreditStore } from '@/stores';
 import { cn } from '@/lib';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/tooltip';
 import { useConsentContext } from '@/providers';
 import { useAdCredit } from '@/hooks';
+import { scheduleIdle, cancelIdle } from '@/lib';
 
 export type CreditBalancePillType = {
   className?: string;
@@ -23,7 +24,8 @@ export function CreditBalancePillComponent({
   className,
   showLabel = true,
 }: CreditBalancePillType) {
-  const { total, todayEarned } = useCreditStore();
+  const { total, todayEarned, syncReset, hydrated, markHydrated } =
+    useCreditStore();
   const [open, setOpen] = useState<boolean>(false);
   const { cooldownMsLeft, reachedDailyCap, canWatchAd, inCooldown } =
     useAdCredit();
@@ -72,6 +74,19 @@ export function CreditBalancePillComponent({
     return Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
   }, [todayEarned]);
 
+  useEffect(() => {
+    if (hydrated) syncReset();
+  }, [syncReset, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) {
+      const idleId = scheduleIdle(() => markHydrated());
+      return () => {
+        cancelIdle(idleId);
+      };
+    }
+  }, [hydrated, markHydrated]);
+
   return (
     <div
       className={cn(
@@ -80,7 +95,9 @@ export function CreditBalancePillComponent({
       )}
     >
       {showLabel && <span className="shrink-0">보유</span>}
-      <span className="tabular-nums font-semibold shrink-0">{total}</span>
+      <span className="tabular-nums font-semibold shrink-0">
+        {hydrated ? total : '—'}
+      </span>
       {/* Mobile-only inline status since tooltips are not available on touch */}
       <span className="block sm:hidden min-w-0 truncate text-[10px] text-muted-foreground">
         {state !== 'accepted'

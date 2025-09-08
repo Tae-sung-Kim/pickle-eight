@@ -41,8 +41,9 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const isApplixirStart: boolean = pathname === '/api/applixir/start';
   const isApplixirComplete: boolean = pathname === '/api/applixir/complete';
   const isCreditsClaim: boolean = pathname === '/api/credits/claim';
+  const isCsvExport: boolean = pathname === '/api/lotto/export';
   const inScope: boolean =
-    isApplixirStart || isApplixirComplete || isCreditsClaim;
+    isApplixirStart || isApplixirComplete || isCreditsClaim || isCsvExport;
   if (!inScope) {
     return NextResponse.next();
   }
@@ -109,7 +110,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   let currentAid: string | null = hasAidCookie
     ? req.cookies.get(AID_COOKIE)!.value
     : null;
-  if ((isApplixirStart || isApplixirComplete) && !hasAidCookie) {
+  if ((isApplixirStart || isApplixirComplete || isCsvExport) && !hasAidCookie) {
     const bytes = new Uint8Array(16);
     crypto.getRandomValues(bytes);
     const aidHex: string = Array.from(bytes)
