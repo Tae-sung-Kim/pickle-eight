@@ -28,7 +28,7 @@ export function MobileMenuLayout({ hiddenClass = '' }: MobileMenuLayoutProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="h-14 w-14 bg-primary/10 rounded-full text-primary shadow-lg hover:bg-primary/20 transition-all ring-1 ring-primary/10"
+            className="h-10 w-10 bg-primary/10 rounded-full text-primary shadow-lg hover:bg-primary/20 transition-all ring-1 ring-primary/10"
             aria-label="메뉴 열기"
           >
             <Menu className="h-10 w-10" />

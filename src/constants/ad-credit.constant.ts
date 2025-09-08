@@ -14,13 +14,16 @@ export const AD_APX = {
   CLOSE_WITHOUT_REWARD_MS: 60_000, // 60s after which we allow closing without reward
 } as const;
 
+const DAILY_CAP_DEFAULT: number = 80;
+const dailyCapValue: number = envMode
+  ? 100
+  : Number(process.env.NEXT_PUBLIC_CREDIT_DAILY_CAP ?? '') || DAILY_CAP_DEFAULT;
+
 export const CREDIT_POLICY: CreditPolicyType = {
-  rewardAmount: 5, // 기본 보상 크레딧
-  dailyCap: envMode
-    ? 100
-    : Number(process.env.NEXT_PUBLIC_CREDIT_DAILY_CAP) ?? 50, // 하루 최대치 크레딧
+  rewardAmount: 10, // 기본 보상 크레딧
+  dailyCap: dailyCapValue, // 하루 최대치 크레딧
   cooldownMs: envMode ? 5000 : 1.5 * 60 * 1000, // 광고 재시청 쿨다운
-  baseDaily: envMode ? 50 : 5, //기본 시작 크레딧
+  baseDaily: envMode ? 50 : 10, //기본 시작 크레딧
   stepReward: envMode ? 5 : 60, // seconds(초)
   maxPerAd: 20, // 한번에 얻을수 있는 최대 크레딧
   maxPerIpPerDay: 3, // 하루에 얻을수 있는 최대 크레딧
