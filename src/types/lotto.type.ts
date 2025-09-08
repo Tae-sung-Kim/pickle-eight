@@ -208,6 +208,7 @@ export type LottoAnalysisControlsType = {
   readonly setTo: (v: number) => void;
   readonly isFetching: boolean;
   readonly onAnalyze: () => void;
+  readonly headerAction?: ReactNode;
 };
 
 export type LottoAgeGateDialogType = Readonly<{
