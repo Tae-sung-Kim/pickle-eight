@@ -69,6 +69,37 @@ export function MessageCardComponent({
     }
   };
 
+  const handleCopyLink = async (): Promise<void> => {
+    try {
+      const url: string =
+        typeof window !== 'undefined' ? window.location.href : '';
+      if (!url) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+    } catch {}
+  };
+
+  // const handleShareOnX = (): void => {
+  //   const url: string =
+  //     typeof window !== 'undefined' ? window.location.href : '';
+  //   const text: string = `${shareTitle ?? title}`;
+  //   const intent = new URL('https://twitter.com/intent/tweet');
+  //   intent.searchParams.set('text', text);
+  //   if (url) intent.searchParams.set('url', url);
+  //   window.open(intent.toString(), '_blank', 'noopener,noreferrer');
+  // };
+
   return (
     <div
       ref={rootRef}
@@ -91,7 +122,7 @@ export function MessageCardComponent({
         {message}
       </p>
       <div
-        className="mt-4 flex items-center justify-center gap-2"
+        className="mt-auto pt-3 border-t border-border/40 flex w-full flex-wrap items-center justify-center gap-2"
         data-capture="ignore"
       >
         {canToggle && (
@@ -101,6 +132,7 @@ export function MessageCardComponent({
             variant="ghost"
             aria-label={`${title} 더보기/접기`}
             onClick={() => setExpanded((v) => !v)}
+            className="h-8 px-3 text-xs min-w-[88px]"
           >
             {expanded ? '접기' : '더보기'}
           </Button>
@@ -108,9 +140,30 @@ export function MessageCardComponent({
         <Button
           type="button"
           size="sm"
+          variant="outline"
+          aria-label={`${title} 링크 복사`}
+          onClick={handleCopyLink}
+          className="h-8 px-3 text-xs min-w-[88px]"
+        >
+          링크 복사
+        </Button>
+        {/* <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          aria-label={`${title} X(트위터) 공유`}
+          onClick={handleShareOnX}
+          className="h-8 px-3 text-xs min-w-[88px]"
+        >
+          X 공유
+        </Button> */}
+        <Button
+          type="button"
+          size="sm"
           variant="secondary"
           aria-label={ariaLabel}
           onClick={handleShare}
+          className="h-8 px-3 text-xs min-w-[88px]"
         >
           공유/저장
         </Button>
