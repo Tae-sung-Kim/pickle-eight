@@ -18,6 +18,7 @@ export function LottoAnalysisControlsComponent({
   setTo,
   isFetching,
   onAnalyze,
+  headerAction,
 }: LottoAnalysisControlsType) {
   const [fromText, setFromText] = useState<string>(String(from ?? ''));
   const [toText, setToText] = useState<string>(String(to ?? ''));
@@ -58,7 +59,14 @@ export function LottoAnalysisControlsComponent({
   return (
     <Card className="mt-6">
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">분석 범위</CardTitle>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <CardTitle className="text-base">분석 범위</CardTitle>
+          {headerAction && (
+            <div className="sm:ml-3 self-start sm:self-auto">
+              {headerAction}
+            </div>
+          )}
+        </div>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

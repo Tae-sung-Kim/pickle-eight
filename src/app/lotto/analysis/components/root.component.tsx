@@ -81,7 +81,7 @@ export function LottoAnalysisComponent() {
         </div>
       ) : (
         <>
-          <div className="mt-4 flex items-center justify-between gap-3">
+          <div className="mt-4">
             <LottoAnalysisControlsComponent
               from={from}
               to={to}
@@ -89,11 +89,13 @@ export function LottoAnalysisComponent() {
               setTo={setTo}
               isFetching={isFetching}
               onAnalyze={() => refetch()}
-            />
-            <CsvExportButtonComponent
-              className="shrink-0"
-              from={from}
-              to={to}
+              headerAction={
+                <CsvExportButtonComponent
+                  className="shrink-0"
+                  from={from}
+                  to={to}
+                />
+              }
             />
           </div>
 

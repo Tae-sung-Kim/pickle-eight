@@ -19,10 +19,15 @@ const RESET_MODE: CreditResetModeType =
     ? CREDIT_RESET_MODE_ENUM.MINUTE
     : CREDIT_RESET_MODE_ENUM.MIDNIGHT;
 
-function todayMidnightTs(now: number = Date.now()): number {
+// Use KST (UTC+9) midnight as the canonical daily reset to avoid client timezone discrepancies
+function todayMidnightTsKst(now: number = Date.now()): number {
   const d = new Date(now);
-  d.setHours(0, 0, 0, 0);
-  return d.getTime();
+  const utc = d.getTime() + d.getTimezoneOffset() * 60_000; // ms since epoch in UTC
+  const kst = new Date(utc + 9 * 60 * 60 * 1000); // shift to KST
+  kst.setHours(0, 0, 0, 0); // midnight in KST
+  // convert back to absolute epoch ms
+  const kstMidnightUtc = kst.getTime() - 9 * 60 * 60 * 1000;
+  return kstMidnightUtc;
 }
 
 function minuteBucketTs(now: number = Date.now()): number {
@@ -34,7 +39,7 @@ function minuteBucketTs(now: number = Date.now()): number {
 function currentResetKey(now: number = Date.now()): number {
   return RESET_MODE === CREDIT_RESET_MODE_ENUM.MINUTE
     ? minuteBucketTs(now)
-    : todayMidnightTs(now);
+    : todayMidnightTsKst(now);
 }
 
 const initialBalance: CreditBalanceType = {
@@ -63,16 +68,14 @@ export const useCreditStore = create<CreditStateType>()(
       };
       return {
         ...initialBalance,
+        hydrated: false,
+        markHydrated: (): void => {
+          if (!get().hydrated) set({ hydrated: true });
+        },
         // Expose reset to UI: force reset snapshot unconditionally (idempotent)
         syncReset: (): void => {
-          const key = currentResetKey();
-          set({
-            total: CREDIT_POLICY.baseDaily,
-            todayEarned: 0,
-            lastEarnedAt: 0,
-            lastResetAt: key,
-            overCapLocked: false,
-          } as CreditBalanceType);
+          // Only apply reset when period changed
+          ensureReset();
         },
         onEarn: (amount?: number) => {
           ensureReset();
@@ -158,6 +161,8 @@ export const useCreditStore = create<CreditStateType>()(
             overCapLocked: false,
           } as Partial<CreditBalanceType>);
         }
+        // Mark as hydrated to allow UI to render final totals without flicker
+        useCreditStore.setState({ hydrated: true });
       },
     }
   )

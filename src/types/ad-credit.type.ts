@@ -93,6 +93,8 @@ export type CreditStateType = {
   onSpend: (amount: number) => CreditSpendCheckResultType;
   canSpend: (amount: number) => CreditSpendCheckResultType;
   syncReset: () => void;
+  hydrated: boolean;
+  markHydrated: () => void;
 } & CreditBalanceType;
 
 // Use enum VALUE union ("midnight" | "minute"), not KEY union ("MIDNIGHT" | "MINUTE")

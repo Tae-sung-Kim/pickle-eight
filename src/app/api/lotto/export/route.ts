@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { LottoDrawType } from '@/types';
 import { lottoRepository } from '@/services/lotto-repository';
+import { adminDb } from '@/lib/firebase-admin';
 
 const RATE_LIMIT_WINDOW_MS = 60_000 as const; // 1 minute
 const RATE_LIMIT_MAX = 20 as const; // max requests per IP per window
+const MAX_DAILY_CSV_PER_AID = 5 as const;
 
 const rateMap = new Map<string, { count: number; resetAt: number }>();
 
@@ -24,6 +26,29 @@ function checkRate(req: Request): boolean {
   if (rec.count >= RATE_LIMIT_MAX) return false;
   rec.count += 1;
   return true;
+}
+
+function dateKey(): string {
+  const now = new Date();
+  const y = now.getUTCFullYear();
+  const m = String(now.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(now.getUTCDate()).padStart(2, '0');
+  return `${y}${m}${d}`;
+}
+
+function getAidFromCookie(req: Request): string | null {
+  const cookieHeader = req.headers.get('cookie') || '';
+  const aidCookie = cookieHeader
+    .split(';')
+    .map((v) => v.trim())
+    .find((v) => v.startsWith('aid='));
+  if (!aidCookie) return null;
+  const val = aidCookie.split('=')[1] || '';
+  try {
+    return decodeURIComponent(val);
+  } catch {
+    return val;
+  }
 }
 
 function toCsvRow(draw: LottoDrawType): string {
@@ -68,6 +93,32 @@ export async function GET(request: Request) {
       return new NextResponse('Too Many Requests', {
         status: 429,
         headers: { 'Retry-After': '60' },
+      });
+    }
+
+    // Enforce anonymous AID-based daily quota
+    const aid = getAidFromCookie(request);
+    if (!aid) {
+      return new NextResponse('AID missing. Please retry.', { status: 400 });
+    }
+    const day = dateKey();
+    const quotaRef = adminDb
+      .collection('csv_export_counters')
+      .doc(`${aid}_${day}`);
+    const quotaOk = await adminDb.runTransaction(async (tx) => {
+      const snap = await tx.get(quotaRef);
+      const count = snap.exists ? (snap.data()?.count as number) || 0 : 0;
+      if (count >= MAX_DAILY_CSV_PER_AID) return false;
+      tx.set(
+        quotaRef,
+        { aid, day, count: count + 1, updatedAt: new Date() },
+        { merge: true }
+      );
+      return true;
+    });
+    if (!quotaOk) {
+      return new NextResponse('Daily CSV export limit reached', {
+        status: 429,
       });
     }
 

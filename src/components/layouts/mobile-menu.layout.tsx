@@ -15,10 +15,16 @@ import { cn } from '@/lib';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-export function MobileMenuLayout() {
+export type MobileMenuLayoutProps = {
+  hiddenClass?: string; // default visibility control (tailwind classes)
+};
+
+export function MobileMenuLayout({
+  hiddenClass = 'md:hidden',
+}: MobileMenuLayoutProps) {
   const pathname = usePathname();
   return (
-    <div className="md:hidden">
+    <div className={hiddenClass}>
       <Sheet>
         <SheetTrigger asChild>
           <Button
