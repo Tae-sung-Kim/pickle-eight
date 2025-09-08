@@ -14,7 +14,7 @@ function AnalyticsRunner({ pathname }: { pathname: string }) {
 function TelegramRunner({ pathname }: { pathname: string }) {
   useEffect(() => {
     try {
-      const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? 'pickle-eight';
+      const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? '운빨연구소';
       const storageKey = `${siteName}_telegram-notified`;
       const alreadyNotified = getCachedData(storageKey);
       if (!alreadyNotified) {

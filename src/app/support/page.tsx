@@ -9,7 +9,7 @@ import {
 import { CopyButtonComponent } from '@/components';
 
 export const metadata: Metadata = buildMetadata({
-  title: '후원 | Pickle Eight',
+  title: '후원 | ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
   description:
     '광고와 무관한 자발적 후원 안내 페이지입니다. 서비스가 도움이 되셨다면 계좌이체로 가볍게 후원하실 수 있습니다.',
   pathname: '/support',

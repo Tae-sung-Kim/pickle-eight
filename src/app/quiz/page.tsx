@@ -23,7 +23,8 @@ export const metadata: Metadata = {
     ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
-        '퀴즈 허브 - AI 퀴즈/게임 모음 | Pickle Eight',
+        '퀴즈 허브 - AI 퀴즈/게임 모음 | ' +
+          (process.env.NEXT_PUBLIC_SITE_NAME as string),
         'AI 기반 퀴즈와 게임을 한 곳에서: 영어 단어, 상식 퀴즈, 사자성어, 숫자 매칭 등.',
         '퀴즈 허브',
         getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}` })
@@ -34,7 +35,8 @@ export const metadata: Metadata = {
     ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
-        '퀴즈 허브 - AI 퀴즈/게임 모음 | Pickle Eight',
+        '퀴즈 허브 - AI 퀴즈/게임 모음 | ' +
+          (process.env.NEXT_PUBLIC_SITE_NAME as string),
         'AI 기반 퀴즈와 게임을 한 곳에서: 영어 단어, 상식 퀴즈, 사자성어, 숫자 매칭 등.',
         '퀴즈 허브',
         getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}` })

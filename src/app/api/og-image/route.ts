@@ -13,7 +13,8 @@ function clamp(input: string, maxLen: number): string {
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const rawTitle = searchParams.get('title') || 'Pickle Eight';
+  const rawTitle =
+    searchParams.get('title') || (process.env.NEXT_PUBLIC_SITE_NAME as string);
   const rawSubtitle =
     searchParams.get('subtitle') ||
     '랜덤 추첨 · 로또 · 자리배정 · 퀴즈의 모든 것';
@@ -140,7 +141,7 @@ export async function GET(request: Request) {
         React.createElement(
           'span',
           null,
-          'Pickle Eight · 랜덤 추첨 · 로또 · 자리배정 · 퀴즈'
+          `${process.env.NEXT_PUBLIC_SITE_NAME} · 랜덤 추첨 · 로또 · 자리배정 · 퀴즈`
         ),
         React.createElement(
           'span',

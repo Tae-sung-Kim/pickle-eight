@@ -61,7 +61,7 @@ export function FooterLayout() {
                 className="transition-colors hover:text-foreground"
                 aria-label="Contact via Telegram"
               >
-                Telegram
+                텔레그램
               </a>
             </div>
           </div>

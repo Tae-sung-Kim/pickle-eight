@@ -23,7 +23,8 @@ export const metadata: Metadata = {
     ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
-        '로또 허브 - 로또 분석/번호 생성 | Pickle Eight',
+        '로또 허브 - 로또 분석/번호 생성 | ' +
+          (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '로또 번호 생성, 당첨번호 확인, 회차별 기록 등 로또 관련 기능을 한 곳에서 제공합니다.',
         '로또 허브',
         getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.LOTTO}` })
@@ -34,7 +35,8 @@ export const metadata: Metadata = {
     ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
-        '로또 허브 - 로또 분석/번호 생성 | Pickle Eight',
+        '로또 허브 - 로또 분석/번호 생성 | ' +
+          (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '로또 번호 생성, 당첨번호 확인, 회차별 기록 등 로또 관련 기능을 한 곳에서 제공합니다.',
         '로또 허브',
         getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.LOTTO}` })

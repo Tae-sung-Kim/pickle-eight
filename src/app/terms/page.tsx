@@ -9,7 +9,7 @@ import {
 } from '@/lib';
 
 const baseMeta = buildMetadata({
-  title: '이용약관 - Pickle Eight',
+  title: '이용약관 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
   description: '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
   pathname: '/terms',
 });
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
-        '이용약관 - Pickle Eight',
+        '이용약관 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
         '이용약관'
       ),
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
-        '이용약관 - Pickle Eight',
+        '이용약관 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
         '이용약관'
       ),
@@ -270,7 +270,7 @@ export default function TermsPage() {
               rel="noopener noreferrer"
               className="text-blue-600 underline"
             >
-              PickleEight
+              {process.env.NEXT_PUBLIC_SITE_NAME}
             </a>
           </p>
         </section>

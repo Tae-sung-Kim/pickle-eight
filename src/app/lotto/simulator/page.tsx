@@ -11,7 +11,9 @@ import { MENU_GROUP_NAME_ENUM } from '@/constants';
 import { LottoSimulatorComponent } from './components';
 
 export const metadata: Metadata = {
-  title: '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | Pickle Eight',
+  title:
+    '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | ' +
+    (process.env.NEXT_PUBLIC_SITE_NAME as string),
   description:
     '티켓 수와 반복 횟수를 설정해 로또 추첨을 다회 시뮬레이션하고 등수 분포를 확인하세요. 난수 기반 참고용이며 당첨 보장 없음.',
   keywords: [
@@ -24,7 +26,9 @@ export const metadata: Metadata = {
     '반복',
   ],
   openGraph: {
-    title: '로또 시뮬레이터 - 확률/분포 체감 | Pickle Eight',
+    title:
+      '로또 시뮬레이터 - 확률/분포 체감 | ' +
+      (process.env.NEXT_PUBLIC_SITE_NAME as string),
     description:
       '대량 난수 추첨으로 결과 분포를 시각화. 티켓 수/반복 횟수 설정 지원. 참고용 통계이며 당첨 보장 없음.',
     url: canonicalUrl(`${MENU_GROUP_NAME_ENUM.LOTTO}/simulator`),
@@ -33,7 +37,8 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       generateOgImageUrl(
-        '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | Pickle Eight',
+        '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | ' +
+          (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '티켓 수와 반복 횟수를 설정해 로또 추첨을 다회 시뮬레이션하고 등수 분포를 확인하세요. 난수 기반 참고용이며 당첨 보장 없음.',
         '로또 시뮬레이터'
       ),
@@ -41,12 +46,15 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | Pickle Eight',
+    title:
+      '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | ' +
+      (process.env.NEXT_PUBLIC_SITE_NAME as string),
     description:
       '대량 난수 기반 시뮬레이션으로 등수 분포를 확인. 티켓 수/반복 설정 지원. 참고용이며 당첨 보장 없음.',
     images: [
       generateOgImageUrl(
-        '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | Pickle Eight',
+        '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | ' +
+          (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '대량 난수 기반 시뮬레이션으로 등수 분포를 확인. 티켓 수/반복 설정 지원. 참고용이며 당첨 보장 없음.',
         '로또 시뮬레이터'
       ),

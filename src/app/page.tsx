@@ -7,7 +7,7 @@ import { JsonLdComponent } from '@/components';
 import { buildMetadata, jsonLdWebSite } from '@/lib';
 
 const baseMeta = buildMetadata({
-  title: 'Pickle Eight - 랜덤 추첨·로또·자리배정·퀴즈',
+  title: `${process.env.NEXT_PUBLIC_SITE_NAME} - 랜덤 추첨·로또·자리배정·퀴즈`,
   description:
     '로또 번호 생성/분석, 이름 추첨, 자리 배정, 사다리, 주사위, 퀴즈, 추천 등 다양한 랜덤 도구를 무료로 사용하세요.',
   pathname: '/',
@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
-        'Pickle Eight - 랜덤 추첨·로또·자리배정·퀴즈',
+        `${process.env.NEXT_PUBLIC_SITE_NAME} - 랜덤 추첨·로또·자리배정·퀴즈`,
         '로또 번호 생성/분석, 이름 추첨, 자리 배정, 사다리, 주사위, 퀴즈, 추천 등 다양한 랜덤 도구를 무료로 사용하세요.',
-        'Pickle Eight'
+        process.env.NEXT_PUBLIC_SITE_NAME as string
       ),
     ],
   },
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
     ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
-        'Pickle Eight - 랜덤 추첨·로또·자리배정·퀴즈',
+        `${process.env.NEXT_PUBLIC_SITE_NAME} - 랜덤 추첨·로또·자리배정·퀴즈`,
         '로또 번호 생성/분석, 이름 추첨, 자리 배정, 사다리, 주사위, 퀴즈, 추천 등 다양한 랜덤 도구를 무료로 사용하세요.',
-        'Pickle Eight'
+        process.env.NEXT_PUBLIC_SITE_NAME as string
       ),
     ],
   },
