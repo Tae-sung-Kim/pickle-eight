@@ -3,7 +3,7 @@
  * - If href matches a menu group href (e.g., "/lotto", "/quiz"), returns "{group.label} 허브".
  * - If href matches a menu item href, returns that item's label.
  * - Else, if label is provided, returns the label.
- * - Fallback is site name "Pickle Eight".
+ * - Fallback is site name.
  */
 import { MENU_LIST } from '@/constants';
 
@@ -29,5 +29,5 @@ export function getOgTag(params: OgTagParams = {}): string {
     }
   }
   if (label) return label;
-  return 'Pickle Eight';
+  return process.env.NEXT_PUBLIC_SITE_NAME ?? '운빨연구소';
 }

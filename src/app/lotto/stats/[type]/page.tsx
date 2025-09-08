@@ -26,8 +26,10 @@ export async function generateMetadata({
     'odd-even': '홀짝',
   };
   const title = valid
-    ? `로또 통계 - ${labelMap[type as StatsType]} | Pickle Eight`
-    : '로또 통계 - 잘못된 유형 | Pickle Eight';
+    ? `로또 통계 - ${labelMap[type as StatsType]} | ${
+        process.env.NEXT_PUBLIC_SITE_NAME
+      }`
+    : `로또 통계 - 잘못된 유형 | ${process.env.NEXT_PUBLIC_SITE_NAME}`;
   const description = valid
     ? `${labelMap[type as StatsType]} 기반 통계를 확인하세요.`
     : '요청하신 통계 유형이 올바르지 않습니다.';

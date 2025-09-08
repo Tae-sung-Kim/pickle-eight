@@ -15,7 +15,7 @@ import { CREDIT_POLICY, SPEND_COST } from '@/constants';
  * 코드 상수(CREDIT_POLICY, SPEND_COST) 기반으로 표기하여 불일치 방지
  */
 const baseMeta = buildMetadata({
-  title: '크레딧 정책 - Pickle Eight',
+  title: '크레딧 정책 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
   description:
     '일일 기본/상한, 보상 조건(가시성/시간), 쿨다운 및 소비 비용 등 크레딧 운영 정책을 안내합니다.',
   pathname: '/credits-policy',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
-        '크레딧 정책 - Pickle Eight',
+        '크레딧 정책 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '일일 기본/상한, 보상 조건(가시성/시간), 쿨다운 및 소비 비용 등 크레딧 운영 정책을 안내합니다.',
         '크레딧 정책'
       ),
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
-        '크레딧 정책 - Pickle Eight',
+        '크레딧 정책 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '일일 기본/상한, 보상 조건(가시성/시간), 쿨다운 및 소비 비용 등 크레딧 운영 정책을 안내합니다.',
         '크레딧 정책'
       ),

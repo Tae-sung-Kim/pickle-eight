@@ -11,7 +11,9 @@ import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
-  title: '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | Pickle Eight',
+  title:
+    '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | ' +
+    (process.env.NEXT_PUBLIC_SITE_NAME as string),
   description:
     '제외 번호, 구간, 홀짝, 연속수, 가중치 등 고급 필터로 로또 번호를 생성하세요. 통계 참고용 조합 제안이며 당첨 보장 없음.',
   keywords: [
@@ -25,7 +27,9 @@ export const metadata: Metadata = {
     '분석',
   ],
   openGraph: {
-    title: '로또 고급 번호 생성기 - 필터·가중치 | Pickle Eight',
+    title:
+      '로또 고급 번호 생성기 - 필터·가중치 | ' +
+      (process.env.NEXT_PUBLIC_SITE_NAME as string),
     description:
       '빈도/패턴 기준과 사용자 지정 제약으로 맞춤형 조합 생성. 참고용 번호이며 당첨을 보장하지 않습니다.',
     url: canonicalUrl(`${MENU_GROUP_NAME_ENUM.LOTTO}/advanced-generator`),
@@ -34,7 +38,8 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       generateOgImageUrl(
-        '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | Pickle Eight',
+        '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | ' +
+          (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '제외 번호, 구간, 홀짝, 연속수, 가중치 등 고급 필터로 로또 번호를 생성하세요. 통계 참고용 조합 제안이며 당첨 보장 없음.',
         '로또 고급 생성기'
       ),
@@ -42,12 +47,15 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | Pickle Eight',
+    title:
+      '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | ' +
+      (process.env.NEXT_PUBLIC_SITE_NAME as string),
     description:
       '제외·구간·홀짝·연속·가중치 필터로 번호 생성. 통계 참고용 제안이며 당첨 보장 없음.',
     images: [
       generateOgImageUrl(
-        '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | Pickle Eight',
+        '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | ' +
+          (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '제외·구간·홀짝·연속·가중치 필터로 번호 생성. 통계 참고용 제안이며 당첨 보장 없음.',
         '로또 고급 생성기'
       ),

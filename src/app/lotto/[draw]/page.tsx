@@ -9,7 +9,12 @@ import {
 import { ReactElement } from 'react';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
 import { LottoDrawCardComponent } from './components';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
+import {
+  canonicalUrl,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+  SITE_NAME,
+} from '@/lib';
 
 type Params = { draw: string };
 
@@ -33,7 +38,7 @@ export async function generateMetadata({
   const baseTitle = valid
     ? `로또 ${draw}회차 - 당첨번호 상세`
     : '로또 회차 - 잘못된 회차';
-  const title = `${baseTitle} | Pickle Eight`;
+  const title = `${baseTitle} | ${SITE_NAME}`;
   const description = valid
     ? `${draw}회차 당첨 번호, 보너스 번호, 추첨일 및 간단 통계를 확인하세요.`
     : '요청하신 회차 값이 올바르지 않습니다.';

@@ -11,7 +11,8 @@ export const SITE_URL: string = (
 ).replace(/\/+$/, '');
 
 /** Default site name used in titles and OpenGraph */
-export const SITE_NAME: string = 'Pickle Eight';
+export const SITE_NAME: string =
+  process.env.NEXT_PUBLIC_SITE_NAME ?? '운빨연구소';
 
 /**
  * Build a canonical URL from a pathname.

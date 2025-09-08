@@ -13,7 +13,7 @@ import {
 import { buildHeroCards } from './hero-cards.builder';
 import MessageCardComponent from './message-card.component';
 
-const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? 'pickle-eight';
+const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? '운빨연구소';
 
 export function HeroTodayMessageComponent() {
   const [messages, setMessages] = useState<MessageStateType>({

@@ -1,4 +1,4 @@
-<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pickle Eight - 랜덤, 로또, AI 퀴즈">
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="운빨연구소 - 랜덤, 로또, AI 퀴즈">
   <defs>
     <!-- Background -->
     <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -70,9 +70,9 @@
     <rect width="1200" height="630" fill="url(#dotGrid)" />
   </g>
 
-  <!-- Brand Title: Pickle ∞ Eight -->
+  <!-- Brand Title: 운빨 ∞ 연구소 -->
   <g transform="translate(600, 160)">
-    <text text-anchor="middle" class="title">Pickle ∞ Eight</text>
+    <text text-anchor="middle" class="title">운빨 ∞ 연구소</text>
   </g>
   
   <!-- Subtitle: 핵심 기능 키워드 -->

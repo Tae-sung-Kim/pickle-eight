@@ -53,7 +53,7 @@ const randomItems = (
   isCredit: it.isCredit,
 }));
 
-const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Pickle Eight';
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || '운빨연구소';
 const crumbs = jsonLdBreadcrumb([
   { name: siteName, item: canonicalUrl('/') },
   {

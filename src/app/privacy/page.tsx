@@ -9,7 +9,7 @@ import {
 } from '@/lib';
 
 const baseMeta = buildMetadata({
-  title: '개인정보처리방침 - Pickle Eight',
+  title: '개인정보처리방침 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
   description:
     '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
   pathname: '/privacy',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     ...baseMeta.openGraph,
     images: [
       generateOgImageUrl(
-        '개인정보처리방침 - Pickle Eight',
+        '개인정보처리방침 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
         '개인정보처리방침'
       ),
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     ...baseMeta.twitter,
     images: [
       generateOgImageUrl(
-        '개인정보처리방침 - Pickle Eight',
+        '개인정보처리방침 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
         '개인정보처리방침'
       ),
@@ -231,7 +231,7 @@ export default function PrivacyPolicyPage() {
               rel="noopener noreferrer"
               className="text-blue-600 underline"
             >
-              PickleEight
+              {process.env.NEXT_PUBLIC_SITE_NAME}
             </a>
           </p>
         </section>

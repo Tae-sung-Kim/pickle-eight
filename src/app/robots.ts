@@ -1,9 +1,8 @@
 import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib';
 
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = (
-    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pickle-eight.vercel.app'
-  ).replace(/\/+$/, '');
+  const siteUrl = SITE_URL;
   return {
     rules: [
       {
