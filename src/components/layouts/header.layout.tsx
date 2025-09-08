@@ -69,17 +69,14 @@ export function HeaderLayout() {
   const didResetRef = useRef<boolean>(false);
 
   useEffect(() => {
-    // initialize threshold when mode changes
-    if (!hydrated) return;
     const initialNext = calcNextResetTs();
     setNextResetTs(initialNext);
     const tick = (): void => {
-      if (!hydrated) return;
       const now = Date.now();
       if (now >= nextResetTs) {
         if (!didResetRef.current) {
-          // Force store to sync to new period (sets credits to baseDaily)
-          syncReset();
+          // Only synchronize credit store when hydrated
+          if (hydrated) syncReset();
           didResetRef.current = true;
         }
         const next = calcNextResetTs();
@@ -87,10 +84,11 @@ export function HeaderLayout() {
         setRemainingMs(next - Date.now());
       } else {
         didResetRef.current = false;
-        setRemainingMs(nextResetTs - now);
+        setRemainingMs(Math.max(0, nextResetTs - now));
       }
     };
-    // IMPORTANT: do NOT tick immediately to avoid hydration race
+    // Run an immediate tick to avoid initial blank
+    tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [syncReset, nextResetTs, calcNextResetTs, hydrated]);
@@ -110,7 +108,7 @@ export function HeaderLayout() {
   }, []);
 
   const remainingLabel = useMemo<string>(() => {
-    if (remainingMs < 0) return '';
+    if (remainingMs < 0) return '--:--';
     const totalSec = Math.ceil(remainingMs / 1000);
     const h = Math.floor(totalSec / 3600);
     const m = Math.floor((totalSec % 3600) / 60);
@@ -179,10 +177,28 @@ export function HeaderLayout() {
         </div>
         {/* 모바일/태블릿 메뉴 (lg 미만에서 사용) */}
         <div className="lg:hidden ml-auto flex items-center gap-1.5 max-[360px]:gap-1 whitespace-nowrap">
-          {/* 우측 햄버거: 항상 표시되도록 shrink 방지 */}
-          <div className="shrink-0">
-            <MobileMenuLayout />
-          </div>
+          {/* 크레딧 배지 + 리셋 타이머 (하나의 공용 요소로 통합) */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div
+                className="inline-flex items-center gap-1 tabular-nums text-[11px] text-muted-foreground shrink-0 cursor-default select-none overflow-hidden sm:border sm:rounded-full sm:px-1.5 sm:py-0.5"
+                aria-label={`보유 크레딧 ${
+                  hydrated ? total : 0
+                }, 리셋까지 ${remainingLabel}`}
+                aria-live="polite"
+                role="status"
+              >
+                <Coins className="sm:h-4 sm:w-4 h-3.5 w-3.5 text-amber-500" />
+                <span className="font-semibold text-foreground">
+                  {hydrated ? total : '—'}
+                </span>
+                <span className="opacity-70">·</span>
+                <span>↻ {remainingLabel}</span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent sideOffset={6}>{tooltipText}</TooltipContent>
+          </Tooltip>
+          {/* 광고 시청 버튼 */}
           <Button
             type="button"
             size="sm"
@@ -193,37 +209,10 @@ export function HeaderLayout() {
             <PlayCircle className="h-4 w-4 mr-1 max-[340px]:mr-0" />
             <span className="max-[420px]:hidden">시청</span>
           </Button>
-          {/* 넓은 모바일(>=sm)에서는 크레딧 배지 노출 */}
-          <div className="hidden sm:inline-flex">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[11px] cursor-default select-none overflow-hidden">
-                  <Coins className="h-4 w-4 text-amber-500 shrink-0" />
-                  <span className="tabular-nums font-semibold shrink-0 ml-0.5">
-                    {hydrated ? total : '—'}
-                  </span>
-                  <span className="inline-flex items-center ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border shrink-0">
-                    ↻ {remainingLabel}
-                  </span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent sideOffset={6}>{tooltipText}</TooltipContent>
-            </Tooltip>
+          {/* 메뉴 버튼은 가장 오른쪽에 배치 */}
+          <div className="shrink-0">
+            <MobileMenuLayout />
           </div>
-          {/* 좁은 모바일(<sm)에서는 콤팩트 크레딧 수량 + 리셋 타이머를 항상 노출 */}
-          <span
-            className="sm:hidden inline-flex items-center gap-1 tabular-nums text-[11px] text-muted-foreground shrink-0"
-            aria-label={`보유 크레딧 ${
-              hydrated ? total : 0
-            }, 리셋까지 ${remainingLabel}`}
-          >
-            <Coins className="h-3.5 w-3.5 text-amber-500" />
-            <span className="font-semibold text-foreground">
-              {hydrated ? total : '—'}
-            </span>
-            <span className="opacity-70">·</span>
-            <span>↻ {remainingLabel}</span>
-          </span>
         </div>
         {rewardOpen && <RewardModalComponent onOpenChange={setRewardOpen} />}
       </div>
