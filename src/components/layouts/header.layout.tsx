@@ -96,6 +96,11 @@ export function HeaderLayout() {
   }, [syncReset, nextResetTs, calcNextResetTs, hydrated]);
 
   useEffect(() => {
+    if (!hydrated) return;
+    if (nextResetTs > 0) setRemainingMs(nextResetTs - Date.now());
+  }, [nextResetTs, hydrated]);
+
+  useEffect(() => {
     if (isMinuteMode) {
       // Developer-visible warning in console to avoid accidental production usage
       console.warn(
@@ -124,10 +129,10 @@ export function HeaderLayout() {
     return isMinuteMode ? `${base} · 테스트 모드(1분 리셋)` : base;
   }, [todayEarned, remainingLabel]);
 
-  const remainingCharges = useMemo<number>(() => {
-    const left = Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
-    return Math.floor(left / CREDIT_POLICY.rewardAmount);
-  }, [todayEarned]);
+  // const remainingCharges = useMemo<number>(() => {
+  //   const left = Math.max(0, CREDIT_POLICY.dailyCap - todayEarned);
+  //   return Math.floor(left / CREDIT_POLICY.rewardAmount);
+  // }, [todayEarned]);
 
   const [rewardOpen, setRewardOpen] = useState<boolean>(false);
 
@@ -142,10 +147,7 @@ export function HeaderLayout() {
               {process.env.NEXT_PUBLIC_SITE_NAME}
             </span>
           </Link>
-          {/* 초협폭에서 좌측에 햄버거를 노출하여 항상 진입점이 있도록 보장 */}
-          <div className="mt-0.5 hidden max-[380px]:inline-flex">
-            <MobileMenuLayout hiddenClass="block" />
-          </div>
+          {/* 좌측에는 모바일 햄버거를 노출하지 않음 (중복 방지) */}
         </div>
         {/* 가운데: PC 메뉴 (lg 이상에서만 노출) */}
         <div className="hidden lg:flex">
@@ -175,42 +177,53 @@ export function HeaderLayout() {
             <PlayCircle className="h-4 w-4 mr-1" /> 광고 시청
           </Button>
         </div>
-        {/* 모바일/태블릿 메뉴 (lg 미만에서 사용) - 초협폭에선 우측 햄버거는 숨겨 중복 방지 */}
-        <div className="lg:hidden flex items-center gap-1.5 max-[360px]:gap-1">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[11px] cursor-default select-none overflow-hidden">
-                <Coins className="h-4 w-4 text-amber-500" />
-                <span className="tabular-nums font-semibold shrink-0 max-[320px]:hidden">
-                  {hydrated ? total : '—'}
-                </span>
-                {/* 보조 배지: 작은 화면에서는 축약형으로 표시 */}
-                {/* 상세 배지 (sm 이상에서 노출) */}
-                <span className="hidden sm:inline-flex items-center ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border">
-                  시청 {remainingCharges}회
-                </span>
-                <span className="hidden sm:inline-flex items-center ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border">
-                  ↻ {remainingLabel}
-                </span>
-                {/* 축약 배지 (xs에서 노출, 초협폭 <320px에서는 숨김) */}
-                <span className="inline-flex sm:hidden items-center ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border max-[320px]:hidden">
-                  {todayEarned}/{CREDIT_POLICY.dailyCap} · {remainingLabel}
-                </span>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent sideOffset={6}>{tooltipText}</TooltipContent>
-          </Tooltip>
+        {/* 모바일/태블릿 메뉴 (lg 미만에서 사용) */}
+        <div className="lg:hidden ml-auto flex items-center gap-1.5 max-[360px]:gap-1 whitespace-nowrap">
+          {/* 우측 햄버거: 항상 표시되도록 shrink 방지 */}
+          <div className="shrink-0">
+            <MobileMenuLayout />
+          </div>
           <Button
             type="button"
             size="sm"
             variant="secondary"
-            className="h-7 px-2 text-xs max-[400px]:px-1.5 max-[340px]:px-1"
+            className="h-7 px-2 text-xs max-[400px]:px-1.5 max-[340px]:px-1 shrink-0"
             onClick={() => setRewardOpen(true)}
           >
             <PlayCircle className="h-4 w-4 mr-1 max-[340px]:mr-0" />
             <span className="max-[420px]:hidden">시청</span>
           </Button>
-          <MobileMenuLayout hiddenClass="lg:hidden" />
+          {/* 넓은 모바일(>=sm)에서는 크레딧 배지 노출 */}
+          <div className="hidden sm:inline-flex">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[11px] cursor-default select-none overflow-hidden">
+                  <Coins className="h-4 w-4 text-amber-500 shrink-0" />
+                  <span className="tabular-nums font-semibold shrink-0 ml-0.5">
+                    {hydrated ? total : '—'}
+                  </span>
+                  <span className="inline-flex items-center ml-1 rounded px-1 py-0.5 text-[10px] text-muted-foreground border shrink-0">
+                    ↻ {remainingLabel}
+                  </span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent sideOffset={6}>{tooltipText}</TooltipContent>
+            </Tooltip>
+          </div>
+          {/* 좁은 모바일(<sm)에서는 콤팩트 크레딧 수량 + 리셋 타이머를 항상 노출 */}
+          <span
+            className="sm:hidden inline-flex items-center gap-1 tabular-nums text-[11px] text-muted-foreground shrink-0"
+            aria-label={`보유 크레딧 ${
+              hydrated ? total : 0
+            }, 리셋까지 ${remainingLabel}`}
+          >
+            <Coins className="h-3.5 w-3.5 text-amber-500" />
+            <span className="font-semibold text-foreground">
+              {hydrated ? total : '—'}
+            </span>
+            <span className="opacity-70">·</span>
+            <span>↻ {remainingLabel}</span>
+          </span>
         </div>
         {rewardOpen && <RewardModalComponent onOpenChange={setRewardOpen} />}
       </div>

@@ -19,9 +19,7 @@ export type MobileMenuLayoutProps = {
   hiddenClass?: string; // default visibility control (tailwind classes)
 };
 
-export function MobileMenuLayout({
-  hiddenClass = 'md:hidden',
-}: MobileMenuLayoutProps) {
+export function MobileMenuLayout({ hiddenClass = '' }: MobileMenuLayoutProps) {
   const pathname = usePathname();
   return (
     <div className={hiddenClass}>
