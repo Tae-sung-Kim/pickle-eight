@@ -73,13 +73,21 @@ export function PcMenuLayout() {
                           href={item.href}
                           isActive={isActive}
                           className={cn(
-                            'flex w-full !flex-row items-center justify-between gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                            'group flex w-full !flex-row items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ring-1 ring-transparent',
                             isActive
-                              ? 'bg-gray-100 text-primary font-semibold'
-                              : 'text-gray-700 hover:bg-gray-50'
+                              ? 'bg-primary/10 text-primary ring-primary/15'
+                              : 'text-foreground hover:bg-primary/5'
                           )}
                         >
-                          <span className="flex-1 min-w-0 truncate">
+                          <span className="flex-1 min-w-0 truncate inline-flex items-center gap-2">
+                            <span
+                              className={cn(
+                                'h-1.5 w-1.5 rounded-full transition-colors',
+                                isActive
+                                  ? 'bg-primary'
+                                  : 'bg-muted-foreground/30 group-hover:bg-primary/50'
+                              )}
+                            />
                             {item.label}
                           </span>
                           {item.isCredit && (
