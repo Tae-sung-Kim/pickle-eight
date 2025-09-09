@@ -22,6 +22,18 @@ export function userCreditsQuery(): UseQueryOptions<UserCreditsType | null> {
   };
 }
 
+function readConsentState(): 'unknown' | 'accepted' | 'declined' {
+  try {
+    const key =
+      (process.env.NEXT_PUBLIC_SITE_NAME || '') + '_cookie_consent_v1';
+    const v = localStorage.getItem(key);
+    if (v === 'accepted' || v === 'declined') return v;
+    return 'unknown';
+  } catch {
+    return 'unknown';
+  }
+}
+
 /**
  * Factory: UseMutation options for claiming credits
  * - requires QueryClient to invalidate user credits on success
@@ -31,7 +43,18 @@ export function claimCreditsMutation(
 ): UseMutationOptions<CreditClaimResponseType, unknown, void, unknown> {
   return {
     mutationKey: ['credits', 'claim'],
-    mutationFn: async () => claimCredits(),
+    mutationFn: async () => {
+      // Consent gate: only allow claim when consent is accepted
+      if (typeof window !== 'undefined') {
+        const c = readConsentState();
+        if (c !== 'accepted') {
+          const err = new Error('consent/declined');
+          (err as unknown as { code: string }).code = 'consent/declined';
+          throw err;
+        }
+      }
+      return claimCredits();
+    },
     onSuccess: async (data) => {
       // refresh cached user credits
       qc.invalidateQueries({ queryKey: ['users', 'me', 'credits'] });

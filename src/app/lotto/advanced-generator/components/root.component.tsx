@@ -1,9 +1,13 @@
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLottoDrawsQuery, useLatestLottoDrawQuery } from '@/queries';
 import { LottoGenerator, creditBuildCostLabel } from '@/utils';
-import { LottoGenerateFiltersType, LottoWeightingOptionsType } from '@/types';
+import {
+  LottoGenerateFiltersType,
+  LottoWeightingOptionsType,
+  LottoDrawType,
+} from '@/types';
 import { LottoAdvancedGenerateControlsComponent } from './generate-controls.component';
 import { LottoAdvancedWeightingControlsComponent } from './weighting-controls.component';
 import { LottoAdvancedGeneratedListComponent } from './generated-list.component';
@@ -15,6 +19,7 @@ import {
 } from '@/components';
 import { SPEND_COST } from '@/constants';
 import { ClientCsvButtonComponent } from '@/components';
+import { getLottoDraws } from '@/services';
 
 export function LottoAdvancedGeneratorComponent() {
   const [count, setCount] = useState<number>(3);
@@ -30,21 +35,7 @@ export function LottoAdvancedGeneratorComponent() {
   const [error, setError] = useState<string | null>(null);
   const [rangeInitialized, setRangeInitialized] = useState<boolean>(false);
 
-  const { data: latestDraw, isFetching } = useLatestLottoDrawQuery({
-    enabled: useWeight,
-  });
-
-  const amountOverride =
-    SPEND_COST.advanced +
-    (useWeight ? 2 : 0) +
-    Math.floor(Math.max(0, count - 1) / 3); // +1 per every +3 tickets
-  const label = creditBuildCostLabel({
-    spendKey: 'advanced',
-    baseLabel: '생성',
-    isBusy: isFetching,
-    busyLabel: '생성 중…',
-    amountOverride,
-  });
+  const { data: latestDraw } = useLatestLottoDrawQuery({ enabled: useWeight });
 
   useEffect(() => {
     if (!useWeight) {
@@ -61,34 +52,20 @@ export function LottoAdvancedGeneratorComponent() {
     setRangeInitialized(true);
   }, [useWeight, latestDraw]);
 
-  const enabled = useMemo(
-    () =>
-      useWeight &&
-      rangeInitialized &&
-      Number.isInteger(from) &&
-      Number.isInteger(to) &&
-      from > 0 &&
-      to >= from,
-    [useWeight, rangeInitialized, from, to]
-  );
+  // Keep query only for passive scenarios (not used on click now)
+  useLottoDrawsQuery({ from, to, enabled: false });
 
-  const { data: draws } = useLottoDrawsQuery({ from, to, enabled });
-
-  const weighting: LottoWeightingOptionsType | undefined = useMemo(() => {
-    if (!useWeight || !draws) return undefined;
-    const freq: Record<number, number> = {};
-    for (let n = 1; n <= 45; n += 1) freq[n] = 0;
-    for (const d of draws) for (const n of d.numbers) freq[n] += 1;
-    return { frequency: freq, hotColdAlpha: 1 };
-  }, [useWeight, draws]);
-
-  const excludeNumbers = useMemo(() => {
-    if (!excludeLatest || !draws || draws.length === 0) return [] as number[];
-    const latest = draws.reduce((a, b) =>
-      a.drawNumber > b.drawNumber ? a : b
-    );
-    return [...latest.numbers, latest.bonusNumber];
-  }, [excludeLatest, draws]);
+  const amountOverride =
+    SPEND_COST.advanced +
+    (useWeight ? 2 : 0) +
+    Math.floor(Math.max(0, count - 1) / 3);
+  const label = creditBuildCostLabel({
+    spendKey: 'advanced',
+    baseLabel: '생성',
+    isBusy: false,
+    busyLabel: '생성 중…',
+    amountOverride,
+  });
 
   const [generated, setGenerated] = useState<
     ReadonlyArray<{
@@ -96,7 +73,7 @@ export function LottoAdvancedGeneratorComponent() {
     }>
   >([]);
 
-  function onGenerate() {
+  async function onGenerate() {
     setError(null);
     if (
       filters.sumMin !== undefined &&
@@ -106,17 +83,55 @@ export function LottoAdvancedGeneratorComponent() {
       setError('합계 최소값이 최대값보다 클 수 없습니다.');
       return;
     }
-    if (useWeight && to < from) {
-      setError('가중치 범위(From/To)가 올바르지 않습니다.');
-      return;
+
+    let drawsData: LottoDrawType[] | undefined = undefined;
+    if (useWeight) {
+      if (!rangeInitialized || from <= 0 || to < from) {
+        setError('가중치 범위(From/To)가 올바르지 않습니다.');
+        return;
+      }
+      // 버튼 클릭 순간에 최신 데이터를 직접 조회(HTTP -> 전역 로딩 보장)
+      try {
+        drawsData = await getLottoDraws({ from, to });
+      } catch (e) {
+        setError(
+          '가중치 데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.' + e
+        );
+        return;
+      }
+      if (!drawsData || drawsData.length === 0) {
+        setError('가중치 데이터가 비어 있습니다.');
+        return;
+      }
     }
-    const f = {
-      ...filters,
-      excludeRecentNumbers: excludeNumbers,
-    } as LottoGenerateFiltersType;
+
+    // weighting/exclusions from fresh data if provided
+    const weighting: LottoWeightingOptionsType | undefined = (() => {
+      if (!useWeight || !drawsData) return undefined;
+      const freq: Record<number, number> = {};
+      for (let n = 1; n <= 45; n += 1) freq[n] = 0;
+      for (const d of drawsData) for (const n of d.numbers) freq[n] += 1;
+      return { frequency: freq, hotColdAlpha: 1 };
+    })();
+
+    const excludeNumbers: number[] = (() => {
+      if (!excludeLatest || !drawsData || drawsData.length === 0) return [];
+      const latest = drawsData.reduce((a, b) =>
+        a.drawNumber > b.drawNumber ? a : b
+      );
+      return [...latest.numbers, latest.bonusNumber];
+    })();
+
     try {
       const safeCount = Math.max(1, Math.min(50, count));
-      const list = LottoGenerator.generate(safeCount, f, weighting);
+      const list = LottoGenerator.generate(
+        safeCount,
+        {
+          ...filters,
+          excludeRecentNumbers: excludeNumbers,
+        } as LottoGenerateFiltersType,
+        weighting
+      );
       setGenerated(list);
     } catch (e) {
       setError(

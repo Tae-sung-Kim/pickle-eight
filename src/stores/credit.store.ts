@@ -16,6 +16,19 @@ import type {
 
 const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_credits:v2';
 
+// Helper: read consent state from localStorage (client-only)
+function isConsentAccepted(): boolean {
+  if (typeof window === 'undefined') return true; // SSR 안전장치: 클라이언트에서만 제한
+  try {
+    const key =
+      (process.env.NEXT_PUBLIC_SITE_NAME || '') + '_cookie_consent_v1';
+    const v = localStorage.getItem(key);
+    return v === 'accepted';
+  } catch {
+    return false;
+  }
+}
+
 // Use KST (UTC+9) midnight as the canonical daily reset to avoid client timezone discrepancies
 function todayMidnightTsKst(now: number = Date.now()): number {
   const d = new Date(now);
@@ -72,6 +85,8 @@ export const useCreditStore = create<CreditStateType>()(
       const ensureRefill = (): void => {
         // interval 값이 0이면 리필 비활성
         if (CREDIT_REFILL_INTERVAL_MS <= 0) return;
+        // 동의 미수락 상태이면 리필 정지 (freeze). 일일 리셋은 별도 로직으로 유지.
+        if (!isConsentAccepted()) return;
         const s = get();
         // '소비 이후'에만 동작, 상한에서는 동작하지 않음
         if (!s.refillArmed || s.total >= CREDIT_POLICY.dailyCap) return;
@@ -164,24 +179,44 @@ export const useCreditStore = create<CreditStateType>()(
           const s = get();
           const now = Date.now();
           const newTotal = s.total - amount;
+          // Determine next refill timer state:
+          // - If at or above cap after spending: disable timer (0/false)
+          // - If below cap: arm timer only if not already armed; otherwise preserve existing base time
+          const fallingBelowCap = newTotal < CREDIT_POLICY.dailyCap;
+          const shouldArmNow = fallingBelowCap && !s.refillArmed;
+          const nextLastRefillAt = fallingBelowCap
+            ? shouldArmNow
+              ? now
+              : s.lastRefillAt || now // safety: if persisted value missing, initialize once
+            : 0;
+          const nextRefillArmed = fallingBelowCap ? true : false;
           const next: CreditBalanceType = {
             total: newTotal,
             todayEarned: s.todayEarned,
             lastEarnedAt: s.lastEarnedAt,
             lastResetAt: s.lastResetAt,
             overCapLocked: s.overCapLocked,
-            // 소비 시점부터 경과시간 기준 카운트다운 시작
-            lastRefillAt: newTotal < CREDIT_POLICY.dailyCap ? now : 0,
-            refillArmed: newTotal < CREDIT_POLICY.dailyCap ? true : false,
+            lastRefillAt: nextLastRefillAt,
+            refillArmed: nextRefillArmed,
           } as CreditBalanceType;
           set(next);
           return { canSpend: true } as CreditSpendCheckResultType;
+        },
+        revokeTodaysEarned: (): void => {
+          ensureReset();
+          const s = get();
+          const reduceBy = Math.min(s.todayEarned, s.total);
+          if (reduceBy <= 0) return;
+          set({
+            total: Math.max(0, s.total - reduceBy),
+            todayEarned: 0,
+          } as Partial<CreditBalanceType>);
         },
       };
     },
     {
       name: STORAGE_KEY,
-      version: 2,
+      version: 3,
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({
         total: s.total,
@@ -201,9 +236,24 @@ export const useCreditStore = create<CreditStateType>()(
           : hasTotal
           ? (p.total as number) < CREDIT_POLICY.dailyCap
           : false;
+        // Clamp and lift logic
+        const key = currentResetKey();
+        const rawTotal =
+          typeof p.total === 'number' ? p.total : CREDIT_POLICY.baseDaily;
+        // Hard clamp total into [0, cap]
+        let total = Math.min(CREDIT_POLICY.dailyCap, Math.max(0, rawTotal));
+        const todayEarned =
+          typeof p.todayEarned === 'number' ? p.todayEarned : 0;
+        const sameDay =
+          typeof p.lastResetAt === 'number' && p.lastResetAt === key;
+        // If same reset bucket and user hasn't earned today (i.e., fresh day for this store)
+        // and total is below new baseDaily (e.g., env cap changed upward), lift to baseDaily.
+        if (sameDay && todayEarned === 0 && total < CREDIT_POLICY.baseDaily) {
+          total = CREDIT_POLICY.baseDaily;
+        }
         return {
           ...p,
-          // 이전 데이터의 lastRefillAt이 버킷 시각이었다면 0으로 초기화하여 시간 기반 로직으로 전환
+          total,
           lastRefillAt: typeof p.lastRefillAt === 'number' ? p.lastRefillAt : 0,
           refillArmed,
         } as CreditBalanceType;
@@ -220,7 +270,7 @@ export const useCreditStore = create<CreditStateType>()(
             lastRefillAt: 0,
             refillArmed: false,
           } as Partial<CreditBalanceType>);
-        } else if (CREDIT_REFILL_INTERVAL_MS > 0) {
+        } else if (CREDIT_REFILL_INTERVAL_MS > 0 && isConsentAccepted()) {
           // 소급 리필: 'armed'이고 상한 미만인 경우 경과 시간만큼 즉시 반영
           const s = useCreditStore.getState();
           const lastAt = s.lastRefillAt || 0;

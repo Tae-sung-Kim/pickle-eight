@@ -86,3 +86,12 @@ export const LOTTO_RATE_LIMIT_WINDOW_MS = 60_000 as const; // 1 minute
 export const LOTTO_RATE_LIMIT_MAX = 60 as const; // max requests per IP per window
 export const DH_LOTTO_ENDPOINT =
   'https://www.dhlottery.co.kr/common.do?method=getLottoNumber' as const;
+
+// Optional server-side artificial delay (ms) to throttle bursty user fetches
+// Configure via LOTTO_DELAY_MS (number). Defaults to 2000ms.
+export const LOTTO_ARTIFICIAL_DELAY_MS: number = (() => {
+  const raw = (process.env.LOTTO_DELAY_MS || '').trim();
+  const n = Number(raw);
+  if (Number.isFinite(n) && n >= 0) return n;
+  return 2000;
+})();

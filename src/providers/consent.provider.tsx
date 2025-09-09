@@ -8,6 +8,8 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { useCreditStore } from '@/stores';
+import { CREDIT_POLICY } from '@/constants';
 
 type ConsentStateType = 'unknown' | 'accepted' | 'declined';
 
@@ -51,6 +53,19 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     }
     setState('accepted');
     setVisible(false);
+    // If user is below cap, resume refill by arming timer now
+    try {
+      const s = useCreditStore.getState();
+      if (s.total < CREDIT_POLICY.dailyCap) {
+        useCreditStore.setState({
+          refillArmed: true,
+          lastRefillAt: Date.now(),
+        });
+      }
+      s.syncReset?.();
+    } catch {
+      /* noop */
+    }
   }, []);
 
   const onDecline = useCallback(() => {
@@ -61,10 +76,45 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     }
     setState('declined');
     setVisible(false);
+    // Revoke today's earned credits locally without touching spent usage
+    try {
+      useCreditStore.getState().revokeTodaysEarned?.();
+      // Freeze timers immediately
+      useCreditStore.setState({ refillArmed: false, lastRefillAt: 0 });
+    } catch {
+      /* noop */
+    }
   }, []);
 
   const onOpen = useCallback(() => setVisible(true), []);
   const onClose = useCallback(() => setVisible(false), []);
+
+  // Safety: reflect transitions in either direction
+  useEffect(() => {
+    if (state === 'declined') {
+      try {
+        useCreditStore.getState().revokeTodaysEarned?.();
+        useCreditStore.setState({ refillArmed: false, lastRefillAt: 0 });
+      } catch {
+        /* noop */
+      }
+      return;
+    }
+    if (state === 'accepted') {
+      try {
+        const s = useCreditStore.getState();
+        if (s.total < CREDIT_POLICY.dailyCap) {
+          useCreditStore.setState({
+            refillArmed: true,
+            lastRefillAt: Date.now(),
+          });
+        }
+        s.syncReset?.();
+      } catch {
+        /* noop */
+      }
+    }
+  }, [state]);
 
   const value = useMemo<ConsentContextValueType>(
     () => ({ state, visible, onAccept, onDecline, onOpen, onClose }),

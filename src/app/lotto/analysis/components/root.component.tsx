@@ -100,6 +100,11 @@ export function LottoAnalysisComponent() {
           </div>
 
           <div className="mt-6 space-y-8 bg-white rounded-md shadow p-4">
+            {isFetching && (
+              <p className="text-sm text-muted-foreground">
+                분석 데이터를 불러오는 중…
+              </p>
+            )}
             {isError && (
               <p className="text-sm text-destructive">
                 오류: {(error as Error).message}
