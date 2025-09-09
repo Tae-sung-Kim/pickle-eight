@@ -164,15 +164,22 @@ export const useCreditStore = create<CreditStateType>()(
           const s = get();
           const now = Date.now();
           const newTotal = s.total - amount;
+          const fallingBelowCap = newTotal < CREDIT_POLICY.dailyCap;
+          const shouldArmNow = fallingBelowCap && !s.refillArmed;
+          const nextLastRefillAt = fallingBelowCap
+            ? shouldArmNow
+              ? now
+              : s.lastRefillAt || now // safety: if persisted value missing, initialize once
+            : 0;
+          const nextRefillArmed = fallingBelowCap ? true : false;
           const next: CreditBalanceType = {
             total: newTotal,
             todayEarned: s.todayEarned,
             lastEarnedAt: s.lastEarnedAt,
             lastResetAt: s.lastResetAt,
             overCapLocked: s.overCapLocked,
-            // 소비 시점부터 경과시간 기준 카운트다운 시작
-            lastRefillAt: newTotal < CREDIT_POLICY.dailyCap ? now : 0,
-            refillArmed: newTotal < CREDIT_POLICY.dailyCap ? true : false,
+            lastRefillAt: nextLastRefillAt,
+            refillArmed: nextRefillArmed,
           } as CreditBalanceType;
           set(next);
           return { canSpend: true } as CreditSpendCheckResultType;
