@@ -8,7 +8,7 @@ export const formatCooldown = (ms: number): string => {
   return `${m}m${s}s`;
 };
 
-export const buildCostLabel = ({
+export const creditBuildCostLabel = ({
   spendKey,
   baseLabel,
   isBusy = false,

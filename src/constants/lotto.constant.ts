@@ -1,6 +1,6 @@
 import { LottoWarningToneType } from '@/types';
 
-export const LOTTO_MAX_HISTORY_RANGE = 100 as const;
+export const LOTTO_MAX_HISTORY_RANGE = 500 as const;
 
 export const LOTTO_ANALYSIS_CHART_BUCKET_COLORS: Readonly<
   Record<string, string>

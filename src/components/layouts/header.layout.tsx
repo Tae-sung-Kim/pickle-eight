@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Home, Coins } from 'lucide-react';
 import { MobileMenuLayout, PcMenuLayout } from '@/components';
 import { useCreditStore } from '@/stores';
-import { CREDIT_POLICY, CREDIT_RESET_MODE_ENUM } from '@/constants';
+import { CREDIT_RESET_MODE_ENUM } from '@/constants';
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { CreditResetModeType } from '@/types';
 import { scheduleIdle, cancelIdle } from '@/lib';
@@ -19,8 +19,7 @@ const resetMode: CreditResetModeType =
 const isMinuteMode = resetMode === CREDIT_RESET_MODE_ENUM.MINUTE;
 
 export function HeaderLayout() {
-  const { total, todayEarned, syncReset, hydrated, markHydrated } =
-    useCreditStore();
+  const { total, syncReset, hydrated, markHydrated } = useCreditStore();
 
   useEffect(() => {
     if (!hydrated) {
@@ -114,13 +113,6 @@ export function HeaderLayout() {
     return `${mm}:${ss}`;
   }, [remainingMs]);
 
-  const todayAvailLabel = useMemo<string>(() => {
-    return `오늘 ${todayEarned}/${CREDIT_POLICY.dailyCap}`;
-  }, [todayEarned]);
-
-  // TODO(reward-ads): 보상형 광고 모달 오픈 상태 (비활성화)
-  // const [rewardOpen, setRewardOpen] = useState<boolean>(false);
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 sm:px-6">
@@ -153,20 +145,7 @@ export function HeaderLayout() {
             </span>
             <span className="opacity-70">·</span>
             <span>↻ {remainingLabel}</span>
-            <span className="opacity-70 max-[420px]:hidden">·</span>
-            <span className="max-[420px]:hidden">{todayAvailLabel}</span>
           </span>
-          {/* TODO(reward-ads): 보상형 광고 버튼 비활성화
-          <Button
-            type="button"
-            size="sm"
-            variant="secondary"
-            className="ml-2 h-7 px-2.5 text-xs"
-            onClick={() => setRewardOpen(true)}
-          >
-            <PlayCircle className="h-4 w-4 mr-1" /> 광고 시청
-          </Button>
-          */}
         </div>
         {/* 모바일/태블릿 메뉴 (lg 미만에서 사용) */}
         <div className="lg:hidden ml-auto flex items-center gap-1.5 max-[400px]:gap-1 whitespace-nowrap">
@@ -184,27 +163,13 @@ export function HeaderLayout() {
             <span className="opacity-70">·</span>
             <span>↻ {remainingLabel}</span>
             <span className="opacity-70 max-[480px]:hidden">·</span>
-            <span className="max-[480px]:hidden">{todayAvailLabel}</span>
           </span>
-          {/* TODO(reward-ads): 보상형 광고 버튼 비활성화
-          <Button
-            type="button"
-            size="sm"
-            variant="secondary"
-            className="h-7 px-2 text-xs max-[400px]:px-1.5 max-[340px]:px-1 shrink-0"
-            onClick={() => setRewardOpen(true)}
-          >
-            <PlayCircle className="h-4 w-4 mr-1 max-[340px]:mr-0" />
-            <span className="max-[420px]:hidden">시청</span>
-          </Button>
-          */}
+
           {/* 우측 햄버거: 항상 표시되도록 shrink 방지 */}
           <div className="shrink-0">
             <MobileMenuLayout />
           </div>
         </div>
-        {/* TODO(reward-ads): 보상형 광고 모달 비활성화 */}
-        {/* {rewardOpen && <RewardModalComponent onOpenChange={setRewardOpen} />} */}
       </div>
     </header>
   );

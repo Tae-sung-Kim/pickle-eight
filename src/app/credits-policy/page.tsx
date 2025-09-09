@@ -68,12 +68,11 @@ export default function CreditsPolicyPage(): JSX.Element {
             <span className="text-muted-foreground"> (자정에 리셋)</span>
           </li>
           <li>
-            하루 최대 보유/사용 상한: <strong>{CREDIT_POLICY.dailyCap}</strong>
+            하루 최대 보유/사용 상한: <strong>80</strong>
           </li>
           <li>
-            리필 전략: 현재는 자정 기준으로{' '}
-            <strong>{CREDIT_POLICY.baseDaily}</strong>로 초기화합니다. (5분마다
-            5개 충전 옵션은 검토 중)
+            리필: <strong>5분마다 +1</strong>씩 자동 충전되며, 최대{' '}
+            <strong>80</strong>까지 충전됩니다.
           </li>
         </ul>
       </section>

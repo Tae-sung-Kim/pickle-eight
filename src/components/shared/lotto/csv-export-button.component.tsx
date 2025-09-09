@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react';
 import { CreditGateButtonComponent } from '@/components';
 import { exportLottoCsv } from '@/services';
-import { buildCostLabel, LottoCsvUtils } from '@/utils';
+import { creditBuildCostLabel, LottoCsvUtils } from '@/utils';
 import { useCreditStore } from '@/stores';
 import { SPEND_COST } from '@/constants';
 
@@ -22,7 +22,7 @@ export function CsvExportButtonComponent({
   const amount: number = SPEND_COST.csv;
   const label: string = useMemo<string>(
     () =>
-      buildCostLabel({
+      creditBuildCostLabel({
         spendKey: 'csv',
         baseLabel: 'CSV 내보내기',
         busyLabel: '내보내는 중…',

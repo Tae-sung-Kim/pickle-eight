@@ -19,12 +19,12 @@ const RESET_MODE: CreditResetModeType =
     ? CREDIT_RESET_MODE_ENUM.MINUTE
     : CREDIT_RESET_MODE_ENUM.MIDNIGHT;
 
-// Refill mode: interval(5m +5 up to cap) | midnight(only daily reset)
+// Refill mode: interval(5m +1 up to cap) | midnight(only daily reset)
 const REFILL_MODE = (
   process.env.NEXT_PUBLIC_CREDIT_REFILL_MODE || 'interval'
 ).toLowerCase();
 const REFILL_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
-const REFILL_AMOUNT = 5; // per interval
+const REFILL_AMOUNT = 1; // per interval
 
 // Use KST (UTC+9) midnight as the canonical daily reset to avoid client timezone discrepancies
 function todayMidnightTsKst(now: number = Date.now()): number {

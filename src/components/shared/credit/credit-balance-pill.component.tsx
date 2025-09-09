@@ -16,6 +16,37 @@ export type CreditBalancePillType = {
   showLabel?: boolean;
 };
 
+function kstMidnightUtcTs(now: number = Date.now()): number {
+  const d = new Date(now);
+  const utc = d.getTime() + d.getTimezoneOffset() * 60_000;
+  const kst = new Date(utc + 9 * 60 * 60 * 1000);
+  kst.setHours(0, 0, 0, 0);
+  const kstMidnightUtc = kst.getTime() - 9 * 60 * 60 * 1000;
+  // if already past today's midnight (same timestamp), add 24h to get next midnight
+  return (
+    kstMidnightUtc +
+    (now >= kstMidnightUtc + 24 * 60 * 60 * 1000 ? 24 * 60 * 60 * 1000 : 0)
+  );
+}
+
+function nextFiveMinuteBucketTs(now: number = Date.now()): number {
+  const d = new Date(now);
+  d.setSeconds(0, 0);
+  const m = d.getMinutes();
+  const mod = m % 5;
+  const add = mod === 0 ? 5 : 5 - mod;
+  d.setMinutes(m + add);
+  return d.getTime();
+}
+
+function formatHms(ms: number): string {
+  const totalSec = Math.max(0, Math.ceil(ms / 1000));
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  return h > 0 ? `${h}h${m}m` : `${m}m${s}s`;
+}
+
 export function CreditBalancePillComponent({
   className,
   showLabel = true,
@@ -39,6 +70,16 @@ export function CreditBalancePillComponent({
   const todayAvailLabel = useMemo<string>(() => {
     return `오늘 ${todayEarned}/${CREDIT_POLICY.dailyCap}`;
   }, [todayEarned]);
+
+  const timers = useMemo<{ refillIn: string; resetIn: string }>(() => {
+    const now = Date.now();
+    const refillTs = nextFiveMinuteBucketTs(now);
+    const midnightTs = kstMidnightUtcTs(now);
+    return {
+      refillIn: formatHms(refillTs - now),
+      resetIn: formatHms(midnightTs - now),
+    };
+  }, [todayEarned, total]);
 
   return (
     <div
@@ -64,7 +105,9 @@ export function CreditBalancePillComponent({
         </TooltipTrigger>
         <TooltipContent sideOffset={6}>
           <div className="space-y-0.5">
-            <p>5분마다 +5 충전 · 최대 {CREDIT_POLICY.dailyCap}</p>
+            <p>5분마다 +1 충전 · 최대 {CREDIT_POLICY.dailyCap}</p>
+            <p>다음 충전까지 {timers.refillIn}</p>
+            <p>자정 리셋까지 {timers.resetIn}</p>
             <p>{todayAvailLabel}</p>
           </div>
         </TooltipContent>
