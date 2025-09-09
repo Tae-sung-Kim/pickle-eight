@@ -96,6 +96,35 @@ export default function CreditsPolicyPage(): JSX.Element {
       </section>
 
       <section className="space-y-2 mb-8">
+        <h2 className="text-lg font-semibold">동의 및 접근성</h2>
+        <ul className="list-disc pl-5 text-sm leading-6">
+          <li>
+            본 사이트는 크레딧 없이도 대부분의 페이지를 자유롭게 이용할 수
+            있습니다.
+          </li>
+          <li>
+            다만 아래 기능은 크레딧 기반으로 제한됩니다. 필요한 경우 광고/쿠키
+            동의 후 사용하실 수 있습니다.
+          </li>
+          <li>
+            동의하지 않으면 크레딧 &quot;사용&quot;이 비활성화되며, 이미 사용된
+            내역은 그대로 유지됩니다.
+          </li>
+          <li>
+            동의 상태는 하단 배너 또는 설정에서 언제든 변경할 수 있습니다.
+          </li>
+        </ul>
+        <div className="mt-2 rounded-md border bg-muted/30 p-3">
+          <p className="text-sm font-medium">크레딧 제한 기능 목록</p>
+          <ul className="mt-1 list-disc pl-5 text-sm leading-6">
+            <li>로또 분석(범위 조회 및 통계 계산)</li>
+            <li>로또 고급 번호 생성(가중치/필터 기반)</li>
+            <li>CSV 내보내기 및 일부 보상형 기능</li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="space-y-2 mb-8">
         <h2 className="text-lg font-semibold">데이터 처리 및 보안</h2>
         <ul className="list-disc pl-5 text-sm leading-6">
           <li>

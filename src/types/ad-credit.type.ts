@@ -62,6 +62,7 @@ export type CreditStateType = {
   syncReset: () => void;
   hydrated: boolean;
   markHydrated: () => void;
+  revokeTodaysEarned: () => void;
 } & CreditBalanceType;
 
 // Use enum VALUE union ("midnight" | "minute"), not KEY union

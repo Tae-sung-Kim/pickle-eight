@@ -11,7 +11,7 @@ This document summarizes legal/commercial and operational compliance items for P
   - Analytics/ads scripts run only when consent is `accepted`.
   - `CookieSettingsButton` in footer allows reopening consent banner.
 - Actions:
-  - Confirm Privacy Policy and Terms list third parties (Firebase, Applixir, analytics) and data usage.
+  - Confirm Privacy Policy and Terms list third parties (Firebase, analytics, ad networks if used) and data usage.
   - Provide contact email and effective date.
 
 ## 2) Age Gate (Lottery)
@@ -36,13 +36,13 @@ This document summarizes legal/commercial and operational compliance items for P
 ## 4) Advertising and Monetization
 
 - State: Implemented.
-  - Applixir reward ads integrated. Credit system issues rewards on completed views.
-  - Error states surfaced: `ads-unavailable`, `mediaReviewPending`, `siteNotApproved`.
+  - Reward ads and display ads are supported; credit system issues rewards only on completed views and only with user consent.
+  - Error states must be surfaced when ads are unavailable or pending approval.
   - Ad labels displayed consistently.
 - `ads.txt`:
-  - Ensure only active networks (e.g., Applixir, AdFit/AdSense if used) and correct publisher IDs are listed.
+  - Ensure only active networks (e.g., the ones currently enabled in the product) and correct publisher IDs are listed.
 - Actions:
-  - On approval completion, update UI copy to reflect availability.
+  - Upon any network approval changes, update UI copy and `ads.txt` accordingly.
 
 ## 5) Analytics and Telemetry
 
@@ -87,10 +87,11 @@ This document summarizes legal/commercial and operational compliance items for P
   - `NEXT_PUBLIC_SITE_URL`
   - `DEVICE_COOKIE_SECRET` (prod required; used by middleware rate-limit/AID)
   - `CRON_SECRET` (for `/api/lotto/sync`)
-  - `NEXT_PUBLIC_APPLIXIR_API_KEY`
   - Firebase config vars (client + Admin SDK)
-- Actions:
-  - Verify all are set in Vercel Project Settings (Production/Preview).
+- Optional:
+  - `NEXT_PUBLIC_ADFIT_UNIT_ID` or other ad network keys
+  - `NEXT_PUBLIC_CREDIT_*` (policy tuning)
+  - `LOTTO_DELAY_MS` (artificial delay for `/api/lotto/draws`)
 
 ## 10) Operational Runbook
 

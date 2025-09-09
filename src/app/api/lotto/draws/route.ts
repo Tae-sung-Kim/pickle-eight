@@ -5,6 +5,7 @@ import {
   LOTTO_MAX_HISTORY_RANGE,
   LOTTO_RATE_LIMIT_MAX,
   LOTTO_RATE_LIMIT_WINDOW_MS,
+  LOTTO_ARTIFICIAL_DELAY_MS,
 } from '@/constants';
 
 // ===== Simple in-memory rate limiter =====
@@ -27,6 +28,10 @@ function checkRate(req: Request): boolean {
   if (rec.count >= LOTTO_RATE_LIMIT_MAX) return false;
   rec.count += 1;
   return true;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // ===== Query parsing =====
@@ -167,6 +172,11 @@ export async function GET(request: Request) {
           headers: { 'Retry-After': '60', 'Cache-Control': 'no-store' },
         }
       );
+    }
+
+    // Intentional small delay to deter bursty scraping and reduce hot-spotting on Firestore
+    if (LOTTO_ARTIFICIAL_DELAY_MS > 0) {
+      await sleep(LOTTO_ARTIFICIAL_DELAY_MS);
     }
 
     const query = parseQuery(request.url);
