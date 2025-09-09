@@ -6,7 +6,6 @@ import { NextResponse } from 'next/server';
 const RATE_LIMIT_PER_MIN = 10 as const; // adjust as needed
 const WINDOW_MS = 60_000 as const;
 const COOKIE_NAME = 'iprl' as const;
-const AID_COOKIE = 'aid' as const;
 
 const textEncoder = new TextEncoder();
 
@@ -38,12 +37,9 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   // Only enforce for matched paths (see config.matcher)
   const url = new URL(req.url);
   const pathname = url.pathname;
-  const isApplixirStart: boolean = pathname === '/api/applixir/start';
-  const isApplixirComplete: boolean = pathname === '/api/applixir/complete';
   const isCreditsClaim: boolean = pathname === '/api/credits/claim';
   const isCsvExport: boolean = pathname === '/api/lotto/export';
-  const inScope: boolean =
-    isApplixirStart || isApplixirComplete || isCreditsClaim || isCsvExport;
+  const inScope: boolean = isCreditsClaim || isCsvExport;
   if (!inScope) {
     return NextResponse.next();
   }
@@ -97,46 +93,16 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Prepare downstream request headers (to inject cookies immediately)
+  // Prepare downstream request headers
   count += 1;
   const rateRaw: string = `${resetAt}:${count}`;
   const rateSig: string = await hmacSHA256Hex(secret, `${ip}|${rateRaw}`);
-  const reqHeaders: Headers = new Headers(req.headers);
-  let cookieHeaderWorking: string = reqHeaders.get('cookie') || '';
 
-  // Generate AID cookie if needed for applixir routes and inject into request header
-  let generatedAid: string | null = null;
-  const hasAidCookie: boolean = Boolean(req.cookies.get(AID_COOKIE)?.value);
-  let currentAid: string | null = hasAidCookie
-    ? req.cookies.get(AID_COOKIE)!.value
-    : null;
-  if ((isApplixirStart || isApplixirComplete || isCsvExport) && !hasAidCookie) {
-    const bytes = new Uint8Array(16);
-    crypto.getRandomValues(bytes);
-    const aidHex: string = Array.from(bytes)
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('');
-    generatedAid = aidHex;
-    currentAid = aidHex;
-    const newCookiePart = `${AID_COOKIE}=${aidHex}`;
-    cookieHeaderWorking = cookieHeaderWorking
-      ? `${cookieHeaderWorking}; ${newCookiePart}`
-      : newCookiePart;
-    reqHeaders.set('cookie', cookieHeaderWorking);
-  }
+  // Create response
+  const res = NextResponse.next();
 
-  // Always propagate AID via request header for downstream handlers
-  if (currentAid) {
-    reqHeaders.set('x-aid', currentAid);
-  }
-
-  // Create response with mutated request headers
-  const res = NextResponse.next({ request: { headers: reqHeaders } });
-
-  // Debug headers to verify middleware execution and AID propagation
+  // Debug headers to verify middleware execution
   res.headers.set('x-mw', '1');
-  if (currentAid) res.headers.set('x-mw-aid-present', '1');
-  if (generatedAid) res.headers.set('x-mw-aid-generated', '1');
 
   // Set rate-limit cookie on response
   res.cookies.set(COOKIE_NAME, `${rateRaw}.${rateSig}`, {
@@ -146,17 +112,6 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     path: '/',
     maxAge: 60 * 5, // keep short; sliding window
   });
-
-  // If AID was generated, set it on the response too
-  if (generatedAid) {
-    res.cookies.set(AID_COOKIE, generatedAid, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 365, // 1y
-    });
-  }
 
   return res;
 }

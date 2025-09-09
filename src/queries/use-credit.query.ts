@@ -3,25 +3,13 @@ import {
   type UseMutationOptions,
   type UseQueryOptions,
 } from '@tanstack/react-query';
-import { getAnalyticsClient } from '@/lib/firebase-config';
+import { getAnalyticsClient } from '@/lib';
 import {
   claimCredits,
   getUserCredits,
   normalizeClaimErrorCode,
-  postAdEvent,
-  startAdSession,
-  completeAdSession,
 } from '@/services';
-import type {
-  CreditClaimResponseType,
-  UserCreditsType,
-  CreditApplixirEventPayloadType,
-  CreditStartApplixirSessionInputType,
-  CreditStartApplixirSessionOutputType,
-  CreditCompleteApplixirSessionInputType,
-  CreditCompleteApplixirSessionOutputType,
-} from '@/types';
-import { useMutation, type UseMutationResult } from '@tanstack/react-query';
+import type { CreditClaimResponseType, UserCreditsType } from '@/types';
 
 /**
  * Factory: UseQuery options for current user's credits
@@ -74,48 +62,4 @@ export function claimCreditsMutation(
       );
     },
   };
-}
-
-// Ad event mutation hook
-export function useApplixirEventMutation(): UseMutationResult<
-  void,
-  Error,
-  CreditApplixirEventPayloadType
-> {
-  return useMutation<void, Error, CreditApplixirEventPayloadType>({
-    mutationKey: ['applixir', 'event'],
-    mutationFn: (p) => postAdEvent(p),
-  });
-}
-
-// Start applixir session mutation hook
-export function useStartApplixirSessionMutation(): UseMutationResult<
-  CreditStartApplixirSessionOutputType,
-  Error,
-  CreditStartApplixirSessionInputType
-> {
-  return useMutation<
-    CreditStartApplixirSessionOutputType,
-    Error,
-    CreditStartApplixirSessionInputType
-  >({
-    mutationKey: ['applixir', 'start'],
-    mutationFn: (p) => startAdSession(p),
-  });
-}
-
-// Complete applixir session mutation hook
-export function useCompleteApplixirSessionMutation(): UseMutationResult<
-  CreditCompleteApplixirSessionOutputType,
-  Error,
-  CreditCompleteApplixirSessionInputType
-> {
-  return useMutation<
-    CreditCompleteApplixirSessionOutputType,
-    Error,
-    CreditCompleteApplixirSessionInputType
-  >({
-    mutationKey: ['applixir', 'complete'],
-    mutationFn: (p) => completeAdSession(p),
-  });
 }

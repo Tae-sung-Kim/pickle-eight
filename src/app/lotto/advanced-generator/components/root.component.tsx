@@ -2,14 +2,13 @@
 
 import { useMemo, useState, useEffect } from 'react';
 import { useLottoDrawsQuery, useLatestLottoDrawQuery } from '@/queries';
-import { LottoGenerator } from '@/utils';
+import { LottoGenerator, creditBuildCostLabel } from '@/utils';
 import { LottoGenerateFiltersType, LottoWeightingOptionsType } from '@/types';
 import { LottoAdvancedGenerateControlsComponent } from './generate-controls.component';
 import { LottoAdvancedWeightingControlsComponent } from './weighting-controls.component';
 import { LottoAdvancedGeneratedListComponent } from './generated-list.component';
 import { Card } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useAdCredit } from '@/hooks';
 import {
   CreditBalancePillComponent,
   CreditGateButtonComponent,
@@ -35,13 +34,11 @@ export function LottoAdvancedGeneratorComponent() {
     enabled: useWeight,
   });
 
-  const { buildCostLabel } = useAdCredit();
-
   const amountOverride =
     SPEND_COST.advanced +
     (useWeight ? 2 : 0) +
     Math.floor(Math.max(0, count - 1) / 3); // +1 per every +3 tickets
-  const label = buildCostLabel({
+  const label = creditBuildCostLabel({
     spendKey: 'advanced',
     baseLabel: '생성',
     isBusy: isFetching,

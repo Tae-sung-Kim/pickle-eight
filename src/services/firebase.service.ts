@@ -11,7 +11,7 @@ import {
   type DocumentData,
   type QueryConstraint,
 } from 'firebase/firestore';
-import { db } from '@/lib/firebase-config';
+import { db } from '@/lib';
 
 /**
  * 컬렉션의 모든 문서를 가져오는 제네릭 함수

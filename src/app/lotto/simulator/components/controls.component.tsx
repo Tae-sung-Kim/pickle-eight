@@ -8,8 +8,8 @@ import {
   CreditGateButtonComponent,
   CreditBalancePillComponent,
 } from '@/components';
-import { useAdCredit } from '@/hooks';
 import { useEffect, useState } from 'react';
+import { creditBuildCostLabel } from '@/utils';
 
 export type SimulatorControlsComponentType = Readonly<{
   ticketCount: number;
@@ -71,9 +71,7 @@ export function SimulatorControlsComponent({
       : 3 + Math.floor(Math.max(0, ticketForCost) / 2)) +
     Math.floor((Math.max(1, drawForCost) - 1) / 500);
 
-  const { buildCostLabel } = useAdCredit();
-
-  const label = buildCostLabel({
+  const label = creditBuildCostLabel({
     spendKey: 'simulator',
     baseLabel: '시뮬레이션',
     isBusy: running,

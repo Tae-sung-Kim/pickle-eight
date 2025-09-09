@@ -1,16 +1,10 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { db, ensureAnonUser } from '@/lib/firebase-config';
+import { db, ensureAnonUser, http } from '@/lib';
 import {
   CreditClaimResponseType,
   UserCreditsType,
   CreditClaimErrorCodeType,
-  CreditApplixirEventPayloadType,
-  CreditStartApplixirSessionInputType,
-  CreditStartApplixirSessionOutputType,
-  CreditCompleteApplixirSessionInputType,
-  CreditCompleteApplixirSessionOutputType,
 } from '@/types';
-import { apiInstance } from './axios-instance';
 import { CREDIT_CLAIM_ERROR_CODE_ENUM } from '@/constants';
 
 /**
@@ -19,7 +13,7 @@ import { CREDIT_CLAIM_ERROR_CODE_ENUM } from '@/constants';
 export async function claimCredits(): Promise<CreditClaimResponseType> {
   const user = await ensureAnonUser();
   const idToken = await user.getIdToken();
-  const res = await apiInstance.post<CreditClaimResponseType>(
+  const res = await http.post<CreditClaimResponseType>(
     'credits/claim',
     {},
     {
@@ -65,47 +59,4 @@ export function normalizeClaimErrorCode(
   return (allowList as readonly string[]).includes(code)
     ? (code as CreditClaimErrorCodeType)
     : CREDIT_CLAIM_ERROR_CODE_ENUM.REQUEST_FAILED;
-}
-
-/**
- * Send applixir telemetry/event to server.
- */
-export async function postAdEvent(
-  payload: CreditApplixirEventPayloadType
-): Promise<void> {
-  await apiInstance.post('applixir/events', payload, {
-    headers: { 'Content-Type': 'application/json', 'x-skip-loading': '1' },
-  });
-}
-
-/**
- * Start an applixir session and receive a server token.
- */
-export async function startAdSession(
-  input: CreditStartApplixirSessionInputType
-): Promise<CreditStartApplixirSessionOutputType> {
-  const res = await apiInstance.post<{ ok?: boolean; token?: string }>(
-    'applixir/start',
-    { cid: input.cid },
-    { headers: { 'Content-Type': 'application/json' } }
-  );
-  const json = res.data;
-  if (!json?.ok || !json?.token) throw new Error('applixir_start_failed');
-  return { token: json.token };
-}
-
-/**
- * Complete an applixir session using previously issued token.
- */
-export async function completeAdSession(
-  input: CreditCompleteApplixirSessionInputType
-): Promise<CreditCompleteApplixirSessionOutputType> {
-  const res = await apiInstance.post<{ ok?: boolean; error?: string }>(
-    'applixir/complete',
-    { token: input.token },
-    { headers: { 'Content-Type': 'application/json' } }
-  );
-  const json = res.data;
-  if (!json?.ok) throw new Error(json?.error || 'applixir_complete_failed');
-  return { ok: true };
 }

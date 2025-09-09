@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 import { GptEnglishWordQuizResponse } from '@/types';
-import { apiInstance } from '@/services';
+import { http } from '@/lib';
 
 export const useGptEnglishWordQuizQuery = () => {
   return useMutation<GptEnglishWordQuizResponse, Error, void>({
     mutationFn: async () => {
-      const res = await apiInstance.post<GptEnglishWordQuizResponse>(
+      const res = await http.post<GptEnglishWordQuizResponse>(
         '/gpt/english-word-quiz'
       );
 

@@ -1,5 +1,5 @@
 import { LottoDrawType } from '@/types';
-import { apiInstance } from './axios-instance';
+import { http } from '@/lib';
 
 export async function getLottoDraws({
   from,
@@ -8,7 +8,7 @@ export async function getLottoDraws({
   from: number;
   to: number;
 }): Promise<LottoDrawType[]> {
-  const res = await apiInstance.get<{ data: LottoDrawType[] }>('/lotto/draws', {
+  const res = await http.get<{ data: LottoDrawType[] }>('/lotto/draws', {
     params: { from, to },
   });
   return res.data.data;
@@ -17,7 +17,7 @@ export async function getLottoDraws({
 export async function getLatestLottoDraw(): Promise<{
   lastDrawNumber: number;
 }> {
-  const res = await apiInstance.get<{ data: { lastDrawNumber: number } }>(
+  const res = await http.get<{ data: { lastDrawNumber: number } }>(
     '/lotto/draws',
     {
       params: { latest: 1 },
@@ -29,7 +29,7 @@ export async function getLatestLottoDraw(): Promise<{
 export async function getLottoDrawByNumber(
   drwNo: number
 ): Promise<LottoDrawType> {
-  const res = await apiInstance.get<{ data: LottoDrawType }>('/lotto/draws', {
+  const res = await http.get<{ data: LottoDrawType }>('/lotto/draws', {
     params: { drwNo },
   });
   return res.data.data;
@@ -51,7 +51,7 @@ export async function exportLottoCsv({
   from?: number;
   to?: number;
 }): Promise<{ blob: Blob; filename: string }> {
-  const res = await apiInstance.get<Blob>('/lotto/export', {
+  const res = await http.get<Blob>('/lotto/export', {
     params: { from, to },
     responseType: 'blob',
   });

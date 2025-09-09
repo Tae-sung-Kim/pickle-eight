@@ -8,12 +8,10 @@ function buildCsp(): string {
     "'self'",
     "'unsafe-inline'",
     // Note: 'unsafe-eval' will be added only in development below
-    'https://cdn.applixir.com',
     'https://pagead2.googlesyndication.com',
     'https://t1.daumcdn.net',
     'https://*.kakaocdn.net',
     'https://*.daumcdn.net',
-    'https://imasdk.googleapis.com',
     'https://securepubads.g.doubleclick.net',
     'https://sdk.privacy-center.org',
     'https://s0.2mdn.net',
@@ -22,12 +20,10 @@ function buildCsp(): string {
   const scriptSrcElem = [
     "'self'",
     "'unsafe-inline'",
-    'https://cdn.applixir.com',
     'https://pagead2.googlesyndication.com',
     'https://t1.daumcdn.net',
     'https://*.kakaocdn.net',
     'https://*.daumcdn.net',
-    'https://imasdk.googleapis.com',
     'https://securepubads.g.doubleclick.net',
     'https://sdk.privacy-center.org',
     'https://s0.2mdn.net',
@@ -37,7 +33,6 @@ function buildCsp(): string {
     "'self'",
     "'unsafe-inline'",
     'https://s3.us-east-1.amazonaws.com',
-    'https://cdn.applixir.com',
   ];
   const imgSrc = [
     "'self'",
@@ -50,26 +45,14 @@ function buildCsp(): string {
     'https://*.g.doubleclick.net',
     'https://securepubads.g.doubleclick.net',
     'https://s0.2mdn.net',
-    'https://cdn.applixir.com',
   ];
-  const mediaSrc = [
-    "'self'",
-    'blob:',
-    'data:',
-    'https://cdn.applixir.com',
-    'https://*.googlevideo.com',
-    'https://*.gvt1.com',
-  ];
+  const mediaSrc = ["'self'", 'blob:', 'data:'];
   const frameSrc = [
     "'self'",
-    'https://cdn.applixir.com',
-    'https://*.applixir.com',
     'https://googleads.g.doubleclick.net',
     'https://tpc.googlesyndication.com',
     'https://pagead2.googlesyndication.com',
     'https://securepubads.g.doubleclick.net',
-    'https://imasdk.googleapis.com',
-    'http://imasdk.googleapis.com',
     'https://*.daum.net',
     'https://*.kakao.com',
     'https://t1.daumcdn.net',

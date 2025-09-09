@@ -1,35 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Coins, PlayCircle } from 'lucide-react';
-import {
-  MobileMenuLayout,
-  PcMenuLayout,
-  RewardModalComponent,
-} from '@/components';
-import { Button } from '@/components/ui/button';
+import { Home, Coins } from 'lucide-react';
+import { MobileMenuLayout, PcMenuLayout } from '@/components';
 import { useCreditStore } from '@/stores';
-import { CREDIT_POLICY, CREDIT_RESET_MODE_ENUM } from '@/constants';
+import {
+  CREDIT_POLICY,
+  CREDIT_REFILL_INTERVAL_MS,
+  CREDIT_RESET_MODE,
+  CREDIT_RESET_MODE_ENUM,
+} from '@/constants';
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { CreditResetModeType } from '@/types';
 import { scheduleIdle, cancelIdle } from '@/lib';
 
-// Normalize env to enum VALUE union ('midnight' | 'minute')
-const envMode = (process.env.NEXT_PUBLIC_CREDIT_RESET_MODE || '').toLowerCase();
-
-const resetMode: CreditResetModeType =
-  envMode === CREDIT_RESET_MODE_ENUM.MINUTE
-    ? CREDIT_RESET_MODE_ENUM.MINUTE
-    : CREDIT_RESET_MODE_ENUM.MIDNIGHT;
-const isMinuteMode = resetMode === CREDIT_RESET_MODE_ENUM.MINUTE;
-
 export function HeaderLayout() {
-  const { total, todayEarned, syncReset, hydrated, markHydrated } =
-    useCreditStore();
+  const { total, hydrated, markHydrated } = useCreditStore();
 
   useEffect(() => {
     if (!hydrated) {
-      // yield to allow persist to run first
       const idleId = scheduleIdle(() => markHydrated());
       return () => {
         cancelIdle(idleId);
@@ -38,21 +26,19 @@ export function HeaderLayout() {
   }, [hydrated, markHydrated]);
 
   const nextKstMidnight = (base: Date): number => {
-    // Use pure UTC arithmetic to avoid relying on the client's local timezone.
     const ms = base.getTime();
     const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
     const kstNow = new Date(ms + KST_OFFSET_MS);
     const y = kstNow.getUTCFullYear();
     const m = kstNow.getUTCMonth();
     const d = kstNow.getUTCDate();
-    // Next day 00:00:00 in KST, expressed in UTC ms
     const nextKstZeroUtcMs = Date.UTC(y, m, d + 1, 0, 0, 0) - KST_OFFSET_MS;
     return nextKstZeroUtcMs;
   };
 
   const calcNextResetTs = useCallback(() => {
     const now = new Date();
-    if (resetMode === CREDIT_RESET_MODE_ENUM.MINUTE) {
+    if (CREDIT_RESET_MODE === CREDIT_RESET_MODE_ENUM.MINUTE) {
       const d = new Date(now);
       d.setSeconds(0, 0);
       d.setMinutes(d.getMinutes() + 1);
@@ -61,51 +47,104 @@ export function HeaderLayout() {
     return nextKstMidnight(now);
   }, []);
 
-  // Keep moving threshold in state; initialize after mount to avoid SSR mismatch
+  // states
   const [nextResetTs, setNextResetTs] = useState<number>(0);
-
   const [remainingMs, setRemainingMs] = useState<number>(-1);
+  const [refillRemainingMs, setRefillRemainingMs] = useState<number>(
+    CREDIT_REFILL_INTERVAL_MS > 0 ? -1 : 0
+  );
 
+  // refs
   const didResetRef = useRef<boolean>(false);
+  const nextResetRef = useRef<number>(0);
+  const prevRemainingRef = useRef<number>(-2);
+  const prevRefillRemainingRef = useRef<number>(-2);
 
   useEffect(() => {
-    // Always drive the countdown regardless of hydration to avoid blanks in production.
-    const initialNext = calcNextResetTs();
-    setNextResetTs(initialNext);
+    // init once
+    const initialNextReset = calcNextResetTs();
+    setNextResetTs(initialNextReset);
+
     const tick = (): void => {
       const now = Date.now();
-      const target = nextResetTs || initialNext;
-      if (now >= target) {
+      const state = useCreditStore.getState();
+      const doSync = state.syncReset;
+
+      // Reset countdown
+      const resetTarget = nextResetRef.current || initialNextReset;
+      if (nextResetRef.current === 0) nextResetRef.current = initialNextReset;
+      if (now >= resetTarget) {
         if (!didResetRef.current) {
-          if (hydrated) syncReset();
+          if (state.hydrated) doSync();
           didResetRef.current = true;
         }
         const next = calcNextResetTs();
+        nextResetRef.current = next;
         setNextResetTs(next);
-        setRemainingMs(Math.max(0, next - Date.now()));
+        const newRemain = Math.max(0, next - Date.now());
+        if (prevRemainingRef.current !== newRemain) {
+          prevRemainingRef.current = newRemain;
+          setRemainingMs(newRemain);
+        }
       } else {
         didResetRef.current = false;
-        setRemainingMs(Math.max(0, target - now));
+        const newRemain = Math.max(0, resetTarget - now);
+        if (prevRemainingRef.current !== newRemain) {
+          prevRemainingRef.current = newRemain;
+          setRemainingMs(newRemain);
+        }
+      }
+
+      // Refill countdown: 소비 이후(refillArmed) + 상한 미만 + 활성 인터벌인 경우에만 동작
+      const atCap = state.total >= CREDIT_POLICY.dailyCap;
+      const refillDisabled = CREDIT_REFILL_INTERVAL_MS <= 0;
+      const notArmed = !state.refillArmed;
+      if (refillDisabled || atCap || notArmed) {
+        // 고정 정지
+        if (prevRefillRemainingRef.current !== 0) {
+          prevRefillRemainingRef.current = 0;
+          setRefillRemainingMs(0);
+        }
+        return;
+      }
+
+      // lastRefillAt 기반 목표 시각: 소비(now)로 armed 된 순간부터 정확히 interval 후
+      const base =
+        typeof state.lastRefillAt === 'number' && state.lastRefillAt > 0
+          ? state.lastRefillAt
+          : now; // 안전장치(이상치) – 첫 틱에는 full interval
+      const target = base + CREDIT_REFILL_INTERVAL_MS;
+
+      if (now >= target) {
+        // 경계 도달: 실제 리필 수행 후 다음 주기 준비
+        if (state.hydrated) doSync();
+        const nextBase = target; // 정확히 경계에 정렬
+        const nextRemain = Math.max(
+          0,
+          nextBase + CREDIT_REFILL_INTERVAL_MS - now
+        );
+        if (prevRefillRemainingRef.current !== nextRemain) {
+          prevRefillRemainingRef.current = nextRemain;
+          setRefillRemainingMs(nextRemain);
+        }
+      } else {
+        const remain = Math.max(0, target - now);
+        if (prevRefillRemainingRef.current !== remain) {
+          prevRefillRemainingRef.current = remain;
+          setRefillRemainingMs(remain);
+        }
       }
     };
-    // Run immediately then every second
+
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [syncReset, nextResetTs, calcNextResetTs, hydrated]);
+    // 단 한 번만 등록: 내부에서 getState로 최신값 반영
+  }, [calcNextResetTs]);
 
   useEffect(() => {
     if (nextResetTs > 0) setRemainingMs(Math.max(0, nextResetTs - Date.now()));
   }, [nextResetTs]);
-
-  useEffect(() => {
-    if (isMinuteMode) {
-      // Developer-visible warning in console to avoid accidental production usage
-      console.warn(
-        '[Credits] NEXT_PUBLIC_CREDIT_RESET_MODE=minute is active. Credits reset every minute (TEST MODE).'
-      );
-    }
-  }, []);
 
   const remainingLabel = useMemo<string>(() => {
     if (remainingMs < 0) return '--:--';
@@ -119,11 +158,19 @@ export function HeaderLayout() {
     return `${mm}:${ss}`;
   }, [remainingMs]);
 
-  const todayAvailLabel = useMemo<string>(() => {
-    return `오늘 ${todayEarned}/${CREDIT_POLICY.dailyCap}`;
-  }, [todayEarned]);
-
-  const [rewardOpen, setRewardOpen] = useState<boolean>(false);
+  const refillLabel = useMemo<string>(() => {
+    if (CREDIT_REFILL_INTERVAL_MS <= 0) return '—';
+    if (refillRemainingMs < 0) return '--:--';
+    if (refillRemainingMs === 0) return '—';
+    const totalSec = Math.ceil(refillRemainingMs / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    const mm = String(m).padStart(2, '0');
+    const ss = String(s).padStart(2, '0');
+    if (h > 0) return `${String(h).padStart(2, '0')}:${mm}:${ss}`;
+    return `${mm}:${ss}`;
+  }, [refillRemainingMs]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -148,7 +195,7 @@ export function HeaderLayout() {
             className="inline-flex items-center gap-1 tabular-nums text-[11px] max-[360px]:text-[10px] text-muted-foreground shrink-0"
             aria-label={`보유 크레딧 ${
               hydrated ? total : 0
-            }, 리셋까지 ${remainingLabel}`}
+            }, 리셋까지 ${remainingLabel}, 충전까지 ${refillLabel}`}
             aria-live="polite"
           >
             <Coins className="h-4 w-4 text-amber-500" />
@@ -157,69 +204,35 @@ export function HeaderLayout() {
             </span>
             <span className="opacity-70">·</span>
             <span>↻ {remainingLabel}</span>
-            <span className="opacity-70 max-[420px]:hidden">·</span>
-            <span className="max-[420px]:hidden">{todayAvailLabel}</span>
+            <span className="opacity-70">·</span>
+            <span>+1 {refillLabel}</span>
           </span>
-          <Button
-            type="button"
-            size="sm"
-            variant="secondary"
-            className="ml-2 h-7 px-2.5 text-xs"
-            onClick={() => setRewardOpen(true)}
-          >
-            <PlayCircle className="h-4 w-4 mr-1" /> 광고 시청
-          </Button>
         </div>
         {/* 모바일/태블릿 메뉴 (lg 미만에서 사용) */}
         <div className="lg:hidden ml-auto flex items-center gap-1.5 max-[400px]:gap-1 whitespace-nowrap">
           {/* 좁은 모바일(<sm)에서는 콤팩트 크레딧 수량 + 리셋 타이머를 항상 노출 */}
           <span
-            className="sm:hidden inline-flex items-center gap-1 tabular-nums text-[11px] max-[380px]:text-[10px] text-muted-foreground shrink-0"
+            className="inline-flex items-center gap-1 tabular-nums text-[11px] max-[380px]:text-[10px] text-muted-foreground shrink-0"
             aria-label={`보유 크레딧 ${
               hydrated ? total : 0
-            }, 리셋까지 ${remainingLabel}`}
-          >
-            <Coins className="h-3.5 w-3.5 max-[360px]:h-3 max-[360px]:w-3 text-amber-500" />
-            <span className="font-semibold text-foreground">
-              {hydrated ? total : '—'}
-            </span>
-            <span className="opacity-70">·</span>
-            <span>↻ {remainingLabel}</span>
-            <span className="opacity-70 max-[480px]:hidden">·</span>
-            <span className="max-[480px]:hidden">{todayAvailLabel}</span>
-          </span>
-          <span
-            className="hidden sm:inline-flex items-center gap-1 tabular-nums text-[11px] max-[380px]:text-[10px] text-muted-foreground shrink-0"
-            aria-label={`보유 크레딧 ${
-              hydrated ? total : 0
-            }, 리셋까지 ${remainingLabel}`}
+            }, 리셋까지 ${remainingLabel}, 충전까지 ${refillLabel}`}
             aria-live="polite"
           >
-            <Coins className="h-4 w-4 max-[360px]:h-3.5 max-[360px]:w-3.5 text-amber-500" />
+            <Coins className="h-4 w-4 text-amber-500" />
             <span className="font-semibold text-foreground">
               {hydrated ? total : '—'}
             </span>
             <span className="opacity-70">·</span>
             <span>↻ {remainingLabel}</span>
-            <span className="opacity-70 max-[560px]:hidden">·</span>
-            <span className="max-[560px]:hidden">{todayAvailLabel}</span>
+            <span className="opacity-70">·</span>
+            <span>+1 {refillLabel}</span>
           </span>
-          <Button
-            type="button"
-            size="sm"
-            variant="secondary"
-            className="h-7 px-2 text-xs max-[400px]:px-1.5 max-[340px]:px-1 shrink-0"
-            onClick={() => setRewardOpen(true)}
-          >
-            <PlayCircle className="h-4 w-4 mr-1 max-[340px]:mr-0" />
-            <span className="max-[420px]:hidden">시청</span>
-          </Button>
+
           {/* 우측 햄버거: 항상 표시되도록 shrink 방지 */}
           <div className="shrink-0">
             <MobileMenuLayout />
           </div>
         </div>
-        {rewardOpen && <RewardModalComponent onOpenChange={setRewardOpen} />}
       </div>
     </header>
   );

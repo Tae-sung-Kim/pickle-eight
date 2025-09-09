@@ -63,8 +63,9 @@ function parseQuery(url: string): GetQuery | { error: string; status: number } {
     ) {
       return { error: 'Invalid from/to', status: 400 };
     }
-    const count = to - from + 1;
-    if (count > LOTTO_MAX_HISTORY_RANGE) {
+    // Allow up to LOTTO_MAX_HISTORY_RANGE difference (inclusive upper bound)
+    const diff = to - from; // e.g., 400..900 => 500
+    if (diff > LOTTO_MAX_HISTORY_RANGE) {
       return {
         error: `Range too large. Max ${LOTTO_MAX_HISTORY_RANGE}`,
         status: 400,

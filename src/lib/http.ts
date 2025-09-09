@@ -26,7 +26,7 @@ async function getAuthToken(): Promise<string | null> {
 /**
  * API 요청에 사용할 Axios 인스턴스
  */
-export const apiInstance: AxiosInstance = axios.create({
+export const http: AxiosInstance = axios.create({
   baseURL: resolvedBaseURL, // Next.js API Route 기준 (server에서는 절대 URL 사용)
   timeout: 10000,
   headers: {
@@ -37,7 +37,7 @@ export const apiInstance: AxiosInstance = axios.create({
 /**
  * 요청 인터셉터: 인증 토큰 자동 첨부 및 로딩 시작
  */
-apiInstance.interceptors.request.use(
+http.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const h = (config.headers || {}) as Record<string, unknown>;
     const skipLoading =
@@ -59,7 +59,7 @@ apiInstance.interceptors.request.use(
 /**
  * 응답 인터셉터: 에러 공통 처리 및 로딩 종료
  */
-apiInstance.interceptors.response.use(
+http.interceptors.response.use(
   (response) => {
     const h = (response.config.headers || {}) as Record<string, unknown>;
     const skipLoading =

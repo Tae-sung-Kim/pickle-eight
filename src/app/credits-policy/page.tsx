@@ -17,7 +17,7 @@ import { CREDIT_POLICY, SPEND_COST } from '@/constants';
 const baseMeta = buildMetadata({
   title: '크레딧 정책 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
   description:
-    '일일 기본/상한, 보상 조건(가시성/시간), 쿨다운 및 소비 비용 등 크레딧 운영 정책을 안내합니다.',
+    '일일 기본/상한 및 소비 비용 등 현재 크레딧 운영 정책을 안내합니다.',
   pathname: '/credits-policy',
 });
 
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     images: [
       generateOgImageUrl(
         '크레딧 정책 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
-        '일일 기본/상한, 보상 조건(가시성/시간), 쿨다운 및 소비 비용 등 크레딧 운영 정책을 안내합니다.',
+        '일일 기본/상한 및 소비 비용 등 현재 크레딧 운영 정책을 안내합니다.',
         '크레딧 정책'
       ),
     ],
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     images: [
       generateOgImageUrl(
         '크레딧 정책 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
-        '일일 기본/상한, 보상 조건(가시성/시간), 쿨다운 및 소비 비용 등 크레딧 운영 정책을 안내합니다.',
+        '일일 기본/상한 및 소비 비용 등 현재 크레딧 운영 정책을 안내합니다.',
         '크레딧 정책'
       ),
     ],
@@ -46,9 +46,6 @@ export const metadata: Metadata = {
 };
 
 export default function CreditsPolicyPage(): JSX.Element {
-  const minutes = Math.floor(CREDIT_POLICY.cooldownMs / 60000);
-  const seconds = Math.round((CREDIT_POLICY.cooldownMs % 60000) / 1000);
-  const cooldownLabel = `${minutes}:${String(seconds).padStart(2, '0')}`;
   const EFFECTIVE_DATE = '2025-08-28' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
@@ -71,28 +68,11 @@ export default function CreditsPolicyPage(): JSX.Element {
             <span className="text-muted-foreground"> (자정에 리셋)</span>
           </li>
           <li>
-            광고 네트워크 기준에 따라 <strong>전체 시청 완료</strong> 시 보상
-            지급
+            하루 최대 보유/사용 상한: <strong>{CREDIT_POLICY.dailyCap}</strong>
           </li>
           <li>
-            보상량은 시청 시간에 따라 가변 적용: 기본
-            <strong> {CREDIT_POLICY.rewardAmount}</strong>개, 이후
-            <strong> {CREDIT_POLICY.stepReward}초</strong>마다 +
-            <strong>{CREDIT_POLICY.rewardAmount}</strong>씩 증가
-          </li>
-          <li>
-            광고 1회 최대 지급: <strong>{CREDIT_POLICY.maxPerAd}</strong>개
-          </li>
-          <li>
-            하루 최대 획득 한도: <strong>{CREDIT_POLICY.dailyCap}</strong>{' '}
-            크레딧
-          </li>
-          <li>
-            보상 쿨다운: <strong>{cooldownLabel}</strong> 이후 다음 보상 가능
-          </li>
-          <li>
-            자정 기준 리셋 시 크레딧은{' '}
-            <strong>{CREDIT_POLICY.baseDaily}</strong>로 초기화
+            리필: <strong>5분마다 +1</strong>씩 자동 충전되며, 최대{' '}
+            <strong>{CREDIT_POLICY.dailyCap}</strong>까지 충전됩니다.
           </li>
         </ul>
       </section>
@@ -119,30 +99,25 @@ export default function CreditsPolicyPage(): JSX.Element {
         <h2 className="text-lg font-semibold">데이터 처리 및 보안</h2>
         <ul className="list-disc pl-5 text-sm leading-6">
           <li>
-            보상 판단을 위해 광고 가시성/노출 시간, 클릭/표시 이벤트, 쿨다운
-            타이밍 등의 로그가 처리될 수 있습니다.
+            서비스 운영과 품질 개선을 위해 최소한의 사용 로그를 수집할 수
+            있습니다.
           </li>
           <li>
-            개인정보 처리의 범위·보관 기간·동의 관리 등은{' '}
+            개인정보 처리의 범위·보관 기간·동의 관리는{' '}
             <a href="/privacy" className="underline">
               개인정보처리방침
             </a>
             을 따릅니다.
           </li>
-          <li>분석/광고 스크립트는 이용자 동의 후에만 활성화됩니다.</li>
         </ul>
       </section>
 
       <section className="space-y-2 mb-8">
         <h2 className="text-lg font-semibold">부정 이용 방지</h2>
         <ul className="list-disc pl-5 text-sm leading-6">
+          <li>자동화 도구 사용, 비정상 다중 요청 등은 금지됩니다.</li>
           <li>
-            자동화 도구 사용, 비정상 다중 요청, 가시성 요건 우회 등은
-            금지됩니다.
-          </li>
-          <li>
-            부정 획득이 확인되면 보상 취소·회수, 계정 제한 등 조치가 적용될 수
-            있습니다.
+            부정 획득이 확인되면 크레딧 회수 및 계정 제한이 적용될 수 있습니다.
           </li>
           <li>
             자세한 책임 및 금지 행위는{' '}

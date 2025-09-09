@@ -20,16 +20,14 @@ export function LottoHistoryComponent() {
     to: number;
     enabled: boolean;
   }) => {
-    // 입력 정규화 + 최대 200회 클램프
-    const to = Math.max(1, Math.floor(searchData.to));
+    // from 앵커 기준 포함 범위 500으로 클램프
     const fromRaw = Math.max(1, Math.floor(searchData.from));
-    const normalizedFrom = Math.min(fromRaw, to);
-    const count = to - normalizedFrom + 1;
-    const clampedFrom =
-      count > LOTTO_MAX_HISTORY_RANGE
-        ? Math.max(1, to - LOTTO_MAX_HISTORY_RANGE + 1)
-        : normalizedFrom;
-    setSearchData({ from: clampedFrom, to, enabled: searchData.enabled });
+    const toRaw = Math.max(1, Math.floor(searchData.to));
+    const safeFrom = fromRaw; // 앵커
+    const minTo = safeFrom + 1;
+    const maxTo = safeFrom + LOTTO_MAX_HISTORY_RANGE; // 포함 기준: from..from+500
+    const safeTo = Math.max(minTo, Math.min(toRaw, maxTo));
+    setSearchData({ from: safeFrom, to: safeTo, enabled: searchData.enabled });
   };
 
   const { data, isError, error } = useLottoDrawsQuery(searchData);
