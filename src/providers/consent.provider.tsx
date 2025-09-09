@@ -53,10 +53,11 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     }
     setState('accepted');
     setVisible(false);
-    // If user is below cap, resume refill by arming timer now
+    // Resume refill ONLY if below cap AND there is no active timer yet
     try {
       const s = useCreditStore.getState();
-      if (s.total < CREDIT_POLICY.dailyCap) {
+      const noTimer = (s.lastRefillAt ?? 0) <= 0 || !s.refillArmed;
+      if (s.total < CREDIT_POLICY.dailyCap && noTimer) {
         useCreditStore.setState({
           refillArmed: true,
           lastRefillAt: Date.now(),
@@ -89,7 +90,7 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
   const onOpen = useCallback(() => setVisible(true), []);
   const onClose = useCallback(() => setVisible(false), []);
 
-  // Safety: reflect transitions in either direction
+  // Reflect transitions in either direction without resetting existing timers on load
   useEffect(() => {
     if (state === 'declined') {
       try {
@@ -103,7 +104,8 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     if (state === 'accepted') {
       try {
         const s = useCreditStore.getState();
-        if (s.total < CREDIT_POLICY.dailyCap) {
+        const noTimer = (s.lastRefillAt ?? 0) <= 0 || !s.refillArmed;
+        if (s.total < CREDIT_POLICY.dailyCap && noTimer) {
           useCreditStore.setState({
             refillArmed: true,
             lastRefillAt: Date.now(),
