@@ -22,7 +22,7 @@ export function TitleWrapperComponent({
         >
           {title}
         </h1>
-        <p className="mt-3 text-base sm:text-lg text-muted-foreground">
+        <p className="mt-3 text-base sm:text-md text-muted-foreground">
           {description}
         </p>
       </div>

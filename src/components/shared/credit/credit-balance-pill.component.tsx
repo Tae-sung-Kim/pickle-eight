@@ -51,8 +51,7 @@ export function CreditBalancePillComponent({
   className,
   showLabel = true,
 }: CreditBalancePillType) {
-  const { total, todayEarned, syncReset, hydrated, markHydrated } =
-    useCreditStore();
+  const { total, syncReset, hydrated, markHydrated } = useCreditStore();
 
   useEffect(() => {
     if (hydrated) syncReset();
@@ -67,10 +66,6 @@ export function CreditBalancePillComponent({
     }
   }, [hydrated, markHydrated]);
 
-  const todayAvailLabel = useMemo<string>(() => {
-    return `오늘 ${todayEarned}/${CREDIT_POLICY.dailyCap}`;
-  }, [todayEarned]);
-
   const timers = useMemo<{ refillIn: string; resetIn: string }>(() => {
     const now = Date.now();
     const refillTs = nextFiveMinuteBucketTs(now);
@@ -79,7 +74,7 @@ export function CreditBalancePillComponent({
       refillIn: formatHms(refillTs - now),
       resetIn: formatHms(midnightTs - now),
     };
-  }, [todayEarned, total]);
+  }, []);
 
   return (
     <div
@@ -92,10 +87,7 @@ export function CreditBalancePillComponent({
       <span className="tabular-nums font-semibold shrink-0">
         {hydrated ? total : '—'}
       </span>
-      {/* Mobile-only inline status */}
-      <span className="block sm:hidden min-w-0 truncate text-[10px] text-muted-foreground">
-        {todayAvailLabel}
-      </span>
+
       <Tooltip>
         <TooltipTrigger asChild>
           <span className="inline-flex shrink-0" role="button" tabIndex={0}>
@@ -108,7 +100,6 @@ export function CreditBalancePillComponent({
             <p>5분마다 +1 충전 · 최대 {CREDIT_POLICY.dailyCap}</p>
             <p>다음 충전까지 {timers.refillIn}</p>
             <p>자정 리셋까지 {timers.resetIn}</p>
-            <p>{todayAvailLabel}</p>
           </div>
         </TooltipContent>
       </Tooltip>

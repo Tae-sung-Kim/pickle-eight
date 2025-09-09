@@ -39,7 +39,10 @@ export function LottoHistorySearchComponent({
   const handleSearch = () => {
     if (!canSearch) return;
     const from = Number(normalize(fromInput, 1));
-    const to = Number(normalize(toInput, from));
+    const rawTo = Number(normalize(toInput, from + 1));
+    const minTo = from + 1;
+    const maxTo = from + LOTTO_MAX_HISTORY_RANGE; // 포함 기준: from..from+500
+    const to = Math.max(minTo, Math.min(rawTo, maxTo));
     onSearch({ from, to, enabled: true });
   };
 
@@ -55,6 +58,7 @@ export function LottoHistorySearchComponent({
           From
         </Label>
         <Input
+          id="from"
           type="text"
           inputMode="numeric"
           pattern="[0-9]*"
@@ -63,7 +67,16 @@ export function LottoHistorySearchComponent({
             const v = e.target.value;
             if (onlyDigits(v)) setFromInput(v);
           }}
-          onBlur={() => setFromInput((v) => normalize(v, 1))}
+          onBlur={() => {
+            // from 정규화 + 현재 to를 from 앵커 기준으로 즉시 클램프
+            const safeFrom = Number(normalize(fromInput, 1));
+            setFromInput(String(safeFrom));
+            const rawTo = Number(normalize(toInput, safeFrom + 1));
+            const minTo = safeFrom + 1;
+            const maxTo = safeFrom + LOTTO_MAX_HISTORY_RANGE;
+            const safeTo = Math.max(minTo, Math.min(rawTo, maxTo));
+            setToInput(String(safeTo));
+          }}
           className="w-full text-sm"
         />
       </div>
@@ -72,6 +85,7 @@ export function LottoHistorySearchComponent({
           To
         </Label>
         <Input
+          id="to"
           type="text"
           inputMode="numeric"
           pattern="[0-9]*"
@@ -80,9 +94,14 @@ export function LottoHistorySearchComponent({
             const v = e.target.value;
             if (onlyDigits(v)) setToInput(v);
           }}
-          onBlur={() =>
-            setToInput((v) => normalize(v, Math.max(1, toInt(fromInput))))
-          }
+          onBlur={() => {
+            const f = Number(normalize(fromInput, 1));
+            const rawTo = Number(normalize(toInput, f + 1));
+            const minTo = f + 1;
+            const maxTo = f + LOTTO_MAX_HISTORY_RANGE;
+            const safeTo = Math.max(minTo, Math.min(rawTo, maxTo));
+            setToInput(String(safeTo));
+          }}
           className="w-full text-sm"
         />
       </div>
@@ -98,7 +117,8 @@ export function LottoHistorySearchComponent({
         </Button>
       </div>
       <div className="sm:col-span-3 text-xs text-muted-foreground">
-        최대 {LOTTO_MAX_HISTORY_RANGE}회차까지 조회됩니다.
+        최대 {LOTTO_MAX_HISTORY_RANGE}회차까지 조회됩니다. (예: from=400 → to≤
+        {400 + LOTTO_MAX_HISTORY_RANGE})
       </div>
     </div>
   );

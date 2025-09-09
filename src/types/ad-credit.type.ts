@@ -17,6 +17,7 @@ export type CreditBalanceType = {
   readonly lastResetAt?: number;
   readonly overCapLocked?: boolean;
   readonly lastRefillAt?: number; // 5분 리필 버킷 기준 시각(ms)
+  readonly refillArmed: boolean; // 상한에서 소비가 발생한 이후에만 리필을 동작시키기 위한 플래그
 };
 
 export type CreditPolicyType = {
@@ -24,8 +25,6 @@ export type CreditPolicyType = {
   readonly dailyCap: number;
   readonly cooldownMs: number;
   readonly baseDaily: number;
-  readonly stepReward: number;
-  readonly maxPerAd: number;
   readonly maxPerIpPerDay: number;
   readonly maxPerDevicePerDay: number;
   readonly deviceCookie: string;
