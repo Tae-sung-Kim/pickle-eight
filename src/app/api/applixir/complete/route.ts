@@ -1,4 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+/**
+ * TODO(reward-ads): 보상형 광고 일시 비활성화
+ * 기존 구현은 주석으로 보존합니다. 복구 시 주석을 되돌리세요.
+ */
+export async function POST(_req: NextRequest): Promise<NextResponse> {
+  return NextResponse.json(
+    { ok: false, error: 'reward_ads_disabled' + '_' + _req.url },
+    { status: 410 }
+  );
+}
+
+/*
+import { NextRequest, NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
 import { verifyToken } from '@/lib/server-token';
 import { CREDIT_POLICY } from '@/constants';
@@ -18,7 +32,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 }
       );
 
-    // Read AID from httpOnly cookie
     const cookieHeader = req.headers.get('cookie') || '';
     const aidCookie = cookieHeader
       .split(';')
@@ -33,9 +46,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 }
       );
 
-    const payload = verifyToken(token); // throws on invalid/expired
+    const payload = verifyToken(token);
 
-    // Aid must match the one bound to this browser via cookie
     if (payload.aid !== aidFromCookie) {
       return NextResponse.json(
         { ok: false, error: 'aid_mismatch' },
@@ -43,7 +55,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Ensure nonce is still issued and unused
     const nonceRef = adminDb.collection('applixir_nonces').doc(token);
     const nonceSnap = await nonceRef.get();
     if (!nonceSnap.exists)
@@ -66,7 +77,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 409 }
       );
 
-    // Context validation (anti-token-theft)
     const currIp = req.headers.get('x-forwarded-for') || null;
     const currUa = req.headers.get('user-agent') || null;
     const currOrigin = req.headers.get('origin') || null;
@@ -87,13 +97,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const now = Date.now();
     const resetKey = todayMidnightTs(now);
 
-    // Mark nonce redeemed and update counters atomically, with fresh reads inside tx
     const capResult = await adminDb.runTransaction(async (tx) => {
       const n = await tx.get(nonceRef);
       if (!n.exists) throw new Error('nonce_missing');
       if (n.data()?.status !== 'issued') throw new Error('nonce_already_used');
 
-      // Read counters fresh
       const cs = await tx.get(aidRef);
       let todayEarned = 0;
       let lastEarnedAt = 0;
@@ -140,7 +148,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         };
       }
 
-      // Proceed to redeem
       tx.update(nonceRef, { status: 'redeemed', redeemedAt: now });
       const willEarn = CREDIT_POLICY.rewardAmount;
       tx.set(
@@ -167,7 +174,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           { status: 429 }
         );
       }
-      // daily_cap with debug information
       return NextResponse.json(
         {
           ok: false,
@@ -187,3 +193,4 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 }
+*/

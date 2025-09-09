@@ -1,6 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
+ * TODO(reward-ads): 보상형 광고 콜백 일시 비활성화
+ * 복구 시 아래 주석 블록의 기존 구현을 되돌리세요.
+ */
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  return NextResponse.json(
+    { ok: false, error: 'reward_ads_disabled' + '_' + req.url },
+    { status: 410 }
+  );
+}
+
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  return GET(req);
+}
+
+/*
+import { NextRequest, NextResponse } from 'next/server';
+
+/**
  * Applixir RMS (Reward Management System) 콜백 엔드포인트
  *
  * 콜백 URL 파라미터:
@@ -8,6 +26,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * - gameId: 게임 ID (내부적으로 사용)
  * - secretKey: 콜백 시크릿 키 (검증용)
  */
+/*
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -79,3 +98,4 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   return GET(request);
 }
+*/

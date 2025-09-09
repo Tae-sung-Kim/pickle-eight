@@ -49,6 +49,7 @@ export type CreditBalanceType = {
   readonly lastEarnedAt?: number;
   readonly lastResetAt?: number;
   readonly overCapLocked?: boolean;
+  readonly lastRefillAt?: number; // 5분 리필 버킷 기준 시각(ms)
 };
 
 export type CreditPolicyType = {

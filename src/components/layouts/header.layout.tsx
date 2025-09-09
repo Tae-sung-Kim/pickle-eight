@@ -1,13 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Coins, PlayCircle } from 'lucide-react';
-import {
-  MobileMenuLayout,
-  PcMenuLayout,
-  RewardModalComponent,
-} from '@/components';
-import { Button } from '@/components/ui/button';
+import { Home, Coins } from 'lucide-react';
+import { MobileMenuLayout, PcMenuLayout } from '@/components';
 import { useCreditStore } from '@/stores';
 import { CREDIT_POLICY, CREDIT_RESET_MODE_ENUM } from '@/constants';
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
@@ -123,7 +118,8 @@ export function HeaderLayout() {
     return `오늘 ${todayEarned}/${CREDIT_POLICY.dailyCap}`;
   }, [todayEarned]);
 
-  const [rewardOpen, setRewardOpen] = useState<boolean>(false);
+  // TODO(reward-ads): 보상형 광고 모달 오픈 상태 (비활성화)
+  // const [rewardOpen, setRewardOpen] = useState<boolean>(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -160,6 +156,7 @@ export function HeaderLayout() {
             <span className="opacity-70 max-[420px]:hidden">·</span>
             <span className="max-[420px]:hidden">{todayAvailLabel}</span>
           </span>
+          {/* TODO(reward-ads): 보상형 광고 버튼 비활성화
           <Button
             type="button"
             size="sm"
@@ -169,6 +166,7 @@ export function HeaderLayout() {
           >
             <PlayCircle className="h-4 w-4 mr-1" /> 광고 시청
           </Button>
+          */}
         </div>
         {/* 모바일/태블릿 메뉴 (lg 미만에서 사용) */}
         <div className="lg:hidden ml-auto flex items-center gap-1.5 max-[400px]:gap-1 whitespace-nowrap">
@@ -188,22 +186,7 @@ export function HeaderLayout() {
             <span className="opacity-70 max-[480px]:hidden">·</span>
             <span className="max-[480px]:hidden">{todayAvailLabel}</span>
           </span>
-          <span
-            className="hidden sm:inline-flex items-center gap-1 tabular-nums text-[11px] max-[380px]:text-[10px] text-muted-foreground shrink-0"
-            aria-label={`보유 크레딧 ${
-              hydrated ? total : 0
-            }, 리셋까지 ${remainingLabel}`}
-            aria-live="polite"
-          >
-            <Coins className="h-4 w-4 max-[360px]:h-3.5 max-[360px]:w-3.5 text-amber-500" />
-            <span className="font-semibold text-foreground">
-              {hydrated ? total : '—'}
-            </span>
-            <span className="opacity-70">·</span>
-            <span>↻ {remainingLabel}</span>
-            <span className="opacity-70 max-[560px]:hidden">·</span>
-            <span className="max-[560px]:hidden">{todayAvailLabel}</span>
-          </span>
+          {/* TODO(reward-ads): 보상형 광고 버튼 비활성화
           <Button
             type="button"
             size="sm"
@@ -214,12 +197,14 @@ export function HeaderLayout() {
             <PlayCircle className="h-4 w-4 mr-1 max-[340px]:mr-0" />
             <span className="max-[420px]:hidden">시청</span>
           </Button>
+          */}
           {/* 우측 햄버거: 항상 표시되도록 shrink 방지 */}
           <div className="shrink-0">
             <MobileMenuLayout />
           </div>
         </div>
-        {rewardOpen && <RewardModalComponent onOpenChange={setRewardOpen} />}
+        {/* TODO(reward-ads): 보상형 광고 모달 비활성화 */}
+        {/* {rewardOpen && <RewardModalComponent onOpenChange={setRewardOpen} />} */}
       </div>
     </header>
   );

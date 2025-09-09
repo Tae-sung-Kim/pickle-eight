@@ -1,4 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+/**
+ * TODO(reward-ads): 보상형 광고 일시 비활성화
+ * 기존 구현은 주석으로 보존합니다. 복구 시 주석을 되돌리세요.
+ */
+export async function POST(_req: NextRequest): Promise<NextResponse> {
+  return NextResponse.json(
+    { ok: false, error: 'reward_ads_disabled' + '_' + _req.url },
+    { status: 410 }
+  );
+}
+
+/*
+import { NextRequest, NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
 import { signToken, type AdStartPayload } from '@/lib/server-token';
 
@@ -112,3 +126,4 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 }
+*/

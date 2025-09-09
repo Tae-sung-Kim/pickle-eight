@@ -1,10 +1,11 @@
 'use client';
 
-import { ComponentProps, useMemo, useState } from 'react';
+import { ComponentProps, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { useCreditStore } from '@/stores';
 import { SPEND_COST } from '@/constants';
-import { RewardModalComponent } from '@/components';
+// TODO(reward-ads): 보상형 광고 모달 비활성화
+// import { RewardModalComponent } from '@/components';
 
 export type CreditGateButtonType = {
   readonly variant?: ComponentProps<typeof Button>['variant'];
@@ -27,7 +28,7 @@ export function CreditGateButtonComponent({
   confirmMessage,
   deferSpend,
 }: CreditGateButtonType) {
-  const [open, setOpen] = useState<boolean>(false);
+  // const [open, setOpen] = useState<boolean>(false);
   const { total, canSpend, onSpend } = useCreditStore();
   const amount = useMemo<number>(
     () =>
@@ -39,14 +40,10 @@ export function CreditGateButtonComponent({
   const insufficient = useMemo<boolean>(() => total < amount, [total, amount]);
 
   const handleClick = (): void => {
-    // 부족하면 보상 모달을 열어 충전 유도
-    if (insufficient) {
-      setOpen(true);
-      return;
-    }
+    // TODO(reward-ads): 보상형 광고 충전 유도 비활성화. 부족해도 그대로 진행 판단.
+    if (insufficient) return; // 필요 시 별도 안내 토스트로 대체 가능
     const check = canSpend(amount);
     if (!check.canSpend) {
-      setOpen(true);
       return;
     }
     // Optional confirm
@@ -75,7 +72,8 @@ export function CreditGateButtonComponent({
       >
         {label}
       </Button>
-      {open && <RewardModalComponent onOpenChange={setOpen} />}
+      {/* TODO(reward-ads): 보상형 광고 모달 비활성화 */}
+      {/* {open && <RewardModalComponent onOpenChange={setOpen} />} */}
     </>
   );
 }
