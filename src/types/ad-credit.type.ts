@@ -1,6 +1,4 @@
 import {
-  CREDIT_APPLIXIR_STATUS_ENUM,
-  CREDIT_APPLIXIR_ERROR_ENUM,
   CREDIT_CLAIM_ERROR_CODE_ENUM,
   CREDIT_RESET_MODE_ENUM,
   SPEND_COST,
@@ -9,39 +7,8 @@ import {
 declare global {
   interface Window {
     kakaoAsyncAdFit?: unknown[];
-    initializeAndOpenPlayer?: (options: {
-      apiKey: string;
-      injectionElementId: string;
-      adStatusCallbackFn: (status: { type: CreditApplixirStatusType }) => void;
-      adErrorCallbackFn: (error: {
-        getError: () => {
-          data: { type: CreditApplixirErrorType };
-          errorMessage: string;
-        };
-      }) => void;
-      adOptions?: { customId?: string };
-    }) => void;
   }
 }
-
-export type AdCreditReturn = {
-  readonly cooldownMsLeft: number;
-  readonly inCooldown: boolean;
-  readonly reachedDailyCap: boolean;
-  readonly canWatchAd: boolean;
-  readonly elapsedMs: number;
-  readonly currentReward: number;
-  readonly playing: boolean;
-  readonly hasStarted: boolean;
-  ensureStarted: () => void;
-  handlePause: () => void;
-  getWatchedMs: () => number;
-  resetElapsed: () => void;
-  bindMediaElement: (el: HTMLMediaElement) => void;
-  buildCostLabel: (
-    args: CreditCostLabelType & { amountOverride?: number }
-  ) => string;
-};
 
 export type CreditBalanceType = {
   readonly total: number;
@@ -98,7 +65,7 @@ export type CreditStateType = {
   markHydrated: () => void;
 } & CreditBalanceType;
 
-// Use enum VALUE union ("midnight" | "minute"), not KEY union ("MIDNIGHT" | "MINUTE")
+// Use enum VALUE union ("midnight" | "minute"), not KEY union
 export type CreditResetModeType =
   (typeof CREDIT_RESET_MODE_ENUM)[keyof typeof CREDIT_RESET_MODE_ENUM];
 
@@ -112,31 +79,3 @@ export type CreditClaimResponseType = {
 };
 
 export type UserCreditsType = { credits: number; lastClaimDate?: string };
-
-// Ad status types observed from Applixir callbacks
-export type CreditApplixirStatusType =
-  (typeof CREDIT_APPLIXIR_STATUS_ENUM)[keyof typeof CREDIT_APPLIXIR_STATUS_ENUM];
-
-// Error types observed from Applixir error callback
-export type CreditApplixirErrorType =
-  | (typeof CREDIT_APPLIXIR_ERROR_ENUM)[keyof typeof CREDIT_APPLIXIR_ERROR_ENUM]
-  | string;
-
-// ===== Ad services =====
-
-export type CreditApplixirEventPayloadType = Readonly<Record<string, unknown>>;
-
-export type CreditStartApplixirSessionInputType = Readonly<{ cid: string }>;
-export type CreditStartApplixirSessionOutputType = Readonly<{ token: string }>;
-
-export type CreditCompleteApplixirSessionInputType = Readonly<{
-  token: string;
-}>;
-export type CreditCompleteApplixirSessionOutputType = Readonly<{ ok: boolean }>;
-
-export type CreditApplixirRewardAdType = {
-  readonly onApplixirCompleted?: () => void;
-  readonly onApplixirError?: (error: CreditApplixirErrorType) => void;
-  readonly maxHeight?: number; // modal이 계산한 가용 높이 전달(선택)
-  readonly disabled?: boolean; // 외부에서 버튼 활성/비활성 제어
-};

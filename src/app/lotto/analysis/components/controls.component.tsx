@@ -7,9 +7,9 @@ import {
   CreditBalancePillComponent,
   CreditGateButtonComponent,
 } from '@/components';
-import { useAdCredit } from '@/hooks';
 import { useEffect, useState } from 'react';
 import { LottoAnalysisControlsType } from '@/types';
+import { buildCostLabel } from '@/utils';
 
 export function LottoAnalysisControlsComponent({
   from,
@@ -46,7 +46,6 @@ export function LottoAnalysisControlsComponent({
   const liveIncrements =
     liveCapped > 0 ? Math.floor((Math.max(1, liveCapped) - 1) / 30) : 0;
   const amountOverride = 3 + liveIncrements; // SPEND_COST.analysis=3 기준
-  const { buildCostLabel } = useAdCredit();
 
   const label = buildCostLabel({
     spendKey: 'analysis',
