@@ -4,7 +4,7 @@ import {
   TriviaQuizDifficultyType,
   TriviaQuizQuestionType,
 } from '@/types';
-import { apiInstance } from '@/services';
+import { http } from '@/lib';
 
 /**
  * GPT 기반 퀴즈 생성 API를 호출하는 서비스 훅
@@ -16,7 +16,7 @@ export function useGptTriviaQuizQuery() {
     { category: TriviaQuizCategoryType; difficulty: TriviaQuizDifficultyType }
   >({
     mutationFn: async ({ category, difficulty }) => {
-      const res = await apiInstance.post('/gpt/trivia-quiz', {
+      const res = await http.post('/gpt/trivia-quiz', {
         category,
         difficulty,
       });

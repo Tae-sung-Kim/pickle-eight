@@ -1,5 +1,5 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { db, ensureAnonUser } from '@/lib/firebase-config';
+import { db, ensureAnonUser, http } from '@/lib';
 import {
   CreditClaimResponseType,
   UserCreditsType,
@@ -10,7 +10,6 @@ import {
   CreditCompleteApplixirSessionInputType,
   CreditCompleteApplixirSessionOutputType,
 } from '@/types';
-import { apiInstance } from './axios-instance';
 import { CREDIT_CLAIM_ERROR_CODE_ENUM } from '@/constants';
 
 /**
@@ -19,7 +18,7 @@ import { CREDIT_CLAIM_ERROR_CODE_ENUM } from '@/constants';
 export async function claimCredits(): Promise<CreditClaimResponseType> {
   const user = await ensureAnonUser();
   const idToken = await user.getIdToken();
-  const res = await apiInstance.post<CreditClaimResponseType>(
+  const res = await http.post<CreditClaimResponseType>(
     'credits/claim',
     {},
     {
@@ -73,7 +72,7 @@ export function normalizeClaimErrorCode(
 export async function postAdEvent(
   payload: CreditApplixirEventPayloadType
 ): Promise<void> {
-  await apiInstance.post('applixir/events', payload, {
+  await http.post('applixir/events', payload, {
     headers: { 'Content-Type': 'application/json', 'x-skip-loading': '1' },
   });
 }
@@ -84,7 +83,7 @@ export async function postAdEvent(
 export async function startAdSession(
   input: CreditStartApplixirSessionInputType
 ): Promise<CreditStartApplixirSessionOutputType> {
-  const res = await apiInstance.post<{ ok?: boolean; token?: string }>(
+  const res = await http.post<{ ok?: boolean; token?: string }>(
     'applixir/start',
     { cid: input.cid },
     { headers: { 'Content-Type': 'application/json' } }
@@ -100,7 +99,7 @@ export async function startAdSession(
 export async function completeAdSession(
   input: CreditCompleteApplixirSessionInputType
 ): Promise<CreditCompleteApplixirSessionOutputType> {
-  const res = await apiInstance.post<{ ok?: boolean; error?: string }>(
+  const res = await http.post<{ ok?: boolean; error?: string }>(
     'applixir/complete',
     { token: input.token },
     { headers: { 'Content-Type': 'application/json' } }

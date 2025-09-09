@@ -4,7 +4,7 @@ import {
   EmojiQuizGradeType,
   GradeEmojiQuizInputType,
 } from '@/types';
-import { apiInstance } from './axios-instance';
+import { http } from '@/lib';
 
 /**
  * Generate emoji quiz problem via API
@@ -12,7 +12,7 @@ import { apiInstance } from './axios-instance';
 export async function generateEmojiQuiz(
   values: GenerateValuesType
 ): Promise<EmojiQuizProblemType> {
-  return apiInstance
+  return http
     .post<EmojiQuizProblemType>('/gpt/emoji-translation', {
       action: 'generate',
       ...values,
@@ -26,7 +26,7 @@ export async function generateEmojiQuiz(
 export async function gradeEmojiQuiz(
   input: GradeEmojiQuizInputType
 ): Promise<EmojiQuizGradeType> {
-  return apiInstance
+  return http
     .post<EmojiQuizGradeType>('/gpt/emoji-translation', {
       action: 'grade',
       ...input,

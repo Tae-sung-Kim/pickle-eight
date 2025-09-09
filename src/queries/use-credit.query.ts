@@ -3,7 +3,7 @@ import {
   type UseMutationOptions,
   type UseQueryOptions,
 } from '@tanstack/react-query';
-import { getAnalyticsClient } from '@/lib/firebase-config';
+import { getAnalyticsClient } from '@/lib';
 import {
   claimCredits,
   getUserCredits,
