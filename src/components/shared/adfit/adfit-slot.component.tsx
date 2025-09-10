@@ -3,19 +3,15 @@
 import React, { useEffect, useId, useState } from 'react';
 import { useConsentContext } from '@/providers';
 import { useLoadingStore } from '@/stores';
-
-/**
- * Kakao AdFit slot. Loads script after consent and triggers SPA re-exec.
- */
+import { useTopBannerAdConfig } from '@/queries';
+import { ConsentNudgeComponent } from '@/components';
 
 export function AdFitSlotComponent() {
   const { showLoading, hideLoading } = useLoadingStore();
   const { state } = useConsentContext();
   const key = useId();
 
-  const unitId = process.env.NEXT_PUBLIC_ADFIT_UNIT_ID ?? 'DAN-placeholder';
-  const width = 320;
-  const height = 100;
+  const { data: adConfig } = useTopBannerAdConfig();
 
   // 임의로 광고 노출하지 않을 경우 - SSR에서 localStorage 접근 금지
   const [adsDisabledOverride, setAdsDisabledOverride] =
@@ -33,7 +29,7 @@ export function AdFitSlotComponent() {
 
   useEffect(() => {
     // Only proceed when consent is explicitly accepted
-    if (adsDisabledOverride || state !== 'accepted') return;
+    if (adsDisabledOverride || state !== 'accepted' || !adConfig) return;
 
     showLoading();
 
@@ -90,7 +86,29 @@ export function AdFitSlotComponent() {
         /* noop */
       })
       .finally(() => hideLoading());
-  }, [state, adsDisabledOverride, showLoading, hideLoading]);
+  }, [state, adsDisabledOverride, showLoading, hideLoading, adConfig]);
+
+  // 동의하지 않은 경우: 공용 컨센트 너지 컴포넌트를 활용해 안내 및 동의 유도
+  if (state !== 'accepted') {
+    return (
+      <div
+        role="region"
+        aria-label="advertisement"
+        className="flex w-full flex-col items-center gap-1"
+      >
+        <div
+          className="self-start rounded bg-muted px-1.5 py-0.5 text-[10px] leading-none text-muted-foreground"
+          aria-hidden
+        >
+          광고
+        </div>
+        <ConsentNudgeComponent variant="ad-slot" />
+      </div>
+    );
+  }
+
+  // 동의는 했지만 Config가 없으면 렌더링하지 않습니다.
+  if (!adConfig) return null;
 
   // Render labeled container for compliance. Script loading is gated above.
   return (
@@ -107,12 +125,12 @@ export function AdFitSlotComponent() {
       </div>
       {/* AdFit requires display:none initially; script will size/insert iframe */}
       <ins
-        key={key}
+        key={`${key}-${adConfig.unitId}-${adConfig.width}x${adConfig.height}`}
         className="kakao_ad_area"
         style={{ display: 'none' }}
-        data-ad-unit={unitId}
-        data-ad-width={String(width)}
-        data-ad-height={String(height)}
+        data-ad-unit={adConfig.unitId}
+        data-ad-width={String(adConfig.width)}
+        data-ad-height={String(adConfig.height)}
       />
     </div>
   );

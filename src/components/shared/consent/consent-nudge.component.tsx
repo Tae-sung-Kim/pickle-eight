@@ -46,6 +46,15 @@ export function ConsentNudgeComponent({
           bgClass: 'bg-gray-50 border border-gray-200',
         };
 
+      case 'ad-slot':
+        return {
+          emoji: '🪧',
+          title: '',
+          description: '광고 동의 시 이 영역에 스폰서 콘텐츠가 표시됩니다',
+          buttonText: '동의하고 보기',
+          bgClass: 'bg-muted/40 border border-border',
+        };
+
       case 'gentle':
       default:
         return {
@@ -59,6 +68,27 @@ export function ConsentNudgeComponent({
   };
 
   const content = getContent();
+
+  if (variant === 'ad-slot') {
+    return (
+      <div className={`w-full rounded ${content.bgClass} px-3 py-2`}>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span className="text-base leading-none">{content.emoji}</span>
+            <span>{content.description}</span>
+          </div>
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-6 px-2 text-xs"
+            onClick={handleAccept}
+          >
+            {content.buttonText}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (variant === 'gentle') {
     return (

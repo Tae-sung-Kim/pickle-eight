@@ -1,8 +1,6 @@
 import { ensureAnonUser, http } from '@/lib';
 import { UserCreditsType, CreditSpendResponseType } from '@/types';
 
-/** no daily/reward claim flow — removed */
-
 /**
  * Spend credits atomically on server.
  */
