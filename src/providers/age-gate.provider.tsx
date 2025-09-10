@@ -50,9 +50,7 @@ function markVerified(): void {
   }
 }
 
-export type AgeGateProviderPropsType = Readonly<{ children?: React.ReactNode }>;
-
-export function AgeGateProvider({ children }: AgeGateProviderPropsType) {
+export function AgeGateProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const pendingHrefRef = useRef<string | null>(null);
@@ -108,10 +106,26 @@ export function AgeGateProvider({ children }: AgeGateProviderPropsType) {
 
       // 여기서 네비게이션 차단 후 모달 오픈
       e.preventDefault();
-      e.stopPropagation();
       pendingHrefRef.current = url.pathname + url.search + url.hash;
       if (!openRef.current) {
-        setOpen(true);
+        try {
+          const active = document.activeElement as HTMLElement | null;
+          active?.blur();
+          requestAnimationFrame(() => {
+            // Sheet는 Escape로 닫힘; 버블링 가능한 이벤트로 보냄
+            const evt = new KeyboardEvent('keydown', {
+              key: 'Escape',
+              code: 'Escape',
+              bubbles: true,
+              cancelable: true,
+            });
+            document.dispatchEvent(evt);
+            // 다음 태스크로 모달 오픈하여 레이스 방지
+            setTimeout(() => setOpen(true), 0);
+          });
+        } catch {
+          setOpen(true);
+        }
       } else {
         console.log('[AgeGate] open suppressed (already open)');
       }

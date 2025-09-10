@@ -21,9 +21,9 @@ export function ConsentNudgeComponent({
       case 'gratitude':
         return {
           emoji: '🎉',
-          title: '결과가 마음에 드셨나요?',
-          description: '광고 동의로 이 무료 도구가 계속 운영될 수 있어요',
-          buttonText: '광고 동의하고 지원하기',
+          title: '유용했나요?',
+          description: '광고 동의 한 번으로 이 도구의 유지·개선을 도와주세요',
+          buttonText: '동의하고 응원하기',
           bgClass: 'bg-gradient-to-r from-green-50 to-blue-50',
         };
 
@@ -41,7 +41,7 @@ export function ConsentNudgeComponent({
           emoji: '📊',
           title: '운영 투명성',
           description:
-            '월 서버비 약 50,000원 · 이용자 1,000+ · 광고 동의가 큰 힘이 됩니다',
+            '월 서버비 약 5만 원 · 이용자 1,000+ — 광고 동의가 큰 힘이 됩니다',
           buttonText: '광고 동의로 지원',
           bgClass: 'bg-gray-50 border border-gray-200',
         };
