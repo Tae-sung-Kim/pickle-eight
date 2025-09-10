@@ -7,6 +7,7 @@ import { SPEND_COST } from '@/constants';
 import { useConsentContext } from '@/providers';
 import { toast } from 'sonner';
 import { spendCredits } from '@/services';
+import { ConsentNudgeComponent } from '@/components';
 
 export type CreditGateButtonType = {
   readonly variant?: ComponentProps<typeof Button>['variant'];
@@ -96,6 +97,11 @@ export function CreditGateButtonComponent({
       >
         {label}
       </Button>
+      {consentBlocked && (
+        <div className="mt-2 w-full">
+          <ConsentNudgeComponent variant="gentle" />
+        </div>
+      )}
     </>
   );
 }

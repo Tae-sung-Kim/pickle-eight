@@ -5,3 +5,4 @@ export * from './lotto.service';
 export * from './emoji-translation.service';
 export * from './auth.service';
 export * from './credit.service';
+export * from './ads-config.service';

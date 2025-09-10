@@ -90,3 +90,17 @@ export type CreditBalancePillType = {
   className?: string;
   showLabel?: boolean;
 };
+
+export type AdBannerConfigType = {
+  readonly unitId: string;
+  readonly width: number;
+  readonly height: number;
+};
+
+export type AdsConfigDocType = {
+  readonly top_banner?: {
+    readonly unitId?: string;
+    readonly width?: string | number;
+    readonly height?: string | number;
+  };
+};

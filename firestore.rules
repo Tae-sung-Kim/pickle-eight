@@ -8,6 +8,11 @@ service cloud.firestore {
       allow read: if true;
       allow write: if false;
     }
+    // 광고 설정은 클라이언트에서만 읽고, 쓰기는 전부 금지 (운영: 콘솔/서버에서만 변경)
+    match /ads_config/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
 
     // 다른 공개 컬렉션이 있다면 여기에 추가:
     // match /public-collection/{docId} { allow read: if true; allow write: if false; }
