@@ -2,7 +2,16 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { LottoAgeGateDialogType } from '@/types';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 /**
  * Controlled age-gate dialog used for pre-navigation verification.
@@ -13,23 +22,29 @@ export function AgeGateDialogComponent({
   onConfirm,
   onCancel,
 }: LottoAgeGateDialogType) {
-  if (!open) return null;
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3 sm:items-center sm:p-6 backdrop-blur-sm"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="age-gate-title"
+    <Dialog
+      open={open}
+      onOpenChange={(v) => {
+        if (!v) onCancel();
+      }}
     >
-      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl rounded-xl border bg-background/95 p-5 shadow-xl ring-1 ring-border">
-        <h2 id="age-gate-title" className="text-base font-semibold sm:text-lg">
-          성인 확인
-        </h2>
-        <p className="mt-2 text-xs leading-6 text-muted-foreground sm:text-sm">
-          본 서비스는 로또 관련 콘텐츠를 포함하며, 대한민국 기준 만 19세 미만의
-          이용은 제한됩니다.
-        </p>
-        <div className="mt-5 flex flex-col-reverse gap-2 sm:mt-6 sm:flex-row sm:justify-end">
+      <DialogContent
+        aria-label="성인 확인"
+        aria-labelledby="age-gate-title-hidden"
+        className="z-[1001] w-full max-w-md sm:max-w-lg md:max-w-xl p-5"
+      >
+        <VisuallyHidden>
+          <DialogTitle id="age-gate-title-hidden">성인 확인</DialogTitle>
+        </VisuallyHidden>
+        <DialogHeader>
+          <DialogTitle className="text-base sm:text-lg">성인 확인</DialogTitle>
+          <DialogDescription className="mt-1 text-xs sm:text-sm">
+            본 서비스는 로또 관련 콘텐츠를 포함하며, 대한민국 기준 만 19세
+            미만의 이용은 제한됩니다.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="mt-5 sm:mt-6">
           <Button asChild variant="outline" size="sm" onClick={onCancel}>
             <Link href="#" onClick={(e) => e.preventDefault()}>
               취소
@@ -43,9 +58,9 @@ export function AgeGateDialogComponent({
           >
             만 19세 이상입니다
           </Button>
-        </div>
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 

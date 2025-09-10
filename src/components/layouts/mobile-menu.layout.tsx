@@ -77,12 +77,15 @@ export function MobileMenuLayout({ hiddenClass = '' }: MobileMenuLayoutProps) {
                     <span className="text-xl">🤖</span>
                   )}
                   {href ? (
-                    <Link
-                      href={href}
-                      className="text-[11px] font-semibold uppercase tracking-widest hover:text-primary"
-                    >
-                      {label}
-                    </Link>
+                    <SheetClose asChild>
+                      <Link
+                        href={href}
+                        prefetch
+                        className="text-[11px] font-semibold uppercase tracking-widest hover:text-primary"
+                      >
+                        {label}
+                      </Link>
+                    </SheetClose>
                   ) : (
                     <span className="text-[11px] font-semibold uppercase tracking-widest">
                       {label}
