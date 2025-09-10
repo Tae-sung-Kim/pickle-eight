@@ -46,7 +46,7 @@ export const CREDIT_REFILL_MODE = (
   .trim()
   .toLowerCase();
 
-export const SPEND_COST: CreditSpendCostType = {
+export const CREDIT_SPEND_COST: CreditSpendCostType = {
   analysis: 3,
   simulator: 2,
   advanced: 3,

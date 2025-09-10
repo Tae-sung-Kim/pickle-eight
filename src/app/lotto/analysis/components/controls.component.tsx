@@ -7,7 +7,7 @@ import {
   CreditBalancePillComponent,
   CreditGateButtonComponent,
 } from '@/components';
-import { useEffect,  useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LottoAnalysisControlsType } from '@/types';
 import { creditBuildCostLabel } from '@/utils';
 import { LOTTO_MAX_HISTORY_RANGE } from '@/constants';
@@ -46,7 +46,7 @@ export function LottoAnalysisControlsComponent({
   const liveCapped = Math.min(200, Math.max(0, liveRange));
   const liveIncrements =
     liveCapped > 0 ? Math.floor((Math.max(1, liveCapped) - 1) / 30) : 0;
-  const amountOverride = 3 + liveIncrements; // SPEND_COST.analysis=3 기준
+  const amountOverride = 3 + liveIncrements; // CREDIT_SPEND_COST.analysis=3 기준
 
   const label = creditBuildCostLabel({
     spendKey: 'analysis',

@@ -3,17 +3,16 @@
 import { ComponentProps, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { useCreditStore } from '@/stores';
-import { SPEND_COST } from '@/constants';
+import { CREDIT_SPEND_COST } from '@/constants';
 import { useConsentContext } from '@/providers';
 import { toast } from 'sonner';
 import { spendCredits } from '@/services';
-import { ConsentNudgeComponent } from '@/components';
 
 export type CreditGateButtonType = {
   readonly variant?: ComponentProps<typeof Button>['variant'];
   readonly className?: string;
   readonly label: string;
-  readonly spendKey: keyof typeof SPEND_COST;
+  readonly spendKey: keyof typeof CREDIT_SPEND_COST;
   readonly onProceed: () => void;
   readonly amountOverride?: number;
   readonly confirmMessage?: string; // optional confirm before proceeding
@@ -36,7 +35,7 @@ export function CreditGateButtonComponent({
     () =>
       typeof amountOverride === 'number'
         ? amountOverride
-        : SPEND_COST[spendKey],
+        : CREDIT_SPEND_COST[spendKey],
     [spendKey, amountOverride]
   );
   const insufficient = useMemo<boolean>(() => total < amount, [total, amount]);
@@ -86,23 +85,16 @@ export function CreditGateButtonComponent({
   };
 
   return (
-    <>
-      <Button
-        type="button"
-        variant={variant}
-        className={className}
-        // 동의 미수락 또는 크레딧 부족 시 비활성화 표시
-        aria-disabled={consentBlocked || insufficient}
-        onClick={handleClick}
-      >
-        {label}
-      </Button>
-      {consentBlocked && (
-        <div className="mt-2 w-full">
-          <ConsentNudgeComponent variant="gentle" />
-        </div>
-      )}
-    </>
+    <Button
+      type="button"
+      variant={variant}
+      className={className}
+      // 동의 미수락 또는 크레딧 부족 시 비활성화 표시
+      aria-disabled={consentBlocked || insufficient}
+      onClick={handleClick}
+    >
+      {label}
+    </Button>
   );
 }
 

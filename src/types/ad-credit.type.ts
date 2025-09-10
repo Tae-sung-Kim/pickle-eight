@@ -1,4 +1,4 @@
-import { CREDIT_RESET_MODE_ENUM, SPEND_COST } from '@/constants';
+import { CREDIT_RESET_MODE_ENUM, CREDIT_SPEND_COST } from '@/constants';
 
 declare global {
   interface Window {
@@ -45,7 +45,7 @@ export type CreditSpendCheckResultType = {
 };
 
 export type CreditCostLabelType = {
-  readonly spendKey: keyof typeof SPEND_COST;
+  readonly spendKey: keyof typeof CREDIT_SPEND_COST;
   readonly baseLabel: string;
   readonly isBusy?: boolean;
   readonly busyLabel?: string;
