@@ -22,26 +22,36 @@ export function MessageCardComponent({
   const [expanded, setExpanded] = useState<boolean>(false);
   const [canToggle, setCanToggle] = useState<boolean>(false);
   const { onCapture } = useCapture();
+  const rootFontRef = useRef<number>(16);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const el = textRef.current;
     if (!el) return;
-    const compute = () => {
-      const rootFont = parseFloat(
+    try {
+      // cache root font-size once per mount; it rarely changes
+      rootFontRef.current = parseFloat(
         getComputedStyle(document.documentElement).fontSize || '16'
       );
-      const collapsedMax = rootFont * 10; // Tailwind max-h-40 => 10rem
+    } catch {
+      rootFontRef.current = 16;
+    }
+    const compute = () => {
+      const collapsedMax = rootFontRef.current * 10; // Tailwind max-h-40 => 10rem
       const hasOverflow = el.scrollHeight > collapsedMax + 2;
-      setCanToggle(hasOverflow);
+      // prevent unnecessary state updates
+      setCanToggle((prev) => (prev !== hasOverflow ? hasOverflow : prev));
     };
-    const raf = requestAnimationFrame(() => {
+    rafRef.current = requestAnimationFrame(() => {
       compute();
-      setTimeout(compute, 0);
     });
-    const ro = new ResizeObserver(() => compute());
+    const ro = new ResizeObserver(() => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => compute());
+    });
     ro.observe(el);
     return () => {
-      cancelAnimationFrame(raf);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       ro.disconnect();
     };
   }, [message]);

@@ -27,17 +27,25 @@ export function MenuTooltipComponent({
   const [expanded, setExpanded] = useState(false);
   const descRef = useRef<HTMLDivElement>(null);
   const [isOverflow, setIsOverflow] = useState(false);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const el = descRef.current;
     if (!el) return;
     const compute = () => {
-      setIsOverflow(el.scrollHeight > el.clientHeight + 1);
+      const next = el.scrollHeight > el.clientHeight + 1;
+      setIsOverflow((prev) => (prev !== next ? next : prev));
     };
     compute();
-    const ro = new ResizeObserver(() => compute());
+    const ro = new ResizeObserver(() => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => compute());
+    });
     ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      ro.disconnect();
+    };
   }, [description, example, expanded]);
 
   if (!description && !example) return null;
