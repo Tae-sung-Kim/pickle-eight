@@ -12,6 +12,7 @@ import {
 } from '@/constants';
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { scheduleIdle, cancelIdle } from '@/lib';
+import { nextKstMidnightUtcTs } from '@/utils';
 import { useUserCreditsQuery } from '@/queries';
 
 export function HeaderLayout() {
@@ -39,17 +40,6 @@ export function HeaderLayout() {
     }
   }, [hydrated, markHydrated]);
 
-  const nextKstMidnight = (base: Date): number => {
-    const ms = base.getTime();
-    const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
-    const kstNow = new Date(ms + KST_OFFSET_MS);
-    const y = kstNow.getUTCFullYear();
-    const m = kstNow.getUTCMonth();
-    const d = kstNow.getUTCDate();
-    const nextKstZeroUtcMs = Date.UTC(y, m, d + 1, 0, 0, 0) - KST_OFFSET_MS;
-    return nextKstZeroUtcMs;
-  };
-
   const calcNextResetTs = useCallback(() => {
     const now = new Date();
     if (CREDIT_RESET_MODE === CREDIT_RESET_MODE_ENUM.MINUTE) {
@@ -58,7 +48,7 @@ export function HeaderLayout() {
       d.setMinutes(d.getMinutes() + 1);
       return d.getTime();
     }
-    return nextKstMidnight(now);
+    return nextKstMidnightUtcTs(now.getTime());
   }, []);
 
   // states

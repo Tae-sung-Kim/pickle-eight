@@ -1,4 +1,5 @@
-import { SITE_URL } from '@/lib';
+import { SITE_URL } from '@/lib/seo';
+import { CREDIT_RESET_MODE, CREDIT_RESET_MODE_ENUM } from '@/constants';
 
 export function getKoreaTime(date = new Date()): Date {
   const utc = date.getTime();
@@ -102,3 +103,62 @@ export const setCachedData = (key: string, data: string): void => {
   };
   localStorage.setItem(key, JSON.stringify(newCache));
 };
+
+/**
+ * Return epoch ms of KST midnight (00:00) for the given time.
+ */
+export function kstMidnightUtcTs(now: number = Date.now()): number {
+  const d = new Date(now);
+  const utc = d.getTime() + d.getTimezoneOffset() * 60_000;
+  const kst = new Date(utc + 9 * 60 * 60 * 1000);
+  kst.setHours(0, 0, 0, 0);
+  const kstMidnightUtc = kst.getTime() - 9 * 60 * 60 * 1000;
+  return kstMidnightUtc;
+}
+
+/**
+ * Return epoch ms bucketed to the start of the current minute (00 seconds, 000 ms).
+ */
+export function minuteBucketTs(now: number = Date.now()): number {
+  const d = new Date(now);
+  d.setSeconds(0, 0);
+  return d.getTime();
+}
+
+/**
+ * Current reset key depending on CREDIT_RESET_MODE (minute | midnight).
+ */
+export function currentResetKey(now: number = Date.now()): number {
+  return CREDIT_RESET_MODE === CREDIT_RESET_MODE_ENUM.MINUTE
+    ? minuteBucketTs(now)
+    : kstMidnightUtcTs(now);
+}
+
+/**
+ * Next KST midnight (00:00 next day) epoch ms based on a base time.
+ */
+export function nextKstMidnightUtcTs(base: number = Date.now()): number {
+  const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+  const kstNow = new Date(base + KST_OFFSET_MS);
+  const y = kstNow.getUTCFullYear();
+  const m = kstNow.getUTCMonth();
+  const d = kstNow.getUTCDate();
+  const nextKstZeroUtcMs = Date.UTC(y, m, d + 1, 0, 0, 0) - KST_OFFSET_MS;
+  return nextKstZeroUtcMs;
+}
+
+/**
+ * Format milliseconds to HH:MM:SS when hours > 0, otherwise MM:SS.
+ */
+export function formatHms(ms: number): string {
+  const totalSec = Math.max(0, Math.ceil(ms / 1000));
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  if (h > 0)
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(
+      2,
+      '0'
+    )}:${String(s).padStart(2, '0')}`;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}

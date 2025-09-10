@@ -4,30 +4,8 @@ import {
   CREDIT_POLICY,
   CREDIT_REFILL_INTERVAL_MS,
   CREDIT_REFILL_AMOUNT,
-  CREDIT_RESET_MODE,
-  CREDIT_RESET_MODE_ENUM,
 } from '@/constants';
-
-function todayMidnightTsKst(now: number = Date.now()): number {
-  const d = new Date(now);
-  const utc = d.getTime() + d.getTimezoneOffset() * 60_000;
-  const kst = new Date(utc + 9 * 60 * 60 * 1000);
-  kst.setHours(0, 0, 0, 0);
-  const kstMidnightUtc = kst.getTime() - 9 * 60 * 60 * 1000;
-  return kstMidnightUtc;
-}
-
-function minuteBucketTs(now: number = Date.now()): number {
-  const d = new Date(now);
-  d.setSeconds(0, 0);
-  return d.getTime();
-}
-
-function currentResetKey(now: number = Date.now()): number {
-  return CREDIT_RESET_MODE === CREDIT_RESET_MODE_ENUM.MINUTE
-    ? minuteBucketTs(now)
-    : todayMidnightTsKst(now);
-}
+import { currentResetKey } from '@/utils';
 
 type UserCreditDoc = {
   credits?: number;

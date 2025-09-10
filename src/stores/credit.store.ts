@@ -4,8 +4,6 @@ import {
   CREDIT_POLICY,
   CREDIT_REFILL_AMOUNT,
   CREDIT_REFILL_INTERVAL_MS,
-  CREDIT_RESET_MODE,
-  CREDIT_RESET_MODE_ENUM,
 } from '@/constants';
 import type {
   CreditBalanceType,
@@ -13,6 +11,7 @@ import type {
   CreditEarnCheckResultType,
   CreditSpendCheckResultType,
 } from '@/types';
+import { currentResetKey } from '@/utils';
 
 const STORAGE_KEY = process.env.NEXT_PUBLIC_SITE_NAME + '_credits:v2';
 
@@ -27,29 +26,6 @@ function isConsentAccepted(): boolean {
   } catch {
     return false;
   }
-}
-
-// Use KST (UTC+9) midnight as the canonical daily reset to avoid client timezone discrepancies
-function todayMidnightTsKst(now: number = Date.now()): number {
-  const d = new Date(now);
-  const utc = d.getTime() + d.getTimezoneOffset() * 60_000; // ms since epoch in UTC
-  const kst = new Date(utc + 9 * 60 * 60 * 1000); // shift to KST
-  kst.setHours(0, 0, 0, 0); // midnight in KST
-  // convert back to absolute epoch ms
-  const kstMidnightUtc = kst.getTime() - 9 * 60 * 60 * 1000;
-  return kstMidnightUtc;
-}
-
-function minuteBucketTs(now: number = Date.now()): number {
-  const d = new Date(now);
-  d.setSeconds(0, 0);
-  return d.getTime();
-}
-
-function currentResetKey(now: number = Date.now()): number {
-  return CREDIT_RESET_MODE === CREDIT_RESET_MODE_ENUM.MINUTE
-    ? minuteBucketTs(now)
-    : todayMidnightTsKst(now);
 }
 
 const initialBalance: CreditBalanceType = {

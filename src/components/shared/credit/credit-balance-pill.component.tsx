@@ -16,30 +16,8 @@ import {
 } from '@/components/ui/tooltip';
 import { scheduleIdle, cancelIdle } from '@/lib';
 import { useUserCreditsQuery } from '@/queries';
+import { nextKstMidnightUtcTs, formatHms } from '@/utils';
 import { CreditBalancePillType } from '@/types';
-
-function nextKstMidnightUtcTs(base: number = Date.now()): number {
-  const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
-  const kstNow = new Date(base + KST_OFFSET_MS);
-  const y = kstNow.getUTCFullYear();
-  const m = kstNow.getUTCMonth();
-  const d = kstNow.getUTCDate();
-  const nextKstZeroUtcMs = Date.UTC(y, m, d + 1, 0, 0, 0) - KST_OFFSET_MS;
-  return nextKstZeroUtcMs;
-}
-
-function formatHms(ms: number): string {
-  const totalSec = Math.max(0, Math.ceil(ms / 1000));
-  const h = Math.floor(totalSec / 3600);
-  const m = Math.floor((totalSec % 3600) / 60);
-  const s = totalSec % 60;
-  if (h > 0)
-    return `${String(h).padStart(2, '0')}:${String(m).padStart(
-      2,
-      '0'
-    )}:${String(s).padStart(2, '0')}`;
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-}
 
 export function CreditBalancePillComponent({
   className,
