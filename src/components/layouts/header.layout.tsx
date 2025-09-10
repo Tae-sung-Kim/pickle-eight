@@ -12,9 +12,23 @@ import {
 } from '@/constants';
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { scheduleIdle, cancelIdle } from '@/lib';
+import { useUserCreditsQuery } from '@/queries';
 
 export function HeaderLayout() {
-  const { total, hydrated, markHydrated } = useCreditStore();
+  const { total, hydrated, markHydrated, setServerSync } = useCreditStore();
+
+  // Initial server sync (prevents baseDaily flicker on reload)
+  const { data: userCredits, isSuccess } = useUserCreditsQuery();
+  useEffect(() => {
+    if (!userCredits) return;
+    if (typeof userCredits.credits === 'number') {
+      setServerSync({
+        credits: userCredits.credits,
+        lastRefillAt: userCredits.lastRefillAt,
+        refillArmed: userCredits.refillArmed,
+      });
+    }
+  }, [userCredits, setServerSync]);
 
   useEffect(() => {
     if (!hydrated) {
@@ -172,6 +186,8 @@ export function HeaderLayout() {
     return `${mm}:${ss}`;
   }, [refillRemainingMs]);
 
+  const showTotalNow = hydrated && isSuccess; // 서버 동기화 전에는 대시 유지
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 sm:px-6">
@@ -194,13 +210,13 @@ export function HeaderLayout() {
           <span
             className="inline-flex items-center gap-1 tabular-nums text-[11px] max-[360px]:text-[10px] text-muted-foreground shrink-0"
             aria-label={`보유 크레딧 ${
-              hydrated ? total : 0
+              showTotalNow ? total : 0
             }, 리셋까지 ${remainingLabel}, 충전까지 ${refillLabel}`}
             aria-live="polite"
           >
             <Coins className="h-4 w-4 text-amber-500" />
             <span className="font-semibold text-foreground">
-              {hydrated ? total : '—'}
+              {showTotalNow ? total : '—'}
             </span>
             <span className="opacity-70">·</span>
             <span>↻ {remainingLabel}</span>
@@ -214,13 +230,13 @@ export function HeaderLayout() {
           <span
             className="inline-flex items-center gap-1 tabular-nums text-[11px] max-[380px]:text-[10px] text-muted-foreground shrink-0"
             aria-label={`보유 크레딧 ${
-              hydrated ? total : 0
+              showTotalNow ? total : 0
             }, 리셋까지 ${remainingLabel}, 충전까지 ${refillLabel}`}
             aria-live="polite"
           >
             <Coins className="h-4 w-4 text-amber-500" />
             <span className="font-semibold text-foreground">
-              {hydrated ? total : '—'}
+              {showTotalNow ? total : '—'}
             </span>
             <span className="opacity-70">·</span>
             <span>↻ {remainingLabel}</span>

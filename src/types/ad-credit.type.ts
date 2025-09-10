@@ -1,8 +1,4 @@
-import {
-  CREDIT_CLAIM_ERROR_CODE_ENUM,
-  CREDIT_RESET_MODE_ENUM,
-  SPEND_COST,
-} from '@/constants';
+import { CREDIT_RESET_MODE_ENUM, SPEND_COST } from '@/constants';
 
 declare global {
   interface Window {
@@ -63,19 +59,34 @@ export type CreditStateType = {
   hydrated: boolean;
   markHydrated: () => void;
   revokeTodaysEarned: () => void;
+  setTotal: (total: number) => void;
+  setServerSync: (p: {
+    credits: number;
+    lastRefillAt?: number;
+    refillArmed?: boolean;
+  }) => void;
 } & CreditBalanceType;
 
 // Use enum VALUE union ("midnight" | "minute"), not KEY union
 export type CreditResetModeType =
   (typeof CREDIT_RESET_MODE_ENUM)[keyof typeof CREDIT_RESET_MODE_ENUM];
 
-export type CreditClaimErrorCodeType =
-  (typeof CREDIT_CLAIM_ERROR_CODE_ENUM)[keyof typeof CREDIT_CLAIM_ERROR_CODE_ENUM];
-
-export type CreditClaimResponseType = {
+export type CreditSpendResponseType = {
   ok: boolean;
-  already?: boolean;
-  code?: CreditClaimErrorCodeType;
+  credits: number;
+  code?: string;
+  lastRefillAt?: number;
+  refillArmed?: boolean;
 };
 
-export type UserCreditsType = { credits: number; lastClaimDate?: string };
+export type UserCreditsType = {
+  credits: number;
+  lastClaimDate?: string;
+  lastRefillAt?: number;
+  refillArmed?: boolean;
+};
+
+export type CreditBalancePillType = {
+  className?: string;
+  showLabel?: boolean;
+};

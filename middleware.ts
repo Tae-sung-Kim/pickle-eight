@@ -37,9 +37,8 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   // Only enforce for matched paths (see config.matcher)
   const url = new URL(req.url);
   const pathname = url.pathname;
-  const isCreditsClaim: boolean = pathname === '/api/credits/claim';
   const isCsvExport: boolean = pathname === '/api/lotto/export';
-  const inScope: boolean = isCreditsClaim || isCsvExport;
+  const inScope: boolean = isCsvExport;
   if (!inScope) {
     return NextResponse.next();
   }

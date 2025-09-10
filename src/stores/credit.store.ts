@@ -119,6 +119,27 @@ export const useCreditStore = create<CreditStateType>()(
           ensureReset();
           ensureRefill();
         },
+        setTotal: (total: number): void => {
+          const clamped = Math.max(0, Math.min(CREDIT_POLICY.dailyCap, total));
+          set({ total: clamped } as Partial<CreditBalanceType>);
+        },
+        setServerSync: (p: {
+          credits: number;
+          lastRefillAt?: number;
+          refillArmed?: boolean;
+        }): void => {
+          const clamped = Math.max(
+            0,
+            Math.min(CREDIT_POLICY.dailyCap, p.credits)
+          );
+          set({
+            total: clamped,
+            lastRefillAt:
+              typeof p.lastRefillAt === 'number' ? p.lastRefillAt : 0,
+            refillArmed:
+              typeof p.refillArmed === 'boolean' ? p.refillArmed : false,
+          } as Partial<CreditBalanceType>);
+        },
         onEarn: (amount?: number) => {
           ensureReset();
           ensureRefill();
@@ -219,7 +240,6 @@ export const useCreditStore = create<CreditStateType>()(
       version: 3,
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({
-        total: s.total,
         todayEarned: s.todayEarned,
         lastEarnedAt: s.lastEarnedAt,
         lastResetAt: s.lastResetAt,

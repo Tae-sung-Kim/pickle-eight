@@ -1,21 +1,19 @@
-import { doc, getDoc } from 'firebase/firestore';
-import { db, ensureAnonUser, http } from '@/lib';
-import {
-  CreditClaimResponseType,
-  UserCreditsType,
-  CreditClaimErrorCodeType,
-} from '@/types';
-import { CREDIT_CLAIM_ERROR_CODE_ENUM } from '@/constants';
+import { ensureAnonUser, http } from '@/lib';
+import { UserCreditsType, CreditSpendResponseType } from '@/types';
+
+/** no daily/reward claim flow — removed */
 
 /**
- * Claim daily credits via secure API. Client-only.
+ * Spend credits atomically on server.
  */
-export async function claimCredits(): Promise<CreditClaimResponseType> {
+export async function spendCredits(
+  amount: number
+): Promise<CreditSpendResponseType> {
   const user = await ensureAnonUser();
   const idToken = await user.getIdToken();
-  const res = await http.post<CreditClaimResponseType>(
-    'credits/claim',
-    {},
+  const res = await http.post<CreditSpendResponseType>(
+    'credits/spend',
+    { amount },
     {
       headers: {
         'Content-Type': 'application/json',
@@ -27,36 +25,31 @@ export async function claimCredits(): Promise<CreditClaimResponseType> {
 }
 
 /**
- * Fetch current user's credits from Firestore. Client-only.
+ * Fetch current user's credits from server (applies reset/refill) instead of client Firestore.
  */
 export async function getUserCredits(): Promise<UserCreditsType | null> {
   const user = await ensureAnonUser();
-  const ref = doc(db, 'users', user.uid);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) return null;
-  const data = snap.data() as { credits?: number; lastClaimDate?: string };
-  return { credits: data.credits ?? 0, lastClaimDate: data.lastClaimDate };
-}
-
-/**
- * Normalize unknown error into CreditClaimErrorCodeType.
- */
-export function normalizeClaimErrorCode(
-  err: unknown
-): CreditClaimErrorCodeType {
-  const code =
-    err instanceof Error
-      ? err.message
-      : CREDIT_CLAIM_ERROR_CODE_ENUM.REQUEST_FAILED;
-  const allowList = [
-    CREDIT_CLAIM_ERROR_CODE_ENUM.AUTH_MISSING,
-    CREDIT_CLAIM_ERROR_CODE_ENUM.AUTH_INVALID,
-    CREDIT_CLAIM_ERROR_CODE_ENUM.LIMIT_DEVICE,
-    CREDIT_CLAIM_ERROR_CODE_ENUM.LIMIT_IP,
-    CREDIT_CLAIM_ERROR_CODE_ENUM.INTERNAL,
-    CREDIT_CLAIM_ERROR_CODE_ENUM.REQUEST_FAILED,
-  ] as const;
-  return (allowList as readonly string[]).includes(code)
-    ? (code as CreditClaimErrorCodeType)
-    : CREDIT_CLAIM_ERROR_CODE_ENUM.REQUEST_FAILED;
+  const idToken = await user.getIdToken();
+  const res = await http.get<{
+    ok: boolean;
+    credits: number;
+    lastRefillAt?: number;
+    refillArmed?: boolean;
+  }>('credits/me', {
+    headers: { Authorization: `Bearer ${idToken}` },
+  });
+  if (res.data && res.data.ok) {
+    return {
+      credits: res.data.credits,
+      lastRefillAt:
+        typeof res.data.lastRefillAt === 'number'
+          ? res.data.lastRefillAt
+          : undefined,
+      refillArmed:
+        typeof res.data.refillArmed === 'boolean'
+          ? res.data.refillArmed
+          : undefined,
+    };
+  }
+  return null;
 }

@@ -6,6 +6,8 @@ import { creditBuildCostLabel, LottoCsvUtils } from '@/utils';
 import { useCreditStore } from '@/stores';
 import { SPEND_COST } from '@/constants';
 import { LottoClientCsvButtonType } from '@/types';
+import { spendCredits } from '@/services';
+import { toast } from 'sonner';
 
 export function ClientCsvButtonComponent({
   className,
@@ -15,7 +17,7 @@ export function ClientCsvButtonComponent({
   baseLabel = 'CSV 내보내기',
 }: LottoClientCsvButtonType) {
   const [busy, setBusy] = useState<boolean>(false);
-  const { onSpend } = useCreditStore();
+  const { setTotal } = useCreditStore();
   const amount: number = SPEND_COST.csv;
   const label: string = useMemo<string>(
     () =>
@@ -31,10 +33,21 @@ export function ClientCsvButtonComponent({
   const handleProceed = async () => {
     try {
       setBusy(true);
+      // server-side spend first
+      const res = await spendCredits(amount);
+      if (!res.ok) {
+        if (typeof res.credits === 'number') setTotal(res.credits);
+        toast.error('크레딧이 부족하거나 요청을 처리할 수 없습니다.');
+        return;
+      }
+      setTotal(res.credits);
       const csv: string = LottoCsvUtils.buildCsvFrom(headers, rows);
       const blob: Blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
       LottoCsvUtils.triggerDownload(blob, filename);
-      onSpend(amount);
+    } catch (e) {
+      toast.error(
+        '요청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.' + e
+      );
     } finally {
       setBusy(false);
     }

@@ -6,6 +6,7 @@ import { useCreditStore } from '@/stores';
 import { SPEND_COST } from '@/constants';
 import { useConsentContext } from '@/providers';
 import { toast } from 'sonner';
+import { spendCredits } from '@/services';
 
 export type CreditGateButtonType = {
   readonly variant?: ComponentProps<typeof Button>['variant'];
@@ -28,7 +29,7 @@ export function CreditGateButtonComponent({
   confirmMessage,
   deferSpend,
 }: CreditGateButtonType) {
-  const { total, canSpend, onSpend } = useCreditStore();
+  const { total, setServerSync } = useCreditStore();
   const { state: consentState } = useConsentContext();
   const amount = useMemo<number>(
     () =>
@@ -40,16 +41,11 @@ export function CreditGateButtonComponent({
   const insufficient = useMemo<boolean>(() => total < amount, [total, amount]);
   const consentBlocked = consentState !== 'accepted';
 
-  const handleClick = (): void => {
+  const handleClick = async (): Promise<void> => {
     if (consentBlocked) {
       toast.error(
         '광고 및 쿠키에 동의해야 크레딧 사용이 가능합니다. 하단 배너에서 동의를 진행하세요.'
       );
-      return;
-    }
-    if (insufficient) return; // 필요 시 별도 안내 토스트로 대체 가능
-    const check = canSpend(amount);
-    if (!check.canSpend) {
       return;
     }
     // Optional confirm
@@ -57,13 +53,35 @@ export function CreditGateButtonComponent({
       const ok = window.confirm(confirmMessage);
       if (!ok) return;
     }
-    // Defer spending to caller if requested
     if (deferSpend) {
+      // Caller will handle spend server-side separately
       onProceed();
       return;
     }
-    const res = onSpend(amount);
-    if (res.canSpend) onProceed();
+    try {
+      const res = await spendCredits(amount);
+      if (res.ok) {
+        setServerSync({
+          credits: res.credits,
+          lastRefillAt: res.lastRefillAt,
+          refillArmed: res.refillArmed,
+        });
+        onProceed();
+        return;
+      }
+      // not ok: sync latest credits if provided and notify
+      if (typeof res.credits === 'number')
+        setServerSync({
+          credits: res.credits,
+          lastRefillAt: res.lastRefillAt,
+          refillArmed: res.refillArmed,
+        });
+      toast.error('크레딧이 부족하거나 요청을 처리할 수 없습니다.');
+    } catch (e) {
+      toast.error(
+        '요청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.' + e
+      );
+    }
   };
 
   return (

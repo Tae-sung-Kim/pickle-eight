@@ -15,11 +15,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { scheduleIdle, cancelIdle } from '@/lib';
-
-export type CreditBalancePillType = {
-  className?: string;
-  showLabel?: boolean;
-};
+import { useUserCreditsQuery } from '@/queries';
+import { CreditBalancePillType } from '@/types';
 
 function nextKstMidnightUtcTs(base: number = Date.now()): number {
   const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
@@ -55,7 +52,22 @@ export function CreditBalancePillComponent({
     markHydrated,
     refillArmed,
     lastRefillAt,
+    setServerSync,
   } = useCreditStore();
+
+  // Initial server sync of credits
+  const { data: userCredits, isSuccess } = useUserCreditsQuery();
+  useEffect(() => {
+    if (!userCredits) return;
+    if (typeof userCredits.credits === 'number') {
+      setServerSync({
+        credits: userCredits.credits,
+        lastRefillAt: userCredits.lastRefillAt,
+        refillArmed: userCredits.refillArmed,
+      });
+    }
+    // run only when server data changes
+  }, [userCredits, setServerSync]);
 
   useEffect(() => {
     if (hydrated) syncReset();
@@ -138,6 +150,8 @@ export function CreditBalancePillComponent({
     return formatHms(refillRemainMs);
   }, [refillRemainMs]);
 
+  const showTotalNow = hydrated && isSuccess; // 서버 동기화 전까지는 대시 유지
+
   return (
     <div
       className={cn(
@@ -147,7 +161,7 @@ export function CreditBalancePillComponent({
     >
       {showLabel && <span className="shrink-0">보유</span>}
       <span className="tabular-nums font-semibold shrink-0">
-        {hydrated ? total : '—'}
+        {showTotalNow ? total : '—'}
       </span>
 
       <Tooltip>
