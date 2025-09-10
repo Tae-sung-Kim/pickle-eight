@@ -4,7 +4,7 @@ import { CreditGateButtonComponent } from '@/components';
 import { exportLottoCsv } from '@/services';
 import { creditBuildCostLabel, LottoCsvUtils } from '@/utils';
 import { useCreditStore } from '@/stores';
-import { SPEND_COST } from '@/constants';
+import { CREDIT_SPEND_COST } from '@/constants';
 import { spendCredits } from '@/services';
 import { toast } from 'sonner';
 
@@ -21,7 +21,7 @@ export function CsvExportButtonComponent({
 }: CsvExportButtonProps) {
   const [busy, setBusy] = useState<boolean>(false);
   const { setTotal } = useCreditStore();
-  const amount: number = SPEND_COST.csv;
+  const amount: number = CREDIT_SPEND_COST.csv;
   const label: string = useMemo<string>(
     () =>
       creditBuildCostLabel({

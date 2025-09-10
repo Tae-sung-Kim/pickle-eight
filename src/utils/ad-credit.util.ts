@@ -1,4 +1,4 @@
-import { SPEND_COST } from '@/constants';
+import { CREDIT_SPEND_COST } from '@/constants';
 import { CreditCostLabelType } from '@/types';
 
 export const formatCooldown = (ms: number): string => {
@@ -17,6 +17,8 @@ export const creditBuildCostLabel = ({
 }: CreditCostLabelType & { amountOverride?: number }): string => {
   if (isBusy) return busyLabel;
   const amount: number =
-    typeof amountOverride === 'number' ? amountOverride : SPEND_COST[spendKey];
+    typeof amountOverride === 'number'
+      ? amountOverride
+      : CREDIT_SPEND_COST[spendKey];
   return `${baseLabel}(-${amount})`;
 };

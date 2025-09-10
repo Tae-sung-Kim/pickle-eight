@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { CreditGateButtonComponent } from '@/components';
 import { creditBuildCostLabel, LottoCsvUtils } from '@/utils';
 import { useCreditStore } from '@/stores';
-import { SPEND_COST } from '@/constants';
+import { CREDIT_SPEND_COST } from '@/constants';
 import { LottoClientCsvButtonType } from '@/types';
 import { spendCredits } from '@/services';
 import { toast } from 'sonner';
@@ -18,7 +18,7 @@ export function ClientCsvButtonComponent({
 }: LottoClientCsvButtonType) {
   const [busy, setBusy] = useState<boolean>(false);
   const { setTotal } = useCreditStore();
-  const amount: number = SPEND_COST.csv;
+  const amount: number = CREDIT_SPEND_COST.csv;
   const label: string = useMemo<string>(
     () =>
       creditBuildCostLabel({

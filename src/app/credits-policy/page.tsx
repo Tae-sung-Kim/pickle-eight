@@ -8,11 +8,11 @@ import {
   jsonLdBreadcrumb,
   jsonLdWebSite,
 } from '@/lib';
-import { CREDIT_POLICY, SPEND_COST } from '@/constants';
+import { CREDIT_POLICY, CREDIT_SPEND_COST } from '@/constants';
 
 /**
  * 크레딧 정책 페이지
- * 코드 상수(CREDIT_POLICY, SPEND_COST) 기반으로 표기하여 불일치 방지
+ * 코드 상수(CREDIT_POLICY, CREDIT_SPEND_COST) 기반으로 표기하여 불일치 방지
  */
 const baseMeta = buildMetadata({
   title: '크레딧 정책 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),
@@ -81,16 +81,16 @@ export default function CreditsPolicyPage(): JSX.Element {
         <h2 className="text-lg font-semibold">소비 비용</h2>
         <ul className="list-disc pl-5 text-sm leading-6">
           <li>
-            분석: <strong>{SPEND_COST.analysis}</strong>
+            분석: <strong>{CREDIT_SPEND_COST.analysis}</strong>
           </li>
           <li>
-            시뮬레이터: <strong>{SPEND_COST.simulator}</strong>
+            시뮬레이터: <strong>{CREDIT_SPEND_COST.simulator}</strong>
           </li>
           <li>
-            고급 기능: <strong>{SPEND_COST.advanced}</strong>
+            고급 기능: <strong>{CREDIT_SPEND_COST.advanced}</strong>
           </li>
           <li>
-            CSV 내보내기: <strong>{SPEND_COST.csv}</strong>
+            CSV 내보내기: <strong>{CREDIT_SPEND_COST.csv}</strong>
           </li>
         </ul>
       </section>

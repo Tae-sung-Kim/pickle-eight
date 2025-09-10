@@ -17,7 +17,7 @@ import {
   CreditBalancePillComponent,
   CreditGateButtonComponent,
 } from '@/components';
-import { SPEND_COST } from '@/constants';
+import { CREDIT_SPEND_COST } from '@/constants';
 import { ClientCsvButtonComponent } from '@/components';
 import { getLottoDraws } from '@/services';
 
@@ -56,7 +56,7 @@ export function LottoAdvancedGeneratorComponent() {
   useLottoDrawsQuery({ from, to, enabled: false });
 
   const amountOverride =
-    SPEND_COST.advanced +
+    CREDIT_SPEND_COST.advanced +
     (useWeight ? 2 : 0) +
     Math.floor(Math.max(0, count - 1) / 3);
   const label = creditBuildCostLabel({

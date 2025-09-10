@@ -17,6 +17,9 @@ export function useUserCreditsQuery(
     queryKey: userCreditsQueryKey,
     queryFn: () => getUserCredits(),
     staleTime: 30_000,
+    // prevent re-fetch on window focus or reconnect (clicks can trigger focus events)
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
     ...(options || {}),
   });
 }

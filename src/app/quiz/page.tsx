@@ -77,14 +77,6 @@ export default function QuizHubPage() {
             mainEntity: [
               {
                 '@type': 'Question',
-                name: '퀴즈 점수와 랭킹은 어떻게 계산되나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '문항 정답 수와 소요 시간 등을 조합해 점수를 산정할 수 있습니다. 랭킹은 동일 규칙으로 산정된 점수 기준으로 제공됩니다.',
-                },
-              },
-              {
-                '@type': 'Question',
                 name: '데이터는 어디에 저장되나요?',
                 acceptedAnswer: {
                   '@type': 'Answer',
