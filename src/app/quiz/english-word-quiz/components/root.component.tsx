@@ -3,18 +3,19 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useGptEnglishWordQuizQuery } from '@/queries';
 import { GptEnglishWordQuizResponse } from '@/types';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Lightbulb, RefreshCw } from 'lucide-react';
+import { Lightbulb } from 'lucide-react';
 import { useDailyLimit } from '@/hooks';
 import { EnglishWordQuizOptionsComponent } from './options.component';
-import { EnglishWordQuizStatusComponent } from './status.component';
+import { DEFAULT_GPT_MODEL } from '@/constants';
+import { GptModelSelectButtonComponent } from '@/components';
 
 export function EnglishWordQuizComponent() {
   const [quiz, setQuiz] = useState<GptEnglishWordQuizResponse | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
+  const [model, setModel] = useState<string>(DEFAULT_GPT_MODEL);
 
   const { getDailyLimitInfo, addOne, isInitialized } = useDailyLimit();
   const { canUse, limit, used } = getDailyLimitInfo('english-word-quiz');
@@ -24,21 +25,22 @@ export function EnglishWordQuizComponent() {
   const getNewQuiz = useCallback(() => {
     if (!canUse) return;
 
-    fetchQuiz(undefined, {
-      onSuccess: (data) => {
-        addOne('english-word-quiz');
-        setQuiz(data);
-        setSelectedAnswer(null);
-        setIsRevealed(false);
-      },
-    });
-  }, [addOne, canUse, fetchQuiz]);
+    fetchQuiz(
+      { model },
+      {
+        onSuccess: (data) => {
+          addOne('english-word-quiz');
+          setQuiz(data);
+          setSelectedAnswer(null);
+          setIsRevealed(false);
+        },
+      }
+    );
+  }, [addOne, canUse, fetchQuiz, model]);
 
   useEffect(() => {
-    if (isInitialized) {
-      getNewQuiz();
-    }
-  }, [isInitialized, getNewQuiz]);
+    // 초기에는 자동 생성하지 않음. 사용자가 버튼을 눌러 생성하도록 유지.
+  }, [isInitialized]);
 
   const handleAnswerSelect = (option: string) => {
     if (isRevealed) return;
@@ -46,30 +48,12 @@ export function EnglishWordQuizComponent() {
     setIsRevealed(true);
   };
 
-  let status: 'loading' | 'error' | 'limit' | 'none' = 'none';
-  if (!isInitialized || (isPending && !quiz)) {
-    status = 'loading';
-  } else if (error) {
-    status = 'error';
-  } else if (!canUse && !quiz) {
-    status = 'limit';
-  } else if (!quiz) {
-    status = 'none';
-  }
-  if (status !== 'none') {
-    return <EnglishWordQuizStatusComponent status={status} />;
-  }
-
-  if (!quiz) {
-    return null;
-  }
-
   return (
     <Card className="w-full shadow-lg">
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-2xl text-center text-foreground leading-relaxed flex-1">
-            {quiz.quiz}
+            {quiz ? quiz.quiz : '영어 단어 퀴즈를 생성해 시작하세요'}
           </CardTitle>
           <div className="text-sm text-muted-foreground whitespace-nowrap">
             남은 횟수: {limit - used} / {limit}
@@ -77,14 +61,16 @@ export function EnglishWordQuizComponent() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <EnglishWordQuizOptionsComponent
-          quiz={quiz}
-          isRevealed={isRevealed}
-          selectedAnswer={selectedAnswer}
-          onAnswerSelect={handleAnswerSelect}
-        />
+        {quiz && (
+          <EnglishWordQuizOptionsComponent
+            quiz={quiz}
+            isRevealed={isRevealed}
+            selectedAnswer={selectedAnswer}
+            onAnswerSelect={handleAnswerSelect}
+          />
+        )}
 
-        {isRevealed && (
+        {quiz && isRevealed && (
           <Alert className="mt-6 bg-info/10 border-info/30">
             <Lightbulb className="h-5 w-5 text-info" />
             <AlertTitle className="font-bold text-info">
@@ -96,18 +82,29 @@ export function EnglishWordQuizComponent() {
           </Alert>
         )}
 
-        <Button
-          onClick={getNewQuiz}
-          className="w-full mt-6 h-12 text-lg font-bold bg-primary text-primary-foreground"
-          disabled={isPending || !canUse}
-        >
-          {isPending ? (
-            <Loader2 className="w-6 h-6 animate-spin" />
-          ) : (
-            <RefreshCw className="w-6 h-6 mr-2" />
-          )}
-          {canUse ? '다음 퀴즈' : '퀴즈 종료'}
-        </Button>
+        {error && (
+          <Alert className="mt-2 bg-destructive/10 border-destructive/30">
+            <AlertTitle className="font-bold text-destructive">오류</AlertTitle>
+            <AlertDescription className="text-destructive">
+              {(error as Error).message}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <div className="mt-6 flex justify-end">
+          <div className="flex flex-col items-end gap-2">
+            <span className="text-sm text-muted-foreground">GPT 모델</span>
+            <GptModelSelectButtonComponent
+              model={model}
+              onModelChange={setModel}
+              onProceed={getNewQuiz}
+              isBusy={isPending}
+              disabled={!canUse}
+              buttonLabel={canUse ? '퀴즈 생성' : '퀴즈 종료'}
+              triggerSize="sm"
+            />
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

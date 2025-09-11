@@ -59,12 +59,16 @@ export function GptModelSelectButtonComponent({
     <div className={className}>
       <div className="flex items-center gap-2">
         <Select value={model} onValueChange={onModelChange}>
-          <SelectTrigger size={triggerSize} aria-label="Select GPT model">
+          <SelectTrigger
+            size={triggerSize}
+            aria-label="Select GPT model"
+            className="cursor-pointer"
+          >
             <SelectValue placeholder="Select model" />
           </SelectTrigger>
           <SelectContent>
             {options.map((key) => (
-              <SelectItem key={key} value={key}>
+              <SelectItem key={key} value={key} className="cursor-pointer">
                 {GPT_MODEL_LABEL[key]}
               </SelectItem>
             ))}

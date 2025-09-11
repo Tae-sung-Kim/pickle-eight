@@ -2,11 +2,22 @@ import { useMutation } from '@tanstack/react-query';
 import { GptEnglishWordQuizResponse } from '@/types';
 import { http } from '@/lib';
 
+export type EnglishWordQuizRequest = { model?: string };
+
 export const useGptEnglishWordQuizQuery = () => {
-  return useMutation<GptEnglishWordQuizResponse, Error, void>({
-    mutationFn: async () => {
+  return useMutation<
+    GptEnglishWordQuizResponse,
+    Error,
+    EnglishWordQuizRequest | void
+  >({
+    mutationFn: async (payload) => {
+      const body =
+        payload && (payload as EnglishWordQuizRequest)?.model
+          ? { model: (payload as EnglishWordQuizRequest).model }
+          : undefined;
       const res = await http.post<GptEnglishWordQuizResponse>(
-        '/gpt/english-word-quiz'
+        '/gpt/english-word-quiz',
+        body
       );
 
       if (!res.data) {
