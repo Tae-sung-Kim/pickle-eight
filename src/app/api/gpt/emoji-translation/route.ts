@@ -152,15 +152,20 @@ export async function POST(req: NextRequest) {
 - 이모지 조합이 정답을 합리적으로 연상시키는가?
 - 힌트가 이모지와 정답 모두와 의미적으로 일치하는가?
 출력(JSON): {"score": 0|1, "reason": "짧은 근거"}`;
-        const content = await callOpenAI({
-          messages: [
-            { role: 'system', content: '너는 엄격한 일관성 판정기야.' },
-            { role: 'user', content: judgePrompt },
-          ],
-          max_tokens: 80,
-          temperature: 0,
-          json: true,
-        });
+        let content = '';
+        try {
+          content = await callOpenAI({
+            messages: [
+              { role: 'system', content: '너는 엄격한 일관성 판정기야.' },
+              { role: 'user', content: judgePrompt },
+            ],
+            max_tokens: 80,
+            temperature: 0,
+            json: true,
+          });
+        } catch {
+          return false;
+        }
         const cleaned = content.replace(/```json|```/g, '').trim();
         try {
           const out = JSON.parse(cleaned) as { score?: number };
@@ -185,15 +190,20 @@ export async function POST(req: NextRequest) {
 - 통용되면 대표 표기(표제형/정식명칭)를 canonical에 제시.
 출력(JSON): {"ok": true|false, "canonical": "대표 표기 또는 빈 문자열"}
 입력: 카테고리=${category}, 정답=${answer}`;
-        const content = await callOpenAI({
-          messages: [
-            { role: 'system', content: '너는 한국어 지식/표제 검증기야.' },
-            { role: 'user', content: vPrompt },
-          ],
-          max_tokens: 80,
-          temperature: 0,
-          json: true,
-        });
+        let content = '';
+        try {
+          content = await callOpenAI({
+            messages: [
+              { role: 'system', content: '너는 한국어 지식/표제 검증기야.' },
+              { role: 'user', content: vPrompt },
+            ],
+            max_tokens: 80,
+            temperature: 0,
+            json: true,
+          });
+        } catch {
+          return { ok: false };
+        }
         const cleaned = content.replace(/```json|```/g, '').trim();
         try {
           const out = JSON.parse(cleaned) as {
@@ -219,15 +229,20 @@ export async function POST(req: NextRequest) {
 - 영화와 무관한 직업/에피소드(예: 피자 배달 소년) 등을 암시하면 부합하지 않음.
 출력(JSON): {"ok": true|false}
 입력: 정답영화=${answer}, 힌트=${hint}`;
-        const content = await callOpenAI({
-          messages: [
-            { role: 'system', content: '너는 사실 검증가야.' },
-            { role: 'user', content: vPrompt },
-          ],
-          max_tokens: 40,
-          temperature: 0,
-          json: true,
-        });
+        let content = '';
+        try {
+          content = await callOpenAI({
+            messages: [
+              { role: 'system', content: '너는 사실 검증가야.' },
+              { role: 'user', content: vPrompt },
+            ],
+            max_tokens: 40,
+            temperature: 0,
+            json: true,
+          });
+        } catch {
+          return false;
+        }
         const cleaned = content.replace(/```json|```/g, '').trim();
         try {
           const out = JSON.parse(cleaned) as { ok?: boolean };
@@ -248,18 +263,23 @@ export async function POST(req: NextRequest) {
 - 시리즈 공통 상징(안경/마법 모자/마법봉 등)만으로는 인정하지 않음.
 출력(JSON): {"ok": true|false}
 입력: 제목=${answer}, 이모지=${emojis}`;
-        const content = await callOpenAI({
-          messages: [
-            {
-              role: 'system',
-              content: '너는 키워드-이모지 커버리지 판정기야.',
-            },
-            { role: 'user', content: vPrompt },
-          ],
-          max_tokens: 120,
-          temperature: 0,
-          json: true,
-        });
+        let content = '';
+        try {
+          content = await callOpenAI({
+            messages: [
+              {
+                role: 'system',
+                content: '너는 키워드-이모지 커버리지 판정기야.',
+              },
+              { role: 'user', content: vPrompt },
+            ],
+            max_tokens: 120,
+            temperature: 0,
+            json: true,
+          });
+        } catch {
+          return false;
+        }
         const cleaned = content.replace(/```json|```/g, '').trim();
         try {
           const out = JSON.parse(cleaned) as { ok?: boolean };
@@ -273,21 +293,27 @@ export async function POST(req: NextRequest) {
       while (attempts < 3) {
         const banlist: string[] = Array.from(localBanSet);
         const prompt = await buildPrompt(banlist);
-        const content = await callOpenAI({
-          messages: [
-            {
-              role: 'system',
-              content:
-                '너는 창의적인 이모지 퀴즈 출제자야. 반드시 JSON만 반환.',
-            },
-            { role: 'user', content: prompt },
-          ],
-          max_tokens: 200,
-          temperature: 0.6,
-          json: true,
-          presence_penalty: 0.2,
-          frequency_penalty: 0.4,
-        });
+        let content = '';
+        try {
+          content = await callOpenAI({
+            messages: [
+              {
+                role: 'system',
+                content:
+                  '너는 창의적인 이모지 퀴즈 출제자야. 반드시 JSON만 반환.',
+              },
+              { role: 'user', content: prompt },
+            ],
+            max_tokens: 200,
+            temperature: 0.6,
+            json: true,
+            presence_penalty: 0.2,
+            frequency_penalty: 0.4,
+          });
+        } catch {
+          attempts += 1;
+          continue;
+        }
         const cleaned = content.replace(/```json|```/g, '').trim();
         let out: EmojiTranslationProblemType | null = null;
         try {
@@ -355,15 +381,26 @@ export async function POST(req: NextRequest) {
 - 정답: ${answer}
 - 사용자 답: ${userGuess}
 출력(JSON): {"correct": boolean, "score": 0|1, "feedback": string }`;
-    const content = await callOpenAI({
-      messages: [
-        { role: 'system', content: '너는 간결한 채점기야. 항상 JSON만 반환.' },
-        { role: 'user', content: prompt },
-      ],
-      max_tokens: 150,
-      temperature: 0.2,
-      json: true,
-    });
+    let content = '';
+    try {
+      content = await callOpenAI({
+        messages: [
+          {
+            role: 'system',
+            content: '너는 간결한 채점기야. 항상 JSON만 반환.',
+          },
+          { role: 'user', content: prompt },
+        ],
+        max_tokens: 150,
+        temperature: 0.2,
+        json: true,
+      });
+    } catch {
+      return NextResponse.json(
+        { error: 'Failed to grade answer' },
+        { status: 500 }
+      );
+    }
     const cleaned = content.replace(/```json|```/g, '').trim();
     const out = JSON.parse(cleaned) as {
       correct: boolean;
