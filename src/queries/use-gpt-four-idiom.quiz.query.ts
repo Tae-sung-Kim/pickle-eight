@@ -2,12 +2,13 @@ import { useMutation } from '@tanstack/react-query';
 import { http } from '@/lib';
 import { FourIdiomQuizDifficultyType, FourIdiomType } from '@/types';
 
-export interface FourIdiomQuizRequest {
+export type FourIdiomQuizRequestType = {
   difficulty: FourIdiomQuizDifficultyType;
-}
+  model?: string;
+};
 
 export function useGptFourIdiomQuizQuery() {
-  return useMutation<FourIdiomType, Error, FourIdiomQuizRequest>({
+  return useMutation<FourIdiomType, Error, FourIdiomQuizRequestType>({
     mutationFn: async (data) => {
       const res = await http.post<FourIdiomType>('/gpt/four-idiom-quiz', {
         ...data,
