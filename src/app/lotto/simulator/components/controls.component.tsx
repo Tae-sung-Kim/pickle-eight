@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import {
   CreditGateButtonComponent,
-  CreditBalancePillComponent,
+  // CreditBalancePillComponent,
 } from '@/components';
 import { useEffect, useState } from 'react';
 import { creditBuildCostLabel } from '@/utils';
@@ -165,7 +165,7 @@ export function SimulatorControlsComponent({
                 {label}
               </Button>
             )}
-            <CreditBalancePillComponent className="self-end md:self-auto" />
+            {/* <CreditBalancePillComponent className="self-end md:self-auto" /> */}
           </div>
         </div>
       </CardContent>

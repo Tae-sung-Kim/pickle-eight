@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import {
-  CreditBalancePillComponent,
+  // CreditBalancePillComponent,
   CreditGateButtonComponent,
 } from '@/components';
 import { useEffect, useState } from 'react';
@@ -172,7 +172,7 @@ export function LottoAnalysisControlsComponent({
               onProceed={handleAnalyze}
               amountOverride={amountOverride}
             />
-            <CreditBalancePillComponent className="self-end sm:self-auto" />
+            {/* <CreditBalancePillComponent className="self-end sm:self-auto" /> */}
           </div>
           <p className="text-xs text-muted-foreground sm:col-span-3">
             최대 조회 범위: {LOTTO_MAX_HISTORY_RANGE} 회차(예: from=400 →
