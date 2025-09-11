@@ -1,5 +1,8 @@
-import { GPT_MODEL_ENUM } from '@/constants';
-import { OpenAIRequestType } from '@/types';
+import {
+  OpenAIRequestType,
+  OpenAIResponsesApiResponse,
+  OpenAIErrorResponse,
+} from '@/types';
 import axios, { AxiosError } from 'axios';
 
 const OPENAI_TIMEOUT_MS: number = 20000; // per-call timeout
@@ -19,11 +22,78 @@ function isTransientError(e: unknown): boolean {
   return true; // network/unknown treat as transient
 }
 
+// Heuristic model family detector
+// chat: Chat Completions API
+// responses: Responses API (o1/o3, 4.1/5 family, etc.)
+function getModelFamily(model?: string): 'chat' | 'responses' {
+  const m = (model || '').toLowerCase();
+  if (!m) return 'chat';
+  // Known chat-compatible
+  if (
+    m.startsWith('gpt-3.5') ||
+    m === 'gpt-4' ||
+    m.startsWith('gpt-4-') ||
+    m.startsWith('gpt-4o') ||
+    m.startsWith('gpt-4-turbo')
+  ) {
+    return 'chat';
+  }
+  // Likely responses family
+  if (
+    m.startsWith('o1') ||
+    m.startsWith('o3') ||
+    m.includes('4.1') ||
+    m.startsWith('gpt-5') ||
+    m.includes('nano')
+  ) {
+    return 'responses';
+  }
+  // Default to chat to maximize compatibility
+  return 'chat';
+}
+
+function stringifyMessages(messages: OpenAIRequestType['messages']): string {
+  // Flatten messages to a single string for Responses API "input"
+  // Keep roles as headings for minimal structure.
+  return messages
+    .map((m) => `${m.role.toUpperCase()}:\n${m.content}`)
+    .join('\n\n');
+}
+
+function parseResponsesApiText(data: OpenAIResponsesApiResponse): string {
+  // Try multiple shapes:
+  // 1) output_text
+  if (typeof data?.output_text === 'string' && data.output_text.length > 0) {
+    return data.output_text;
+  }
+  // 2) output[0].content[*].text
+  const contentItems = data?.output?.[0]?.content || [];
+  const texts: string[] = contentItems
+    .map((item) => item?.text ?? item?.content)
+    .filter((t): t is string => typeof t === 'string');
+  if (texts.length > 0) return texts.join('\n');
+  // 3) choices like chat
+  const choice = data?.choices?.[0]?.message?.content;
+  if (typeof choice === 'string') return choice;
+  return '';
+}
+
+function isModelNotFound(e: unknown): boolean {
+  const err = e as AxiosError<OpenAIErrorResponse>;
+  const status: number | undefined = err?.response?.status;
+  const data: OpenAIErrorResponse | undefined = err?.response?.data;
+  const code: string | undefined | null =
+    data?.error?.code ?? data?.error?.type;
+  return status === 404 || code === 'model_not_found';
+}
+
+const BACKUP_CHAT_MODEL = 'gpt-4o-mini';
+
 export async function callOpenAI({
   messages,
   max_tokens = 400,
   temperature = 0.8,
-  model = GPT_MODEL_ENUM.STANDARD,
+  model = 'gpt-4o-mini',
   json = false,
   presence_penalty,
   frequency_penalty,
@@ -32,21 +102,60 @@ export async function callOpenAI({
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   if (!OPENAI_API_KEY) throw new Error('OpenAI API Key is missing');
 
+  const family = getModelFamily(model);
+
   let attempt = 0;
   let lastError: unknown = null;
+  let usedBackup = false;
+
   while (attempt <= OPENAI_MAX_RETRIES) {
     try {
+      if (family === 'chat' || usedBackup) {
+        // Chat Completions API
+        const res = await axios.post(
+          'https://api.openai.com/v1/chat/completions',
+          {
+            model: usedBackup ? BACKUP_CHAT_MODEL : model,
+            messages,
+            max_tokens,
+            temperature,
+            ...(typeof top_p === 'number' && { top_p }),
+            ...(typeof presence_penalty === 'number' && { presence_penalty }),
+            ...(typeof frequency_penalty === 'number' && { frequency_penalty }),
+            ...(json && { response_format: { type: 'json_object' } }),
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${OPENAI_API_KEY}`,
+            },
+            timeout: OPENAI_TIMEOUT_MS,
+          }
+        );
+        if (!res.data) throw new Error('Failed to fetch GPT');
+        const text = res.data.choices?.[0]?.message?.content?.trim() ?? '';
+        if (!text && !usedBackup && family === 'responses') {
+          // empty text from backup attempt trigger should not happen; safety
+          usedBackup = true;
+          continue;
+        }
+        return text;
+      }
+
+      // Responses API path
+      const input = stringifyMessages(messages);
       const res = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
+        'https://api.openai.com/v1/responses',
         {
           model,
-          messages,
-          max_tokens,
+          input,
           temperature,
           ...(typeof top_p === 'number' && { top_p }),
-          ...(typeof presence_penalty === 'number' && { presence_penalty }),
-          ...(typeof frequency_penalty === 'number' && { frequency_penalty }),
           ...(json && { response_format: { type: 'json_object' } }),
+          // Responses API uses max_output_tokens
+          ...(typeof max_tokens === 'number' && {
+            max_output_tokens: max_tokens,
+          }),
         },
         {
           headers: {
@@ -56,17 +165,31 @@ export async function callOpenAI({
           timeout: OPENAI_TIMEOUT_MS,
         }
       );
-      if (!res.data) throw new Error('Failed to fetch GPT');
-      return res.data.choices?.[0]?.message?.content?.trim() ?? '';
+      if (!res.data) throw new Error('Failed to fetch GPT (responses)');
+      const text = (parseResponsesApiText(res.data) || '').trim();
+      if (!text) {
+        // No usable text → try backup chat model once
+        usedBackup = true;
+        continue;
+      }
+      return text;
     } catch (e) {
       lastError = e;
+      // If responses family and model not found/4xx, transparently retry once with chat backup
+      if (
+        !usedBackup &&
+        family === 'responses' &&
+        (isModelNotFound(e) || !isTransientError(e))
+      ) {
+        usedBackup = true;
+        continue;
+      }
       attempt += 1;
       if (attempt > OPENAI_MAX_RETRIES || !isTransientError(e)) break;
       // simple exponential backoff: 400ms, 800ms
       await sleep(400 * attempt);
     }
   }
-  // throw controlled error with message for upstream handlers
   const err = lastError as AxiosError | Error;
   const code = (err as AxiosError).code || 'openai_request_failed';
   const status = (err as AxiosError).response?.status;

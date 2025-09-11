@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const EmojiTranslationGenerateSchema = z.object({
   action: z.literal('generate').optional(),
   category: z.enum(['영화', '음식', '일상', '랜덤']).optional(),
+  model: z.string().optional(),
 });
 
 const gradeSchema = z.object({

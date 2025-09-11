@@ -16,8 +16,11 @@ import { EmojiTranslationProblemCardComponent } from './problem-card.component';
 import { EmojiTranslationFormComponent } from './form.component';
 import { EmojiTranslationResultNoticeComponent } from './result-notice.component';
 import { EmojiTranslationGenerateSchema } from '@/schemas';
+import { DEFAULT_GPT_MODEL } from '@/constants';
 
-type FormGenerateValues = z.input<typeof EmojiTranslationGenerateSchema>;
+type FormGenerateValues = z.input<typeof EmojiTranslationGenerateSchema> & {
+  model?: string;
+};
 
 export function EmojiTranslationComponent() {
   const [problem, setProblem] = useState<EmojiTranslationProblemType | null>(
@@ -30,7 +33,7 @@ export function EmojiTranslationComponent() {
 
   const { handleSubmit, watch, setValue } = useForm<FormGenerateValues>({
     resolver: zodResolver(EmojiTranslationGenerateSchema),
-    defaultValues: { category: '랜덤' },
+    defaultValues: { category: '랜덤', model: DEFAULT_GPT_MODEL },
   });
 
   const genMutation = useGenerateEmojiQuiz({
@@ -49,7 +52,8 @@ export function EmojiTranslationComponent() {
     if (!canUse) return;
     const category = (values.category ??
       '랜덤') as EmojiGenerateValuesType['category'];
-    genMutation.mutate({ category });
+    const model = values.model;
+    genMutation.mutate({ category, ...(model ? { model } : {}) });
   };
 
   const submitGenerate = handleSubmit(onGenerate);
@@ -68,6 +72,8 @@ export function EmojiTranslationComponent() {
       <EmojiTranslationControlsSectionComponent
         category={watch('category') ?? '랜덤'}
         onCategoryChange={(v) => setValue('category', v)}
+        model={watch('model') ?? DEFAULT_GPT_MODEL}
+        onModelChange={(m) => setValue('model', m)}
         canUse={canUse}
         used={used}
         limit={limit}

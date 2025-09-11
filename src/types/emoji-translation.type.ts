@@ -23,6 +23,7 @@ export type EmojiQuizGradeType = {
 
 export type EmojiGenerateValuesType = {
   readonly category: EmojiCategoryType;
+  readonly model?: string; // optional GPT model id
 };
 
 export type EmojiGradeQuizInputType = {
@@ -34,6 +35,8 @@ export type EmojiGradeQuizInputType = {
 export type EmojiControlsSectionType = {
   category: string;
   onCategoryChange: (value: EmojiGenerateValuesType['category']) => void;
+  model: string;
+  onModelChange: (model: string) => void;
   canUse: boolean;
   used: number;
   limit: number;

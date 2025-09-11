@@ -13,3 +13,11 @@ export const GPT_MODEL_LABEL: Record<GPT_MODEL_ENUM, string> = {
 } as const;
 
 export const DEFAULT_GPT_MODEL: GPT_MODEL_ENUM = GPT_MODEL_ENUM.BASIC;
+
+// Credit cost per model (0 means free)
+export const GPT_MODEL_COST: Record<GPT_MODEL_ENUM, number> = {
+  [GPT_MODEL_ENUM.BASIC]: 0,
+  [GPT_MODEL_ENUM.STANDARD]: 1,
+  [GPT_MODEL_ENUM.PLUS]: 3,
+  [GPT_MODEL_ENUM.PREMIUM]: 5,
+} as const;

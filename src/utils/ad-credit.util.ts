@@ -1,4 +1,4 @@
-import { CREDIT_SPEND_COST, GPT_MODEL_ENUM } from '@/constants';
+import { CREDIT_SPEND_COST } from '@/constants';
 import { CreditCostLabelType } from '@/types';
 
 export const formatCooldown = (ms: number): string => {
@@ -22,7 +22,3 @@ export const creditBuildCostLabel = ({
       : CREDIT_SPEND_COST[spendKey];
   return `${baseLabel}(-${amount})`;
 };
-
-export function isPaidModel(model: string): boolean {
-  return model === GPT_MODEL_ENUM.PLUS;
-}

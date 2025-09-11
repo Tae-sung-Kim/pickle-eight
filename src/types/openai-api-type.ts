@@ -1,3 +1,5 @@
+import { GPT_MODEL_ENUM } from '@/constants';
+
 export type MessageStateType = {
   cheer: string | null;
   fortune: string | null;
@@ -38,4 +40,41 @@ export type GptEnglishWordQuizResponse = {
   options: string[];
   answer: string;
   explanation: string;
+};
+
+// Responses API minimal parse shapes
+export type ResponsesApiOutputContentItem = {
+  text?: string;
+  content?: string;
+};
+
+export type ResponsesApiOutputItem = {
+  content?: ResponsesApiOutputContentItem[];
+};
+
+export type OpenAIResponsesApiResponse = {
+  output_text?: string;
+  output?: ResponsesApiOutputItem[];
+  choices?: { message?: { content?: string } }[];
+};
+
+// Explicit error shape returned by OpenAI
+export type OpenAIErrorResponse = {
+  error?: {
+    message?: string;
+    type?: string; // e.g., 'invalid_request_error'
+    code?: string | null; // e.g., 'model_not_found'
+    param?: string | null;
+  };
+};
+
+export type GptModelSelectButtonType = {
+  readonly model: string;
+  readonly onModelChange: (model: string) => void;
+  readonly onProceed: () => void;
+  readonly isBusy?: boolean;
+  readonly className?: string;
+  readonly triggerSize?: 'sm' | 'default';
+  readonly buttonLabel?: string; // base label; will be decorated with credit cost if paid
+  readonly allowed?: readonly GPT_MODEL_ENUM[]; // limit options if provided
 };
