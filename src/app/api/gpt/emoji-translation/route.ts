@@ -4,6 +4,7 @@ import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 import '@/lib/firebase-admin';
 import { callOpenAI } from '@/services';
 import { EmojiTranslationRequestSchema } from '@/schemas';
+import { EMOJI_CATEGORY_ENUM } from '@/constants';
 import { EmojiTranslationProblemType, EmojiQuizGradeType } from '@/types';
 
 /**
@@ -25,12 +26,14 @@ function pushRecentCategory(cat: string): void {
   recentCategories = list.slice(-RECENT_CATEGORY_MAX);
 }
 function pickEffectiveCategory(requested: string): string {
-  if (requested !== '랜덤') return requested;
-  const pool: string[] = ['영화', '음식', '일상'];
+  if (requested !== EMOJI_CATEGORY_ENUM.RANDOM) return requested;
+  const pool: string[] = Object.values(EMOJI_CATEGORY_ENUM).filter(
+    (c) => c !== EMOJI_CATEGORY_ENUM.RANDOM
+  );
   const recent: string[] = getRecentCategories();
   const last: string | undefined = recent[recent.length - 1];
   const candidates: string[] = pool.filter((c) => c !== last);
-  const idx: number = Math.floor(Math.random() * candidates.length);
+  const idx: number = Math.floor(Math.random() * (candidates.length || 1));
   return candidates[idx] ?? pool[0];
 }
 
@@ -268,6 +271,17 @@ function pickFallback(category: string): EmojiTranslationProblemType {
   }
   if (category === '일상') {
     return { emojis: '🏠❓', answer: '일상', category: '일상', hint: baseHint };
+  }
+  if (category === '속담') {
+    return { emojis: '🗣️📜', answer: '속담', category: '속담', hint: baseHint };
+  }
+  if (category === '사자성어') {
+    return {
+      emojis: '🀄️📘',
+      answer: '사자성어',
+      category: '사자성어',
+      hint: baseHint,
+    };
   }
   // 랜덤/기타
   return {

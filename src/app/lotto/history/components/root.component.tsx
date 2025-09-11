@@ -5,6 +5,7 @@ import { useLatestLottoDrawQuery, useLottoDrawsQuery } from '@/queries';
 import LottoHistorySearchComponent from './search.component';
 import LottoHistoryResultComponent from './result.component';
 import { LOTTO_MAX_HISTORY_RANGE } from '@/constants';
+import { CsvExportButtonComponent } from '@/components';
 
 export function LottoHistoryComponent() {
   const { data: latestDraw } = useLatestLottoDrawQuery();
@@ -39,7 +40,7 @@ export function LottoHistoryComponent() {
       // 초기값: 최근 10회 (포함 범위 → latest-9 ~ latest)
       from: Math.max(1, latest - 9),
       to: latest,
-      enabled: true,
+      enabled: false,
     };
     setSearchData((prev) => {
       if (
@@ -63,6 +64,15 @@ export function LottoHistoryComponent() {
         onSearch={handleSearch}
         initRange={searchData}
       />
+
+      {/* Actions */}
+      <div className="mt-4 flex items-center justify-end gap-2">
+        <CsvExportButtonComponent
+          className="shrink-0"
+          from={searchData.enabled ? searchData.from : undefined}
+          to={searchData.enabled ? searchData.to : undefined}
+        />
+      </div>
 
       {/* 결과 */}
       <div className="mt-5">

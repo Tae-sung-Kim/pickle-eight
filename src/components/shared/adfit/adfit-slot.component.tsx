@@ -6,7 +6,15 @@ import { useLoadingStore } from '@/stores';
 import { useTopBannerAdConfig } from '@/queries';
 import { ConsentNudgeComponent } from '@/components';
 
-export function AdFitSlotComponent() {
+export type AdFitSlotProps = {
+  readonly fixed?: boolean;
+  readonly topOffsetPx?: number; // when fixed, offset from top (e.g., header height)
+};
+
+export function AdFitSlotComponent({
+  fixed = false,
+  topOffsetPx = 0,
+}: AdFitSlotProps) {
   const { showLoading, hideLoading } = useLoadingStore();
   const { state } = useConsentContext();
   const key = useId();
@@ -111,7 +119,7 @@ export function AdFitSlotComponent() {
   if (!adConfig) return null;
 
   // Render labeled container for compliance. Script loading is gated above.
-  return (
+  const AdInner = (
     <div
       role="region"
       aria-label="advertisement"
@@ -133,6 +141,25 @@ export function AdFitSlotComponent() {
         data-ad-height={String(adConfig.height)}
       />
     </div>
+  );
+
+  if (!fixed || adsDisabledOverride) return AdInner;
+
+  // Fixed top bar + spacer to preserve layout
+  const h = Number(adConfig.height) || 0;
+  return (
+    <>
+      {/* spacer to offset fixed bar height */}
+      <div style={{ height: h ? `${h + 16}px` : undefined }} aria-hidden />
+      <div
+        className="fixed left-0 right-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80"
+        style={{ top: `${topOffsetPx}px` }}
+      >
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex justify-center">
+          {AdInner}
+        </div>
+      </div>
+    </>
   );
 }
 

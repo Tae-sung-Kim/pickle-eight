@@ -53,6 +53,7 @@ export default function LottoHubPage() {
     label: it.label,
     desc: it.description,
     isCredit: it.isCredit,
+    isConditionalCredit: it.isConditionalCredit,
   }));
 
   const crumbs = jsonLdBreadcrumb([
@@ -146,6 +147,9 @@ export default function LottoHubPage() {
                   {it.label}
                 </div>
                 {it.isCredit && <CreditIndicatorComponent size="xs" />}
+                {it.isConditionalCredit && (
+                  <CreditIndicatorComponent size="xs" showText />
+                )}
               </div>
               <div className="mt-1 text-sm text-muted-foreground">
                 {it.desc}

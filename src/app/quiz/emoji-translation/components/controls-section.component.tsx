@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { GptModelSelectButtonComponent } from '@/components';
+import { EMOJI_CATEGORY_ENUM } from '@/constants';
 
 export function EmojiTranslationControlsSectionComponent({
   category,
@@ -26,6 +27,7 @@ export function EmojiTranslationControlsSectionComponent({
   isGenerating,
   onGenerate,
 }: EmojiControlsSectionType) {
+  const categories = Object.values(EMOJI_CATEGORY_ENUM);
   return (
     <Card className="p-5 sm:p-6 rounded-xl shadow-sm">
       <form
@@ -47,10 +49,11 @@ export function EmojiTranslationControlsSectionComponent({
               <SelectValue placeholder="카테고리 선택" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="영화">영화</SelectItem>
-              <SelectItem value="음식">음식</SelectItem>
-              <SelectItem value="일상">일상</SelectItem>
-              <SelectItem value="랜덤">랜덤</SelectItem>
+              {categories.map((c) => (
+                <SelectItem key={c} value={c}>
+                  {c}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <p className="mt-2 text-xs text-muted-foreground">

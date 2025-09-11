@@ -122,7 +122,7 @@ export default function RootLayout({
                 <HeaderLayout />
                 {/* 모바일 상단 전용 배너 (데스크톱에서는 숨김: 컴포넌트 내부 md:hidden) */}
                 <div className="w-full flex justify-center p-6 pb-0">
-                  <AdFitSlotComponent />
+                  <AdFitSlotComponent fixed topOffsetPx={64} />
                 </div>
                 <main className="flex-1 py-8">
                   <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
