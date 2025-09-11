@@ -4,12 +4,14 @@ import { cn } from '@/lib';
 export type CreditIndicatorType = {
   size?: 'xs' | 'sm';
   showText?: boolean;
+  text?: string;
   className?: string;
 };
 
 export function CreditIndicatorComponent({
   size = 'xs',
   showText = false,
+  text = 'Optional',
   className,
 }: CreditIndicatorType) {
   const iconCls = size === 'xs' ? 'h-3.5 w-3.5' : 'h-4 w-4';
@@ -25,7 +27,7 @@ export function CreditIndicatorComponent({
       title="크레딧 소모 기능"
     >
       <Coins className={cn(iconCls, 'text-amber-500')} />
-      {showText && <span>Credit</span>}
+      {showText && <span>{text}</span>}
     </span>
   );
 }

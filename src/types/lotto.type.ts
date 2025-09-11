@@ -224,3 +224,15 @@ export type LottoClientCsvButtonType = {
   readonly filename?: string;
   readonly baseLabel?: string;
 };
+
+export type LottoSimulatorControlsComponentType = Readonly<{
+  ticketCount: number;
+  drawCount: number;
+  running: boolean;
+  mode: 'random' | 'custom';
+  onModeChange: (m: 'random' | 'custom') => void;
+  onTicketCountChange: (value: number) => void;
+  onDrawCountChange: (value: number) => void;
+  onRun: () => void;
+  canRun?: boolean;
+}>;

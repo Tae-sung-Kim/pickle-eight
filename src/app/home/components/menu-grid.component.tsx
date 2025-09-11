@@ -85,6 +85,7 @@ export function HomeMenuGridComponent() {
                         description={menu.description}
                         example={menu.example}
                         isCredit={menu.isCredit}
+                        isConditionalCredit={menu.isConditionalCredit}
                       />
                     </li>
                   );

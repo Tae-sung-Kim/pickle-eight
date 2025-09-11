@@ -9,6 +9,7 @@ import {
   jsonLdWebSite,
 } from '@/lib';
 import { generateOgImageUrl, getOgTag } from '@/utils';
+import type { MenuItemType } from '@/types';
 
 const baseMeta = buildMetadata({
   title: '퀴즈 허브 - AI 퀴즈/게임 모음',
@@ -48,11 +49,12 @@ export const metadata: Metadata = {
 export default function QuizHubPage() {
   const quizItems = (
     MENU_LIST.find((g) => g.group === MENU_GROUP_NAME_ENUM.QUIZ)?.items ?? []
-  ).map((it) => ({
+  ).map((it: MenuItemType) => ({
     href: it.href,
     label: it.label,
     desc: it.description,
     isCredit: it.isCredit,
+    isConditionalCredit: it.isConditionalCredit,
   }));
 
   const crumbs = jsonLdBreadcrumb([
@@ -135,7 +137,16 @@ export default function QuizHubPage() {
                 <div className="font-semibold text-foreground truncate">
                   {it.label}
                 </div>
-                {it.isCredit && <CreditIndicatorComponent size="xs" />}
+                <div className="flex items-center gap-2">
+                  {it.isCredit && <CreditIndicatorComponent size="xs" />}
+                  {!it.isCredit && it.isConditionalCredit && (
+                    <CreditIndicatorComponent
+                      size="xs"
+                      showText={true}
+                      className="border-dashed"
+                    />
+                  )}
+                </div>
               </div>
               <div className="mt-1 text-sm text-muted-foreground">
                 {it.desc}

@@ -14,6 +14,7 @@ import {
 import NavLinkComponent from '../nav-link.component';
 import Link from 'next/link';
 import { CreditIndicatorComponent } from '@/components';
+import type { MenuItemType } from '@/types';
 
 export function PcMenuLayout() {
   const pathname = usePathname();
@@ -64,7 +65,7 @@ export function PcMenuLayout() {
             </div>
             <NavigationMenuContent>
               <ul className="w-[240px] p-1.5">
-                {items.map((item) => {
+                {items.map((item: MenuItemType) => {
                   const isActive = pathname.startsWith(item.href);
                   return (
                     <li key={item.href}>
@@ -94,6 +95,13 @@ export function PcMenuLayout() {
                             <CreditIndicatorComponent
                               size="xs"
                               className="shrink-0"
+                            />
+                          )}
+                          {!item.isCredit && item.isConditionalCredit && (
+                            <CreditIndicatorComponent
+                              size="xs"
+                              showText={true}
+                              className="shrink-0 border-dashed"
                             />
                           )}
                         </NavLinkComponent>

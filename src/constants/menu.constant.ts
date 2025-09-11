@@ -132,6 +132,7 @@ export const MENU_LIST: MenuGroupType[] = [
         icon: 'SpellCheck',
         colorClass: 'text-primary',
         description: '단어의 뜻을 보고 알맞은 영어 단어를 맞춰보세요.',
+        isConditionalCredit: true,
       },
       {
         href: '/' + MENU_GROUP_NAME_ENUM.QUIZ + '/trivia-quiz',
@@ -139,6 +140,7 @@ export const MENU_LIST: MenuGroupType[] = [
         icon: 'Brain',
         colorClass: 'text-primary',
         description: '원하는 주제의 지식 및 상식 퀴즈를 풀어보세요.',
+        isConditionalCredit: true,
       },
       {
         href: '/' + MENU_GROUP_NAME_ENUM.QUIZ + '/four-idiom-quiz',
@@ -146,6 +148,7 @@ export const MENU_LIST: MenuGroupType[] = [
         icon: 'ScrollText',
         colorClass: 'text-primary',
         description: '사자성어를 맞추는 퀴즈를 풀어보세요.',
+        isConditionalCredit: true,
       },
       {
         href: '/' + MENU_GROUP_NAME_ENUM.QUIZ + '/number-match-game',
@@ -160,6 +163,7 @@ export const MENU_LIST: MenuGroupType[] = [
         icon: 'Smile',
         colorClass: 'text-primary',
         description: '이모지 힌트만 보고 정답을 맞혀보세요.',
+        isConditionalCredit: true,
       },
     ],
   },

@@ -14,6 +14,7 @@ export function HomeMenuFeatureItemComponent({
   example,
   className,
   isCredit,
+  isConditionalCredit,
 }: FeatureItemType) {
   return (
     <Link
@@ -40,8 +41,11 @@ export function HomeMenuFeatureItemComponent({
       </div>
       {isCredit && (
         <span className="ml-2 flex-shrink-0">
-          <CreditIndicatorComponent size="xs" showText={false} />
+          <CreditIndicatorComponent size="xs" />
         </span>
+      )}
+      {isConditionalCredit && (
+        <CreditIndicatorComponent size="xs" showText={true} />
       )}
       <span className="ml-2 text-primary/60 text-lg flex-shrink-0">{'>'}</span>
     </Link>
