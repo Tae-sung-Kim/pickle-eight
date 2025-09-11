@@ -1,16 +1,12 @@
 'use client';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { EnglishWordQuizStatusType } from '@/types';
 import { Loader2 } from 'lucide-react';
-
-type EnglishWordQuizStatusComponentProps = {
-  status: 'loading' | 'error' | 'limit' | 'none';
-  error?: unknown;
-};
 
 export function EnglishWordQuizStatusComponent({
   status,
-}: EnglishWordQuizStatusComponentProps) {
+}: EnglishWordQuizStatusType) {
   if (status === 'loading') {
     return (
       <div className="flex items-center justify-center h-64">
