@@ -66,14 +66,18 @@ export function DiceGameComponent() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="p-1"
+    >
       <TitleWrapperComponent
         type={MENU_GROUP_NAME_ENUM.RANDOM_PICKER}
         title="주사위 굴리기"
         description="참가자들을 추가하고 주사위를 굴려 승자를 가려보세요!"
       />
 
-      <Card className="shadow-xl border-0 rounded-2xl overflow-hidden">
+      <Card className="shadow-xl border-1 rounded-2xl overflow-hidden m-10">
         {/* <CardHeader className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
             <div className="flex items-center justify-between">
               <div>
