@@ -7,3 +7,4 @@ export * from './theme.constant';
 export * from './lotto.constant';
 export * from './four-idiom-quiz.constant';
 export * from './ad-credit.constant';
+export * from './emoji-translation.constant';

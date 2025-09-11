@@ -2,35 +2,34 @@
 
 import { useState } from 'react';
 import type {
-  EmojiQuizProblemType,
+  EmojiTranslationProblemType,
   EmojiQuizGradeType,
-  GenerateValuesType,
+  EmojiGenerateValuesType,
 } from '@/types';
 import { useGenerateEmojiQuiz, useGradeEmojiQuiz } from '@/queries';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useDailyLimit } from '@/hooks/use-daily-limit.hook';
-import { ControlsSectionComponent } from './controls-section.component';
-import { ProblemCardComponent } from './problem-card.component';
-import { SubmitFormComponent } from './submit-form.component';
-import { ResultNoticeComponent } from './result-notice.component';
+import { useDailyLimit } from '@/hooks';
+import { EmojiTranslationControlsSectionComponent } from './controls-section.component';
+import { EmojiTranslationProblemCardComponent } from './problem-card.component';
+import { EmojiTranslationFormComponent } from './form.component';
+import { EmojiTranslationResultNoticeComponent } from './result-notice.component';
+import { EmojiTranslationGenerateSchema } from '@/schemas';
 
-const generateSchema = z.object({
-  category: z.enum(['영화', '음식', '일상', '랜덤']).default('랜덤'),
-});
-
-type FormGenerateValues = z.input<typeof generateSchema>;
+type FormGenerateValues = z.input<typeof EmojiTranslationGenerateSchema>;
 
 export function EmojiTranslationComponent() {
-  const [problem, setProblem] = useState<EmojiQuizProblemType | null>(null);
+  const [problem, setProblem] = useState<EmojiTranslationProblemType | null>(
+    null
+  );
   const [result, setResult] = useState<EmojiQuizGradeType | null>(null);
 
   const { getDailyLimitInfo, addOne } = useDailyLimit();
   const { canUse, limit, used } = getDailyLimitInfo('emoji-translation');
 
-  const { handleSubmit, watch, setValue, reset } = useForm<FormGenerateValues>({
-    resolver: zodResolver(generateSchema),
+  const { handleSubmit, watch, setValue } = useForm<FormGenerateValues>({
+    resolver: zodResolver(EmojiTranslationGenerateSchema),
     defaultValues: { category: '랜덤' },
   });
 
@@ -49,24 +48,11 @@ export function EmojiTranslationComponent() {
   const onGenerate = (values: FormGenerateValues): void => {
     if (!canUse) return;
     const category = (values.category ??
-      '랜덤') as GenerateValuesType['category'];
+      '랜덤') as EmojiGenerateValuesType['category'];
     genMutation.mutate({ category });
   };
 
   const submitGenerate = handleSubmit(onGenerate);
-
-  const handleReset = (): void => {
-    reset();
-    setProblem(null);
-    setResult(null);
-  };
-
-  const handleRegenerate = (): void => {
-    const category = (watch('category') ??
-      '랜덤') as GenerateValuesType['category'];
-    if (!canUse) return;
-    genMutation.mutate({ category });
-  };
 
   const handleSubmitAnswer = (guess: string): void => {
     if (!problem) return;
@@ -79,7 +65,7 @@ export function EmojiTranslationComponent() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 space-y-4">
-      <ControlsSectionComponent
+      <EmojiTranslationControlsSectionComponent
         category={watch('category') ?? '랜덤'}
         onCategoryChange={(v) => setValue('category', v)}
         canUse={canUse}
@@ -87,7 +73,6 @@ export function EmojiTranslationComponent() {
         limit={limit}
         isGenerating={genMutation.isPending}
         onGenerate={submitGenerate}
-        onReset={handleReset}
       />
 
       {genMutation.isError && (
@@ -96,25 +81,15 @@ export function EmojiTranslationComponent() {
         </div>
       )}
 
-      {problem && (
-        <ProblemCardComponent
-          problem={problem}
-          onRegenerate={handleRegenerate}
-          canUse={canUse}
-          isGenerating={genMutation.isPending}
-          category={
-            (watch('category') ?? '랜덤') as GenerateValuesType['category']
-          }
-        />
-      )}
+      {problem && <EmojiTranslationProblemCardComponent problem={problem} />}
 
       {problem && (
         <>
-          <SubmitFormComponent
+          <EmojiTranslationFormComponent
             onSubmit={handleSubmitAnswer}
             isPending={gradeMutation.isPending}
           />
-          <ResultNoticeComponent
+          <EmojiTranslationResultNoticeComponent
             error={
               gradeMutation.isError ? (gradeMutation.error as Error) : null
             }

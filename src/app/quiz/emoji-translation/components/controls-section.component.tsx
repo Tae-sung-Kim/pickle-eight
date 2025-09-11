@@ -1,6 +1,9 @@
 'use client';
 
-import type { GenerateValuesType } from '@/types';
+import type {
+  EmojiControlsSectionType,
+  EmojiGenerateValuesType,
+} from '@/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -12,18 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-export type ControlsSectionType = {
-  category: string;
-  onCategoryChange: (value: GenerateValuesType['category']) => void;
-  canUse: boolean;
-  used: number;
-  limit: number;
-  isGenerating: boolean;
-  onGenerate: () => void;
-  onReset: () => void;
-};
-
-export function ControlsSectionComponent({
+export function EmojiTranslationControlsSectionComponent({
   category,
   onCategoryChange,
   canUse,
@@ -31,8 +23,7 @@ export function ControlsSectionComponent({
   limit,
   isGenerating,
   onGenerate,
-  onReset,
-}: ControlsSectionType) {
+}: EmojiControlsSectionType) {
   return (
     <Card className="p-5 sm:p-6 rounded-xl shadow-sm">
       <form
@@ -47,7 +38,7 @@ export function ControlsSectionComponent({
           <Select
             value={category}
             onValueChange={(v) =>
-              onCategoryChange(v as GenerateValuesType['category'])
+              onCategoryChange(v as EmojiGenerateValuesType['category'])
             }
           >
             <SelectTrigger className="h-11">
@@ -71,18 +62,12 @@ export function ControlsSectionComponent({
             className="h-11 px-5"
             disabled={isGenerating || !canUse}
           >
-            {isGenerating ? '생성 중...' : '새 문제 생성'}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-11 px-5"
-            onClick={onReset}
-          >
-            초기화
+            문제 생성
           </Button>
         </div>
       </form>
     </Card>
   );
 }
+
+export default EmojiTranslationControlsSectionComponent;

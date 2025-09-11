@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-const generateSchema = z.object({
-  action: z.literal('generate'),
+export const EmojiTranslationGenerateSchema = z.object({
+  action: z.literal('generate').optional(),
   category: z.enum(['영화', '음식', '일상', '랜덤']).optional(),
 });
 
@@ -13,6 +13,6 @@ const gradeSchema = z.object({
 });
 
 export const EmojiTranslationRequestSchema = z.union([
-  generateSchema,
+  EmojiTranslationGenerateSchema,
   gradeSchema,
 ]);

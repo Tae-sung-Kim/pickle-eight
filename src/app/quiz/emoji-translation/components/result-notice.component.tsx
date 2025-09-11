@@ -1,13 +1,11 @@
 'use client';
 
-import type { EmojiQuizGradeType } from '@/types';
+import type { EmojiTranslationResultNoticeType } from '@/types';
 
-type ResultNoticeType = {
-  error: Error | null;
-  result: EmojiQuizGradeType | null;
-};
-
-export function ResultNoticeComponent({ error, result }: ResultNoticeType) {
+export function EmojiTranslationResultNoticeComponent({
+  error,
+  result,
+}: EmojiTranslationResultNoticeType) {
   if (error) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
@@ -30,3 +28,5 @@ export function ResultNoticeComponent({ error, result }: ResultNoticeType) {
     </div>
   );
 }
+
+export default EmojiTranslationResultNoticeComponent;

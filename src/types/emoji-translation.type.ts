@@ -3,12 +3,15 @@
  * Use English for code and documentation as per project rules.
  */
 
-export type EmojiCategoryType = '영화' | '음식' | '일상' | '랜덤';
+import { EMOJI_CATEGORY_ENUM } from '@/constants';
 
-export type EmojiQuizProblemType = {
+export type EmojiCategoryType =
+  (typeof EMOJI_CATEGORY_ENUM)[keyof typeof EMOJI_CATEGORY_ENUM];
+
+export type EmojiTranslationProblemType = {
   readonly emojis: string;
   readonly category: EmojiCategoryType | string; // API may echo the category; keep string fallback
-  readonly answer: string;
+  answer: string;
   readonly hint?: string;
 };
 
@@ -18,12 +21,32 @@ export type EmojiQuizGradeType = {
   readonly feedback: string;
 };
 
-export type GenerateValuesType = {
+export type EmojiGenerateValuesType = {
   readonly category: EmojiCategoryType;
 };
 
-export type GradeEmojiQuizInputType = {
+export type EmojiGradeQuizInputType = {
   readonly emojis: string;
   readonly answer: string;
   readonly userGuess: string;
+};
+
+export type EmojiControlsSectionType = {
+  category: string;
+  onCategoryChange: (value: EmojiGenerateValuesType['category']) => void;
+  canUse: boolean;
+  used: number;
+  limit: number;
+  isGenerating: boolean;
+  onGenerate: () => void;
+};
+
+export type EmojiTranslationFormType = {
+  onSubmit: (guess: string) => void;
+  isPending: boolean;
+};
+
+export type EmojiTranslationResultNoticeType = {
+  error: Error | null;
+  result: EmojiQuizGradeType | null;
 };

@@ -1,18 +1,108 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { callOpenAI } from '@/services';
 import { EmojiTranslationRequestSchema } from '@/schemas';
+import { EmojiTranslationProblemType, EmojiQuizGradeType } from '@/types';
 
-export type EmojiQuizProblem = {
-  emojis: string;
-  category: string;
-  answer: string;
-  hint?: string;
-};
-export type EmojiQuizGrade = {
-  correct: boolean;
-  score: number;
-  feedback: string;
-};
+/**
+ * In-memory recent answers store by category (best-effort on serverless).
+ * LRU with fixed max size per category.
+ */
+const RECENT_MAX_PER_CATEGORY: number = 50;
+const recentByCategory: Map<string, string[]> = new Map();
+
+/**
+ * Normalize an answer for duplicate detection.
+ */
+function normalizeAnswer(input: string): string {
+  const s: string = input
+    .toLowerCase()
+    .trim()
+    .replace(/[\t\n\r]+/g, ' ')
+    // remove brackets content and punctuation commonly used in titles
+    .replace(/\([^)]*\)|\[[^\]]*\]|\{[^}]*\}/g, '')
+    .replace(/[!?,.:;~"'`·•|]/g, ' ')
+    // replace Korean particles variants and extra spaces
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+  return s;
+}
+
+/**
+ * Extract core tokens (hangul syllables and latin words) for franchise detection.
+ */
+function extractCoreTokens(input: string): string[] {
+  const base: string = normalizeAnswer(input);
+  const tokens: string[] = base
+    .split(/[^\p{Script=Hangul}a-z0-9]+/giu)
+    .filter((t: string) => t.length >= 2);
+  // prefer first 2-3 informative tokens
+  return tokens.slice(0, 3);
+}
+
+/**
+ * Simple similarity score in [0,1] based on overlap and length ratio.
+ */
+function similarityScore(a: string, b: string): number {
+  const na: string = normalizeAnswer(a);
+  const nb: string = normalizeAnswer(b);
+  if (!na || !nb) return 0;
+  if (na === nb) return 1;
+  if (na.includes(nb) || nb.includes(na))
+    return Math.min(na.length, nb.length) / Math.max(na.length, nb.length);
+  const setA: Set<string> = new Set(extractCoreTokens(na));
+  const setB: Set<string> = new Set(extractCoreTokens(nb));
+  if (setA.size === 0 || setB.size === 0) return 0;
+  let inter: number = 0;
+  setA.forEach((t: string) => {
+    if (setB.has(t)) inter += 1;
+  });
+  const union: number = setA.size + setB.size - inter;
+  return inter / union; // Jaccard-like
+}
+
+/**
+ * Franchise-level duplicate: share leading core token or high similarity.
+ */
+function isFranchiseDuplicate(a: string, b: string): boolean {
+  const ta: string[] = extractCoreTokens(a);
+  const tb: string[] = extractCoreTokens(b);
+  const firstA: string | undefined = ta[0];
+  const firstB: string | undefined = tb[0];
+  if (firstA && firstB && firstA === firstB) return true;
+  return similarityScore(a, b) >= 0.85;
+}
+
+function getRecent(category: string): string[] {
+  return recentByCategory.get(category) ?? [];
+}
+
+function pushRecent(category: string, answer: string): void {
+  const list: string[] = getRecent(category).slice();
+  list.push(answer);
+  // de-dup preserving latest
+  const seen: Set<string> = new Set();
+  const deduped: string[] = [];
+  for (let i = list.length - 1; i >= 0; i -= 1) {
+    const key: string = normalizeAnswer(list[i]);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    deduped.push(list[i]);
+  }
+  deduped.reverse();
+  const trimmed: string[] = deduped.slice(-RECENT_MAX_PER_CATEGORY);
+  recentByCategory.set(category, trimmed);
+}
+
+function isDuplicateAgainstRecent(
+  category: string,
+  candidate: string
+): boolean {
+  const recent: string[] = getRecent(category);
+  for (const prev of recent) {
+    if (isFranchiseDuplicate(prev, candidate)) return true;
+  }
+  return false;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,7 +117,10 @@ export async function POST(req: NextRequest) {
 
     if (parsed.data.action === 'generate') {
       const category = parsed.data.category ?? '랜덤';
-      const prompt = `너는 한국어 이모지 퀴즈 출제자야. 아래 형식으로 한 문제를 만들어줘. JSON만 출력해.
+      const localBanSet: Set<string> = new Set(getRecent(category));
+
+      async function buildPrompt(banlist: string[]): Promise<string> {
+        return `너는 한국어 이모지 퀴즈 출제자야. 아래 형식으로 한 문제를 만들어줘. JSON만 출력해.
 필수 조건(공통):
 - 카테고리: ${category}
 - 이모지만으로 표현 (2~6개)
@@ -36,15 +129,20 @@ export async function POST(req: NextRequest) {
 - 문장형 감탄/명령 금지. 보통명사/작품명/관용구 등 널리 쓰이는 표현 사용.
 - 힌트는 정답을 간접적으로 설명하되, 이모지와 의미적으로 일관되어야 함.
 - 최근 생성과 중복되는 정답/패턴을 피하고 참신하게 구성. 다양성 토큰: nonce=${Date.now()}.
+- 금지 목록(banlist)에 포함된 정답과 같은 프랜차이즈/시리즈/부제/숫자 변형도 금지(예: '해리포터'와 '해리포터와 불의 잔'은 동일 프랜차이즈로 간주).
 카테고리별 추가 규칙:
 - 영화: 실제 영화 제목만. 이모지는 영화의 핵심 요소(배경, 인물 관계, 테마, 상징)와 제목의 핵심 명사/키워드를 직접 연상시키는 아이콘을 포함해야 함.
   예: '해리포터와 불의 잔'이라면 잔/컵/트로피류와 불/화염 이모지 중 최소 1개 이상 포함. 시리즈 공통 요소(모자/안경/막대 등)만으로는 금지.
   영화와 무관한 직업/에피소드(예: 피자 배달, 택배 등) 암시는 금지.
 - 음식: 실제 요리/음식 명칭만. 재료/조리/지역 등 합리적 요소 사용.
 - 일상: 일반 보통명사/개념/관용구/사자성어 등. 개인 감탄/명령/유행어 금지.
+금지 목록(JSON): ${JSON.stringify(banlist)}
 출력(JSON): {"emojis": "😀🍕…", "category": "카테고리", "answer": "정답", "hint": "선택"}`;
+      }
 
-      async function judgeCoherence(p: EmojiQuizProblem): Promise<boolean> {
+      async function judgeCoherence(
+        p: EmojiTranslationProblemType
+      ): Promise<boolean> {
         const judgePrompt = `다음 이모지 퀴즈의 일관성을 0~1로 평가하세요.
 - 이모지: ${p.emojis}
 - 카테고리: ${p.category}
@@ -172,7 +270,9 @@ export async function POST(req: NextRequest) {
       }
 
       let attempts = 0;
-      while (attempts < 6) {
+      while (attempts < 3) {
+        const banlist: string[] = Array.from(localBanSet);
+        const prompt = await buildPrompt(banlist);
         const content = await callOpenAI({
           messages: [
             {
@@ -183,48 +283,61 @@ export async function POST(req: NextRequest) {
             { role: 'user', content: prompt },
           ],
           max_tokens: 200,
-          temperature: 0.4,
+          temperature: 0.6,
           json: true,
-          presence_penalty: 0.1,
-          frequency_penalty: 0.3,
+          presence_penalty: 0.2,
+          frequency_penalty: 0.4,
         });
         const cleaned = content.replace(/```json|```/g, '').trim();
-        const out = JSON.parse(cleaned) as EmojiQuizProblem;
+        let out: EmojiTranslationProblemType | null = null;
+        try {
+          out = JSON.parse(cleaned) as EmojiTranslationProblemType;
+        } catch {
+          attempts += 1;
+          continue;
+        }
         if (!out?.emojis || !out?.answer) {
           attempts += 1;
           continue;
         }
-        // 1) 일관성 판정
+        // Duplicate check against recent (category-level)
+        const dup: boolean = isDuplicateAgainstRecent(category, out.answer);
+        if (dup) {
+          // expand local banlist with core tokens to steer the next attempt away
+          localBanSet.add(out.answer);
+          extractCoreTokens(out.answer).forEach((t: string) =>
+            localBanSet.add(t)
+          );
+          attempts += 1;
+          continue;
+        }
+        // 1) coherence
         const coherent = await judgeCoherence(out);
         if (!coherent) {
           attempts += 1;
           continue;
         }
-        // 2) 모든 카테고리에 대해 사실성 검증
+        // 2) authenticity
         const ver = await verifyAnswerAuthenticity(out.category, out.answer);
         if (!ver.ok) {
           attempts += 1;
           continue;
         }
         if (ver.canonical) out.answer = ver.canonical;
-        // 3) 영화일 때 힌트가 사실과 부합하는지 검증
+        // 3) movie-specific checks
         if (out.category === '영화') {
-          const okHint = await verifyMovieHint(out.answer, out.hint);
-          if (!okHint) {
-            attempts += 1;
-            continue;
-          }
-          const okCoverage = await enforceMovieTitleKeywordCoverage(
-            out.answer,
-            out.emojis
-          );
-          if (!okCoverage) {
+          const [okHint, okCoverage] = await Promise.all([
+            verifyMovieHint(out.answer, out.hint),
+            enforceMovieTitleKeywordCoverage(out.answer, out.emojis),
+          ]);
+          if (!okHint || !okCoverage) {
             attempts += 1;
             continue;
           }
         }
-        return NextResponse.json(out satisfies EmojiQuizProblem);
-        attempts += 1;
+        // accept and store in recent cache
+        pushRecent(category, out.answer);
+        return NextResponse.json(out satisfies EmojiTranslationProblemType);
       }
       throw new Error(
         '일관성 있는 이모지 문제 생성에 실패했습니다. 다시 시도해주세요.'
@@ -232,7 +345,11 @@ export async function POST(req: NextRequest) {
     }
 
     // grade
-    const { emojis, answer, userGuess } = parsed.data;
+    const { emojis, answer, userGuess } = parsed.data as {
+      emojis: string;
+      answer: string;
+      userGuess: string;
+    };
     const prompt = `다음 이모지 퀴즈의 정답 여부를 판정해줘. 의미상 동일/매우 유사하면 정답. JSON만 출력.
 - 이모지: ${emojis}
 - 정답: ${answer}
@@ -253,14 +370,14 @@ export async function POST(req: NextRequest) {
       score: number;
       feedback: string;
     };
-    const result: EmojiQuizGrade = {
+    const result: EmojiQuizGradeType = {
       correct: !!out.correct,
       score: out.score === 1 ? 1 : 0,
       feedback:
         out.feedback ??
         (out.correct ? '정답입니다.' : '아까워요! 다시 시도해보세요.'),
     };
-    return NextResponse.json(result satisfies EmojiQuizGrade);
+    return NextResponse.json(result satisfies EmojiQuizGradeType);
   } catch (e) {
     const err = e as Error;
     return NextResponse.json(

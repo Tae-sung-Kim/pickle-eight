@@ -1,8 +1,8 @@
 import {
-  GenerateValuesType,
-  EmojiQuizProblemType,
+  EmojiGenerateValuesType,
+  EmojiTranslationProblemType,
   EmojiQuizGradeType,
-  GradeEmojiQuizInputType,
+  EmojiGradeQuizInputType,
 } from '@/types';
 import { http } from '@/lib';
 
@@ -10,13 +10,17 @@ import { http } from '@/lib';
  * Generate emoji quiz problem via API
  */
 export async function generateEmojiQuiz(
-  values: GenerateValuesType
-): Promise<EmojiQuizProblemType> {
+  values: EmojiGenerateValuesType
+): Promise<EmojiTranslationProblemType> {
   return http
-    .post<EmojiQuizProblemType>('/gpt/emoji-translation', {
-      action: 'generate',
-      ...values,
-    })
+    .post<EmojiTranslationProblemType>(
+      '/gpt/emoji-translation',
+      {
+        action: 'generate',
+        ...values,
+      },
+      { timeout: 45000 }
+    )
     .then((res) => res.data);
 }
 
@@ -24,12 +28,16 @@ export async function generateEmojiQuiz(
  * Grade emoji quiz answer via API
  */
 export async function gradeEmojiQuiz(
-  input: GradeEmojiQuizInputType
+  input: EmojiGradeQuizInputType
 ): Promise<EmojiQuizGradeType> {
   return http
-    .post<EmojiQuizGradeType>('/gpt/emoji-translation', {
-      action: 'grade',
-      ...input,
-    })
+    .post<EmojiQuizGradeType>(
+      '/gpt/emoji-translation',
+      {
+        action: 'grade',
+        ...input,
+      },
+      { timeout: 20000 }
+    )
     .then((res) => res.data);
 }

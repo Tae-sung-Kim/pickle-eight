@@ -1,23 +1,13 @@
 'use client';
 
-import type { EmojiQuizProblemType, GenerateValuesType } from '@/types';
+import type { EmojiTranslationProblemType } from '@/types';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 
-export type ProblemCardProps = {
-  problem: EmojiQuizProblemType;
-  onRegenerate: () => void;
-  canUse: boolean;
-  isGenerating: boolean;
-  category: GenerateValuesType['category'] | string;
-};
-
-export function ProblemCardComponent({
+export function EmojiTranslationProblemCardComponent({
   problem,
-  onRegenerate,
-  canUse,
-  isGenerating,
-}: ProblemCardProps) {
+}: {
+  problem: EmojiTranslationProblemType;
+}) {
   const categoryBadgeClass: Record<string, string> = {
     영화: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-400/15 dark:text-violet-300 dark:border-violet-400/30',
     음식: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-400/15 dark:text-emerald-300 dark:border-emerald-400/30',
@@ -45,17 +35,7 @@ export function ProblemCardComponent({
           힌트: {problem.hint}
         </div>
       )}
-      <div className="mt-4">
-        <Button
-          type="button"
-          variant="secondary"
-          className="h-10 px-4"
-          onClick={onRegenerate}
-          disabled={isGenerating || !canUse}
-        >
-          같은 카테고리로 다시 생성
-        </Button>
-      </div>
     </Card>
   );
 }
+export default EmojiTranslationProblemCardComponent;
