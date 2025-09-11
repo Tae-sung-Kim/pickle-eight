@@ -13,7 +13,7 @@ import { generateOgImageUrl, getOgTag } from '@/utils';
 const baseMeta = buildMetadata({
   title: '로또 허브 - 로또 분석/번호 생성',
   description:
-    '로또 번호 생성, 당첨번호 확인, 회차별 기록 등 로또 관련 기능을 한 곳에서 제공합니다.',
+    '로또 분석, 번호 생성(일반·고급), 번호 채점, 회차별 히스토리, 시뮬레이터까지 로또 기능을 한 곳에서 제공합니다. 참고용 통계/생성 기능이며 당첨을 보장하지 않습니다.',
   pathname: `/${MENU_GROUP_NAME_ENUM.LOTTO}`,
 });
 

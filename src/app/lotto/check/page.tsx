@@ -6,7 +6,7 @@ import {
   TitleWrapperComponent,
   JsonLdComponent,
 } from '@/components';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import { MENU_GROUP_NAME_ENUM } from '@/constants';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
@@ -26,7 +26,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '로또 번호 채점기 - 당첨 등수 확인',
         '회차 번호와 선택한 6개 번호를 입력해 당첨 등수를 빠르게 확인하세요. 실시간 채점과 결과 요약을 제공합니다.',
-        '로또 번호 채점기'
+        '로또 번호 채점기',
+        getOgTag({ label: '채점기' })
       ),
     ],
     locale: 'ko_KR',
@@ -41,7 +42,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '로또 번호 채점기 - 당첨 등수 확인',
         '회차 번호와 선택한 6개 번호를 입력해 당첨 등수를 빠르게 확인하세요. 실시간 채점과 결과 요약을 제공합니다.',
-        '로또 번호 채점기'
+        '로또 번호 채점기',
+        getOgTag({ label: '채점기' })
       ),
     ],
   },

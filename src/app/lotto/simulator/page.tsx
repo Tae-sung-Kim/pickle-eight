@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
   ContentWrapperComponent,
   BackHubPageComponent,
@@ -40,7 +40,8 @@ export const metadata: Metadata = {
         '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | ' +
           (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '티켓 수와 반복 횟수를 설정해 로또 추첨을 다회 시뮬레이션하고 등수 분포를 확인하세요. 난수 기반 참고용이며 당첨 보장 없음.',
-        '로또 시뮬레이터'
+        '로또 시뮬레이터',
+        getOgTag({ label: '로또 시뮬레이터' })
       ),
     ],
   },
@@ -56,7 +57,8 @@ export const metadata: Metadata = {
         '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | ' +
           (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '대량 난수 기반 시뮬레이션으로 등수 분포를 확인. 티켓 수/반복 설정 지원. 참고용이며 당첨 보장 없음.',
-        '로또 시뮬레이터'
+        '로또 시뮬레이터',
+        getOgTag({ label: '로또 시뮬레이터' })
       ),
     ],
   },
