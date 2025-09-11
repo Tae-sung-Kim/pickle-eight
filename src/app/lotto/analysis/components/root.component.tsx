@@ -99,39 +99,32 @@ export function LottoAnalysisComponent() {
             />
           </div>
 
-          <div className="mt-6 space-y-8 bg-white rounded-md shadow p-4">
-            {isFetching && (
-              <p className="text-sm text-muted-foreground">
-                분석 데이터를 불러오는 중…
-              </p>
-            )}
-            {isError && (
-              <p className="text-sm text-destructive">
-                오류: {(error as Error).message}
-              </p>
-            )}
+          {isError && (
+            <p className="text-sm text-destructive">
+              오류: {(error as Error).message}
+            </p>
+          )}
 
-            {stats && (
-              <>
-                <LottoAnalysisFrequencySectionComponent
-                  frequencyByNumber={stats.frequencyByNumber}
-                />
-                <LottoAnalysisBucketSectionComponent
-                  bucketDistribution={stats.bucketDistribution}
-                />
-                <LottoAnalysisOddEvenSectionComponent
-                  odd={stats.oddEvenDistribution.odd}
-                  even={stats.oddEvenDistribution.even}
-                />
-                <LottoAnalysisSumSectionComponent
-                  sumDistribution={stats.sumDistribution}
-                />
-                <LottoAnalysisConsecutiveSectionComponent
-                  consecutiveCount={stats.consecutiveCount}
-                />
-              </>
-            )}
-          </div>
+          {stats && (
+            <div className="mt-6 space-y-8 bg-white rounded-md shadow p-4">
+              <LottoAnalysisFrequencySectionComponent
+                frequencyByNumber={stats.frequencyByNumber}
+              />
+              <LottoAnalysisBucketSectionComponent
+                bucketDistribution={stats.bucketDistribution}
+              />
+              <LottoAnalysisOddEvenSectionComponent
+                odd={stats.oddEvenDistribution.odd}
+                even={stats.oddEvenDistribution.even}
+              />
+              <LottoAnalysisSumSectionComponent
+                sumDistribution={stats.sumDistribution}
+              />
+              <LottoAnalysisConsecutiveSectionComponent
+                consecutiveCount={stats.consecutiveCount}
+              />
+            </div>
+          )}
         </>
       )}
     </>
