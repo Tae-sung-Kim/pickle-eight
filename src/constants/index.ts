@@ -9,3 +9,4 @@ export * from './four-idiom-quiz.constant';
 export * from './ad-credit.constant';
 export * from './emoji-translation.constant';
 export * from './gpt-model.constant';
+export * from './seo-keywords.constant';

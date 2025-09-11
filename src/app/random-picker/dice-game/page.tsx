@@ -1,4 +1,4 @@
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import { DiceGameComponent } from './components';
 import { Metadata } from 'next';
 import {
@@ -12,7 +12,7 @@ import { MENU_GROUP_NAME_ENUM } from '@/constants';
 export const metadata: Metadata = {
   title: '주사위 게임 - 랜덤 주사위 추첨기',
   description:
-    '여러 명이 함께 즐기는 랜덤 주사위 게임! 참가자 추가, 애니메이션 주사위 굴리기, 더블 효과, 공동 우승 등 재미있는 기능을 제공합니다.',
+    '여러 명이 함께 즐기는 랜덤 주사위 게임! 공정한 랜덤, 애니메이션 주사위, 더블 효과, 공동 우승, 결과 공유까지 지원합니다.',
   keywords: [
     '주사위',
     '주사위게임',
@@ -42,7 +42,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '주사위 게임 - 랜덤 주사위 추첨기',
         '여러 명이 함께 즐기는 랜덤 주사위 게임! 참가자 추가, 애니메이션 주사위 굴리기, 더블 효과, 공동 우승 등 재미있는 기능을 제공합니다.',
-        '주사위 게임'
+        '주사위 게임',
+        getOgTag({ label: '랜덤 도구' })
       ),
     ],
   },
