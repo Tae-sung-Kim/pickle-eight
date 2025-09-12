@@ -13,7 +13,7 @@ import { MENU_GROUP_NAME_ENUM } from '@/constants';
 export const metadata: Metadata = {
   title: 'AI 이모지 번역 퀴즈',
   description:
-    '이모지 힌트만 보고 정답을 맞혀보세요. 기본(BASIC) 모델은 무료이며, 상위 모델 선택 시 문제 생성 시점에 크레딧이 차감됩니다.',
+    '이모지 힌트만 보고 정답을 맞혀보세요. 크레딧 소모 없이 자유롭게 즐길 수 있습니다.',
   keywords: [
     '이모지퀴즈',
     '이모지 번역',
@@ -27,7 +27,8 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   openGraph: {
     title: 'AI 이모지 번역 퀴즈',
-    description: '이모지 힌트만 보고 정답을 맞혀보세요. BASIC 무료, 상위 모델 선택 시 생성 시점 차감.',
+    description:
+      '이모지 힌트만 보고 정답을 맞혀보세요. 크레딧 없이 자유롭게 즐겨보세요.',
     url:
       process.env.NEXT_PUBLIC_SITE_URL +
       `/${MENU_GROUP_NAME_ENUM.QUIZ}/emoji-translation`,
@@ -37,20 +38,21 @@ export const metadata: Metadata = {
     images: [
       generateOgImageUrl(
         'AI 이모지 번역 퀴즈',
-        '이모지 힌트만 보고 정답을 맞혀보세요.',
+        '이모지 힌트만 보고 정답을 맞혀보세요. 크레딧 없이 자유롭게 즐겨보세요.',
         '이모지 퀴즈',
-        getOgTag({ label: 'AI 퀴즈 (BASIC 무료)' })
+        getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/emoji-translation` })
       ),
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AI 이모지 번역 퀴즈',
-    description: '이모지 힌트만 보고 정답을 맞혀보세요. BASIC 무료, 상위 모델 선택 시 생성 시점 차감.',
+    description:
+      '이모지 힌트만 보고 정답을 맞혀보세요. 크레딧 없이 자유롭게 즐겨보세요.',
     images: [
       generateOgImageUrl(
         'AI 이모지 번역 퀴즈',
-        '이모지 힌트만 보고 정답을 맞혀보세요.',
+        '이모지 힌트만 보고 정답을 맞혀보세요. 크레딧 없이 자유롭게 즐겨보세요.',
         '이모지 퀴즈',
         getOgTag({ href: `/${MENU_GROUP_NAME_ENUM.QUIZ}/emoji-translation` })
       ),

@@ -8,13 +8,7 @@ import {
   jsonLdBreadcrumb,
   jsonLdWebSite,
 } from '@/lib';
-import {
-  CREDIT_POLICY,
-  CREDIT_SPEND_COST,
-  GPT_MODEL_COST,
-  GPT_MODEL_ENUM,
-  GPT_MODEL_LABEL,
-} from '@/constants';
+import { CREDIT_POLICY, CREDIT_SPEND_COST } from '@/constants';
 
 /**
  * 크레딧 정책 페이지
@@ -100,30 +94,17 @@ export default function CreditsPolicyPage(): JSX.Element {
           </li>
         </ul>
         <div className="mt-3 rounded-md border bg-muted/30 p-3">
-          <p className="text-sm font-medium">AI 퀴즈/게임 모델별 비용</p>
+          <p className="text-sm font-medium">AI 퀴즈/게임 크레딧 정책</p>
           <ul className="mt-1 list-disc pl-5 text-sm leading-6">
             <li>
-              기본 모델({GPT_MODEL_LABEL[GPT_MODEL_ENUM.BASIC]}):{' '}
-              <strong>{GPT_MODEL_COST[GPT_MODEL_ENUM.BASIC]}</strong>{' '}
-              <span className="text-muted-foreground">(무료)</span>
+              현재 모든 AI 퀴즈/게임은 <strong>크레딧 소모 없이</strong> 이용
+              가능합니다.
             </li>
             <li>
-              스탠다드({GPT_MODEL_LABEL[GPT_MODEL_ENUM.STANDARD]}):{' '}
-              <strong>{GPT_MODEL_COST[GPT_MODEL_ENUM.STANDARD]}</strong>
-            </li>
-            <li>
-              플러스({GPT_MODEL_LABEL[GPT_MODEL_ENUM.PLUS]}):{' '}
-              <strong>{GPT_MODEL_COST[GPT_MODEL_ENUM.PLUS]}</strong>
-            </li>
-            <li>
-              프리미엄({GPT_MODEL_LABEL[GPT_MODEL_ENUM.PREMIUM]}):{' '}
-              <strong>{GPT_MODEL_COST[GPT_MODEL_ENUM.PREMIUM]}</strong>
+              모델 선택 기능은 제공하지 않으며, 내부적으로{' '}
+              <strong>gpt-4o-mini</strong>로 고정되어 동작합니다.
             </li>
           </ul>
-          <p className="mt-2 text-xs text-muted-foreground">
-            유료 모델은 <strong>문제 생성 시점</strong>에 즉시 차감되며, 정답
-            제출과는 무관합니다.
-          </p>
         </div>
       </section>
 
@@ -135,8 +116,8 @@ export default function CreditsPolicyPage(): JSX.Element {
             있습니다.
           </li>
           <li>
-            다만 아래 기능은 크레딧 기반으로 제한됩니다. 필요한 경우 광고/쿠키
-            동의 후 사용하실 수 있습니다.
+            다만 아래 기능 중 일부는 크레딧 기반으로 제한됩니다. 필요한 경우
+            광고/쿠키 동의 후 사용하실 수 있습니다.
           </li>
           <li>
             동의하지 않으면 크레딧 &quot;사용&quot;이 비활성화되며, 이미 사용된
@@ -153,8 +134,7 @@ export default function CreditsPolicyPage(): JSX.Element {
             <li>로또 고급 번호 생성(가중치/필터 기반)</li>
             <li>CSV 내보내기 및 일부 보상형 기능</li>
             <li>
-              AI 퀴즈/게임: 기본 모델은 무료, 상위 모델 선택 시 모델별 비용에
-              따라 차감
+              AI 퀴즈/게임: <strong>크레딧 소모 없음</strong>
             </li>
           </ul>
         </div>
