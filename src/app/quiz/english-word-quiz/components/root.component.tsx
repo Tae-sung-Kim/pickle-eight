@@ -8,14 +8,12 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb } from 'lucide-react';
 import { useDailyLimit } from '@/hooks';
 import { EnglishWordQuizOptionsComponent } from './options.component';
-import { DEFAULT_GPT_MODEL } from '@/constants';
-import { GptModelSelectButtonComponent } from '@/components';
+import { Button } from '@/components/ui/button';
 
 export function EnglishWordQuizComponent() {
   const [quiz, setQuiz] = useState<GptEnglishWordQuizResponse | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
-  const [model, setModel] = useState<string>(DEFAULT_GPT_MODEL);
 
   const { getDailyLimitInfo, addOne, isInitialized } = useDailyLimit();
   const { canUse, limit, used } = getDailyLimitInfo('english-word-quiz');
@@ -25,18 +23,15 @@ export function EnglishWordQuizComponent() {
   const getNewQuiz = useCallback(() => {
     if (!canUse) return;
 
-    fetchQuiz(
-      { model },
-      {
-        onSuccess: (data) => {
-          addOne('english-word-quiz');
-          setQuiz(data);
-          setSelectedAnswer(null);
-          setIsRevealed(false);
-        },
-      }
-    );
-  }, [addOne, canUse, fetchQuiz, model]);
+    fetchQuiz(undefined, {
+      onSuccess: (data) => {
+        addOne('english-word-quiz');
+        setQuiz(data);
+        setSelectedAnswer(null);
+        setIsRevealed(false);
+      },
+    });
+  }, [addOne, canUse, fetchQuiz]);
 
   useEffect(() => {
     // 초기에는 자동 생성하지 않음. 사용자가 버튼을 눌러 생성하도록 유지.
@@ -92,18 +87,15 @@ export function EnglishWordQuizComponent() {
         )}
 
         <div className="mt-6 flex justify-end">
-          <div className="flex flex-col items-end gap-2">
-            <span className="text-sm text-muted-foreground">GPT 모델</span>
-            <GptModelSelectButtonComponent
-              model={model}
-              onModelChange={setModel}
-              onProceed={getNewQuiz}
-              isBusy={isPending}
-              disabled={!canUse}
-              buttonLabel={canUse ? '퀴즈 생성' : '퀴즈 종료'}
-              triggerSize="sm"
-            />
-          </div>
+          <Button
+            type="button"
+            variant="default"
+            onClick={getNewQuiz}
+            aria-disabled={!canUse || isPending}
+            disabled={!canUse || isPending}
+          >
+            {canUse ? '퀴즈 생성' : '퀴즈 종료'}
+          </Button>
         </div>
       </CardContent>
     </Card>

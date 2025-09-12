@@ -12,12 +12,13 @@ export const GPT_MODEL_LABEL: Record<GPT_MODEL_ENUM, string> = {
   [GPT_MODEL_ENUM.PREMIUM]: 'PREMIUM',
 } as const;
 
-export const DEFAULT_GPT_MODEL: GPT_MODEL_ENUM = GPT_MODEL_ENUM.BASIC;
+// Always use gpt-4o-mini
+export const DEFAULT_GPT_MODEL: GPT_MODEL_ENUM = GPT_MODEL_ENUM.STANDARD;
 
-// Credit cost per model (0 means free)
+// Credit cost per model (set all to 0 to disable spending)
 export const GPT_MODEL_COST: Record<GPT_MODEL_ENUM, number> = {
   [GPT_MODEL_ENUM.BASIC]: 0,
-  [GPT_MODEL_ENUM.STANDARD]: 1,
-  [GPT_MODEL_ENUM.PLUS]: 3,
-  [GPT_MODEL_ENUM.PREMIUM]: 5,
+  [GPT_MODEL_ENUM.STANDARD]: 0,
+  [GPT_MODEL_ENUM.PLUS]: 0,
+  [GPT_MODEL_ENUM.PREMIUM]: 0,
 } as const;

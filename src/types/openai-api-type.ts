@@ -18,6 +18,8 @@ export type OpenAIRequestType = {
   presence_penalty?: number;
   frequency_penalty?: number;
   top_p?: number;
+  // when true, do not fallback/translate model families behind the scenes
+  strictModel?: boolean;
 };
 
 export type OpenAIResponseType = {

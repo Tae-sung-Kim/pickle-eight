@@ -13,14 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { GptModelSelectButtonComponent } from '@/components';
+import { Button } from '@/components/ui/button';
 import { EMOJI_CATEGORY_ENUM } from '@/constants';
 
 export function EmojiTranslationControlsSectionComponent({
   category,
   onCategoryChange,
-  model,
-  onModelChange,
   canUse,
   used,
   limit,
@@ -62,16 +60,15 @@ export function EmojiTranslationControlsSectionComponent({
         </div>
         <div className="sm:col-span-1 flex items-end justify-end gap-2">
           <div className="flex flex-col items-end gap-2">
-            <Label className="mb-0 inline-block">GPT 모델</Label>
-            <GptModelSelectButtonComponent
-              className=""
-              model={model}
-              onModelChange={onModelChange}
-              onProceed={onGenerate}
-              isBusy={isGenerating}
-              disabled={!canUse}
-              buttonLabel="문제 생성"
-            />
+            <Button
+              type="submit"
+              variant="default"
+              onClick={onGenerate}
+              aria-disabled={isGenerating || !canUse}
+              disabled={isGenerating || !canUse}
+            >
+              문제 생성
+            </Button>
           </div>
         </div>
       </form>

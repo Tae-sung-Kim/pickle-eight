@@ -35,8 +35,6 @@ export type EmojiGradeQuizInputType = {
 export type EmojiControlsSectionType = {
   category: string;
   onCategoryChange: (value: EmojiGenerateValuesType['category']) => void;
-  model: string;
-  onModelChange: (model: string) => void;
   canUse: boolean;
   used: number;
   limit: number;

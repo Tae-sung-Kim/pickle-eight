@@ -89,6 +89,36 @@ function isModelNotFound(e: unknown): boolean {
 
 const BACKUP_CHAT_MODEL = 'gpt-4o-mini';
 
+function buildResponsesPayload(
+  model: string,
+  input: string | Array<{ role: string; content: string }>,
+  opts: {
+    temperature?: number;
+    top_p?: number;
+    max_tokens?: number;
+    withJson?: boolean;
+    dropSampling?: boolean;
+  }
+): Record<string, unknown> {
+  const base: Record<string, unknown> = {
+    model,
+    input,
+  };
+  if (!opts?.dropSampling && typeof opts?.temperature === 'number') {
+    base.temperature = opts.temperature;
+  }
+  if (!opts?.dropSampling && typeof opts?.top_p === 'number') {
+    base.top_p = opts.top_p;
+  }
+  if (opts?.withJson) {
+    base.response_format = { type: 'json_object' };
+  }
+  if (typeof opts?.max_tokens === 'number') {
+    base.max_output_tokens = opts.max_tokens;
+  }
+  return base;
+}
+
 export async function callOpenAI({
   messages,
   max_tokens = 400,
@@ -98,6 +128,7 @@ export async function callOpenAI({
   presence_penalty,
   frequency_penalty,
   top_p,
+  strictModel,
 }: OpenAIRequestType): Promise<string> {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   if (!OPENAI_API_KEY) throw new Error('OpenAI API Key is missing');
@@ -107,6 +138,9 @@ export async function callOpenAI({
   let attempt = 0;
   let lastError: unknown = null;
   let usedBackup = false;
+  let triedResponsesWithoutJson = false; // adaptive retry for responses models that reject response_format
+  let triedStructuredInput = false; // adaptive retry for input shape
+  let triedDropSampling = false; // adaptive retry: remove temperature/top_p
 
   while (attempt <= OPENAI_MAX_RETRIES) {
     try {
@@ -134,8 +168,7 @@ export async function callOpenAI({
         );
         if (!res.data) throw new Error('Failed to fetch GPT');
         const text = res.data.choices?.[0]?.message?.content?.trim() ?? '';
-        if (!text && !usedBackup && family === 'responses') {
-          // empty text from backup attempt trigger should not happen; safety
+        if (!text && !usedBackup && family === 'responses' && !strictModel) {
           usedBackup = true;
           continue;
         }
@@ -143,20 +176,31 @@ export async function callOpenAI({
       }
 
       // Responses API path
-      const input = stringifyMessages(messages);
+      const inputString = stringifyMessages(messages);
+      const inputStructured = messages.map((m) => ({
+        role: m.role,
+        content: m.content,
+      }));
+      const withJson = json && !triedResponsesWithoutJson;
+      const useStructured = triedResponsesWithoutJson && !triedStructuredInput;
+      const dropSampling =
+        triedResponsesWithoutJson && triedStructuredInput && !triedDropSampling;
+
+      const payload = buildResponsesPayload(
+        model,
+        useStructured ? inputStructured : inputString,
+        {
+          temperature,
+          top_p,
+          max_tokens,
+          withJson,
+          dropSampling,
+        }
+      );
+
       const res = await axios.post(
         'https://api.openai.com/v1/responses',
-        {
-          model,
-          input,
-          temperature,
-          ...(typeof top_p === 'number' && { top_p }),
-          ...(json && { response_format: { type: 'json_object' } }),
-          // Responses API uses max_output_tokens
-          ...(typeof max_tokens === 'number' && {
-            max_output_tokens: max_tokens,
-          }),
-        },
+        payload,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -168,33 +212,76 @@ export async function callOpenAI({
       if (!res.data) throw new Error('Failed to fetch GPT (responses)');
       const text = (parseResponsesApiText(res.data) || '').trim();
       if (!text) {
-        // No usable text → try backup chat model once
-        usedBackup = true;
-        continue;
+        if (!strictModel) {
+          usedBackup = true;
+          continue;
+        }
+        throw new Error('empty_response_text');
       }
       return text;
     } catch (e) {
       lastError = e;
-      // If responses family and model not found/4xx, transparently retry once with chat backup
+      const ax = e as AxiosError<OpenAIErrorResponse>;
+      const status = ax?.response?.status;
+      const errCode =
+        ax?.response?.data?.error?.code || ax?.response?.data?.error?.type;
+      const errMsg =
+        ax?.response?.data?.error?.message || (ax as any)?.message || '';
+
+      // Adaptive 1: drop response_format when 400 references json/response_format
       if (
-        !usedBackup &&
         family === 'responses' &&
-        (isModelNotFound(e) || !isTransientError(e))
+        json &&
+        !triedResponsesWithoutJson &&
+        status === 400 &&
+        (String(errCode || '').includes('invalid') ||
+          String(errMsg || '')
+            .toLowerCase()
+            .includes('response_format') ||
+          String(errMsg || '')
+            .toLowerCase()
+            .includes('json'))
       ) {
-        usedBackup = true;
+        triedResponsesWithoutJson = true;
         continue;
+      }
+
+      // Adaptive 2: switch to structured input array
+      if (family === 'responses' && !triedStructuredInput && status === 400) {
+        triedStructuredInput = true;
+        continue;
+      }
+
+      // Adaptive 3: drop sampling params (temperature/top_p)
+      if (family === 'responses' && !triedDropSampling && status === 400) {
+        triedDropSampling = true;
+        continue;
+      }
+
+      // If responses family and model not found/4xx, transparently retry once with chat backup (when strictModel is false)
+      if (!strictModel) {
+        if (
+          !usedBackup &&
+          family === 'responses' &&
+          (isModelNotFound(e) || !isTransientError(e))
+        ) {
+          usedBackup = true;
+          continue;
+        }
       }
       attempt += 1;
       if (attempt > OPENAI_MAX_RETRIES || !isTransientError(e)) break;
-      // simple exponential backoff: 400ms, 800ms
       await sleep(400 * attempt);
     }
   }
   const err = lastError as AxiosError | Error;
-  const code = (err as AxiosError).code || 'openai_request_failed';
   const status = (err as AxiosError).response?.status;
+  const dataStr = JSON.stringify(
+    (err as AxiosError).response?.data || {}
+  ).slice(0, 300);
+  const code = (err as AxiosError).code || 'openai_request_failed';
   const msg =
     (err as Error).message ||
     `OpenAI request failed${status ? ` (status ${status})` : ''}`;
-  throw new Error(`${code}: ${msg}`);
+  throw new Error(`${code}: ${msg}; status=${status}; body=${dataStr}`);
 }

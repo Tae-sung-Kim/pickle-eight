@@ -5,6 +5,13 @@ export const EmojiTranslationGenerateSchema = z.object({
   action: z.literal('generate').optional(),
   category: z.nativeEnum(EMOJI_CATEGORY_ENUM).optional(),
   model: z.string().optional(),
+  // tuning & debug flags (all optional)
+  strictModel: z.boolean().optional(),
+  temperature: z.number().min(0).max(2).optional(),
+  top_p: z.number().min(0).max(1).optional(),
+  noRepair: z.boolean().optional(),
+  noAuth: z.boolean().optional(),
+  noDupCheck: z.boolean().optional(),
 });
 
 const gradeSchema = z.object({

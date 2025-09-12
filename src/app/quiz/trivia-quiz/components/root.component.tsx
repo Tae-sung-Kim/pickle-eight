@@ -11,12 +11,10 @@ import { TriviaQuizFormSchema, TriviaQuizFormValuesType } from '@/types';
 import TriviaQuizFormComponent from './form.component';
 import TriviaQuizQuestionCardComponent from './question.component';
 import { getKoreaTime } from '@/utils';
-import { DEFAULT_GPT_MODEL } from '@/constants';
-import { GptModelSelectButtonComponent } from '@/components';
+import { Button } from '@/components/ui/button';
 
 export function TriviaQuizComponent() {
   const [mounted, setMounted] = useState(false);
-  const [model, setModel] = useState<string>(DEFAULT_GPT_MODEL);
 
   const { getDailyLimitInfo, addOne } = useDailyLimit();
   const { canUse, limit, used } = getDailyLimitInfo('trivia-quiz');
@@ -51,7 +49,7 @@ export function TriviaQuizComponent() {
   ) => {
     setAnsweredId(undefined);
     generateQuiz(
-      { category, difficulty, model },
+      { category, difficulty },
       {
         onSuccess: (quiz) => {
           // 중복 체크: 문제 텍스트 기준
@@ -172,18 +170,15 @@ export function TriviaQuizComponent() {
               useExternalSubmit
             />
             <div className="mt-4 flex justify-end">
-              <div className="flex flex-col items-end gap-2">
-                <span className="text-xs text-muted-foreground">GPT 모델</span>
-                <GptModelSelectButtonComponent
-                  model={model}
-                  onModelChange={setModel}
-                  onProceed={() => handleSubmit((v) => handleStart(v))()}
-                  isBusy={isPending}
-                  disabled={!canUse}
-                  buttonLabel={canUse ? '퀴즈 시작' : '오늘 종료'}
-                  triggerSize="sm"
-                />
-              </div>
+              <Button
+                type="button"
+                variant="default"
+                onClick={() => handleSubmit((v) => handleStart(v))()}
+                aria-disabled={!canUse || isPending}
+                disabled={!canUse || isPending}
+              >
+                {canUse ? '퀴즈 시작' : '오늘 종료'}
+              </Button>
             </div>
           </motion.div>
         ) : (

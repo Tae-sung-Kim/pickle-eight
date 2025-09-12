@@ -6,12 +6,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useGptFourIdiomQuizQuery } from '@/queries';
 import { Button } from '@/components/ui/button';
-import { FOUR_IDIOMS_COLLECTION, DEFAULT_GPT_MODEL } from '@/constants';
+import { FOUR_IDIOMS_COLLECTION } from '@/constants';
 import { FourIdiomQuizDifficultyType } from '@/types';
 import FourIdiomQuizDifficultyComponent from './difficulty.component';
 import FourIdiomQuizAnswerComponent from './answer.component';
 import FourIdiomQuizFormComponent from './form.component';
-import { GptModelSelectButtonComponent } from '@/components';
 
 const schema = z.object({ answer: z.string().length(4, '정확히 4글자!') });
 type FormValues = { answer: string };
@@ -23,7 +22,6 @@ export function FourIdiomQuizComponent() {
   const { canUse, limit, used } = getDailyLimitInfo(FOUR_IDIOMS_COLLECTION);
   const [difficulty, setDifficulty] =
     useState<FourIdiomQuizDifficultyType | null>(null);
-  const [model, setModel] = useState<string>(DEFAULT_GPT_MODEL);
 
   const [isQuizEnd, setIsQuizEnd] = useState(false);
   const [showHint, setShowHint] = useState(false);
@@ -84,7 +82,7 @@ export function FourIdiomQuizComponent() {
     if (!canUse || !difficulty) return;
     resetQuiz();
     mutate(
-      { difficulty, model },
+      { difficulty },
       {
         onSuccess: () => {
           // 문제 생성 시 바로 차감
@@ -170,18 +168,14 @@ export function FourIdiomQuizComponent() {
 
           {/* 모델 선택 + 문제 생성 버튼 */}
           <div className="mt-4 flex justify-end">
-            <div className="flex flex-col items-end gap-2">
-              <span className="text-xs text-muted-foreground">GPT 모델</span>
-              <GptModelSelectButtonComponent
-                model={model}
-                onModelChange={setModel}
-                onProceed={handleGenerate}
-                isBusy={isPending}
-                disabled={!canUse || !difficulty}
-                buttonLabel={canUse ? '문제 생성' : '오늘 종료'}
-                triggerSize="sm"
-              />
-            </div>
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium shadow hover:opacity-90 disabled:opacity-50"
+              onClick={handleGenerate}
+              disabled={!canUse || !difficulty || isPending}
+            >
+              {canUse ? '문제 생성' : '오늘 종료'}
+            </button>
           </div>
         </>
       ) : (
