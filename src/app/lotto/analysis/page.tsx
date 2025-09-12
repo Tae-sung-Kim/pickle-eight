@@ -8,7 +8,7 @@ import {
 } from '@/components';
 
 import type { Metadata } from 'next';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
 
 export const metadata: Metadata = {
@@ -33,7 +33,8 @@ export const metadata: Metadata = {
         '로또 분석 - 당첨번호 통계·빈도·패턴 시각화 | ' +
           (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '로또 당첨번호의 빈도·구간·홀짝·합계·연속수 등 핵심 지표를 시각화로 분석하세요. 참고용 통계이며 당첨을 보장하지 않습니다.',
-        '로또 분석'
+        '로또 분석',
+        getOgTag({ label: '로또 분석' })
       ),
     ],
   },
@@ -49,7 +50,8 @@ export const metadata: Metadata = {
         '로또 분석 - 당첨번호 통계·빈도·패턴 시각화 | ' +
           (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '로또 당첨번호 통계/패턴 분석. 빈도·구간·홀짝·합계·연속수 지표 제공. 참고용이며 당첨 보장 없음.',
-        '로또 분석'
+        '로또 분석',
+        getOgTag({ label: '로또 분석' })
       ),
     ],
   },

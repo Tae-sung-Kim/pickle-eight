@@ -27,6 +27,7 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-primary',
         description: '범위를 지정해 과거 당첨 번호를 조회합니다.',
         example: '예: 최근 50회 결과 확인',
+        isConditionalCredit: true,
       },
       {
         href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/check',

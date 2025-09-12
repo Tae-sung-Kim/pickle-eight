@@ -4,14 +4,12 @@ import { FourIdiomQuizDifficultyType } from '@/types';
 type FourIdiomQuizDifficultyComponentType = {
   difficulty: FourIdiomQuizDifficultyType | null;
   isPending: boolean;
-  difficultyDisabled: boolean;
   onDifficuly: (value: FourIdiomQuizDifficultyType) => void;
 };
 
 export function FourIdiomQuizDifficultyComponent({
   difficulty,
   isPending,
-  difficultyDisabled,
   onDifficuly,
 }: FourIdiomQuizDifficultyComponentType) {
   return (
@@ -25,7 +23,7 @@ export function FourIdiomQuizDifficultyComponent({
         variant={difficulty === 'easy' ? 'secondary' : 'outline'}
         className="text-xs px-3 py-1"
         onClick={() => onDifficuly('easy')}
-        disabled={isPending || difficultyDisabled}
+        disabled={isPending}
       >
         쉬움
       </Button>
@@ -35,7 +33,7 @@ export function FourIdiomQuizDifficultyComponent({
         variant={difficulty === 'normal' ? 'secondary' : 'outline'}
         className="text-xs px-3 py-1"
         onClick={() => onDifficuly('normal')}
-        disabled={isPending || difficultyDisabled}
+        disabled={isPending}
       >
         보통
       </Button>
@@ -45,7 +43,7 @@ export function FourIdiomQuizDifficultyComponent({
         variant={difficulty === 'hard' ? 'secondary' : 'outline'}
         className="text-xs px-3 py-1"
         onClick={() => onDifficuly('hard')}
-        disabled={isPending || difficultyDisabled}
+        disabled={isPending}
       >
         어려움
       </Button>

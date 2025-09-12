@@ -1,6 +1,6 @@
 import { LottoHistoryComponent } from './components';
 import { Metadata } from 'next';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
   BackHubPageComponent,
   ContentWrapperComponent,
@@ -33,7 +33,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
         '회차별 로또 당첨번호와 보너스 번호, 1등 당첨 인원 등 기록을 범위로 조회하세요.',
-        '로또 당첨 결과 히스토리'
+        '로또 당첨 결과 히스토리',
+        getOgTag({ label: '회차 기록' })
       ),
     ],
     locale: 'ko_KR',
@@ -48,7 +49,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',
         '회차별 로또 당첨번호와 보너스 번호, 1등 당첨 인원 등 기록을 범위로 조회하세요.',
-        '로또 당첨 결과 히스토리'
+        '로또 당첨 결과 히스토리',
+        getOgTag({ label: '회차 기록' })
       ),
     ],
   },

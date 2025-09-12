@@ -6,40 +6,11 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import {
   CreditGateButtonComponent,
-  CreditBalancePillComponent,
+  // CreditBalancePillComponent,
 } from '@/components';
 import { useEffect, useState } from 'react';
-import { creditBuildCostLabel } from '@/utils';
-
-export type SimulatorControlsComponentType = Readonly<{
-  ticketCount: number;
-  drawCount: number;
-  running: boolean;
-  mode: 'random' | 'custom';
-  onModeChange: (m: 'random' | 'custom') => void;
-  onTicketCountChange: (value: number) => void;
-  onDrawCountChange: (value: number) => void;
-  onRun: () => void;
-  canRun?: boolean;
-}>;
-
-function clampInt(value: string, min: number, max: number): number {
-  const n = parseInt(value, 10);
-  if (Number.isNaN(n)) return min;
-  if (n < min) return min;
-  if (n > max) return max;
-  return n;
-}
-
-function parseClamp(
-  value: string,
-  min: number,
-  max: number
-): number | undefined {
-  const n = parseInt(value, 10);
-  if (!Number.isFinite(n)) return undefined;
-  return Math.min(max, Math.max(min, n));
-}
+import { clampInt, creditBuildCostLabel, parseClamp } from '@/utils';
+import { LottoSimulatorControlsComponentType } from '@/types';
 
 export function SimulatorControlsComponent({
   ticketCount,
@@ -51,7 +22,7 @@ export function SimulatorControlsComponent({
   onDrawCountChange,
   onRun,
   canRun = true,
-}: SimulatorControlsComponentType) {
+}: LottoSimulatorControlsComponentType) {
   const [ticketText, setTicketText] = useState<string>(
     String(ticketCount ?? '')
   );
@@ -165,7 +136,7 @@ export function SimulatorControlsComponent({
                 {label}
               </Button>
             )}
-            <CreditBalancePillComponent className="self-end md:self-auto" />
+            {/* <CreditBalancePillComponent className="self-end md:self-auto" /> */}
           </div>
         </div>
       </CardContent>

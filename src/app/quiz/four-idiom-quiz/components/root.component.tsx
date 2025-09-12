@@ -18,9 +18,8 @@ type FormValues = { answer: string };
 export function FourIdiomQuizComponent() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const { getDailyLimitInfo, addOne, isInitialized } = useDailyLimit();
+  const { getDailyLimitInfo, addOne } = useDailyLimit();
   const { canUse, limit, used } = getDailyLimitInfo(FOUR_IDIOMS_COLLECTION);
-  const [difficultyDisabled, setDifficultyDisabled] = useState(false);
   const [difficulty, setDifficulty] =
     useState<FourIdiomQuizDifficultyType | null>(null);
 
@@ -67,21 +66,32 @@ export function FourIdiomQuizComponent() {
 
   const handleDifficuly = (value: FourIdiomQuizDifficultyType) => {
     if (!canUse) return;
-    resetQuiz();
+    // 난이도만 설정하고, API 호출은 하지 않음
     setDifficulty(value);
+    setShowHint(false);
   };
 
-  useEffect(() => {
-    if (isInitialized && canUse && difficulty) {
-      mutate({ difficulty });
-    }
-  }, [difficulty, canUse, isInitialized, mutate]);
+  // 자동 생성 제거: 난이도 변경 시 더 이상 mutate 호출하지 않음
+  // useEffect(() => {
+  //   if (isInitialized && canUse && difficulty) {
+  //     mutate({ difficulty });
+  //   }
+  // }, [difficulty, canUse, isInitialized, mutate]);
 
-  const handleNewQuiz = () => {
+  const handleGenerate = () => {
     if (!canUse || !difficulty) return;
     resetQuiz();
-    setDifficultyDisabled(false);
-    mutate({ difficulty });
+    mutate(
+      { difficulty },
+      {
+        onSuccess: () => {
+          // 문제 생성 시 바로 차감
+          addOne(FOUR_IDIOMS_COLLECTION);
+          // 마지막 문제 생성 후 종료 처리
+          if (used + 1 >= limit) setIsQuizEnd(true);
+        },
+      }
+    );
   };
 
   const onSubmit = (values: FormValues) => {
@@ -89,14 +99,7 @@ export function FourIdiomQuizComponent() {
     const isAns = values.answer.trim() === data.answer.trim();
     setIsCorrect(isAns);
     setShowAnswer(true);
-    setDifficultyDisabled(true);
-
-    addOne(FOUR_IDIOMS_COLLECTION);
-
-    // 마지막 문제에서 정답 제출 시 엔드 플래그
-    if (used + 1 >= limit) {
-      setIsQuizEnd(true);
-    }
+    // 기존: addOne()을 여기서 호출했으나, 이제 생성 시점에 차감하므로 제거
   };
 
   useEffect(() => {
@@ -114,7 +117,6 @@ export function FourIdiomQuizComponent() {
         <FourIdiomQuizDifficultyComponent
           difficulty={difficulty}
           isPending={isPending}
-          difficultyDisabled={difficultyDisabled}
           onDifficuly={handleDifficuly}
         />
         <span className="ml-auto inline-flex items-center gap-1 bg-blue-100 text-blue-600 rounded-full px-3 py-1 text-xs font-semibold">
@@ -128,7 +130,7 @@ export function FourIdiomQuizComponent() {
             {isPending ? (
               <span className="text-gray-400">문제를 불러오는 중...</span>
             ) : (
-              data?.question
+              data?.question || '난이도를 선택하고 문제 생성을 누르세요'
             )}
             {/* 힌트 버튼 및 노출 */}
             <div className="flex items-center gap-2 mt-3">
@@ -158,14 +160,23 @@ export function FourIdiomQuizComponent() {
           />
           {data && (
             <FourIdiomQuizAnswerComponent
-              isPending={isPending}
               showAnswer={showAnswer}
               isCorrect={isCorrect}
               data={data}
-              canUse={canUse}
-              onNewQuiz={handleNewQuiz}
             />
           )}
+
+          {/* 모델 선택 + 문제 생성 버튼 */}
+          <div className="mt-4 flex justify-end">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium shadow hover:opacity-90 disabled:opacity-50"
+              onClick={handleGenerate}
+              disabled={!canUse || !difficulty || isPending}
+            >
+              {canUse ? '문제 생성' : '오늘 종료'}
+            </button>
+          </div>
         </>
       ) : (
         <div className="mt-6 text-center text-base text-gray-400 font-semibold">

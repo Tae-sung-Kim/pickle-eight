@@ -11,6 +11,7 @@ import { TriviaQuizFormSchema, TriviaQuizFormValuesType } from '@/types';
 import TriviaQuizFormComponent from './form.component';
 import TriviaQuizQuestionCardComponent from './question.component';
 import { getKoreaTime } from '@/utils';
+import { Button } from '@/components/ui/button';
 
 export function TriviaQuizComponent() {
   const [mounted, setMounted] = useState(false);
@@ -80,13 +81,6 @@ export function TriviaQuizComponent() {
     if (!questions[currentIdx]) return;
     setAnsweredId(selectedId);
     // answer()와 results 추가는 handleNext에서 처리
-    // // toast는 피드백용으로만 유지
-    // const isCorrect = selectedId === questions[currentIdx].answerId;
-    // if (isCorrect) {
-    //   toast.success('정답입니다!');
-    // } else {
-    //   toast.error('틀렸어요!');
-    // }
   };
 
   // 다음 문제: answer() 호출 및 상태 초기화
@@ -101,13 +95,6 @@ export function TriviaQuizComponent() {
     });
     setAnsweredId(undefined);
   };
-
-  // 리셋
-  // const handleReset = () => {
-  //   reset();
-  //   resetLimit();
-  //   setAnsweredId(undefined);
-  // };
 
   // 로컬 스토리지 마운트 확인
   useEffect(() => {
@@ -151,14 +138,6 @@ export function TriviaQuizComponent() {
                 {correctCount} / {limit}
               </span>
             </div>
-            {/* <motion.button
-              onClick={handleReset}
-              className="mt-2 px-6 py-3 text-lg font-bold bg-gradient-to-r from-pink-400 to-violet-400 text-white shadow-lg hover:scale-105 active:scale-95 transition-transform rounded"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              초기화 및 다시 도전
-            </motion.button> */}
           </motion.div>
         ) : isPending ? (
           <motion.div
@@ -188,7 +167,19 @@ export function TriviaQuizComponent() {
               errors={errors}
               watch={watch}
               setValue={setValue}
+              useExternalSubmit
             />
+            <div className="mt-4 flex justify-end">
+              <Button
+                type="button"
+                variant="default"
+                onClick={() => handleSubmit((v) => handleStart(v))()}
+                aria-disabled={!canUse || isPending}
+                disabled={!canUse || isPending}
+              >
+                {canUse ? '퀴즈 시작' : '오늘 종료'}
+              </Button>
+            </div>
           </motion.div>
         ) : (
           <motion.div

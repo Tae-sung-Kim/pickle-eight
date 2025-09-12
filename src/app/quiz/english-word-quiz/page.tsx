@@ -11,7 +11,7 @@ import { MENU_GROUP_NAME_ENUM } from '@/constants';
 export const metadata: Metadata = {
   title: 'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
   description:
-    '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
+    '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 기본(BASIC) 모델은 무료이며, 상위 모델 선택 시 문제 생성 시점에 크레딧이 차감됩니다. 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
   keywords: [
     '영어퀴즈',
     '영어단어퀴즈',
@@ -23,11 +23,14 @@ export const metadata: Metadata = {
     '퀴즈',
     'AI영어',
     'AI퀴즈',
+    'GPT 퀴즈',
+    'GPT 모델 선택',
+    '기본 모델 무료 퀴즈',
   ],
   openGraph: {
     title: 'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',
     description:
-      '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 재미있게 단어 실력을 테스트하고 영어 실력을 키워보세요.',
+      '뜻을 보고 알맞은 영어 단어를 맞혀보는 퀴즈! 기본(BASIC) 무료, 상위 모델 선택 시 문제 생성 시점 차감.',
     url:
       process.env.NEXT_PUBLIC_SITE_URL +
       `/${MENU_GROUP_NAME_ENUM.QUIZ}/english-word-quiz`,

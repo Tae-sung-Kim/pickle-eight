@@ -1,6 +1,6 @@
 import { LottoAdvancedGeneratorComponent } from './components';
 import type { Metadata } from 'next';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
   ContentWrapperComponent,
   BackHubPageComponent,
@@ -41,7 +41,8 @@ export const metadata: Metadata = {
         '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | ' +
           (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '제외 번호, 구간, 홀짝, 연속수, 가중치 등 고급 필터로 로또 번호를 생성하세요. 통계 참고용 조합 제안이며 당첨 보장 없음.',
-        '로또 고급 생성기'
+        '로또 고급 생성기',
+        getOgTag({ label: '번호 생성기' })
       ),
     ],
   },
@@ -57,7 +58,8 @@ export const metadata: Metadata = {
         '로또 고급 번호 생성기 - 필터·가중치·패턴 기반 생성 | ' +
           (process.env.NEXT_PUBLIC_SITE_NAME as string),
         '제외·구간·홀짝·연속·가중치 필터로 번호 생성. 통계 참고용 제안이며 당첨 보장 없음.',
-        '로또 고급 생성기'
+        '로또 고급 생성기',
+        getOgTag({ label: '번호 생성기' })
       ),
     ],
   },

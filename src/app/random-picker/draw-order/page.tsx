@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { DrawOrderComponent } from './components';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
   BackHubPageComponent,
   ContentWrapperComponent,
@@ -12,7 +12,7 @@ import { MENU_GROUP_NAME_ENUM } from '@/constants';
 export const metadata: Metadata = {
   title: '랜덤 순서/상품 추첨기 - 공정한 매칭 뽑기',
   description:
-    '참가자와 상품(번호)을 등록하면, 클릭으로 랜덤하게 순서 또는 상품을 추첨하는 공정한 매칭 추첨기! 실시간 공개, 애니메이션, 재추첨 등 다양한 기능 제공.',
+    '참가자와 상품(번호)을 등록하면, 클릭으로 랜덤하게 순서 또는 상품을 추첨하는 공정한 매칭 추첨기! 실시간 공개, 애니메이션, 재추첨, 결과 공유까지 지원.',
   keywords: [
     '랜덤추첨',
     '순서추첨',
@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     '랜덤매칭',
     '추첨기',
     '공정추첨',
+    '결과공유',
     '랜덤뽑기',
     '파티게임',
     '모임게임',
@@ -43,7 +44,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '랜덤 순서/상품 추첨기 - 공정한 매칭 뽑기',
         '참가자와 상품(번호)을 등록하면, 클릭으로 랜덤하게 순서 또는 상품을 추첨하는 공정한 매칭 추첨기! 실시간 공개, 애니메이션, 재추첨 등 다양한 기능 제공.',
-        '랜덤 순서/상품 추첨기'
+        '랜덤 순서/상품 추첨기',
+        getOgTag({ label: '랜덤 매칭' })
       ),
     ],
   },
@@ -56,7 +58,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '랜덤 순서/상품 추첨기 - 공정한 매칭 뽑기',
         '참가자와 상품(번호)을 등록하면, 클릭으로 랜덤하게 순서 또는 상품을 추첨하는 공정한 매칭 추첨기! 실시간 공개, 애니메이션, 재추첨 등 다양한 기능 제공.',
-        '랜덤 순서/상품 추첨기'
+        '랜덤 순서/상품 추첨기',
+        getOgTag({ label: '랜덤 매칭' })
       ),
     ],
   },

@@ -14,7 +14,7 @@ import { LottoAdvancedGeneratedListComponent } from './generated-list.component'
 import { Card } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
-  CreditBalancePillComponent,
+  // CreditBalancePillComponent,
   CreditGateButtonComponent,
 } from '@/components';
 import { CREDIT_SPEND_COST } from '@/constants';
@@ -187,7 +187,7 @@ export function LottoAdvancedGeneratorComponent() {
             onProceed={onGenerate}
             amountOverride={amountOverride}
           />
-          <CreditBalancePillComponent />
+          {/* <CreditBalancePillComponent /> */}
         </div>
 
         {generated.length > 0 && (

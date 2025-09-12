@@ -6,3 +6,4 @@ export * from './team-assignment.util';
 export * from './today-message.util';
 export * from './seo.util';
 export * from './ad-credit.util';
+export * from './gpt.util';

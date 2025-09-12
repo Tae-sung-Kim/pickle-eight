@@ -1,4 +1,4 @@
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import { TeamAssignmentComponent } from './components';
 import { Metadata } from 'next';
 import {
@@ -12,7 +12,7 @@ import { MENU_GROUP_NAME_ENUM } from '@/constants';
 export const metadata: Metadata = {
   title: '팀 배정기 - 랜덤 팀 나누기/조 편성',
   description:
-    '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 모임, 수업, 워크샵, 게임 등에서 공정하게 팀을 나눠보세요.',
+    '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 공정한 배정과 결과 공유(캡처/링크)를 지원합니다.',
   keywords: [
     '팀배정',
     '랜덤팀',
@@ -44,7 +44,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '팀 배정기 - 랜덤 팀 나누기/조 편성',
         '참가자 명단과 팀 개수를 입력하면, 랜덤으로 팀을 나누어주는 팀 배정기! 모임, 수업, 워크샵, 게임 등에서 공정하게 팀을 나눠보세요.',
-        '팀 배정기'
+        '팀 배정기',
+        getOgTag({ label: '팀 배정' })
       ),
     ],
   },

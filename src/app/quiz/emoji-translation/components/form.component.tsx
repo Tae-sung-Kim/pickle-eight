@@ -1,17 +1,17 @@
 'use client';
 
+import { FormEvent } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { EmojiTranslationFormType } from '@/types';
 
-export type SubmitFormProps = {
-  onSubmit: (guess: string) => void;
-  isPending: boolean;
-};
-
-export function SubmitFormComponent({ onSubmit, isPending }: SubmitFormProps) {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+export function EmojiTranslationFormComponent({
+  onSubmit,
+  isPending,
+}: EmojiTranslationFormType) {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const guess = String(formData.get('guess') || '').trim();
@@ -47,3 +47,5 @@ export function SubmitFormComponent({ onSubmit, isPending }: SubmitFormProps) {
     </Card>
   );
 }
+
+export default EmojiTranslationFormComponent;

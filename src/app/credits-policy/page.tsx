@@ -8,7 +8,13 @@ import {
   jsonLdBreadcrumb,
   jsonLdWebSite,
 } from '@/lib';
-import { CREDIT_POLICY, CREDIT_SPEND_COST } from '@/constants';
+import {
+  CREDIT_POLICY,
+  CREDIT_SPEND_COST,
+  GPT_MODEL_COST,
+  GPT_MODEL_ENUM,
+  GPT_MODEL_LABEL,
+} from '@/constants';
 
 /**
  * 크레딧 정책 페이지
@@ -93,6 +99,32 @@ export default function CreditsPolicyPage(): JSX.Element {
             CSV 내보내기: <strong>{CREDIT_SPEND_COST.csv}</strong>
           </li>
         </ul>
+        <div className="mt-3 rounded-md border bg-muted/30 p-3">
+          <p className="text-sm font-medium">AI 퀴즈/게임 모델별 비용</p>
+          <ul className="mt-1 list-disc pl-5 text-sm leading-6">
+            <li>
+              기본 모델({GPT_MODEL_LABEL[GPT_MODEL_ENUM.BASIC]}):{' '}
+              <strong>{GPT_MODEL_COST[GPT_MODEL_ENUM.BASIC]}</strong>{' '}
+              <span className="text-muted-foreground">(무료)</span>
+            </li>
+            <li>
+              스탠다드({GPT_MODEL_LABEL[GPT_MODEL_ENUM.STANDARD]}):{' '}
+              <strong>{GPT_MODEL_COST[GPT_MODEL_ENUM.STANDARD]}</strong>
+            </li>
+            <li>
+              플러스({GPT_MODEL_LABEL[GPT_MODEL_ENUM.PLUS]}):{' '}
+              <strong>{GPT_MODEL_COST[GPT_MODEL_ENUM.PLUS]}</strong>
+            </li>
+            <li>
+              프리미엄({GPT_MODEL_LABEL[GPT_MODEL_ENUM.PREMIUM]}):{' '}
+              <strong>{GPT_MODEL_COST[GPT_MODEL_ENUM.PREMIUM]}</strong>
+            </li>
+          </ul>
+          <p className="mt-2 text-xs text-muted-foreground">
+            유료 모델은 <strong>문제 생성 시점</strong>에 즉시 차감되며, 정답
+            제출과는 무관합니다.
+          </p>
+        </div>
       </section>
 
       <section className="space-y-2 mb-8">
@@ -120,6 +152,10 @@ export default function CreditsPolicyPage(): JSX.Element {
             <li>로또 분석(범위 조회 및 통계 계산)</li>
             <li>로또 고급 번호 생성(가중치/필터 기반)</li>
             <li>CSV 내보내기 및 일부 보상형 기능</li>
+            <li>
+              AI 퀴즈/게임: 기본 모델은 무료, 상위 모델 선택 시 모델별 비용에
+              따라 차감
+            </li>
           </ul>
         </div>
       </section>

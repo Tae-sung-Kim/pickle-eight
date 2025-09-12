@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import type { MenuItemType } from '@/types';
 
 export type MobileMenuLayoutProps = {
   hiddenClass?: string; // default visibility control (tailwind classes)
@@ -93,7 +94,7 @@ export function MobileMenuLayout({ hiddenClass = '' }: MobileMenuLayoutProps) {
                   )}
                 </div>
                 <div className="space-y-1">
-                  {items.map((item) => {
+                  {items.map((item: MenuItemType) => {
                     const isActive = pathname.startsWith(item.href);
                     return (
                       <SheetClose asChild key={item.href}>
@@ -120,6 +121,12 @@ export function MobileMenuLayout({ hiddenClass = '' }: MobileMenuLayoutProps) {
                           </span>
                           {item.isCredit && (
                             <CreditIndicatorComponent size="xs" />
+                          )}
+                          {!item.isCredit && item.isConditionalCredit && (
+                            <CreditIndicatorComponent
+                              size="xs"
+                              showText={true}
+                            />
                           )}
                         </NavLinkComponent>
                       </SheetClose>

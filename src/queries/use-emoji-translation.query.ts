@@ -6,16 +6,28 @@ import {
 import { generateEmojiQuiz, gradeEmojiQuiz } from '@/services';
 import type {
   EmojiQuizGradeType,
-  EmojiQuizProblemType,
-  GenerateValuesType,
-  GradeEmojiQuizInputType,
+  EmojiTranslationProblemType,
+  EmojiGenerateValuesType,
+  EmojiGradeQuizInputType,
 } from '@/types';
 
 export function useGenerateEmojiQuiz(
-  options?: UseMutationOptions<EmojiQuizProblemType, Error, GenerateValuesType>
-): UseMutationResult<EmojiQuizProblemType, Error, GenerateValuesType> {
-  return useMutation<EmojiQuizProblemType, Error, GenerateValuesType>({
-    mutationFn: (v: GenerateValuesType) => generateEmojiQuiz(v),
+  options?: UseMutationOptions<
+    EmojiTranslationProblemType,
+    Error,
+    EmojiGenerateValuesType
+  >
+): UseMutationResult<
+  EmojiTranslationProblemType,
+  Error,
+  EmojiGenerateValuesType
+> {
+  return useMutation<
+    EmojiTranslationProblemType,
+    Error,
+    EmojiGenerateValuesType
+  >({
+    mutationFn: (v: EmojiGenerateValuesType) => generateEmojiQuiz(v),
     ...options,
   });
 }
@@ -24,11 +36,11 @@ export function useGradeEmojiQuiz(
   options?: UseMutationOptions<
     EmojiQuizGradeType,
     Error,
-    GradeEmojiQuizInputType
+    EmojiGradeQuizInputType
   >
-): UseMutationResult<EmojiQuizGradeType, Error, GradeEmojiQuizInputType> {
-  return useMutation<EmojiQuizGradeType, Error, GradeEmojiQuizInputType>({
-    mutationFn: (input: GradeEmojiQuizInputType) => gradeEmojiQuiz(input),
+): UseMutationResult<EmojiQuizGradeType, Error, EmojiGradeQuizInputType> {
+  return useMutation<EmojiQuizGradeType, Error, EmojiGradeQuizInputType>({
+    mutationFn: (input: EmojiGradeQuizInputType) => gradeEmojiQuiz(input),
     ...options,
   });
 }

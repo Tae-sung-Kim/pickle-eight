@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TriviaQuizQuestionType } from '@/types';
 
@@ -22,19 +21,13 @@ export function TriviaQuizQuestionCardComponent({
   disabled,
   answeredId,
 }: TriviaQuizQuestionCardComponentType) {
-  const [selected, setSelected] = useState<string>('');
-
-  const handleSelect = (id: string) => {
-    if (disabled || answeredId) return;
-    setSelected(id);
-  };
-
-  const handleSubmit = () => {
-    if (selected) onAnswer(selected);
-  };
-
   const isAnswered = Boolean(answeredId);
   const isCorrect = answeredId === question.answerId;
+
+  const handleSelect = (id: string) => {
+    if (disabled || isAnswered) return;
+    onAnswer(id);
+  };
 
   return (
     <motion.div
@@ -54,7 +47,7 @@ export function TriviaQuizQuestionCardComponent({
       </motion.div>
       <div className="flex flex-col gap-3">
         {question.options.map((opt) => {
-          const isSelected = (isAnswered ? answeredId : selected) === opt.id;
+          const isSelected = answeredId === opt.id;
           let optionClass =
             'border rounded-xl px-4 py-3 cursor-pointer font-medium surface-card transition-all flex items-center shadow-sm';
           if (isAnswered) {
@@ -66,9 +59,8 @@ export function TriviaQuizQuestionCardComponent({
                 ' border-destructive bg-destructive/10 text-destructive ring-2 ring-destructive/20';
             else optionClass += ' border-border text-muted-foreground';
           } else {
-            optionClass += isSelected
-              ? ' border-primary bg-primary/10 text-primary ring-2 ring-primary/20'
-              : ' border-border hover:border-primary hover:bg-primary/5';
+            optionClass +=
+              ' border-border hover:border-primary hover:bg-primary/5';
           }
           return (
             <motion.div
@@ -85,7 +77,7 @@ export function TriviaQuizQuestionCardComponent({
                 isAnswered && isSelected
                   ? isCorrect
                     ? { scale: 1.05 }
-                    : { x: [0, -8, 8, -8, 8, 0] } // 오답 shake
+                    : { x: [0, -8, 8, -8, 8, 0] }
                   : { scale: 1, x: 0 }
               }
               transition={
@@ -104,26 +96,6 @@ export function TriviaQuizQuestionCardComponent({
           );
         })}
       </div>
-      <AnimatePresence>
-        {!isAnswered && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.button
-              onClick={handleSubmit}
-              disabled={!selected}
-              className="w-full mt-4 py-3 text-lg font-bold bg-primary text-primary-foreground shadow-lg hover:scale-105 active:scale-95 transition-transform rounded"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              정답 제출
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
       <AnimatePresence>
         {isAnswered && (
           <motion.div
@@ -189,7 +161,7 @@ export function TriviaQuizQuestionCardComponent({
             </div>
             <motion.button
               onClick={onNext}
-              className="mt-4 px-6 py-2 text-base font-bold bg-primary text-primary-foreground shadow-md hover:scale-105 active:scale-95 transition-transform rounded"
+              className="mt-4 px-6 py-2 text-base font-bold bg-primary text-primary-foreground shadow-md hover:scale-105 active:scale-95 transition-transform rounded cursor-pointer"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.98 }}
             >

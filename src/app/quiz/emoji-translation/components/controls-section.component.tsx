@@ -1,8 +1,10 @@
 'use client';
 
-import type { GenerateValuesType } from '@/types';
+import type {
+  EmojiControlsSectionType,
+  EmojiGenerateValuesType,
+} from '@/types';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -11,19 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { EMOJI_CATEGORY_ENUM } from '@/constants';
 
-export type ControlsSectionType = {
-  category: string;
-  onCategoryChange: (value: GenerateValuesType['category']) => void;
-  canUse: boolean;
-  used: number;
-  limit: number;
-  isGenerating: boolean;
-  onGenerate: () => void;
-  onReset: () => void;
-};
-
-export function ControlsSectionComponent({
+export function EmojiTranslationControlsSectionComponent({
   category,
   onCategoryChange,
   canUse,
@@ -31,8 +24,8 @@ export function ControlsSectionComponent({
   limit,
   isGenerating,
   onGenerate,
-  onReset,
-}: ControlsSectionType) {
+}: EmojiControlsSectionType) {
+  const categories = Object.values(EMOJI_CATEGORY_ENUM);
   return (
     <Card className="p-5 sm:p-6 rounded-xl shadow-sm">
       <form
@@ -47,17 +40,18 @@ export function ControlsSectionComponent({
           <Select
             value={category}
             onValueChange={(v) =>
-              onCategoryChange(v as GenerateValuesType['category'])
+              onCategoryChange(v as EmojiGenerateValuesType['category'])
             }
           >
             <SelectTrigger className="h-11">
               <SelectValue placeholder="카테고리 선택" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="영화">영화</SelectItem>
-              <SelectItem value="음식">음식</SelectItem>
-              <SelectItem value="일상">일상</SelectItem>
-              <SelectItem value="랜덤">랜덤</SelectItem>
+              {categories.map((c) => (
+                <SelectItem key={c} value={c}>
+                  {c}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <p className="mt-2 text-xs text-muted-foreground">
@@ -65,24 +59,21 @@ export function ControlsSectionComponent({
           </p>
         </div>
         <div className="sm:col-span-1 flex items-end justify-end gap-2">
-          <Button
-            type="submit"
-            variant="default"
-            className="h-11 px-5"
-            disabled={isGenerating || !canUse}
-          >
-            {isGenerating ? '생성 중...' : '새 문제 생성'}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-11 px-5"
-            onClick={onReset}
-          >
-            초기화
-          </Button>
+          <div className="flex flex-col items-end gap-2">
+            <Button
+              type="submit"
+              variant="default"
+              onClick={onGenerate}
+              aria-disabled={isGenerating || !canUse}
+              disabled={isGenerating || !canUse}
+            >
+              문제 생성
+            </Button>
+          </div>
         </div>
       </form>
     </Card>
   );
 }
+
+export default EmojiTranslationControlsSectionComponent;

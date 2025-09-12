@@ -9,6 +9,7 @@ export type MenuItemType = {
   icon: string; // 아이콘 이름만 저장
   example?: string;
   isCredit?: boolean;
+  isConditionalCredit?: boolean; // 모델/옵션에 따라 과금될 수 있는 경우
 };
 
 export type MenuGroupType = {
@@ -29,4 +30,5 @@ export type FeatureItemType = {
   example?: string;
   className?: string;
   isCredit?: boolean;
+  isConditionalCredit?: boolean;
 };

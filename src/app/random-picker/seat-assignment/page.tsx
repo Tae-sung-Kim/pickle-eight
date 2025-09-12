@@ -1,4 +1,4 @@
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import { SeatAssignmentComponent } from './components';
 import { Metadata } from 'next';
 import {
@@ -12,7 +12,7 @@ import { MENU_GROUP_NAME_ENUM } from '@/constants';
 export const metadata: Metadata = {
   title: '자리 배정기 - 랜덤 좌석/자리 배정',
   description:
-    '참가자와 자리 수를 입력하면, 랜덤으로 좌석을 배정해주는 자리 배정기! 모임, 파티, 행사 등에서 공정하게 자리를 정하세요.',
+    '참가자와 자리 수를 입력하면, 랜덤으로 좌석을 배정해주는 자리 배정기! 공정한 배정과 결과 공유(캡처/링크)를 지원합니다.',
   keywords: [
     '자리배정',
     '랜덤자리',
@@ -44,7 +44,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '자리 배정기 - 랜덤 좌석/자리 배정',
         '참가자와 자리 수를 입력하면, 랜덤으로 좌석을 배정해주는 자리 배정기! 모임, 파티, 행사 등에서 공정하게 자리를 정하세요.',
-        '자리 배정기'
+        '자리 배정기',
+        getOgTag({ label: '자리 배정' })
       ),
     ],
   },

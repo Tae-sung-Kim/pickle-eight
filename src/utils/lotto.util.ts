@@ -361,3 +361,21 @@ export const LottoCsvUtils = {
   buildCsvFrom,
   triggerDownload,
 } as const;
+
+export function clampInt(value: string, min: number, max: number): number {
+  const n = parseInt(value, 10);
+  if (Number.isNaN(n)) return min;
+  if (n < min) return min;
+  if (n > max) return max;
+  return n;
+}
+
+export function parseClamp(
+  value: string,
+  min: number,
+  max: number
+): number | undefined {
+  const n = parseInt(value, 10);
+  if (!Number.isFinite(n)) return undefined;
+  return Math.min(max, Math.max(min, n));
+}

@@ -1,3 +1,3 @@
 export * from './root.component';
-export * from './options';
-export * from './status';
+export * from './options.component';
+export * from './status.component';

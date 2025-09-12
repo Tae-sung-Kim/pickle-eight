@@ -27,6 +27,7 @@ type TriviaQuizFormComponentPropsType = {
   watch: UseFormWatch<TriviaQuizFormValuesType>;
   setValue: UseFormSetValue<TriviaQuizFormValuesType>;
   disabled?: boolean;
+  useExternalSubmit?: boolean;
 };
 
 export function TriviaQuizFormComponent({
@@ -36,6 +37,7 @@ export function TriviaQuizFormComponent({
   watch,
   setValue,
   disabled,
+  useExternalSubmit = false,
 }: TriviaQuizFormComponentPropsType) {
   return (
     <motion.form
@@ -120,23 +122,25 @@ export function TriviaQuizFormComponent({
           )}
         </div>
       </div>
-      {/* 버튼 */}
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.35, type: 'spring', stiffness: 300 }}
-        className="flex justify-center"
-      >
-        <motion.button
-          type="submit"
-          disabled={disabled}
-          className="px-8 py-3 text-lg font-bold bg-gradient-to-r from-pink-400 to-violet-400 text-white shadow-lg hover:scale-105 active:scale-95 transition-transform rounded"
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.98 }}
+      {/* 버튼 (외부 컨트롤 사용 시 숨김) */}
+      {!useExternalSubmit && (
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.35, type: 'spring', stiffness: 300 }}
+          className="flex justify-center"
         >
-          퀴즈 시작
-        </motion.button>
-      </motion.div>
+          <motion.button
+            type="submit"
+            disabled={disabled}
+            className="px-8 py-3 text-lg font-bold bg-gradient-to-r from-pink-400 to-violet-400 text-white shadow-lg hover:scale-105 active:scale-95 transition-transform rounded cursor-pointer"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            퀴즈 시작
+          </motion.button>
+        </motion.div>
+      )}
     </motion.form>
   );
 }

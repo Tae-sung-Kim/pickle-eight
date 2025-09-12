@@ -17,6 +17,7 @@ export async function spendCredits(
         'Content-Type': 'application/json',
         Authorization: `Bearer ${idToken}`,
       },
+      timeout: 20000,
     }
   );
   return res.data;
@@ -26,28 +27,34 @@ export async function spendCredits(
  * Fetch current user's credits from server (applies reset/refill) instead of client Firestore.
  */
 export async function getUserCredits(): Promise<UserCreditsType | null> {
-  const user = await ensureAnonUser();
-  const idToken = await user.getIdToken();
-  const res = await http.get<{
-    ok: boolean;
-    credits: number;
-    lastRefillAt?: number;
-    refillArmed?: boolean;
-  }>('credits/me', {
-    headers: { Authorization: `Bearer ${idToken}` },
-  });
-  if (res.data && res.data.ok) {
-    return {
-      credits: res.data.credits,
-      lastRefillAt:
-        typeof res.data.lastRefillAt === 'number'
-          ? res.data.lastRefillAt
-          : undefined,
-      refillArmed:
-        typeof res.data.refillArmed === 'boolean'
-          ? res.data.refillArmed
-          : undefined,
-    };
+  try {
+    const user = await ensureAnonUser();
+    const idToken = await user.getIdToken();
+    const res = await http.get<{
+      ok: boolean;
+      credits: number;
+      lastRefillAt?: number;
+      refillArmed?: boolean;
+    }>('credits/me', {
+      headers: { Authorization: `Bearer ${idToken}` },
+      timeout: 20000,
+    });
+    if (res.data && res.data.ok) {
+      return {
+        credits: res.data.credits,
+        lastRefillAt:
+          typeof res.data.lastRefillAt === 'number'
+            ? res.data.lastRefillAt
+            : undefined,
+        refillArmed:
+          typeof res.data.refillArmed === 'boolean'
+            ? res.data.refillArmed
+            : undefined,
+      };
+    }
+    return null;
+  } catch {
+    // Fail soft to prevent UI block
+    return null;
   }
-  return null;
 }

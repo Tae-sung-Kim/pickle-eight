@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { NameRandomComponent } from './components';
-import { generateOgImageUrl } from '@/utils';
+import { generateOgImageUrl, getOgTag } from '@/utils';
 import {
   BackHubPageComponent,
   ContentWrapperComponent,
@@ -12,7 +12,7 @@ import { MENU_GROUP_NAME_ENUM } from '@/constants';
 export const metadata: Metadata = {
   title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
   description:
-    '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
+    '여러 항목(이름, 메뉴, 경품 등) 중에서 공정하게 랜덤 추첨! 클릭 한 번으로 캡처/링크 공유까지 지원합니다. 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
   keywords: [
     '랜덤추첨',
     '이름추첨',
@@ -23,12 +23,15 @@ export const metadata: Metadata = {
     '경품추첨',
     '아이템추첨',
     '랜덤선택',
+    '공정추첨',
+    '결과공유',
+    '캡처공유',
+    '링크공유',
     '파티게임',
     '모임게임',
     '추첨기',
     '랜덤이벤트',
     '랜덤추천',
-    '공정추첨',
   ],
   openGraph: {
     title: '항목 랜덤 추첨기 - 이름/아이템 뽑기',
@@ -44,7 +47,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '항목 랜덤 추첨기 - 이름/아이템 뽑기',
         '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
-        '항목 랜덤 추첨기'
+        '항목 랜덤 추첨기',
+        getOgTag({ label: '랜덤 추첨' })
       ),
     ],
   },
@@ -57,7 +61,8 @@ export const metadata: Metadata = {
       generateOgImageUrl(
         '항목 랜덤 추첨기 - 이름/아이템 뽑기',
         '여러 항목(이름, 메뉴, 경품 등) 중에서 랜덤으로 하나를 뽑아주는 추첨기! 모임, 파티, 이벤트, 경품 추첨 등 다양한 상황에서 활용하세요.',
-        '항목 랜덤 추첨기'
+        '항목 랜덤 추첨기',
+        getOgTag({ label: '랜덤 추첨' })
       ),
     ],
   },
