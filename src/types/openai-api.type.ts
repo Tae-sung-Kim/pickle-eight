@@ -22,46 +22,33 @@ export type OpenAIRequestType = {
   strictModel?: boolean;
 };
 
+type ChatRole = 'system' | 'user' | 'assistant';
+
 export type OpenAIResponseType = {
   choices: {
     message: {
       content: string;
+      role: ChatRole;
     };
   }[];
 };
 
-export type GptTodayMessageResponse = {
+export type GptTodayMessageResponseType = {
   fortune: string;
   cheer: string;
   todo: string;
   menu: string;
 };
 
-export type GptEnglishWordQuizResponse = {
+export type GptEnglishWordQuizResponseType = {
   quiz: string;
   options: string[];
   answer: string;
   explanation: string;
 };
 
-// Responses API minimal parse shapes
-export type ResponsesApiOutputContentItem = {
-  text?: string;
-  content?: string;
-};
-
-export type ResponsesApiOutputItem = {
-  content?: ResponsesApiOutputContentItem[];
-};
-
-export type OpenAIResponsesApiResponse = {
-  output_text?: string;
-  output?: ResponsesApiOutputItem[];
-  choices?: { message?: { content?: string } }[];
-};
-
 // Explicit error shape returned by OpenAI
-export type OpenAIErrorResponse = {
+export type OpenAIErrorResponseType = {
   error?: {
     message?: string;
     type?: string; // e.g., 'invalid_request_error'

@@ -1,10 +1,10 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { GptEnglishWordQuizResponse } from '@/types';
+import { GptEnglishWordQuizResponseType } from '@/types';
 
 type EnglishWordQuizOptionsComponentType = {
-  quiz: GptEnglishWordQuizResponse;
+  quiz: GptEnglishWordQuizResponseType;
   isRevealed: boolean;
   selectedAnswer: string | null;
   onAnswerSelect: (option: string) => void;

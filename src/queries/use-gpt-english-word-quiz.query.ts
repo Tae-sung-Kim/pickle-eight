@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
-import { GptEnglishWordQuizResponse } from '@/types';
+import { GptEnglishWordQuizResponseType } from '@/types';
 import { http } from '@/lib';
 
 export type EnglishWordQuizRequest = { model?: string };
 
 export const useGptEnglishWordQuizQuery = () => {
   return useMutation<
-    GptEnglishWordQuizResponse,
+    GptEnglishWordQuizResponseType,
     Error,
     EnglishWordQuizRequest | void
   >({
@@ -15,7 +15,7 @@ export const useGptEnglishWordQuizQuery = () => {
         payload && (payload as EnglishWordQuizRequest)?.model
           ? { model: (payload as EnglishWordQuizRequest).model }
           : undefined;
-      const res = await http.post<GptEnglishWordQuizResponse>(
+      const res = await http.post<GptEnglishWordQuizResponseType>(
         '/gpt/english-word-quiz',
         body
       );

@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
-import { GptTodayMessageResponse } from '@/types';
+import { GptTodayMessageResponseType } from '@/types';
 import { http } from '@/lib';
 
 /**
  * GPT 오늘의 문구/운세 요청 훅
  */
 export function useGptTodayMessageQuery() {
-  return useMutation<GptTodayMessageResponse, Error, void>({
+  return useMutation<GptTodayMessageResponseType, Error, void>({
     mutationFn: async () => {
-      const res = await http.post<GptTodayMessageResponse>(
+      const res = await http.post<GptTodayMessageResponseType>(
         '/gpt/today-message?mode=multi'
       );
       if (

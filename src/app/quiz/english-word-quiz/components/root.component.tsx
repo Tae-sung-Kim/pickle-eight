@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useGptEnglishWordQuizQuery } from '@/queries';
-import { GptEnglishWordQuizResponse } from '@/types';
+import { GptEnglishWordQuizResponseType } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb } from 'lucide-react';
@@ -11,7 +11,7 @@ import { EnglishWordQuizOptionsComponent } from './options.component';
 import { Button } from '@/components/ui/button';
 
 export function EnglishWordQuizComponent() {
-  const [quiz, setQuiz] = useState<GptEnglishWordQuizResponse | null>(null);
+  const [quiz, setQuiz] = useState<GptEnglishWordQuizResponseType | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
 
