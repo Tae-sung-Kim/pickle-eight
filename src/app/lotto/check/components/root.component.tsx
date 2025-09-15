@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { LottoDrawType } from '@/types';
+import type { LottoDrawType, TicketFieldNameType } from '@/types';
 import { LottoUtils } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -199,7 +199,7 @@ export function LottoCheckComponent() {
 
   // 숫자 입력 정규화: 숫자만, 최대 2자리, 1~45, 0 금지
   const normalizeTicketInput =
-    (idx: number, name: 'n1' | 'n2' | 'n3' | 'n4' | 'n5' | 'n6') =>
+    (idx: number, name: TicketFieldNameType) =>
     (e: React.FormEvent<HTMLInputElement>) => {
       const el = e.currentTarget;
       let raw = el.value.replace(/[^0-9]/g, '');
@@ -225,7 +225,7 @@ export function LottoCheckComponent() {
 
   // 같은 행(티켓) 중복 체크는 blur 시에만 수행하여 입력 조합(예: 45)을 방해하지 않음
   const onCheckDuplicateOnBlur =
-    (idx: number, name: 'n1' | 'n2' | 'n3' | 'n4' | 'n5' | 'n6') => () => {
+    (idx: number, name: TicketFieldNameType) => () => {
       const row = getValues(`tickets.${idx}` as const) as
         | {
             n1?: number;

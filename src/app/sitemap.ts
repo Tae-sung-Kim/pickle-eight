@@ -3,7 +3,6 @@ import { MENU_LIST } from '@/constants';
 import { SITE_URL } from '@/lib';
 
 const RECENT_DRAWS = 200 as const; // 최근 N개 회차 포함
-const STATS_TYPES = ['frequency', 'range', 'odd-even'] as const; // stats/[type]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = SITE_URL;
@@ -51,17 +50,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // 동적: 로또 통계 타입
-  const dynamicLottoStats = STATS_TYPES.map((t) => `/lotto/stats/${t}`);
-
   // 경로 중복 제거
   const allRoutes = Array.from(
-    new Set([
-      ...staticRoutes,
-      ...menuRoutes,
-      ...dynamicLottoDraws,
-      ...dynamicLottoStats,
-    ])
+    new Set([...staticRoutes, ...menuRoutes, ...dynamicLottoDraws])
   );
 
   const priorityByRoute = (route: string): number => {

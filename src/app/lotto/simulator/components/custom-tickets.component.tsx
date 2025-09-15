@@ -4,8 +4,9 @@ import { useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { LottoCheckTicketRowComponent } from '@/app/lotto/check/components/ticket-row.component';
 import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants';
+import { LottoCheckTicketRowComponent } from '@/components';
+import { TicketFieldNameType } from '@/types';
 
 export type SimulatorCustomTicketsComponentType = Readonly<{
   tickets: ReadonlyArray<{
@@ -113,8 +114,7 @@ export function SimulatorCustomTicketsComponent({
               key={idx}
               index={idx}
               renderInput={(name) => {
-                type NameKey = 'n1' | 'n2' | 'n3' | 'n4' | 'n5' | 'n6';
-                const map: Record<NameKey, number> = {
+                const map: Record<TicketFieldNameType, number> = {
                   n1: 0,
                   n2: 1,
                   n3: 2,
@@ -122,7 +122,7 @@ export function SimulatorCustomTicketsComponent({
                   n5: 4,
                   n6: 5,
                 } as const;
-                const pos = map[name as NameKey];
+                const pos = map[name as TicketFieldNameType];
                 return (
                   <Input
                     type="text"
