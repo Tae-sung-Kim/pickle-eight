@@ -50,7 +50,7 @@ const ICONS: Record<string, LucideIcon> = {
 
 export function HomeMenuGridComponent() {
   return (
-    <section className="max-w-4xl mx-auto py-10 px-2">
+    <section className="max-w-6xl mx-auto py-10 px-2">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {MENU_LIST.map((data) => {
           const groupName = data.group as MenuSectionKeyType;

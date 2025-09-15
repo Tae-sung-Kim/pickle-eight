@@ -75,9 +75,9 @@ function TabBar({
   readonly onChange: (key: TabKey) => void;
 }): JSX.Element {
   return (
-    <div className="sticky top-0 z-10 mt-6 -mx-6 border-b bg-background/80 px-6 shadow-sm ring-1 ring-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:-mx-8 md:px-8">
-      <div className="mx-auto max-w-5xl">
-        <div className="flex gap-2 overflow-x-auto py-2">
+    <div className="sticky top-0 z-10 mt-6 border-b bg-background/80 px-0 shadow-sm ring-1 ring-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex gap-2 overflow-x-auto py-2 pr-2">
           {TABS.map((t) => (
             <button
               key={t.key}
@@ -125,11 +125,15 @@ function SummaryCard({
 
 export function LottoDashboardComponent(): JSX.Element {
   const [active, setActive] = useState<TabKey>('my-numbers');
+  const sidebarNeeded = active === 'constraints' || active === 'hot-cold';
 
   const crumbs = useMemo(
     () =>
       jsonLdBreadcrumb([
-        { name: 'Home', item: canonicalUrl('/') },
+        {
+          name: process.env.NEXT_PUBLIC_SITE_NAME || '운빨연구소',
+          item: canonicalUrl('/'),
+        },
         {
           name: '로또 허브',
           item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`),
@@ -167,7 +171,7 @@ export function LottoDashboardComponent(): JSX.Element {
   }, [budgetQ.data]);
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-10 md:px-8 md:py-12">
+    <section className="w-full mx-auto max-w-6xl px-6 py-10 md:px-8 md:py-12">
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
 
       {/* Header */}
@@ -208,9 +212,17 @@ export function LottoDashboardComponent(): JSX.Element {
       <TabBar active={active} onChange={setActive} />
 
       {/* Content */}
-      <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-3">
+      <div
+        className={`mt-8 grid grid-cols-1 gap-8 ${
+          sidebarNeeded ? 'xl:grid-cols-3' : ''
+        }`}
+      >
         {/* Left: main content stacked */}
-        <div className="xl:col-span-2 space-y-8">
+        <div
+          className={`${
+            sidebarNeeded ? 'xl:col-span-2' : ''
+          } space-y-8 min-w-0`}
+        >
           {active === 'my-numbers' && <MyNumbersComponent />}
           {active === 'constraints' && <ConstraintsGeneratorComponent />}
           {active === 'hot-cold' && <HotColdTrackerComponent />}
@@ -218,29 +230,31 @@ export function LottoDashboardComponent(): JSX.Element {
           {active === 'budget' && <BudgetTrackerComponent />}
         </div>
 
-        {/* Right: when on certain tabs, show helpful secondary sections */}
-        <div className="hidden space-y-8 xl:block">
-          {active === 'constraints' && (
-            <Card className="border-dashed p-5 text-sm leading-relaxed text-muted-foreground md:p-6">
-              제약 팁
-              <ul className="mt-2 list-disc pl-4">
-                <li>합계 범위는 넉넉하게 시작한 뒤 점차 좁히세요.</li>
-                <li>연속 제한은 1~2로 완화하면 유효 조합을 찾기 쉽습니다.</li>
-                <li>고정/제외 번호는 서로 충돌하지 않도록 관리하세요.</li>
-              </ul>
-            </Card>
-          )}
-          {active === 'hot-cold' && (
-            <Card className="border-dashed p-5 text-sm leading-relaxed text-muted-foreground md:p-6">
-              지표 설명
-              <ul className="mt-2 list-disc pl-4">
-                <li>자주 나온 번호: 전체 빈도 상위</li>
-                <li>오랫동안 안 나온 번호: 최근 미출현 회차 수</li>
-                <li>최근 빈도: 최근 구간에서의 출현 횟수</li>
-              </ul>
-            </Card>
-          )}
-        </div>
+        {/* Right: tips sidebar (only when needed) */}
+        {sidebarNeeded && (
+          <div className="hidden space-y-8 xl:block min-w-0">
+            {active === 'constraints' && (
+              <Card className="border-dashed p-5 text-sm leading-relaxed text-muted-foreground md:p-6 max-w-full">
+                제약 팁
+                <ul className="mt-2 list-disc pl-4">
+                  <li>합계 범위는 넉넉하게 시작한 뒤 점차 좁히세요.</li>
+                  <li>연속 제한은 1~2로 완화하면 유효 조합을 찾기 쉽습니다.</li>
+                  <li>고정/제외 번호는 서로 충돌하지 않도록 관리하세요.</li>
+                </ul>
+              </Card>
+            )}
+            {active === 'hot-cold' && (
+              <Card className="border-dashed p-5 text-sm leading-relaxed text-muted-foreground md:p-6 max-w-full">
+                지표 설명
+                <ul className="mt-2 list-disc pl-4">
+                  <li>자주 나온 번호: 전체 빈도 상위</li>
+                  <li>오랫동안 안 나온 번호: 최근 미출현 회차 수</li>
+                  <li>최근 빈도: 최근 구간에서의 출현 횟수</li>
+                </ul>
+              </Card>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -4,7 +4,7 @@ import HomePage from './home/page';
 import { Metadata } from 'next';
 import { generateOgImageUrl } from '@/utils';
 import { JsonLdComponent } from '@/components';
-import { buildMetadata, jsonLdWebSite } from '@/lib';
+import { buildMetadata, jsonLdWebSite, jsonLdOrganization } from '@/lib';
 
 const baseMeta = buildMetadata({
   title: `${process.env.NEXT_PUBLIC_SITE_NAME} - 랜덤 추첨·로또·자리배정·퀴즈`,
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 export default function RootPage() {
   return (
     <>
-      <JsonLdComponent data={[jsonLdWebSite()]} />
+      <JsonLdComponent data={[jsonLdWebSite(), jsonLdOrganization()]} />
       <JsonLdComponent
         data={[
           {
