@@ -144,23 +144,93 @@ export type LottoAnalysisVariantValueType =
 
 export type LottoWarningAlertSpaceType = 'none' | 'sm' | 'md' | 'lg';
 
+/**
+ * Filters for lotto number generation.
+ */
 export type LottoGenerateFiltersType = {
-  readonly sumMin?: number;
-  readonly sumMax?: number;
-  readonly maxConsecutive?: number; // 0=금지, 1=허용, 2=최대 2연속 ...
-  readonly desiredOddCount?: number; // 0..6, 비우면 제한 없음
-  readonly minBucketSpread?: number; // 서로 다른 구간(01-10..41-45) 최소 개수
-  readonly excludeRecentNumbers?: readonly number[]; // 최근 회차에서 제외할 번호들
+  /** Minimum allowed sum of the 6 numbers */
+  sumMin?: number;
+  /** Maximum allowed sum of the 6 numbers */
+  sumMax?: number;
+  /** Max length of consecutive runs allowed: 0=forbid any consecutive run, 1=allow pairs only, etc. */
+  maxConsecutive?: number; // 0=금지, 1=허용, 2=최대 2연속 ...
+  /** Desired count of odd numbers (0..6). If omitted, no restriction. */
+  desiredOddCount?: number; // 0..6, 비우면 제한 없음
+  /** Minimum number of distinct buckets (01-10..41-45) that selected numbers must cover */
+  minBucketSpread?: number; // 서로 다른 구간(01-10..41-45) 최소 개수
+  /** Explicit numbers to exclude from selection (hard ban) */
+  excludeNumbers?: number[];
+  /** Explicit numbers that must be included in the final 6; if length>6, invalid */
+  fixedNumbers?: number[];
+  /** Numbers that appeared in recent draws and should be excluded */
+  excludeRecentNumbers?: number[]; // 최근 회차에서 제외할 번호들
 };
 
-export type LottoWeightingOptionsType = {
-  /** frequency[1..45], 가중치로 사용 */
-  readonly frequency?: Readonly<Record<number, number>>;
-  /** 0(완전랜덤) ~ 1(빈도에 완전 의존) */
-  readonly hotColdAlpha?: number;
-};
+/**
+ * Persisted number set saved by a user.
+ */
+export type LottoNumberSetType = Readonly<{
+  /** Firestore doc id (client-side optional) */
+  id?: string;
+  /** Six unique ascending numbers */
+  numbers: readonly [number, number, number, number, number, number];
+  /** Optional label for quick identification */
+  label?: string;
+  /** Optional tags for grouping/filtering */
+  tags?: readonly string[];
+  /** Mark as favorite */
+  isFavorite?: boolean;
+  /** ISO-8601 created timestamp string or Firestore Timestamp serialized */
+  createdAt?: string;
+  /** ISO-8601 updated timestamp string or Firestore Timestamp serialized */
+  updatedAt?: string;
+}>;
 
-export type LottoAgeGateModeType = 'always' | 'session' | 'ttl';
+/**
+ * Generation fairness/audit log for lotto number creation attempts.
+ */
+export type LottoGenerationLogType = Readonly<{
+  id?: string;
+  /** ISO-8601 timestamp or Firestore Timestamp serialized */
+  ts: string;
+  /** RNG type used */
+  rngType: 'webcrypto' | 'math';
+  /** Optional seed string for reproducibility */
+  seed?: string;
+  /** Filters applied during generation */
+  filters?: LottoGenerateFiltersType;
+  /** User interaction count (e.g., clicks/tries) */
+  clickCount?: number;
+  /** Optional privacy-preserving identifiers */
+  ipHash?: string;
+  userAgent?: string;
+}>;
+
+/**
+ * Saved constraint preset for generator.
+ */
+export type LottoConstraintPresetType = Readonly<{
+  id?: string;
+  name: string;
+  filters: LottoGenerateFiltersType;
+  createdAt?: string;
+}>;
+
+/**
+ * Monthly budget settings and progress for responsible use.
+ */
+export type LottoBudgetDocType = Readonly<{
+  id?: string;
+  /** e.g., '2025-09' */
+  currentMonth: string;
+  /** Monthly cap in KRW (client-side validation only; server is source of truth) */
+  monthlyCap: number;
+  /** Accumulated spend this month (client-estimated; server updates authoritative) */
+  spent: number;
+  /** Warning checkpoints shown, e.g., ['50%','80%','100%'] */
+  warningsShown?: readonly string[];
+  updatedAt?: string;
+}>;
 
 export type LottoDrawCardType = {
   readonly drawNumber: number;
@@ -201,6 +271,16 @@ export type LottoWeightingControlsType = {
   readonly onToggleExcludeLatest: (next: boolean) => void;
 };
 
+/**
+ * Weighting options for generator internals (hot/cold frequency).
+ */
+export type LottoWeightingOptionsType = Readonly<{
+  /** frequency[1..45], used as weights */
+  readonly frequency?: Readonly<Record<number, number>>;
+  /** 0 (pure random) .. 1 (follow weights strongly) */
+  readonly hotColdAlpha?: number;
+}>;
+
 export type LottoAnalysisControlsType = {
   readonly from: number;
   readonly to: number;
@@ -236,3 +316,5 @@ export type LottoSimulatorControlsComponentType = Readonly<{
   onRun: () => void;
   canRun?: boolean;
 }>;
+
+export type LottoAgeGateModeType = 'always' | 'session' | 'ttl';

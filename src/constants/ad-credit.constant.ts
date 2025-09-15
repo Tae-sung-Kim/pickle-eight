@@ -51,6 +51,7 @@ export const CREDIT_SPEND_COST: CreditSpendCostType = {
   simulator: 2,
   advanced: 3,
   csv: 1,
+  report: 2,
 } as const;
 
 export const CREDIT_REFILL_INTERVAL_MS =

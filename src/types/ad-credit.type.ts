@@ -31,6 +31,7 @@ export type CreditSpendCostType = {
   readonly simulator: number;
   readonly advanced: number;
   readonly csv: number;
+  readonly report: number;
 };
 
 export type CreditEarnCheckResultType = {
@@ -98,9 +99,5 @@ export type AdBannerConfigType = {
 };
 
 export type AdsConfigDocType = {
-  readonly top_banner?: {
-    readonly unitId?: string;
-    readonly width?: string | number;
-    readonly height?: string | number;
-  };
+  readonly top_banner?: AdBannerConfigType;
 };

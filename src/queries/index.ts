@@ -6,3 +6,4 @@ export * from './use-lotto.query';
 export * from './use-emoji-translation.query';
 export * from './use-credit.query';
 export * from './use-ads-config.query';
+export * from './use-lotto-user.query';

@@ -90,9 +90,49 @@ export default function CreditsPolicyPage(): JSX.Element {
             고급 기능: <strong>{CREDIT_SPEND_COST.advanced}</strong>
           </li>
           <li>
-            CSV 내보내기: <strong>{CREDIT_SPEND_COST.csv}</strong>
+            CSV 내보내기: <strong>1</strong>
           </li>
         </ul>
+        <div className="mt-3 rounded-md border bg-muted/30 p-3">
+          <p className="text-sm font-medium">세부 과금 규칙(로또)</p>
+          <ul className="mt-1 list-disc pl-5 text-sm leading-6">
+            <li>
+              고급 번호 생성: <strong>최대 3개까지 1 크레딧</strong>, 이후
+              <strong> 2개 추가 생성 시마다 +1 크레딧</strong>이 추가로
+              청구됩니다.
+            </li>
+            <li>
+              자동 비교 실행: 기본 <strong>10회 = 1 크레딧</strong>, 이후
+              <strong> 5회 추가마다 +1 크레딧</strong> (예: 15회=2, 20회=3 …).
+            </li>
+            <li>
+              핫/콜드/지연 조회: <strong>두 가지 모드</strong> 중 하나를 선택해
+              조회합니다. 조회는
+              <em>반드시 조회 버튼 클릭 시</em>에만 실행되며, 그때 크레딧이
+              청구됩니다.
+              <ul className="mt-1 list-disc pl-5">
+                <li>
+                  Top 모드: <strong>Top N은 5단위 버킷</strong>으로 과금됩니다.
+                  <strong> ceil(N/5)</strong> (예: 5=1, 10=2, 15=3 …)
+                </li>
+                <li>
+                  회차 범위 모드: <strong>조회 길이 = (To - From)</strong>을
+                  기준으로
+                  <strong> 10단위 버킷</strong> 과금(
+                  <strong>ceil(length/10)</strong>). 예: 1179~1189 → 길이 10 → 1
+                  크레딧, 1179~1190 → 길이 11 → 2 크레딧
+                </li>
+              </ul>
+            </li>
+            <li>
+              CSV 내보내기: <strong>1</strong> 고정.
+            </li>
+          </ul>
+        </div>
+        <p className="mt-2 text-xs text-muted-foreground">
+          과금 표시는 모든 버튼에 <em>(-{`크레딧`})</em> 형태로 표기되며, 작업
+          실패 시 청구가 취소되거나 복구됩니다.
+        </p>
         <div className="mt-3 rounded-md border bg-muted/30 p-3">
           <p className="text-sm font-medium">AI 퀴즈/게임 크레딧 정책</p>
           <ul className="mt-1 list-disc pl-5 text-sm leading-6">
@@ -137,6 +177,15 @@ export default function CreditsPolicyPage(): JSX.Element {
               AI 퀴즈/게임: <strong>크레딧 소모 없음</strong>
             </li>
           </ul>
+        </div>
+        <div className="mt-2 rounded-md border bg-muted/30 p-3">
+          <p className="text-sm font-medium">요청 쿨다운 안내</p>
+          <p className="text-sm leading-6">
+            짧은 시간에 반복 요청이 과도한 경우{' '}
+            <strong>429(Too Many Requests)</strong>가 발생할 수 있으며, 이 때
+            화면 우측 상단 토스트로 쿨다운 안내가 표시됩니다. 잠시 후 다시
+            시도해 주세요.
+          </p>
         </div>
       </section>
 

@@ -176,6 +176,15 @@ function passesFilters(
     for (const n of nums)
       if (filters.excludeRecentNumbers.includes(n)) return false;
   }
+  if (filters.excludeNumbers && filters.excludeNumbers.length > 0) {
+    for (const n of nums) if (filters.excludeNumbers.includes(n)) return false;
+  }
+  if (isComplete && filters.fixedNumbers && filters.fixedNumbers.length > 0) {
+    const set = new Set(nums);
+    for (const req of filters.fixedNumbers) {
+      if (!set.has(req)) return false;
+    }
+  }
   return true;
 }
 

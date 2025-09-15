@@ -14,13 +14,24 @@ const origin = process.env.NEXT_PUBLIC_SITE_URL;
 const resolvedBaseURL = isServer && origin ? `${origin}/api` : '/api';
 
 /**
- * 인증 토큰을 가져오는 함수 (나중에 구현)
- * 예: Firebase Auth, LocalStorage 등에서 토큰을 가져올 수 있음
+ * 인증 토큰을 가져오는 함수: Firebase Auth 사용
+ * - 클라이언트에서 익명 세션을 보장한 뒤 ID 토큰을 반환
  */
 async function getAuthToken(): Promise<string | null> {
-  // TODO: 실제 인증 로직에 맞게 구현 (ex. Firebase, LocalStorage 등)
-  // 예시: return localStorage.getItem("ACCESS_TOKEN");
-  return null;
+  if (isServer) return null;
+  try {
+    const mod = await import('@/lib/firebase-config');
+    const { auth, ensureAnonUser } = mod;
+    if (!auth.currentUser) {
+      await ensureAnonUser();
+    }
+    const user = auth.currentUser;
+    if (!user) return null;
+    const token = await user.getIdToken();
+    return token ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**

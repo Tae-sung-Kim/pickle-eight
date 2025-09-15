@@ -13,6 +13,17 @@ export const MENU_LIST: MenuGroupType[] = [
     href: '/' + MENU_GROUP_NAME_ENUM.LOTTO,
     items: [
       {
+        href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/dashboard',
+        label: '로또 대시보드',
+        icon: 'LayoutDashboard',
+        colorClass: 'text-primary',
+        description:
+          '나의 번호, 고급 제약 생성, 핫/콜드/지연, 공정성 로그, 예산 트래커를 한 곳에서 관리합니다.',
+        example:
+          '예: 저장 번호 관리, 통계/지표 확인, 제약 조건으로 조합을 만들 때',
+        isConditionalCredit: true,
+      },
+      {
         href: '/' + MENU_GROUP_NAME_ENUM.LOTTO + '/normal-generator',
         label: '번호 무작위 생성',
         icon: 'Ticket',
