@@ -16,7 +16,6 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
-import { LottoCheckTicketRowComponent } from './ticket-row.component';
 import { LottoCheckResultCardComponent } from './result-card.component';
 import { Plus, Sparkles } from 'lucide-react';
 import {
@@ -24,6 +23,7 @@ import {
   useLottoDrawByNumberMutation,
 } from '@/queries';
 import { toast } from 'sonner';
+import { LottoCheckTicketRowComponent } from '@/components';
 
 // 문자열(빈 값 포함)을 숫자로 전처리하는 유틸 스키마
 const toNumber = (min: number, max?: number) =>

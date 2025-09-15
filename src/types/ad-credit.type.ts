@@ -31,6 +31,7 @@ export type CreditSpendCostType = {
   readonly simulator: number;
   readonly advanced: number;
   readonly csv: number;
+  readonly report: number;
 };
 
 export type CreditEarnCheckResultType = {

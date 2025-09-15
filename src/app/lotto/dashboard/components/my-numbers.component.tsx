@@ -2,7 +2,7 @@
 
 import type { JSX } from 'react';
 import { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller, type Resolver } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,12 @@ import {
   useSaveNumberSetMutation,
   useLatestLottoDrawQuery,
 } from '@/queries';
-import { ClientCsvButtonComponent } from '@/components';
+import {
+  ClientCsvButtonComponent,
+  LottoCheckTicketRowComponent,
+  CreditGateButtonComponent,
+} from '@/components';
+import { creditBuildCostLabel } from '@/utils';
 
 const schema = z
   .object({
@@ -41,8 +46,18 @@ const schema = z
     }
   });
 
-// Use schema input type to align with resolver expectations
-type FormType = z.input<typeof schema>;
+// Form values accept string|number for numeric fields to allow empty/typing states
+type NumInput = string | number;
+type FormType = {
+  label?: string;
+  isFavorite: boolean;
+  n1: NumInput;
+  n2: NumInput;
+  n3: NumInput;
+  n4: NumInput;
+  n5: NumInput;
+  n6: NumInput;
+};
 
 export function MyNumbersComponent(): JSX.Element {
   const { data: list = [], isFetching } = useMyNumberSetsQuery();
@@ -60,7 +75,7 @@ export function MyNumbersComponent(): JSX.Element {
   } | null>(null);
 
   const form = useForm<FormType>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as Resolver<FormType>,
     defaultValues: {
       label: '',
       isFavorite: false,
@@ -70,7 +85,7 @@ export function MyNumbersComponent(): JSX.Element {
       n4: '',
       n5: '',
       n6: '',
-    } as unknown as FormType,
+    },
   });
 
   const csvHeaders = useMemo(() => ['label', 'numbers', 'favorite'], []);
@@ -88,24 +103,26 @@ export function MyNumbersComponent(): JSX.Element {
   );
 
   const onSubmit = form.handleSubmit(async (values) => {
+    const nums = [
+      values.n1,
+      values.n2,
+      values.n3,
+      values.n4,
+      values.n5,
+      values.n6,
+    ]
+      .map((v) => Number(v))
+      .slice(0, 6)
+      .sort((a, b) => a - b) as [
+      number,
+      number,
+      number,
+      number,
+      number,
+      number
+    ];
     await saveMut.mutateAsync({
-      numbers: [
-        values.n1,
-        values.n2,
-        values.n3,
-        values.n4,
-        values.n5,
-        values.n6,
-      ]
-        .slice(0, 6)
-        .sort((a, b) => a - b) as unknown as [
-        number,
-        number,
-        number,
-        number,
-        number,
-        number
-      ],
+      numbers: nums,
       label: values.label?.trim() || undefined,
       isFavorite: Boolean(values.isFavorite),
     });
@@ -118,7 +135,7 @@ export function MyNumbersComponent(): JSX.Element {
       n4: '',
       n5: '',
       n6: '',
-    } as unknown as FormType);
+    });
   });
 
   const canCompare = compareKey != null;
@@ -135,45 +152,128 @@ export function MyNumbersComponent(): JSX.Element {
     setRange({ from, to });
   };
 
-  const rangeValid = useMemo(() => {
-    const f = Number(range.from);
-    const t = Number(range.to);
-    return Number.isFinite(f) && Number.isFinite(t) && f >= 1 && t >= f;
-  }, [range]);
+  const numberFields = ['n1', 'n2', 'n3', 'n4', 'n5', 'n6'] as const;
+  type NumberFieldName = (typeof numberFields)[number];
+  type ErrorFields = Partial<Record<NumberFieldName, { message?: string }>>;
+
+  const isDuplicate = (name: NumberFieldName, val: string): boolean => {
+    const num = Number(val);
+    if (!Number.isInteger(num)) return false;
+    for (const f of numberFields) {
+      if (f === name) continue;
+      const v = form.getValues(f as unknown as keyof FormType) as unknown as
+        | string
+        | number
+        | undefined;
+      const ov = typeof v === 'number' ? v : Number(v);
+      if (Number.isInteger(ov) && ov === num) return true;
+    }
+    return false;
+  };
+
+  const numberErrors = form.formState.errors as unknown as ErrorFields;
+  const firstNumberErrorMsg =
+    numberFields
+      .map((f) => numberErrors[f]?.message)
+      .find((m): m is string => typeof m === 'string' && m.length > 0) || null;
 
   return (
-    <div className="grid grid-cols-1 gap-6">
-      <Card className="border-border bg-surface-card p-5">
+    <div className="grid grid-cols-1 gap-8">
+      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
         <h3 className="font-semibold">번호 저장</h3>
         <form
           onSubmit={onSubmit}
-          className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3"
+          className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3"
         >
           <div className="sm:col-span-3">
-            <Label htmlFor="label">레이블</Label>
+            <Label htmlFor="label" className="p-3">
+              레이블
+            </Label>
             <Input
               id="label"
               placeholder="예: 매주 고정"
               {...form.register('label')}
             />
           </div>
-          <div className="grid grid-cols-3 gap-3 sm:col-span-3 sm:grid-cols-6">
-            <Input inputMode="numeric" type="text" {...form.register('n1')} />
-            <Input inputMode="numeric" type="text" {...form.register('n2')} />
-            <Input inputMode="numeric" type="text" {...form.register('n3')} />
-            <Input inputMode="numeric" type="text" {...form.register('n4')} />
-            <Input inputMode="numeric" type="text" {...form.register('n5')} />
-            <Input inputMode="numeric" type="text" {...form.register('n6')} />
-          </div>
-          <div className="flex items-center gap-2 sm:col-span-3">
-            <Switch
-              id="favorite"
-              checked={form.watch('isFavorite') ?? false}
-              onCheckedChange={(v) => form.setValue('isFavorite', v)}
+          <div className="sm:col-span-3 w-full">
+            <LottoCheckTicketRowComponent
+              index={0}
+              canRemove={false}
+              onRemove={() => {}}
+              renderInput={(name) => (
+                <Controller
+                  name={name as unknown as keyof FormType}
+                  control={form.control}
+                  render={({ field }) => (
+                    <Input
+                      inputMode="numeric"
+                      type="text"
+                      autoComplete="off"
+                      pattern="[0-9]*"
+                      value={(field.value as string) ?? ''}
+                      aria-invalid={Boolean(
+                        (form.formState.errors as unknown as ErrorFields)[
+                          name as NumberFieldName
+                        ]
+                      )}
+                      className="h-10 w-12 text-center sm:w-14"
+                      onChange={(e) => {
+                        const raw = e.target.value;
+                        if (raw === '') {
+                          form.clearErrors(name as NumberFieldName);
+                          field.onChange(raw);
+                          return;
+                        }
+                        if (!/^\d{1,2}$/.test(raw)) {
+                          return; // ignore non-numeric or >2 digits typing
+                        }
+                        field.onChange(raw);
+                      }}
+                      onBlur={() => {
+                        const val = String(field.value ?? '');
+                        if (val === '') {
+                          form.clearErrors(name as NumberFieldName);
+                          return;
+                        }
+                        const num = Number(val);
+                        if (!Number.isInteger(num) || num < 1 || num > 45) {
+                          form.setError(name as NumberFieldName, {
+                            type: 'range',
+                            message: '1~45 사이의 정수를 입력하세요.',
+                          });
+                          return;
+                        }
+                        if (isDuplicate(name as NumberFieldName, val)) {
+                          form.setError(name as NumberFieldName, {
+                            type: 'duplicate',
+                            message: '중복 번호는 입력할 수 없어요.',
+                          });
+                          return;
+                        }
+                        form.clearErrors(name as NumberFieldName);
+                      }}
+                    />
+                  )}
+                />
+              )}
             />
-            <Label htmlFor="favorite">즐겨찾기</Label>
           </div>
-          <div className="sm:col-span-3">
+          {firstNumberErrorMsg && (
+            <div className="sm:col-span-3 -mt-2 text-xs text-destructive">
+              {firstNumberErrorMsg}
+            </div>
+          )}
+          <div className="sm:col-span-3 mt-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="favorite"
+                checked={form.watch('isFavorite') ?? false}
+                onCheckedChange={(v) => form.setValue('isFavorite', v)}
+              />
+              <Label htmlFor="favorite" className="p-3">
+                즐겨찾기
+              </Label>
+            </div>
             <Button type="submit" disabled={saveMut.isPending}>
               저장
             </Button>
@@ -181,7 +281,7 @@ export function MyNumbersComponent(): JSX.Element {
         </form>
       </Card>
 
-      <Card className="border-border bg-surface-card p-5">
+      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold">저장된 번호</h3>
           <ClientCsvButtonComponent
@@ -193,17 +293,17 @@ export function MyNumbersComponent(): JSX.Element {
           />
         </div>
         {isFetching ? (
-          <p className="mt-3 text-sm text-muted-foreground">불러오는 중…</p>
+          <p className="mt-4 text-sm text-muted-foreground">불러오는 중…</p>
         ) : list.length === 0 ? (
-          <p className="mt-3 text-sm text-muted-foreground">
+          <p className="mt-4 text-sm text-muted-foreground">
             아직 저장된 번호가 없습니다.
           </p>
         ) : (
-          <ul className="mt-3 grid grid-cols-1 gap-3">
+          <ul className="mt-4 grid grid-cols-1 gap-3">
             {list.map((it) => (
               <li
                 key={it.id}
-                className="flex items-center justify-between rounded-lg border p-3"
+                className="flex items-center justify-between rounded-lg border bg-card/50 p-3 transition hover:bg-card"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-medium">
@@ -227,7 +327,7 @@ export function MyNumbersComponent(): JSX.Element {
                         n4: String(it.numbers[3]),
                         n5: String(it.numbers[4]),
                         n6: String(it.numbers[5]),
-                      } as unknown as FormType)
+                      })
                     }
                   >
                     불러오기
@@ -250,11 +350,13 @@ export function MyNumbersComponent(): JSX.Element {
         )}
       </Card>
 
-      <Card className="border-border bg-surface-card p-5">
+      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
         <h3 className="font-semibold">자동 비교</h3>
-        <div className="mt-3 flex flex-wrap items-end gap-3">
+        <div className="mt-4 flex flex-wrap items-end gap-3">
           <div>
-            <Label htmlFor="from">From (회차)</Label>
+            <Label htmlFor="from" className="p-3">
+              From (회차)
+            </Label>
             <Input
               id="from"
               type="text"
@@ -269,7 +371,9 @@ export function MyNumbersComponent(): JSX.Element {
             />
           </div>
           <div>
-            <Label htmlFor="to">To (회차)</Label>
+            <Label htmlFor="to" className="p-3">
+              To (회차)
+            </Label>
             <Input
               id="to"
               type="text"
@@ -286,21 +390,39 @@ export function MyNumbersComponent(): JSX.Element {
           <Button type="button" variant="secondary" onClick={setDefaultRange}>
             최근 10주 자동
           </Button>
-          <Button
-            type="button"
-            onClick={() =>
-              setCompareKey({
-                from: Number(range.from),
-                to: Number(range.to),
-              })
-            }
-            disabled={list.length === 0 || !rangeValid}
-          >
-            비교 실행
-          </Button>
+          {(() => {
+            const f = Number(range.from);
+            const t = Number(range.to);
+            const len =
+              Number.isFinite(f) && Number.isFinite(t) && t > f ? t - f : 0;
+            // Strict 10-bucket pricing for auto compare: amount = ceil(len/10)
+            const compareAmount = Math.max(1, Math.ceil(len / 10));
+            const label = creditBuildCostLabel({
+              spendKey: 'simulator',
+              baseLabel: '자동 비교',
+              isBusy: false,
+              busyLabel: '비교 중…',
+              amountOverride: compareAmount,
+            });
+            const disabled = len < 1;
+            return (
+              <div className={disabled ? 'pointer-events-none opacity-50' : ''}>
+                <CreditGateButtonComponent
+                  variant="default"
+                  label={label}
+                  spendKey="simulator"
+                  amountOverride={compareAmount}
+                  onProceed={() => {
+                    if (disabled) return;
+                    setCompareKey({ from: f, to: t });
+                  }}
+                />
+              </div>
+            );
+          })()}
         </div>
         {cmp.isFetching && (
-          <p className="mt-3 text-sm text-muted-foreground">비교 중…</p>
+          <p className="mt-4 text-sm text-muted-foreground">비교 중…</p>
         )}
         {!cmp.isFetching && cmp.data && cmp.data.length > 0 && (
           <div className="mt-4 grid grid-cols-1 gap-3">
@@ -313,7 +435,7 @@ export function MyNumbersComponent(): JSX.Element {
               return (
                 <div
                   key={row.id ?? row.label ?? row.numbers.join('-')}
-                  className="rounded-lg border p-3"
+                  className="rounded-lg border bg-card/50 p-3 transition hover:bg-card"
                 >
                   <div className="flex items-center justify-between">
                     <div className="font-medium">{row.label || '무제'}</div>

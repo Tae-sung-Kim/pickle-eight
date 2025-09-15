@@ -69,7 +69,7 @@ export function BudgetTrackerComponent(): JSX.Element {
 
   return (
     <div className="grid grid-cols-1 gap-6">
-      <Card className="border-border bg-surface-card p-5">
+      <Card className="border-border bg-surface-card p-5 bg-white">
         <h3 className="font-semibold">예산 설정</h3>
         <p className="mt-1 text-xs text-muted-foreground">
           책임 있는 이용을 위해 월 예산을 설정하고 진행 상황을 관리하세요.
@@ -82,7 +82,9 @@ export function BudgetTrackerComponent(): JSX.Element {
           className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3"
         >
           <div>
-            <Label htmlFor="currentMonth">월(YYYY-MM)</Label>
+            <Label htmlFor="currentMonth" className="p-3">
+              월(YYYY-MM)
+            </Label>
             <Input
               id="currentMonth"
               placeholder="2025-09"
@@ -90,7 +92,9 @@ export function BudgetTrackerComponent(): JSX.Element {
             />
           </div>
           <div>
-            <Label htmlFor="monthlyCap">월 예산</Label>
+            <Label htmlFor="monthlyCap" className="p-3">
+              월 예산
+            </Label>
             <Input
               id="monthlyCap"
               type="text"
@@ -99,7 +103,9 @@ export function BudgetTrackerComponent(): JSX.Element {
             />
           </div>
           <div>
-            <Label htmlFor="spent">이번달 사용</Label>
+            <Label htmlFor="spent" className="p-3">
+              이번달 사용
+            </Label>
             <Input
               id="spent"
               type="text"

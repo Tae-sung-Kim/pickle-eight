@@ -109,7 +109,7 @@ function SummaryCard({
   readonly hint?: string;
 }): JSX.Element {
   return (
-    <Card className="border-border bg-surface-card p-5 md:p-6">
+    <Card className="bg-white border-border p-5 md:p-6">
       <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
         {title}
       </div>

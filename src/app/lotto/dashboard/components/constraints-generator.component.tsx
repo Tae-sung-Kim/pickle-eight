@@ -9,8 +9,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-import { LottoGenerator } from '@/utils/lotto.util';
+import {
+  ClientCsvButtonComponent,
+  CreditGateButtonComponent,
+} from '@/components';
+import { creditBuildCostLabel, LottoGenerator } from '@/utils';
+import { toast } from 'sonner';
 import type {
   LottoConstraintPresetType,
   LottoGenerateFiltersType,
@@ -21,7 +25,6 @@ import {
   useSaveConstraintPresetMutation,
   useSaveGenerationLogMutation,
 } from '@/queries';
-import { ClientCsvButtonComponent } from '@/components';
 import { useSearchParams } from 'next/navigation';
 
 // helper: empty string -> undefined, then coerce to int range
@@ -35,7 +38,7 @@ const toOptionalInt = (min: number, max: number) =>
 
 const schema = z
   .object({
-    count: z.coerce.number().int().min(1).max(20).default(5),
+    count: z.coerce.number().int().min(1).max(20).default(3),
     excludeNumbers: z.string().trim().optional(),
     fixedNumbers: z.string().trim().optional(),
     sumMin: toOptionalInt(6, 270),
@@ -93,7 +96,7 @@ function toFilters(v: FormType): LottoGenerateFiltersType {
 export function ConstraintsGeneratorComponent(): JSX.Element {
   const form = useForm<FormType>({
     resolver: zodResolver(schema),
-    defaultValues: { count: 5 },
+    defaultValues: { count: 3 },
   });
   const [items, setItems] = useState<GeneratedRow[]>([]);
   const [clicks, setClicks] = useState<number>(0);
@@ -121,7 +124,20 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
       setItems(out.map((o) => ({ numbers: o.numbers })));
       setClicks((c) => c + 1);
       // fire-and-forget fairness log (errors are not critical to UX)
-      saveLogMut.mutate({ rngType, filters, clickCount: clicks + 1 });
+      saveLogMut.mutate(
+        { rngType, filters, clickCount: clicks + 1 },
+        {
+          onError: (err: unknown) => {
+            const status = (err as { response?: { status?: number } })?.response
+              ?.status;
+            if (status === 429) {
+              toast.warning(
+                '잠시 후 다시 시도해주세요. 요청이 너무 많습니다(쿨다운).'
+              );
+            }
+          },
+        }
+      );
     } catch (e) {
       setItems([]);
       setErrorMsg(
@@ -129,6 +145,17 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
           e
       );
     }
+  });
+
+  const countVal = Number(form.watch('count') ?? 1);
+  const genExtraSteps = Math.max(0, Math.ceil((countVal - 3) / 2));
+  const genAmountOverride = 1 + genExtraSteps;
+  const generateLabel = creditBuildCostLabel({
+    spendKey: 'advanced',
+    baseLabel: '생성',
+    isBusy: false,
+    busyLabel: '생성 중…',
+    amountOverride: genAmountOverride,
   });
 
   // Prefill from URL params (e.g., reproduce from fairness logs)
@@ -186,8 +213,8 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
   );
 
   return (
-    <div className="grid grid-cols-1 gap-6">
-      <Card className="border-border bg-surface-card p-5">
+    <div className="grid grid-cols-1 gap-8">
+      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold">조건 입력</h3>
           <ClientCsvButtonComponent
@@ -198,13 +225,12 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
             baseLabel="결과 CSV 내보내기"
           />
         </div>
-        <form
-          onSubmit={onGenerate}
-          className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3"
-        >
+        <form className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="sm:col-span-3 grid grid-cols-1 gap-3 sm:grid-cols-6">
             <div>
-              <Label htmlFor="count">개수</Label>
+              <Label htmlFor="count" className="p-3">
+                개수
+              </Label>
               <Input
                 id="count"
                 type="text"
@@ -213,7 +239,9 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
               />
             </div>
             <div>
-              <Label htmlFor="sumMin">합계 최소</Label>
+              <Label htmlFor="sumMin" className="p-3">
+                합계 최소
+              </Label>
               <Input
                 id="sumMin"
                 type="text"
@@ -222,7 +250,9 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
               />
             </div>
             <div>
-              <Label htmlFor="sumMax">합계 최대</Label>
+              <Label htmlFor="sumMax" className="p-3">
+                합계 최대
+              </Label>
               <Input
                 id="sumMax"
                 type="text"
@@ -231,7 +261,9 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
               />
             </div>
             <div>
-              <Label htmlFor="maxConsecutive">연속 제한</Label>
+              <Label htmlFor="maxConsecutive" className="p-3">
+                연속 제한
+              </Label>
               <Input
                 id="maxConsecutive"
                 type="text"
@@ -240,7 +272,9 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
               />
             </div>
             <div>
-              <Label htmlFor="desiredOddCount">홀수 개수</Label>
+              <Label htmlFor="desiredOddCount" className="p-3">
+                홀수 개수
+              </Label>
               <Input
                 id="desiredOddCount"
                 type="text"
@@ -249,7 +283,9 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
               />
             </div>
             <div>
-              <Label htmlFor="minBucketSpread">버킷 최소</Label>
+              <Label htmlFor="minBucketSpread" className="p-3">
+                버킷 최소
+              </Label>
               <Input
                 id="minBucketSpread"
                 type="text"
@@ -259,7 +295,9 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
             </div>
           </div>
           <div className="sm:col-span-3">
-            <Label htmlFor="excludeNumbers">제외 번호(쉼표/공백 구분)</Label>
+            <Label htmlFor="excludeNumbers" className="p-3">
+              제외 번호(쉼표/공백 구분)
+            </Label>
             <Input
               id="excludeNumbers"
               placeholder="예: 1, 2, 3"
@@ -267,7 +305,9 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
             />
           </div>
           <div className="sm:col-span-3">
-            <Label htmlFor="fixedNumbers">고정 번호(쉼표/공백 구분)</Label>
+            <Label htmlFor="fixedNumbers" className="p-3">
+              고정 번호(쉼표/공백 구분)
+            </Label>
             <Input
               id="fixedNumbers"
               placeholder="예: 7 14 21"
@@ -275,12 +315,19 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
             />
           </div>
           <div className="sm:col-span-3 flex items-end gap-3">
-            <Button type="submit">생성</Button>
+            <CreditGateButtonComponent
+              label={generateLabel}
+              spendKey="advanced"
+              amountOverride={genAmountOverride}
+              onProceed={() => {
+                void onGenerate();
+              }}
+            />
           </div>
         </form>
       </Card>
 
-      <Card className="border-border bg-surface-card p-5">
+      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
         <h3 className="font-semibold">생성 결과</h3>
         <div className="mt-2 text-xs text-muted-foreground">
           생성 근거: {now} · RNG: {rngType}
@@ -305,11 +352,13 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
         )}
       </Card>
 
-      <Card className="border-border bg-surface-card p-5">
+      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
         <h3 className="font-semibold">프리셋</h3>
-        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="sm:col-span-2">
-            <Label htmlFor="presetName">프리셋 이름</Label>
+            <Label htmlFor="presetName" className="p-3">
+              프리셋 이름
+            </Label>
             <Input
               id="presetName"
               placeholder="예: 합150±, 2연속 이하"
@@ -327,13 +376,13 @@ export function ConstraintsGeneratorComponent(): JSX.Element {
           </div>
         </div>
         {presetsQ.isFetching ? (
-          <p className="mt-3 text-sm text-muted-foreground">불러오는 중…</p>
+          <p className="mt-4 text-sm text-muted-foreground">불러오는 중…</p>
         ) : (presetsQ.data?.length ?? 0) === 0 ? (
-          <p className="mt-3 text-sm text-muted-foreground">
+          <p className="mt-4 text-sm text-muted-foreground">
             저장된 프리셋이 없습니다.
           </p>
         ) : (
-          <ul className="mt-3 grid grid-cols-1 gap-2">
+          <ul className="mt-4 grid grid-cols-1 gap-2">
             {presetsQ.data!.map((p) => (
               <li
                 key={p.id}

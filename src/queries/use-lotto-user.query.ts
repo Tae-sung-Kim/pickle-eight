@@ -100,12 +100,13 @@ export function useDeleteConstraintPresetMutation() {
   });
 }
 
-export function useHotColdStatsQuery() {
+export function useHotColdStatsQuery(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: keys.hotCold,
     queryFn: () => getHotColdStats(),
     staleTime: 60 * 60 * 1000,
     refetchOnWindowFocus: false,
+    enabled: options?.enabled ?? false,
   });
 }
 
