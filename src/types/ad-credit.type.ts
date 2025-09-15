@@ -98,9 +98,5 @@ export type AdBannerConfigType = {
 };
 
 export type AdsConfigDocType = {
-  readonly top_banner?: {
-    readonly unitId?: string;
-    readonly width?: string | number;
-    readonly height?: string | number;
-  };
+  readonly top_banner?: AdBannerConfigType;
 };

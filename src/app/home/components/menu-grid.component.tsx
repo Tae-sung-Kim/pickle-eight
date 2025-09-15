@@ -16,6 +16,7 @@ import {
   BarChart2,
   CheckCircle2,
   PlayCircle,
+  LayoutDashboard,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -44,6 +45,7 @@ const ICONS: Record<string, LucideIcon> = {
   BarChart2,
   CheckCircle2,
   PlayCircle,
+  LayoutDashboard,
 };
 
 export function HomeMenuGridComponent() {

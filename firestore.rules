@@ -21,6 +21,27 @@ service cloud.firestore {
     match /users/{uid} {
       allow read: if isSignedIn() && request.auth.uid == uid;
       allow write: if false;
+
+      // 2-1) lotto_number_sets: 본인만 읽기/쓰기 허용
+      match /lotto_number_sets/{docId} {
+        allow read: if isSignedIn() && request.auth.uid == uid;
+        allow write: if isSignedIn() && request.auth.uid == uid;
+      }
+      // 2-2) lotto_generation_logs: 본인만 읽기/쓰기 허용
+      match /lotto_generation_logs/{docId} {
+        allow read: if isSignedIn() && request.auth.uid == uid;
+        allow write: if isSignedIn() && request.auth.uid == uid;
+      }
+      // 2-3) lotto_constraint_presets: 본인만 읽기/쓰기 허용
+      match /lotto_constraint_presets/{docId} {
+        allow read: if isSignedIn() && request.auth.uid == uid;
+        allow write: if isSignedIn() && request.auth.uid == uid;
+      }
+      // 2-4) budgets: 본인만 읽기/쓰기 허용
+      match /budgets/{docId} {
+        allow read: if isSignedIn() && request.auth.uid == uid;
+        allow write: if isSignedIn() && request.auth.uid == uid;
+      }
     }
 
     // 3) 크레딧 관련: 클라이언트 읽기/쓰기 전부 금지(서버만)
@@ -37,6 +58,12 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // 4) 그 외 컬렉션: 명시적 허용이 없으면 기본 거부(더 안전)
+    // 4) 로또 통계 공개 읽기 (서버가 갱신)
+    match /lotto_stats/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 5) 그 외 컬렉션: 명시적 허용이 없으면 기본 거부(더 안전)
   }
 }

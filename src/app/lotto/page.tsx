@@ -70,62 +70,15 @@ export default function LottoHubPage() {
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
-      <JsonLdComponent
-        data={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: [
-              {
-                '@type': 'Question',
-                name: '로또 번호 추천(로또 번호 무작위 생성)은 어떻게 이루어지나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '무작위 생성과 과거 빈도·패턴 등 통계 정보를 참고해 조합을 제안합니다. 특정 당첨을 보장하지 않으며 참고용입니다.',
-                },
-              },
-              {
-                '@type': 'Question',
-                name: '연령 제한이 있나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '로또 관련 기능은 만 19세 이상에게만 제공됩니다. 성인 확인(에이지 게이트)을 통해 접근이 제한됩니다.',
-                },
-              },
-              {
-                '@type': 'Question',
-                name: '개인정보가 저장되나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '핵심 기능에 불필요한 개인정보 저장은 최소화합니다. 비필수 분석/광고는 동의가 있을 때만 실행됩니다. 자세한 내용은 개인정보처리방침을 확인하세요.',
-                },
-              },
-            ],
-          },
-        ]}
-      />
-      <JsonLdComponent
-        data={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'ItemList',
-            itemListElement: lottoItems.map((it, idx) => ({
-              '@type': 'ListItem',
-              position: idx + 1,
-              url: canonicalUrl(it.href),
-              name: it.label,
-              description: it.desc,
-            })),
-          },
-        ]}
-      />
-      <div className="flex items-center gap-3">
-        <span
-          className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ring-1 ${theme.headerBadge}`}
-        >
-          <span className="text-lg">🍀</span>
-          로또
-        </span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ring-1 ${theme.headerBadge}`}
+          >
+            <span className="text-lg">🍀</span>
+            로또
+          </span>
+        </div>
       </div>
       <h1 className="mt-3 text-2xl font-bold tracking-tight">로또 허브</h1>
       <p className="mt-2 text-sm text-muted-foreground">
