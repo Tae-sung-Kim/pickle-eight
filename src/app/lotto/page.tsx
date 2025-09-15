@@ -46,6 +46,7 @@ export const metadata: Metadata = {
 };
 
 export default function LottoHubPage() {
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || '운빨연구소';
   const lottoItems = (
     MENU_LIST.find((g) => g.group === 'lotto')?.items ?? []
   ).map((it) => ({
@@ -59,7 +60,7 @@ export default function LottoHubPage() {
   }));
 
   const crumbs = jsonLdBreadcrumb([
-    { name: 'Home', item: canonicalUrl('/') },
+    { name: siteName, item: canonicalUrl('/') },
     { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },
   ]);
 
@@ -72,6 +73,19 @@ export default function LottoHubPage() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-10 md:px-8 md:py-12">
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
+      <JsonLdComponent
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          itemListElement: lottoItems.map((it, idx) => ({
+            '@type': 'ListItem',
+            position: idx + 1,
+            name: it.label,
+            url: canonicalUrl(it.href),
+            description: it.desc,
+          })),
+        }}
+      />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span

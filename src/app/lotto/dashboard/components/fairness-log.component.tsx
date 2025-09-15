@@ -33,7 +33,7 @@ export function FairnessLogComponent(): JSX.Element {
   const { data = [], isFetching } = useGenerationLogsQuery(30);
 
   return (
-    <div className="grid grid-cols-1 gap-8">
+    <div className="grid grid-cols-1 gap-8 min-w-0">
       <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
         <h3 className="font-semibold">최근 생성 기록</h3>
         <p className="mt-2 text-xs text-muted-foreground">
@@ -47,22 +47,27 @@ export function FairnessLogComponent(): JSX.Element {
             아직 기록이 없습니다.
           </p>
         ) : (
-          <ul className="mt-4 grid grid-cols-1 gap-3">
+          <ul className="mt-4 grid grid-cols-1 gap-3 min-w-0">
             {data.map((row) => (
-              <li key={row.id} className="rounded-lg border p-3 text-sm">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="font-medium">{row.ts}</div>
+              <li
+                key={row.id}
+                className="rounded-lg border p-3 text-sm min-w-0"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2 min-w-0">
+                  <div className="font-medium truncate" title={row.ts}>
+                    {row.ts}
+                  </div>
                   <div className="text-xs text-muted-foreground">
                     RNG: {row.rngType}
                   </div>
                 </div>
                 {row.seed && (
-                  <div className="mt-1 text-xs text-muted-foreground">
+                  <div className="mt-1 text-xs text-muted-foreground break-all whitespace-pre-wrap">
                     seed: {row.seed}
                   </div>
                 )}
                 {row.filters && (
-                  <div className="mt-1 text-xs text-muted-foreground">
+                  <div className="mt-1 text-xs text-muted-foreground break-all whitespace-pre-wrap">
                     filters: {JSON.stringify(row.filters)}
                   </div>
                 )}

@@ -47,6 +47,7 @@ export const metadata: Metadata = {
 };
 
 export default function QuizHubPage() {
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || '운빨연구소';
   const quizItems = (
     MENU_LIST.find((g) => g.group === MENU_GROUP_NAME_ENUM.QUIZ)?.items ?? []
   ).map((it: MenuItemType) => ({
@@ -58,7 +59,7 @@ export default function QuizHubPage() {
   }));
 
   const crumbs = jsonLdBreadcrumb([
-    { name: 'Home', item: canonicalUrl('/') },
+    { name: siteName, item: canonicalUrl('/') },
     { name: '퀴즈 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}`) },
   ]);
 
@@ -69,7 +70,7 @@ export default function QuizHubPage() {
   } as const;
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-10">
+    <section className="mx-auto max-w-8xl px-4 py-10">
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <JsonLdComponent
         data={[

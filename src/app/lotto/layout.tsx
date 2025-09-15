@@ -10,12 +10,12 @@ export default function LottoLayout({
   children: ReactNode;
 }): JSX.Element {
   return (
-    <div className="mx-auto max-w-5xl px-4">
+    <div className="mx-auto max-w-6xl px-6 md:px-8">
       <div className="pt-6">
         <LottoWarningAlertComponent
           includeAgeNotice={true}
           space="md"
-          xSpace="md"
+          xSpace="lg"
         />
       </div>
       {children}
