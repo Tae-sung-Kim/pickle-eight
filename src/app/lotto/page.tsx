@@ -112,16 +112,6 @@ export default function LottoHubPage() {
                   {it.desc}
                 </p>
               </div>
-              <div className="shrink-0 text-muted-foreground">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-muted/50 text-sm">
-                  {/* simple emoji fallback for icons defined by string */}
-                  {it.icon === 'LayoutDashboard'
-                    ? '📊'
-                    : it.icon === 'Ticket'
-                    ? '🎫'
-                    : '🔗'}
-                </span>
-              </div>
             </div>
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {it.isConditionalCredit && (
