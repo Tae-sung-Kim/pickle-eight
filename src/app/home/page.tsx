@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export function HomePage() {
   const siteName = process.env.NEXT_PUBLIC_SITE_NAME || '운빨연구소';
   const crumbs = jsonLdBreadcrumb([
     { name: siteName, item: canonicalUrl('/') },

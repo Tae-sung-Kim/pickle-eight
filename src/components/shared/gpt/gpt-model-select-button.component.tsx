@@ -107,5 +107,3 @@ export function GptModelSelectButtonComponent({
     </div>
   );
 }
-
-export default GptModelSelectButtonComponent;

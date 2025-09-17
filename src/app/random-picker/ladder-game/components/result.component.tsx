@@ -44,5 +44,4 @@ export const LadderResultComponent = ({
     </div>
   );
 };
-
-export default LadderResultComponent;
+export { LadderResultComponent as ResultComponent };

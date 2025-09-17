@@ -146,5 +146,3 @@ export function SeatAssignmentInputCardComponent({
     </div>
   );
 }
-
-export default SeatAssignmentInputCardComponent;

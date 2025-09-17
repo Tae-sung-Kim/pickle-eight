@@ -372,5 +372,3 @@ export function LottoCheckComponent() {
     </>
   );
 }
-
-export default LottoCheckComponent;

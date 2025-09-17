@@ -246,5 +246,3 @@ export function LottoSimulatorComponent() {
     </>
   );
 }
-
-export default LottoSimulatorComponent;

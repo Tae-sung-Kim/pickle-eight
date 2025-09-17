@@ -1,5 +1,5 @@
 import { LOTTO_ANALYSIS_VARIANT_ENUM } from "@/constants/lotto.constant";
-import LottoAnalysisBarComponent from './bar.component';
+import { LottoAnalysisBarComponent } from './bar.component';
 
 export function LottoAnalysisBucketSectionComponent({
   bucketDistribution,
@@ -24,5 +24,3 @@ export function LottoAnalysisBucketSectionComponent({
     </section>
   );
 }
-
-export default LottoAnalysisBucketSectionComponent;

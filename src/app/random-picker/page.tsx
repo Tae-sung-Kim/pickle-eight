@@ -70,7 +70,7 @@ const theme = {
   headerBadge: 'bg-primary/10 text-primary ring-primary/20',
 } as const;
 
-export default function RandomPickerHubPage() {
+export function RandomPickerHubPage() {
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />

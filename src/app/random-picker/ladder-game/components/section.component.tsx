@@ -63,5 +63,4 @@ export const LadderGameSectionComponent = ({
     </div>
   );
 };
-
-export default LadderGameSectionComponent;
+export { LadderGameSectionComponent as SectionComponent };

@@ -144,5 +144,3 @@ export function TriviaQuizFormComponent({
     </motion.form>
   );
 }
-
-export default TriviaQuizFormComponent;

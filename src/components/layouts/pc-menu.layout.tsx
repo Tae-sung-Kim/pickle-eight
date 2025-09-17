@@ -1,19 +1,19 @@
 'use client';
 import { CreditIndicatorComponent } from '@/components/shared/credit/credit-indicator.component';
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants/menu.constant';
 import { cn } from '@/lib/utils';
 import type { MenuItemType } from '@/types/menu.type';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import NavLinkComponent from '../nav-link.component';
+import { NavLinkComponent } from '../nav-link.component';
 
 export function PcMenuLayout() {
   const pathname = usePathname();
@@ -116,5 +116,3 @@ export function PcMenuLayout() {
     </NavigationMenu>
   );
 }
-
-export default PcMenuLayout;

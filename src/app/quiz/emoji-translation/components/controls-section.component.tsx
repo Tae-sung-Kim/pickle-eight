@@ -71,5 +71,3 @@ export function EmojiTranslationControlsSectionComponent({
     </Card>
   );
 }
-
-export default EmojiTranslationControlsSectionComponent;

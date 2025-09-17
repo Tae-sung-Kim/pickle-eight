@@ -51,5 +51,3 @@ export function HomeMenuFeatureItemComponent({
     </Link>
   );
 }
-
-export default HomeMenuFeatureItemComponent;

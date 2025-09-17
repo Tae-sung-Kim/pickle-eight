@@ -51,5 +51,3 @@ export function AnalyticsClientComponent() {
     </>
   );
 }
-
-export default AnalyticsClientComponent;

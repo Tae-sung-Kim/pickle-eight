@@ -26,5 +26,3 @@ export function LottoCheckRankBadgeComponent({
     </span>
   );
 }
-
-export default LottoCheckRankBadgeComponent;

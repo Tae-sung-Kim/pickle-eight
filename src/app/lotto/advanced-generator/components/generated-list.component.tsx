@@ -26,5 +26,3 @@ export function LottoAdvancedGeneratedListComponent({
     </div>
   );
 }
-
-export default LottoAdvancedGeneratedListComponent;

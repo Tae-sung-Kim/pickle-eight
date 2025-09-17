@@ -132,5 +132,3 @@ export function SeatAssignmentComponent() {
     </div>
   );
 }
-
-export default SeatAssignmentComponent;

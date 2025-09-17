@@ -109,5 +109,4 @@ export const DiceRollButtonComponent = ({
     </AnimatePresence>
   </motion.div>
 );
-
-export default DiceRollButtonComponent;
+export { DiceRollButtonComponent as RollButtonComponent };

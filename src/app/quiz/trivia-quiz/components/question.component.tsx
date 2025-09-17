@@ -173,5 +173,3 @@ export function TriviaQuizQuestionCardComponent({
     </motion.div>
   );
 }
-
-export default TriviaQuizQuestionCardComponent;

@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LottoHistoryPage() {
+export function LottoHistoryPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },

@@ -13,5 +13,3 @@ export function ContentWrapperComponent({
 }: ContentWarpperType) {
   return <div className={`w-full ${BACKGROUND_COLORS[type]}`}>{children}</div>;
 }
-
-export default ContentWrapperComponent;

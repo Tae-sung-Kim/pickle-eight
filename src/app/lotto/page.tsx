@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LottoHubPage() {
+export function LottoHubPage() {
   const siteName = process.env.NEXT_PUBLIC_SITE_NAME || '운빨연구소';
   const lottoItems = (
     MENU_LIST.find((g) => g.group === 'lotto')?.items ?? []

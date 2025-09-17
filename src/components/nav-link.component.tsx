@@ -42,4 +42,3 @@ export function NavLinkComponent({
 }
 
 NavLinkComponent.displayName = 'NavLinkComponent';
-export default NavLinkComponent;

@@ -179,5 +179,3 @@ export function LottoAnalysisControlsComponent({
     </Card>
   );
 }
-
-export default LottoAnalysisControlsComponent;

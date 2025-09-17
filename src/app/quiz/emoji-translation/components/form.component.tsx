@@ -47,5 +47,3 @@ export function EmojiTranslationFormComponent({
     </Card>
   );
 }
-
-export default EmojiTranslationFormComponent;

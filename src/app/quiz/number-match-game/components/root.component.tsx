@@ -1,8 +1,8 @@
 'use client';
 import { useNumberMatchGame } from "@/hooks/use-number-match-game.hook";
-import NumberMatchGameBoardComponent from './board.component';
-import NumberMatchGameControlsComponent from './controls.component';
-import NumberMatchGameOverModalComponent from './over-modal.component';
+import { NumberMatchGameBoardComponent } from './board.component';
+import { NumberMatchGameControlsComponent } from './controls.component';
+import { NumberMatchGameOverModalComponent } from './over-modal.component';
 
 export function NumberMatchGameComponent() {
   const {
@@ -50,5 +50,3 @@ export function NumberMatchGameComponent() {
     </>
   );
 }
-
-export default NumberMatchGameComponent;

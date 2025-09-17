@@ -74,5 +74,4 @@ export const DicePlayerListComponent = ({
     </AnimatePresence>
   );
 };
-
-export default DicePlayerListComponent;
+export { DicePlayerListComponent as PlayerListComponent };

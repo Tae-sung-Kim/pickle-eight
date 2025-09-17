@@ -174,5 +174,3 @@ export function MenuTooltipComponent({
     </>
   );
 }
-
-export default MenuTooltipComponent;

@@ -30,5 +30,4 @@ export const DiceInputListComponent = ({
     </div>
   );
 };
-
-export default DiceInputListComponent;
+export { DiceInputListComponent as InputListComponent };

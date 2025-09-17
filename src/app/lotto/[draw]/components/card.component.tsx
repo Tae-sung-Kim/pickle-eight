@@ -55,5 +55,3 @@ export function LottoDrawCardComponent({
     </Card>
   );
 }
-
-export default LottoDrawCardComponent;

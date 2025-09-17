@@ -132,5 +132,3 @@ export function LottoAnalysisComponent() {
     </>
   );
 }
-
-export default LottoAnalysisComponent;

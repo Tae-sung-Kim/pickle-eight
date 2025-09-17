@@ -9,9 +9,9 @@ import { getRandomValue, getWinnerIndexes } from "@/utils/dice-game.util";
 import { AnimatePresence, motion } from 'framer-motion';
 import { Trophy } from 'lucide-react';
 import { useRef, useState } from 'react';
-import DiceInputListComponent from './input-list.component';
-import DicePlayerListComponent from './player-list.component';
-import DiceRollButtonComponent from './roll-button.component';
+import { InputListComponent as DiceInputListComponent } from './input-list.component';
+import { PlayerListComponent as DicePlayerListComponent } from './player-list.component';
+import { RollButtonComponent as DiceRollButtonComponent } from './roll-button.component';
 
 export function DiceGameComponent() {
   const { names, addName, removeName, reset } = useNameManager();
@@ -153,5 +153,3 @@ export function DiceGameComponent() {
     </motion.div>
   );
 }
-
-export default DiceGameComponent;

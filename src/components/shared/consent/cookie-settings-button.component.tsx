@@ -16,5 +16,3 @@ export function CookieSettingsButtonComponent() {
     </Button>
   );
 }
-
-export default CookieSettingsButtonComponent;

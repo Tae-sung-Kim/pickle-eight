@@ -100,5 +100,3 @@ export function LottoNormalGeneratorComponent() {
     </div>
   );
 }
-
-export default LottoNormalGeneratorComponent;

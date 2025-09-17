@@ -259,5 +259,3 @@ export function LottoDashboardComponent(): JSX.Element {
     </section>
   );
 }
-
-export default LottoDashboardComponent;

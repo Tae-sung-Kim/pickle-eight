@@ -42,5 +42,3 @@ export function FourIdiomQuizAnswerComponent({
     </>
   );
 }
-
-export default FourIdiomQuizAnswerComponent;

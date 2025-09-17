@@ -142,5 +142,3 @@ export function MobileMenuLayout({ hiddenClass = '' }: MobileMenuLayoutProps) {
     </div>
   );
 }
-
-export default MobileMenuLayout;

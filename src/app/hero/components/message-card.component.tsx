@@ -178,5 +178,3 @@ export function MessageCardComponent({
     </div>
   );
 }
-
-export default MessageCardComponent;

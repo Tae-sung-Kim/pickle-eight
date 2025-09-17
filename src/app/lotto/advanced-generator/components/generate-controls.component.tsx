@@ -190,5 +190,3 @@ export function LottoAdvancedGenerateControlsComponent({
     </div>
   );
 }
-
-export default LottoAdvancedGenerateControlsComponent;

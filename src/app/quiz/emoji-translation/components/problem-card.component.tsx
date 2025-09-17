@@ -37,4 +37,3 @@ export function EmojiTranslationProblemCardComponent({
     </Card>
   );
 }
-export default EmojiTranslationProblemCardComponent;

@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LottoPage() {
+export function LottoPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     {

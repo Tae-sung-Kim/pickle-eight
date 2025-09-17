@@ -83,5 +83,3 @@ export function LottoNumberListComponent({
     </Card>
   );
 }
-
-export default LottoNumberListComponent;

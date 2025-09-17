@@ -72,7 +72,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function LottoDrawPage({
+export async function LottoDrawPage({
   params,
 }: {
   params: Promise<Params>;

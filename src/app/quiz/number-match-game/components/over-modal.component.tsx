@@ -42,5 +42,3 @@ export function NumberMatchGameOverModalComponent({
     </Dialog>
   );
 }
-
-export default NumberMatchGameOverModalComponent;

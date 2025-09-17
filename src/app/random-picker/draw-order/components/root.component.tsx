@@ -7,7 +7,7 @@ import { ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { DrawOrderCircleComponent } from './circle.component';
 import { DrawOrderGuideComponent } from './guide.component';
-import DrawOrderInputListComponent from './input-list.component';
+import { DrawOrderInputListComponent } from './input-list.component';
 
 // 결과값 섞기
 export function shuffle<T>(arr: T[]): T[] {
@@ -187,5 +187,3 @@ export function DrawOrderComponent() {
     </div>
   );
 }
-
-export default DrawOrderComponent;

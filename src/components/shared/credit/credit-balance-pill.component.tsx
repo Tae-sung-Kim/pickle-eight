@@ -154,5 +154,3 @@ export function CreditBalancePillComponent({
     </div>
   );
 }
-
-export default CreditBalancePillComponent;

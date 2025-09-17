@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function DrawOrderPage() {
+export function DrawOrderPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     {

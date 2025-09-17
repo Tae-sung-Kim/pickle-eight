@@ -74,5 +74,3 @@ export function DrawOrderInputListComponent({
     </motion.section>
   );
 }
-
-export default DrawOrderInputListComponent;

@@ -132,5 +132,3 @@ export function ConsentNudgeComponent({
     </div>
   );
 }
-
-export default ConsentNudgeComponent;

@@ -94,5 +94,3 @@ export function NumberMatchGameControlsComponent({
     </div>
   );
 }
-
-export default NumberMatchGameControlsComponent;

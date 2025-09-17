@@ -102,5 +102,3 @@ export function NameRandomComponent() {
     </div>
   );
 }
-
-export default NameRandomComponent;

@@ -81,5 +81,3 @@ export function NameRandomInputCardComponent({
     </div>
   );
 }
-
-export default NameRandomInputCardComponent;

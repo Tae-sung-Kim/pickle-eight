@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function EmojiTranslationPage() {
+export function EmojiTranslationPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     {

@@ -207,4 +207,3 @@ export function LottoAdvancedGeneratorComponent() {
     </>
   );
 }
-export default LottoAdvancedGeneratorComponent;

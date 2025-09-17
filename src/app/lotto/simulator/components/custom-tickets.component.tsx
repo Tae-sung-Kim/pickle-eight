@@ -151,5 +151,3 @@ export function SimulatorCustomTicketsComponent({
     </Card>
   );
 }
-
-export default SimulatorCustomTicketsComponent;

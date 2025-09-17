@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HeroPage() {
+export function HeroPage() {
   return (
     <>
       <HeroBannerComponent />

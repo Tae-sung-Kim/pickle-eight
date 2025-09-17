@@ -64,5 +64,3 @@ export function CookieConsentComponent() {
     </div>
   );
 }
-
-export default CookieConsentComponent;

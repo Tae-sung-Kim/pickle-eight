@@ -89,5 +89,3 @@ export function LottoAnalysisBarComponent({
     </div>
   );
 }
-
-export default LottoAnalysisBarComponent;

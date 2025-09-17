@@ -97,5 +97,3 @@ export function HomeMenuGridComponent() {
     </section>
   );
 }
-
-export default HomeMenuGridComponent;

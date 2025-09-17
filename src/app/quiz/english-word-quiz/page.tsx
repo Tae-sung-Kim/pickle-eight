@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function EnglishWordQuizPage() {
+export function EnglishWordQuizPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.QUIZ}>
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.QUIZ} />

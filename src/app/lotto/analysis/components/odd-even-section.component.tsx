@@ -1,5 +1,5 @@
 import { LOTTO_ANALYSIS_ODD_EVEN_COLOR_MAP } from "@/constants/lotto.constant";
-import LottoAnalysisBarComponent from './bar.component';
+import { LottoAnalysisBarComponent } from './bar.component';
 
 export function LottoAnalysisOddEvenSectionComponent({
   odd,
@@ -30,5 +30,3 @@ export function LottoAnalysisOddEvenSectionComponent({
     </section>
   );
 }
-
-export default LottoAnalysisOddEvenSectionComponent;

@@ -80,5 +80,4 @@ export const DicePlayerComponent = ({
     </Button>
   </motion.div>
 );
-
-export default DicePlayerComponent;
+export { DicePlayerComponent as PlayerComponent };

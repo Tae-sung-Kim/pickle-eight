@@ -6,7 +6,7 @@ import { getCachedData, getKoreaTime, getTodayString, setCachedData } from "@/ut
 import { getTimeSlot } from "@/utils/today-message.util";
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { buildHeroCards } from './hero-cards.builder';
-import MessageCardComponent from './message-card.component';
+import { MessageCardComponent } from './message-card.component';
 
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? '운빨연구소';
 
@@ -136,5 +136,3 @@ export function HeroTodayMessageComponent() {
     </section>
   );
 }
-
-export default HeroTodayMessageComponent;

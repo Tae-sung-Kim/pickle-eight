@@ -60,5 +60,3 @@ export function FourIdiomQuizFormComponent({
     </>
   );
 }
-
-export default FourIdiomQuizFormComponent;

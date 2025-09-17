@@ -103,5 +103,4 @@ export const DiceComponent = ({
     })}
   </div>
 );
-
-export default DiceComponent;
+export { DiceComponent as RootComponent };

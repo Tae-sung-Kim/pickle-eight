@@ -66,5 +66,3 @@ export function NumberMatchNumberCardComponent({
     </div>
   );
 }
-
-export default NumberMatchNumberCardComponent;

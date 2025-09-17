@@ -10,8 +10,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import TriviaQuizFormComponent from './form.component';
-import TriviaQuizQuestionCardComponent from './question.component';
+import { TriviaQuizFormComponent } from './form.component';
+import { TriviaQuizQuestionCardComponent } from './question.component';
 
 export function TriviaQuizComponent() {
   const [mounted, setMounted] = useState(false);
@@ -215,5 +215,3 @@ export function TriviaQuizComponent() {
     </>
   );
 }
-
-export default TriviaQuizComponent;

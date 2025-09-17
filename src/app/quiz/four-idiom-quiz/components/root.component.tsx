@@ -8,9 +8,9 @@ import { FourIdiomQuizDifficultyType } from "@/types/four-idom.type";
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import FourIdiomQuizAnswerComponent from './answer.component';
-import FourIdiomQuizDifficultyComponent from './difficulty.component';
-import FourIdiomQuizFormComponent from './form.component';
+import { FourIdiomQuizAnswerComponent } from './answer.component';
+import { FourIdiomQuizDifficultyComponent } from './difficulty.component';
+import { FourIdiomQuizFormComponent } from './form.component';
 
 const schema = z.object({ answer: z.string().length(4, '정확히 4글자!') });
 type FormValues = { answer: string };
@@ -187,5 +187,3 @@ export function FourIdiomQuizComponent() {
     </div>
   );
 }
-
-export default FourIdiomQuizComponent;

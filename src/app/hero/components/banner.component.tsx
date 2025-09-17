@@ -62,5 +62,3 @@ export function HeroBannerComponent() {
     </Alert>
   );
 }
-
-export default HeroBannerComponent;

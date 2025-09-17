@@ -39,5 +39,3 @@ export function EnglishWordQuizStatusComponent({
   }
   return null;
 }
-
-export default EnglishWordQuizStatusComponent;

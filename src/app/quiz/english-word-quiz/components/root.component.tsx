@@ -101,5 +101,3 @@ export function EnglishWordQuizComponent() {
     </Card>
   );
 }
-
-export default EnglishWordQuizComponent;

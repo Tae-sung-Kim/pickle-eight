@@ -64,5 +64,3 @@ export function buildHeroCards(args: {
     },
   ];
 }
-
-export default buildHeroCards;

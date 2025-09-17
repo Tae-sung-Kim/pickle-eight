@@ -142,5 +142,3 @@ export function LadderInputComponent({
     </motion.div>
   );
 }
-
-export default LadderInputComponent;

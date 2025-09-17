@@ -50,5 +50,3 @@ export function FourIdiomQuizDifficultyComponent({
     </div>
   );
 }
-
-export default FourIdiomQuizDifficultyComponent;

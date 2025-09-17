@@ -29,4 +29,3 @@ export function BackHubPageComponent({
     </div>
   );
 }
-export default BackHubPageComponent;

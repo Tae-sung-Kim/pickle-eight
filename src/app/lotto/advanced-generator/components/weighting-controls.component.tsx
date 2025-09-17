@@ -89,5 +89,3 @@ export function LottoAdvancedWeightingControlsComponent({
     </div>
   );
 }
-
-export default LottoAdvancedWeightingControlsComponent;

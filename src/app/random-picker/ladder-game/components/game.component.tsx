@@ -6,8 +6,8 @@ import { LadderConfigType, LadderResultType, LadderType } from "@/types/ladder-g
 import { generateLadder, getLadderResults } from '@/utils/ladder-game.util';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import LadderInputComponent from './input-list.component';
-import LadderGameSectionComponent from './section.component';
+import { LadderInputComponent } from './input-list.component';
+import { SectionComponent as LadderGameSectionComponent } from './section.component';
 
 export function LadderGameComponent() {
   const [config, setConfig] = useState<LadderConfigType | null>(null);
@@ -58,5 +58,3 @@ export function LadderGameComponent() {
     </div>
   );
 }
-
-export default LadderGameComponent;

@@ -52,5 +52,3 @@ export function SeatAssignmentResultViewComponent({
     </div>
   );
 }
-
-export default SeatAssignmentResultViewComponent;

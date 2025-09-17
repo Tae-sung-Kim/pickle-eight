@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function NumberMatchGamePage() {
+export function NumberMatchGamePage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '퀴즈 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.QUIZ}`) },

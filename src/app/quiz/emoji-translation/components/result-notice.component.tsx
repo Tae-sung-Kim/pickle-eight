@@ -27,5 +27,3 @@ export function EmojiTranslationResultNoticeComponent({
     </div>
   );
 }
-
-export default EmojiTranslationResultNoticeComponent;

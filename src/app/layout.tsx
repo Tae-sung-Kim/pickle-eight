@@ -103,7 +103,7 @@ export const metadata: Metadata = {
   category: '게임, 엔터테인먼트, 추첨, 도구, 할일, 메뉴',
 };
 
-export default function RootLayout({
+export function RootLayout({
   children,
 }: {
   children: React.ReactNode;

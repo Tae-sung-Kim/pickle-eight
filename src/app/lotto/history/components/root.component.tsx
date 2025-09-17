@@ -94,5 +94,3 @@ export function LottoHistoryComponent() {
     </div>
   );
 }
-
-export default LottoHistoryComponent;

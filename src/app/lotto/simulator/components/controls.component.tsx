@@ -140,5 +140,3 @@ export function SimulatorControlsComponent({
     </Card>
   );
 }
-
-export default SimulatorControlsComponent;

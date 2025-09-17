@@ -77,5 +77,3 @@ export function LottoGeneratorControlsComponent({
     </motion.div>
   );
 }
-
-export default LottoGeneratorControlsComponent;

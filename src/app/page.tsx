@@ -2,8 +2,8 @@ import { buildMetadata, jsonLdOrganization, jsonLdWebSite } from '@/lib/seo';
 import { generateOgImageUrl } from '@/utils/common.util';
 import { Metadata } from 'next';
 import { Toaster } from 'sonner';
-import HeroPage from './hero/page';
-import HomePage from './home/page';
+import { HeroPage } from './hero/page';
+import { HomePage } from './home/page';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 
 const baseMeta = buildMetadata({

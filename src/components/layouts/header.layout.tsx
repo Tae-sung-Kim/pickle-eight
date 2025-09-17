@@ -238,5 +238,3 @@ export function HeaderLayout() {
     </header>
   );
 }
-
-export default HeaderLayout;

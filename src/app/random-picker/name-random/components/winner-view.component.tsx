@@ -105,5 +105,3 @@ export function NameRandomWinnerViewComponent({
     </div>
   );
 }
-
-export default NameRandomWinnerViewComponent;

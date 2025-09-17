@@ -99,5 +99,3 @@ export function EmojiTranslationComponent() {
     </div>
   );
 }
-
-export default EmojiTranslationComponent;
