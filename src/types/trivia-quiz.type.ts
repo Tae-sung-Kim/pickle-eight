@@ -1,5 +1,5 @@
+import { TRIVIA_QUIZ_CATEGORIES, TRIVIA_QUIZ_DIFFICULTIES } from "@/constants/trivia-quiz.constant";
 import { z } from 'zod';
-import { TRIVIA_QUIZ_CATEGORIES, TRIVIA_QUIZ_DIFFICULTIES } from '@/constants';
 
 /**
  * 카테고리

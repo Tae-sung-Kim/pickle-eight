@@ -1,17 +1,17 @@
 'use client';
 
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from '@/components/ui/dialog';
-import { LottoAgeGateDialogType } from '@/types';
+import { LottoAgeGateDialogType } from "@/types/lotto.type";
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import Link from 'next/link';
 
 /**
  * Controlled age-gate dialog used for pre-navigation verification.

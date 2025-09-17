@@ -1,9 +1,9 @@
+import { SECTION_ICON_COLOR } from '@/constants/theme.constant';
+import { cn } from '@/lib/utils';
+import { FeatureItemType } from '@/types/menu.type';
 import Link from 'next/link';
-import { cn } from '@/lib';
-import { SECTION_ICON_COLOR } from '@/constants';
-import MenuTooltipComponent from './tooltip.component';
-import { FeatureItemType } from '@/types';
-import { CreditIndicatorComponent } from '@/components';
+import { MenuTooltipComponent } from './tooltip.component';
+import { CreditIndicatorComponent } from '@/components/shared/credit/credit-indicator.component';
 
 export function HomeMenuFeatureItemComponent({
   section,

@@ -2,12 +2,12 @@
  * Axios instance for API requests with interceptors
  * @module axios-instance
  */
+import { useLoadingStore } from "@/stores/loading.store";
 import axios, {
-  AxiosInstance,
-  AxiosError,
-  InternalAxiosRequestConfig,
+    AxiosError,
+    AxiosInstance,
+    InternalAxiosRequestConfig,
 } from 'axios';
-import { useLoadingStore } from '@/stores';
 
 const isServer = typeof window === 'undefined';
 const origin = process.env.NEXT_PUBLIC_SITE_URL;

@@ -1,10 +1,7 @@
 'use client';
-
-import type { JSX } from 'react';
-import { useMemo, useState } from 'react';
-import { useForm, Controller, type Resolver } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { CreditGateButtonComponent } from '@/components/shared/credit/credit-gate-button.component';
+import { ClientCsvButtonComponent } from '@/components/shared/lotto/client-csv-button.component';
+import { LottoCheckTicketRowComponent } from '@/components/shared/lotto/ticket-row.component';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -15,14 +12,14 @@ import {
   useDeleteNumberSetMutation,
   useMyNumberSetsQuery,
   useSaveNumberSetMutation,
-  useLatestLottoDrawQuery,
-} from '@/queries';
-import {
-  ClientCsvButtonComponent,
-  LottoCheckTicketRowComponent,
-  CreditGateButtonComponent,
-} from '@/components';
-import { creditBuildCostLabel } from '@/utils';
+} from '@/queries/use-lotto-user.query';
+import { useLatestLottoDrawQuery } from '@/queries/use-lotto.query';
+import { creditBuildCostLabel } from '@/utils/ad-credit.util';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { JSX } from 'react';
+import { useMemo, useState } from 'react';
+import { Controller, useForm, type Resolver } from 'react-hook-form';
+import { z } from 'zod';
 
 const schema = z
   .object({

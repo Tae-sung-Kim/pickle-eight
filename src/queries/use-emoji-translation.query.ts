@@ -1,15 +1,10 @@
+import { generateEmojiQuiz, gradeEmojiQuiz } from "@/services/emoji-translation.service";
+import type { EmojiGenerateValuesType, EmojiGradeQuizInputType, EmojiQuizGradeType, EmojiTranslationProblemType } from "@/types/emoji-translation.type";
 import {
-  useMutation,
-  type UseMutationOptions,
-  type UseMutationResult,
+    useMutation,
+    type UseMutationOptions,
+    type UseMutationResult,
 } from '@tanstack/react-query';
-import { generateEmojiQuiz, gradeEmojiQuiz } from '@/services';
-import type {
-  EmojiQuizGradeType,
-  EmojiTranslationProblemType,
-  EmojiGenerateValuesType,
-  EmojiGradeQuizInputType,
-} from '@/types';
 
 export function useGenerateEmojiQuiz(
   options?: UseMutationOptions<

@@ -1,4 +1,4 @@
-import { MealType } from '@/types';
+import { MealType } from "@/types/today-message.type";
 import { getKoreanTimeString, getKoreaTime } from './common.util';
 
 export function getTodayPrompts(): {

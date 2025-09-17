@@ -1,23 +1,18 @@
 'use client';
 
-import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
-import { useCreditStore } from '@/stores';
-import { cn } from '@/lib';
 import {
-  CREDIT_POLICY,
-  CREDIT_REFILL_INTERVAL_MS,
-  CREDIT_RESET_MODE,
-  CREDIT_RESET_MODE_ENUM,
-} from '@/constants';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { scheduleIdle, cancelIdle } from '@/lib';
-import { useUserCreditsQuery } from '@/queries';
-import { nextKstMidnightUtcTs, formatHms } from '@/utils';
-import { CreditBalancePillType } from '@/types';
+import { CREDIT_POLICY, CREDIT_REFILL_INTERVAL_MS, CREDIT_RESET_MODE, CREDIT_RESET_MODE_ENUM } from "@/constants/ad-credit.constant";
+import { cancelIdle, scheduleIdle } from "@/lib/idle";
+import { cn } from "@/lib/utils";
+import { useUserCreditsQuery } from "@/queries/use-credit.query";
+import { useCreditStore } from "@/stores/credit.store";
+import { CreditBalancePillType } from "@/types/ad-credit.type";
+import { formatHms, nextKstMidnightUtcTs } from "@/utils/common.util";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export function CreditBalancePillComponent({
   className,

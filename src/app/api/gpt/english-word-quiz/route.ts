@@ -1,5 +1,5 @@
+import { callOpenAI } from "@/services/openai.service";
 import { NextResponse } from 'next/server';
-import { callOpenAI } from '@/services';
 
 export async function POST() {
   const prompt = `

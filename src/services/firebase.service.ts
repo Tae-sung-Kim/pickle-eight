@@ -1,17 +1,17 @@
+import { db } from "@/lib/firebase-config";
 import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  serverTimestamp,
-  query,
-  type DocumentData,
-  type QueryConstraint,
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    serverTimestamp,
+    updateDoc,
+    type DocumentData,
+    type QueryConstraint,
 } from 'firebase/firestore';
-import { db } from '@/lib';
 
 /**
  * 컬렉션의 모든 문서를 가져오는 제네릭 함수

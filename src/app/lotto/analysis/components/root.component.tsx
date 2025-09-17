@@ -1,15 +1,17 @@
 'use client';
-
+import {
+  useLatestLottoDrawQuery,
+  useLottoDrawsQuery,
+} from '@/queries/use-lotto.query';
+import { LottoUtils } from '@/utils/lotto.util';
 import { useEffect, useMemo, useState } from 'react';
-import { LottoUtils } from '@/utils';
-import LottoAnalysisControlsComponent from './controls.component';
-import LottoAnalysisFrequencySectionComponent from './frequency-section.component';
-import LottoAnalysisBucketSectionComponent from './bucket-section.component';
-import LottoAnalysisOddEvenSectionComponent from './odd-even-section.component';
-import LottoAnalysisSumSectionComponent from './sum-section.component';
-import LottoAnalysisConsecutiveSectionComponent from './consecutive-section.component';
-import { useLottoDrawsQuery, useLatestLottoDrawQuery } from '@/queries';
-import { CsvExportButtonComponent } from '@/components';
+import { LottoAnalysisBucketSectionComponent } from './bucket-section.component';
+import { LottoAnalysisConsecutiveSectionComponent } from './consecutive-section.component';
+import { LottoAnalysisControlsComponent } from './controls.component';
+import { LottoAnalysisFrequencySectionComponent } from './frequency-section.component';
+import { LottoAnalysisOddEvenSectionComponent } from './odd-even-section.component';
+import { LottoAnalysisSumSectionComponent } from './sum-section.component';
+import { CsvExportButtonComponent } from '@/components/shared/lotto/csv-export-button.component';
 
 export function LottoAnalysisComponent() {
   const [from, setFrom] = useState<number>(1);

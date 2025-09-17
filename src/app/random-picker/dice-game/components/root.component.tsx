@@ -1,9 +1,8 @@
 'use client';
-
-import { cn } from '@/lib';
-import { motion, AnimatePresence } from 'framer-motion';
+import { DOT_POSITIONS } from "@/constants/dice-game.constant";
+import { cn } from "@/lib/utils";
 import { DiceComponentPropsType } from '@/types/dice-game.type';
-import { DOT_POSITIONS } from '@/constants';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const getDiceDots = (value: number) => {
   return Array.from({ length: value }, (_, i) => ({

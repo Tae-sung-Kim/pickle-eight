@@ -1,15 +1,10 @@
 'use client';
 
-import { useEffect, useState, useMemo, useCallback } from 'react';
-import { MessageStateType } from '@/types';
-import { useGptTodayMessageQuery } from '@/queries';
-import {
-  getTodayString,
-  getTimeSlot,
-  getKoreaTime,
-  getCachedData,
-  setCachedData,
-} from '@/utils';
+import { useGptTodayMessageQuery } from "@/queries/use-gpt-today-message.query";
+import { MessageStateType } from "@/types/openai-api.type";
+import { getCachedData, getKoreaTime, getTodayString, setCachedData } from "@/utils/common.util";
+import { getTimeSlot } from "@/utils/today-message.util";
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { buildHeroCards } from './hero-cards.builder';
 import MessageCardComponent from './message-card.component';
 

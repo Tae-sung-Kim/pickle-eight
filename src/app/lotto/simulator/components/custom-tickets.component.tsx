@@ -1,12 +1,11 @@
 'use client';
-
-import { useCallback } from 'react';
+import { LottoCheckTicketRowComponent } from '@/components/shared/lotto/ticket-row.component';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants';
-import { LottoCheckTicketRowComponent } from '@/components';
-import { TicketFieldNameType } from '@/types';
+import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants/lotto.constant';
+import { TicketFieldNameType } from '@/types/lotto.type';
+import { useCallback } from 'react';
 
 export type SimulatorCustomTicketsComponentType = Readonly<{
   tickets: ReadonlyArray<{

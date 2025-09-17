@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib';
+import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 
 type NameBadgeComponentPropsType = {
@@ -44,5 +44,3 @@ export function NameBadgeComponent({
     </div>
   );
 }
-
-export default NameBadgeComponent;

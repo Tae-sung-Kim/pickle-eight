@@ -1,13 +1,11 @@
-import { generateOgImageUrl } from '@/utils';
-import { LadderGameComponent } from './components';
+import { LadderGameComponent } from '@/app/random-picker/ladder-game/components/game.component';
+import { BackHubPageComponent } from '@/components/back-hub.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
 import { Metadata } from 'next';
-import {
-  BackHubPageComponent,
-  ContentWrapperComponent,
-  JsonLdComponent,
-} from '@/components';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '사다리 타기 게임 - 랜덤 결과 추첨기',

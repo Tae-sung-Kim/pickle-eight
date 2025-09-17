@@ -1,8 +1,6 @@
+import { LottoFooterNoticeComponent } from '@/components/shared/lotto/footer-notice.component';
+import { LottoWarningAlertComponent } from '@/components/shared/lotto/warning-alert.component';
 import type { JSX, ReactNode } from 'react';
-import {
-  LottoFooterNoticeComponent,
-  LottoWarningAlertComponent,
-} from '@/components';
 
 export default function LottoLayout({
   children,

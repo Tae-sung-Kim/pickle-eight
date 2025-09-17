@@ -1,7 +1,6 @@
 'use client';
-
-import { LottoDrawType } from '@/types';
-import { LottoBallComponent } from '@/components';
+import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
+import { LottoDrawType } from '@/types/lotto.type';
 
 export function LottoHistoryResultComponent({
   data,
@@ -56,5 +55,3 @@ export function LottoHistoryResultComponent({
     </>
   );
 }
-
-export default LottoHistoryResultComponent;

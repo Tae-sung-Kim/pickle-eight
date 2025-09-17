@@ -1,14 +1,15 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { JsonLdComponent } from '@/components';
-import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants/menu.constant';
 import {
   buildMetadata,
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
-} from '@/lib';
-import { generateOgImageUrl, getOgTag } from '@/utils';
+} from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
+import type { Metadata } from 'next';
+import Link from 'next/link';
 
 const baseMeta = buildMetadata({
   title: '로또 허브 - 로또 분석/번호 생성',

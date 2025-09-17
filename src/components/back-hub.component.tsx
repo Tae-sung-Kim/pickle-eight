@@ -1,8 +1,8 @@
-import { MENU_LIST } from '@/constants';
-import { MenuSectionKeyType } from '@/types';
+import { MENU_LIST } from "@/constants/menu.constant";
+import { cn } from "@/lib/utils";
+import { MenuSectionKeyType } from "@/types/menu.type";
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { cn } from '@/lib';
 
 export function BackHubPageComponent({
   type,

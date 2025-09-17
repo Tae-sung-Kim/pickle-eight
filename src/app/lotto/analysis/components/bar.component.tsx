@@ -1,14 +1,11 @@
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from '@/components/ui/tooltip';
-import {
-  LOTTO_ANALYSIS_CHART_BUCKET_COLORS,
-  LOTTO_ANALYSIS_VARIANT_ENUM,
-} from '@/constants';
-import { LottoAnalysisVariantValueType } from '@/types';
-import { bucketLabel } from '@/utils';
+import { LOTTO_ANALYSIS_CHART_BUCKET_COLORS, LOTTO_ANALYSIS_VARIANT_ENUM } from "@/constants/lotto.constant";
+import { LottoAnalysisVariantValueType } from "@/types/lotto.type";
+import { bucketLabel } from "@/utils/lotto.util";
 
 export function LottoAnalysisBarComponent({
   label,

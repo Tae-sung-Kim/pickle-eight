@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib';
+import { cn } from '@/lib/utils';
 
 type NameListComponentPropsType = {
   list: string[];
@@ -43,5 +43,3 @@ export function NameListComponent({
     </div>
   );
 }
-
-export default NameListComponent;

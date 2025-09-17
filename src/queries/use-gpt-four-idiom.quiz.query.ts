@@ -1,6 +1,6 @@
+import { http } from "@/lib/http";
+import { FourIdiomQuizDifficultyType, FourIdiomType } from "@/types/four-idom.type";
 import { useMutation } from '@tanstack/react-query';
-import { http } from '@/lib';
-import { FourIdiomQuizDifficultyType, FourIdiomType } from '@/types';
 
 export type FourIdiomQuizRequestType = {
   difficulty: FourIdiomQuizDifficultyType;

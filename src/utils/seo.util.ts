@@ -1,11 +1,4 @@
-/**
- * SEO utility: derive a short OG tag (badge text) from href or label.
- * - If href matches a menu group href (e.g., "/lotto", "/quiz"), returns "{group.label} 허브".
- * - If href matches a menu item href, returns that item's label.
- * - Else, if label is provided, returns the label.
- * - Fallback is site name.
- */
-import { MENU_LIST } from '@/constants';
+import { MENU_LIST } from "@/constants/menu.constant";
 
 type OgTagParams = Readonly<{
   href?: string;

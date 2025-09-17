@@ -1,5 +1,5 @@
+import { SITE_URL } from "@/lib/seo";
 import { MetadataRoute } from 'next';
-import { SITE_URL } from '@/lib';
 
 export default function robots(): MetadataRoute.Robots {
   const siteUrl = SITE_URL;

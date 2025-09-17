@@ -1,6 +1,6 @@
-import { NumberMatchGameBoardType } from '@/types';
+import { NUMBER_MATCH_GAME_GRID_COLS_MAP } from "@/constants/number-match-game.constant";
+import { NumberMatchGameBoardType } from "@/types/number-match-game.type";
 import NumberMatchNumberCardComponent from './card.component';
-import { NUMBER_MATCH_GAME_GRID_COLS_MAP } from '@/constants';
 
 export function NumberMatchGameBoardComponent({
   cards,

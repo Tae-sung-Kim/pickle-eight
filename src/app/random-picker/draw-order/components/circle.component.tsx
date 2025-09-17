@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { ParticipantType } from '@/types';
-import { motion, AnimatePresence } from 'framer-motion';
-import { RotateCw, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCapture } from '@/hooks';
+import { useCapture } from "@/hooks/use-capture.hook";
+import { ParticipantType } from "@/types/draw-order.type";
+import { AnimatePresence, motion } from 'framer-motion';
+import { RotateCw, Share2 } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 
 type DrawOrderCircleComponentPropsType = {
   participants: ParticipantType[];

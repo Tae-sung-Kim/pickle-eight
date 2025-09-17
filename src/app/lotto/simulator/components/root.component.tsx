@@ -1,16 +1,15 @@
 'use client';
-
-import React, { useEffect, useMemo, useState } from 'react';
-import { LottoUtils, LottoGenerator } from '@/utils';
-import { SimulatorControlsComponent } from './controls.component';
-import { SimulatorTicketsComponent } from './tickets.component';
-import { SimulatorResultsSummaryComponent } from './results-summary.component';
-import { SimulatorProbabilitiesComponent } from './probabilities.component';
+import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants/lotto.constant';
+import { LottoLankType } from '@/types/lotto.type';
+import { LottoGenerator, LottoUtils } from '@/utils/lotto.util';
+import { useEffect, useMemo, useState } from 'react';
 import { SimulatorBestPerformanceComponent } from './best-performance.component';
-import { LottoLankType } from '@/types';
+import { SimulatorControlsComponent } from './controls.component';
 import { SimulatorCustomTicketsComponent } from './custom-tickets.component';
-import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants';
-import { ClientCsvButtonComponent } from '@/components';
+import { SimulatorProbabilitiesComponent } from './probabilities.component';
+import { SimulatorResultsSummaryComponent } from './results-summary.component';
+import { SimulatorTicketsComponent } from './tickets.component';
+import { ClientCsvButtonComponent } from '@/components/shared/lotto/client-csv-button.component';
 
 function generateRandomDraw() {
   const pool: number[] = [];

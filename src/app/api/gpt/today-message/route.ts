@@ -1,5 +1,5 @@
-import { callOpenAI } from '@/services';
-import { getTodayPrompts } from '@/utils';
+import { callOpenAI } from "@/services/openai.service";
+import { getTodayPrompts } from "@/utils/today-message.util";
 import { NextResponse } from 'next/server';
 
 function stripCodeFences(text: string): string {

@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
-import { NumberMatchCardType, NumberMatchCardStatusType } from '@/types';
-import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from '@/constants';
+import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from "@/constants/number-match-game.constant";
+import { NumberMatchCardStatusType, NumberMatchCardType } from "@/types/number-match-game.type";
+import { useCallback, useEffect, useState } from 'react';
 
 const shuffleArray = <T>(array: T[]): T[] => {
   return array.sort(() => Math.random() - 0.5);

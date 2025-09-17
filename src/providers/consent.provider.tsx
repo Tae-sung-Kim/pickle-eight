@@ -1,15 +1,15 @@
 'use client';
 
+import { CREDIT_POLICY } from "@/constants/ad-credit.constant";
+import { useCreditStore } from "@/stores/credit.store";
 import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
 } from 'react';
-import { useCreditStore } from '@/stores';
-import { CREDIT_POLICY } from '@/constants';
 
 type ConsentStateType = 'unknown' | 'accepted' | 'declined';
 

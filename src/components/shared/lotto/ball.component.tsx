@@ -1,7 +1,6 @@
 'use client';
-
-import { LottoBallPropsType } from '@/types';
-import { getNumberColor } from '@/utils';
+import { LottoBallPropsType } from '@/types/lotto.type';
+import { getNumberColor } from '@/utils/lotto.util';
 import { motion } from 'framer-motion';
 
 export function LottoBallComponent({
@@ -30,5 +29,3 @@ export function LottoBallComponent({
     </motion.span>
   );
 }
-
-export default LottoBallComponent;

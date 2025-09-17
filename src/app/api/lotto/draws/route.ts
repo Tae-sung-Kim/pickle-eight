@@ -1,12 +1,7 @@
-import { NextResponse } from 'next/server';
-import { LottoDrawType } from '@/types';
+import { LOTTO_ARTIFICIAL_DELAY_MS, LOTTO_MAX_HISTORY_RANGE, LOTTO_RATE_LIMIT_MAX, LOTTO_RATE_LIMIT_WINDOW_MS } from "@/constants/lotto.constant";
 import { lottoRepository } from '@/services/lotto-repository';
-import {
-  LOTTO_MAX_HISTORY_RANGE,
-  LOTTO_RATE_LIMIT_MAX,
-  LOTTO_RATE_LIMIT_WINDOW_MS,
-  LOTTO_ARTIFICIAL_DELAY_MS,
-} from '@/constants';
+import { LottoDrawType } from "@/types/lotto.type";
+import { NextResponse } from 'next/server';
 
 // ===== Simple in-memory rate limiter =====
 const rateMap = new Map<string, { count: number; resetAt: number }>();

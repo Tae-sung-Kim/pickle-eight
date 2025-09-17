@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import { DhLottoApiResponseType, LottoDrawType } from '@/types';
+import { DH_LOTTO_ENDPOINT } from "@/constants/lotto.constant";
 import { lottoRepository } from '@/services/lotto-repository';
-import { DH_LOTTO_ENDPOINT } from '@/constants';
+import { DhLottoApiResponseType, LottoDrawType } from "@/types/lotto.type";
+import { NextResponse } from 'next/server';
 
 function requireCronSecret(req: Request): void {
   const configured = process.env.CRON_SECRET;

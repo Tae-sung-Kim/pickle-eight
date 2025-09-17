@@ -1,6 +1,7 @@
+import { getFourIdiomsByDifficulty } from "@/services/four-idiom.service";
+import { callOpenAI } from "@/services/openai.service";
+import { FourIdiomQuizDifficultyType } from "@/types/four-idom.type";
 import { NextRequest, NextResponse } from 'next/server';
-import { callOpenAI, getFourIdiomsByDifficulty } from '@/services';
-import { FourIdiomQuizDifficultyType } from '@/types';
 
 export async function POST(req: NextRequest) {
   const { difficulty = 'normal' }: { difficulty: FourIdiomQuizDifficultyType } =

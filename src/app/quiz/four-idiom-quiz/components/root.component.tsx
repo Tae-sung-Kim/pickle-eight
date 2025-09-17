@@ -1,15 +1,15 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { FOUR_IDIOMS_COLLECTION } from "@/constants/four-idiom-quiz.constant";
+import { useDailyLimit } from "@/hooks/use-daily-limit.hook";
+import { useGptFourIdiomQuizQuery } from "@/queries/use-gpt-four-idiom.quiz.query";
+import { FourIdiomQuizDifficultyType } from "@/types/four-idom.type";
 import { useEffect, useMemo, useState } from 'react';
-import { useDailyLimit } from '@/hooks';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useGptFourIdiomQuizQuery } from '@/queries';
-import { Button } from '@/components/ui/button';
-import { FOUR_IDIOMS_COLLECTION } from '@/constants';
-import { FourIdiomQuizDifficultyType } from '@/types';
-import FourIdiomQuizDifficultyComponent from './difficulty.component';
 import FourIdiomQuizAnswerComponent from './answer.component';
+import FourIdiomQuizDifficultyComponent from './difficulty.component';
 import FourIdiomQuizFormComponent from './form.component';
 
 const schema = z.object({ answer: z.string().length(4, '정확히 4글자!') });

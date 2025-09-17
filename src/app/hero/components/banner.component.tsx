@@ -1,8 +1,8 @@
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { HERO_BADGE_LIST } from '@/constants';
+import { HERO_BADGE_LIST } from "@/constants/hero.constant";
 import { BrainCircuit } from 'lucide-react';
+import Link from 'next/link';
 
 export function HeroBannerComponent() {
   return (

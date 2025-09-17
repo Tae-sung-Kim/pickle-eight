@@ -1,20 +1,21 @@
 'use client';
-import { NavLinkComponent, CreditIndicatorComponent } from '@/components';
-import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
-import { Menu, X } from 'lucide-react';
+import { NavLinkComponent } from '@/components/nav-link.component';
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
+  SheetDescription,
   SheetTitle,
   SheetTrigger,
-  SheetClose,
-  SheetDescription,
 } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib';
-import { usePathname } from 'next/navigation';
+import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants/menu.constant';
+import { cn } from '@/lib/utils';
+import type { MenuItemType } from '@/types/menu.type';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import type { MenuItemType } from '@/types';
+import { usePathname } from 'next/navigation';
+import { CreditIndicatorComponent } from '../shared/credit/credit-indicator.component';
 
 export type MobileMenuLayoutProps = {
   hiddenClass?: string; // default visibility control (tailwind classes)

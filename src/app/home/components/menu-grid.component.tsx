@@ -1,31 +1,28 @@
+import { MENU_GROUP_NAME_ENUM, MENU_LIST } from "@/constants/menu.constant";
+import { SECTION_ICON_COLOR } from "@/constants/theme.constant";
+import { MenuSectionKeyType } from "@/types/menu.type";
 import {
-  Dice5,
-  Wand2,
-  Group,
-  SlidersHorizontal,
-  Ticket,
-  Layout,
-  Shuffle,
-  Sparkles,
-  BookOpen,
-  SpellCheck,
-  Brain,
-  ScrollText,
-  SquareStack,
-  CalendarSearch,
-  BarChart2,
-  CheckCircle2,
-  PlayCircle,
-  LayoutDashboard,
-  type LucideIcon,
+    BarChart2,
+    BookOpen,
+    Brain,
+    CalendarSearch,
+    CheckCircle2,
+    Dice5,
+    Group,
+    Layout,
+    LayoutDashboard,
+    PlayCircle,
+    ScrollText,
+    Shuffle,
+    SlidersHorizontal,
+    Sparkles,
+    SpellCheck,
+    SquareStack,
+    Ticket,
+    Wand2,
+    type LucideIcon,
 } from 'lucide-react';
-import {
-  MENU_GROUP_NAME_ENUM,
-  MENU_LIST,
-  SECTION_ICON_COLOR,
-} from '@/constants';
 import { HomeMenuFeatureItemComponent } from './feature-item.component';
-import { MenuSectionKeyType } from '@/types';
 
 const ICONS: Record<string, LucideIcon> = {
   Ticket,

@@ -1,4 +1,4 @@
-import { LottoLankType } from '@/types';
+import { LottoLankType } from "@/types/lotto.type";
 
 export function LottoCheckRankBadgeComponent({
   rank,

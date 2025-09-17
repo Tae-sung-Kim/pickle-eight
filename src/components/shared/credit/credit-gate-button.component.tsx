@@ -1,12 +1,12 @@
 'use client';
 
-import { ComponentProps, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
-import { useCreditStore } from '@/stores';
-import { CREDIT_SPEND_COST } from '@/constants';
-import { useConsentContext } from '@/providers';
+import { CREDIT_SPEND_COST } from '@/constants/ad-credit.constant';
+import { useConsentContext } from '@/providers/consent.provider';
+import { spendCredits } from '@/services/credit.service';
+import { useCreditStore } from '@/stores/credit.store';
+import { ComponentProps, useMemo } from 'react';
 import { toast } from 'sonner';
-import { spendCredits } from '@/services';
 
 export type CreditGateButtonType = {
   readonly variant?: ComponentProps<typeof Button>['variant'];
@@ -97,5 +97,3 @@ export function CreditGateButtonComponent({
     </Button>
   );
 }
-
-export default CreditGateButtonComponent;

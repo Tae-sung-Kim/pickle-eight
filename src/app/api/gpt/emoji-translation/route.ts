@@ -1,8 +1,8 @@
+import { EMOJI_CATEGORY_ENUM } from "@/constants/emoji-translation.constant";
+import { EmojiTranslationRequestSchema } from "@/schemas/emoji-translation.schema";
+import { callOpenAI } from "@/services/openai.service";
+import { EmojiQuizGradeType, EmojiTranslationProblemType } from "@/types/emoji-translation.type";
 import { NextRequest, NextResponse } from 'next/server';
-import { callOpenAI } from '@/services';
-import { EmojiTranslationRequestSchema } from '@/schemas';
-import { EMOJI_CATEGORY_ENUM } from '@/constants';
-import { EmojiTranslationProblemType, EmojiQuizGradeType } from '@/types';
 
 /**
  * Lightweight, robust v2 of the emoji translation route.

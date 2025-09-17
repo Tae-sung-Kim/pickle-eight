@@ -1,11 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { CREDIT_POLICY, CREDIT_REFILL_AMOUNT, CREDIT_REFILL_INTERVAL_MS } from "@/constants/ad-credit.constant";
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
-import {
-  CREDIT_POLICY,
-  CREDIT_REFILL_INTERVAL_MS,
-  CREDIT_REFILL_AMOUNT,
-} from '@/constants';
-import { currentResetKey } from '@/utils';
+import { currentResetKey } from "@/utils/common.util";
+import { NextRequest, NextResponse } from 'next/server';
 
 type UserCreditDoc = {
   credits?: number;

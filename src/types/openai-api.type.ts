@@ -1,4 +1,4 @@
-import { GPT_MODEL_ENUM } from '@/constants';
+import { GPT_MODEL_ENUM } from "@/constants/gpt-model.constant";
 
 export type MessageStateType = {
   cheer: string | null;

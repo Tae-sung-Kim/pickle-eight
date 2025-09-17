@@ -1,4 +1,4 @@
-import { LOTTO_ANALYSIS_SUM_COLOR_MAP } from '@/constants';
+import { LOTTO_ANALYSIS_SUM_COLOR_MAP } from "@/constants/lotto.constant";
 import LottoAnalysisBarComponent from './bar.component';
 
 export function LottoAnalysisSumSectionComponent({

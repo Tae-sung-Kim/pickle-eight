@@ -1,9 +1,9 @@
 'use client';
-
-import { NameInputComponent, NameListComponent } from '@/components';
-import { InputListSectionPropsType } from '@/types';
-import { useState } from 'react';
+import { NameInputComponent } from '@/components/shared/name/input.component';
+import { NameListComponent } from '@/components/shared/name/list.component';
+import { InputListSectionPropsType } from '@/types/draw-order.type';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 export function DrawOrderInputListComponent({
   label,

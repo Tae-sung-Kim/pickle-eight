@@ -1,5 +1,5 @@
+import { cn } from '@/lib/utils';
 import { Coins } from 'lucide-react';
-import { cn } from '@/lib';
 
 export type CreditIndicatorType = {
   size?: 'xs' | 'sm';
@@ -31,5 +31,3 @@ export function CreditIndicatorComponent({
     </span>
   );
 }
-
-export default CreditIndicatorComponent;

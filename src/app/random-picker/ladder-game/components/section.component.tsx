@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { useCapture } from "@/hooks/use-capture.hook";
+import { LadderGameSectionComponentPropsType } from "@/types/ladder-game.type";
 import { ArrowLeft, Share2 } from 'lucide-react';
-import { LadderComponent } from './root.component';
-import { LadderResultComponent } from './result.component';
-import { LadderGameSectionComponentPropsType } from '@/types';
-import { useCapture } from '@/hooks';
 import { useRef } from 'react';
+import { LadderResultComponent } from './result.component';
+import { LadderComponent } from './root.component';
 
 export const LadderGameSectionComponent = ({
   ladder,

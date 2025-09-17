@@ -1,9 +1,4 @@
-import {
-  LadderType,
-  LadderHorizontalType,
-  LadderConfigType,
-  LadderResultType,
-} from '@/types';
+import { LadderConfigType, LadderHorizontalType, LadderResultType, LadderType } from "@/types/ladder-game.type";
 
 /**
  * 랜덤 사다리 구조 생성

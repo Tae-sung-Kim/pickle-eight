@@ -1,8 +1,8 @@
-import { LottoBallComponent } from '@/components';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
 import { Button } from '@/components/ui/button';
-import { useCreditStore } from '@/stores';
-import { CREDIT_POLICY } from '@/constants';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CREDIT_POLICY } from '@/constants/ad-credit.constant';
+import { useCreditStore } from '@/stores/credit.store';
 
 export type SimulatorTicketsComponentType = Readonly<{
   tickets: ReadonlyArray<{

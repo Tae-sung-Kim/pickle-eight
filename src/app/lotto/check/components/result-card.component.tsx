@@ -1,13 +1,16 @@
-import type { LottoCheckResultCardType, LottoLankType } from '@/types';
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from '@/components/ui/card';
+import type {
+  LottoCheckResultCardType,
+  LottoLankType,
+} from '@/types/lotto.type';
 import { LottoCheckRankBadgeComponent } from './rank-badge.component';
-import { LottoBallComponent } from '@/components';
+import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
 
 export function LottoCheckResultCardComponent({
   draw,

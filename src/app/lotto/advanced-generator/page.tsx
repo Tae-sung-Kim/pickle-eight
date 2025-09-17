@@ -1,14 +1,13 @@
-import { LottoAdvancedGeneratorComponent } from './components';
+import { LottoAdvancedGeneratorComponent } from '@/app/lotto/advanced-generator/components/root.component';
+import { BackHubPageComponent } from '@/components/back-hub.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
 import type { Metadata } from 'next';
-import { generateOgImageUrl, getOgTag } from '@/utils';
-import {
-  ContentWrapperComponent,
-  BackHubPageComponent,
-  TitleWrapperComponent,
-  JsonLdComponent,
-} from '@/components';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title:

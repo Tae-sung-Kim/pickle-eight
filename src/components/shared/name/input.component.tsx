@@ -1,8 +1,8 @@
-import { KeyboardEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
-import { cn } from '@/lib';
+import { KeyboardEvent } from 'react';
 
 type NameInputComponentPropsType = {
   value: string;
@@ -67,5 +67,3 @@ export function NameInputComponent({
     </div>
   );
 }
-NameInputComponent.displayName = 'NameInputComponent';
-export default NameInputComponent;

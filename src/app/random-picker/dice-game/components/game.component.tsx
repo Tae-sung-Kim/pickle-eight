@@ -1,16 +1,17 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useCapture, useNameManager } from '@/hooks';
-import { getRandomValue, getWinnerIndexes } from '@/utils';
+import { TitleWrapperComponent } from "@/components/title-warpper.component";
 import { Card, CardContent } from '@/components/ui/card';
+import { MENU_GROUP_NAME_ENUM } from "@/constants/menu.constant";
+import { useCapture } from "@/hooks/use-capture.hook";
+import { useNameManager } from "@/hooks/use-name-manager.hook";
+import { getRandomValue, getWinnerIndexes } from "@/utils/dice-game.util";
+import { AnimatePresence, motion } from 'framer-motion';
 import { Trophy } from 'lucide-react';
+import { useRef, useState } from 'react';
 import DiceInputListComponent from './input-list.component';
 import DicePlayerListComponent from './player-list.component';
 import DiceRollButtonComponent from './roll-button.component';
-import { TitleWrapperComponent } from '@/components';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export function DiceGameComponent() {
   const { names, addName, removeName, reset } = useNameManager();

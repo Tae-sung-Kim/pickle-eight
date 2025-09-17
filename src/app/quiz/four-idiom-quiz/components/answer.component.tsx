@@ -1,6 +1,6 @@
-import { cn } from '@/lib';
+import { cn } from "@/lib/utils";
+import { FourIdiomType } from "@/types/four-idom.type";
 import { CheckCircle2, XCircle } from 'lucide-react';
-import { FourIdiomType } from '@/types';
 
 export function FourIdiomQuizAnswerComponent({
   showAnswer,

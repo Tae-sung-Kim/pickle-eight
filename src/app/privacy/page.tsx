@@ -1,12 +1,12 @@
-import { Metadata } from 'next';
-import { generateOgImageUrl } from '@/utils';
-import { JsonLdComponent } from '@/components';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import {
   buildMetadata,
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
-} from '@/lib';
+} from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { Metadata } from 'next';
 
 const baseMeta = buildMetadata({
   title: '개인정보처리방침 - ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),

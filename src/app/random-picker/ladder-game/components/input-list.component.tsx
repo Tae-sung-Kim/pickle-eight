@@ -1,14 +1,15 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { X, Sparkles } from 'lucide-react';
+import { NameBadgeComponent } from '@/components/shared/name/badge.component';
+import { NameInputComponent } from '@/components/shared/name/input.component';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import { useNameManager } from '@/hooks';
-import { cn } from '@/lib';
+import { useNameManager } from '@/hooks/use-name-manager.hook';
+import { cn } from '@/lib/utils';
+import { LadderInputComponentPropsType } from '@/types/ladder-game.type';
+import { motion } from 'framer-motion';
+import { Sparkles, X } from 'lucide-react';
 import { useState } from 'react';
-import { LadderInputComponentPropsType } from '@/types';
-import { NameInputComponent, NameBadgeComponent } from '@/components';
+import { toast } from 'sonner';
 
 export function LadderInputComponent({
   onCreateLadder,

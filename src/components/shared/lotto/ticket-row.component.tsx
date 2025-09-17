@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
+import { LottoCheckTicketRowType } from "@/types/lotto.type";
 import { Trash2 } from 'lucide-react';
-import { LottoCheckTicketRowType } from '@/types';
 import { Fragment } from 'react';
 
 export function LottoCheckTicketRowComponent({

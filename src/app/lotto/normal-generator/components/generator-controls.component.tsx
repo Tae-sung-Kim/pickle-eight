@@ -1,11 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { LottoGeneratorControlsPropsType } from '@/types';
-import { cn } from '@/lib';
+import { cn } from "@/lib/utils";
+import { LottoGeneratorControlsPropsType } from "@/types/lotto.type";
+import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 
 export function LottoGeneratorControlsComponent({
   orderCount,

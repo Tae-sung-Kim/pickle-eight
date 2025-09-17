@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib';
+import { cn } from "@/lib/utils";
 import {
-  FormState,
-  UseFormHandleSubmit,
-  UseFormRegister,
+    FormState,
+    UseFormHandleSubmit,
+    UseFormRegister,
 } from 'react-hook-form';
 
 type FormValues = { answer: string };

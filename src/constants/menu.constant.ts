@@ -1,4 +1,4 @@
-import { MenuGroupType } from '@/types';
+import { MenuGroupType } from "@/types/menu.type";
 
 export enum MENU_GROUP_NAME_ENUM {
   LOTTO = 'lotto',

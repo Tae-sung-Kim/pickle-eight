@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import type { LottoDrawType } from '@/types';
-import { lottoRepository } from '@/services/lotto-repository';
 import { adminDb } from '@/lib/firebase-admin';
+import { lottoRepository } from '@/services/lotto-repository';
+import type { LottoDrawType } from "@/types/lotto.type";
+import { NextResponse } from 'next/server';
 
 const RATE_LIMIT_WINDOW_MS = 60_000 as const; // 1 minute
 const RATE_LIMIT_MAX = 20 as const; // max requests per IP per window

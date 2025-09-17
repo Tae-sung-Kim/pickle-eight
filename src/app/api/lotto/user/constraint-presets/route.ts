@@ -1,9 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
-import type {
-  LottoConstraintPresetType,
-  LottoGenerateFiltersType,
-} from '@/types';
+import type { LottoConstraintPresetType, LottoGenerateFiltersType } from "@/types/lotto.type";
+import { NextRequest, NextResponse } from 'next/server';
 
 function bad(status: number, message: string) {
   return NextResponse.json({ ok: false, error: message }, { status });

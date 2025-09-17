@@ -1,11 +1,11 @@
 'use client';
 
-import { FormEvent } from 'react';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { EmojiTranslationFormType } from '@/types';
+import { EmojiTranslationFormType } from "@/types/emoji-translation.type";
+import { FormEvent } from 'react';
 
 export function EmojiTranslationFormComponent({
   onSubmit,

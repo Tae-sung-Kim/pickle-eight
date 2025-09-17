@@ -1,11 +1,4 @@
-import type {
-  LottoGenerateFiltersType,
-  LottoCheckResultType,
-  LottoDrawType,
-  LottoStatsType,
-  LottoTicketType,
-  LottoWeightingOptionsType,
-} from '@/types';
+import type { LottoCheckResultType, LottoDrawType, LottoGenerateFiltersType, LottoStatsType, LottoTicketType, LottoWeightingOptionsType } from "@/types/lotto.type";
 
 function uniqueSortedSix(
   numbers: number[]

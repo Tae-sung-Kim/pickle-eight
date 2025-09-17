@@ -1,5 +1,6 @@
-import { ensureAnonUser, http } from '@/lib';
-import { UserCreditsType, CreditSpendResponseType } from '@/types';
+import { ensureAnonUser } from "@/lib/firebase-config";
+import { http } from "@/lib/http";
+import { CreditSpendResponseType, UserCreditsType } from "@/types/ad-credit.type";
 
 /**
  * Spend credits atomically on server.

@@ -1,18 +1,16 @@
-import { Metadata } from 'next';
-import { LottoNormalGeneratorComponent } from './components';
-import { generateOgImageUrl } from '@/utils';
-import {
-  JsonLdComponent,
-  ContentWrapperComponent,
-  BackHubPageComponent,
-} from '@/components';
+import { LottoNormalGeneratorComponent } from '@/app/lotto/normal-generator/components/root.component';
+import { BackHubPageComponent } from '@/components/back-hub.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
 import {
   buildMetadata,
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
-} from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
+} from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { Metadata } from 'next';
 
 const baseMeta = buildMetadata({
   title: '로또 번호 생성기 - 추천하는 행운의 번호',

@@ -1,15 +1,17 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants';
-import { JsonLdComponent, CreditIndicatorComponent } from '@/components';
+import { CreditIndicatorComponent } from '@/components/shared/credit/credit-indicator.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants/menu.constant';
 import {
   buildMetadata,
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
-} from '@/lib';
-import { generateOgImageUrl, getOgTag } from '@/utils';
-import type { MenuItemType } from '@/types';
+} from '@/lib/seo';
+import type { MenuItemType } from '@/types/menu.type';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
+import type { Metadata } from 'next';
+import Link from 'next/link';
 
 const baseMeta = buildMetadata({
   title: '퀴즈 허브 - AI 퀴즈/게임 모음',

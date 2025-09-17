@@ -1,20 +1,18 @@
-import type { Metadata } from 'next';
-import { LottoDrawType } from '@/types';
-import { getLottoDrawByNumber } from '@/services';
-import {
-  BackHubPageComponent,
-  ContentWrapperComponent,
-  JsonLdComponent,
-} from '@/components';
-import { ReactElement } from 'react';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
-import { LottoDrawCardComponent } from './components';
+import { LottoDrawCardComponent } from '@/app/lotto/[draw]/components/card.component';
+import { BackHubPageComponent } from '@/components/back-hub.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
 import {
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
   SITE_NAME,
-} from '@/lib';
+} from '@/lib/seo';
+import { getLottoDrawByNumber } from '@/services/lotto.service';
+import { LottoDrawType } from '@/types/lotto.type';
+import type { Metadata } from 'next';
+import { ReactElement } from 'react';
 
 type Params = { draw: string };
 

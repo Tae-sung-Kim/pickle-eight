@@ -1,9 +1,7 @@
-import { getKoreaTime } from '@/utils';
+import { ConsentNudgeComponent } from "@/components/shared/consent/consent-nudge.component";
+import { CookieSettingsButtonComponent } from "@/components/shared/consent/cookie-settings-button.component";
+import { getKoreaTime } from "@/utils/common.util";
 import Link from 'next/link';
-import {
-  CookieSettingsButtonComponent,
-  ConsentNudgeComponent,
-} from '../shared';
 
 export function FooterLayout() {
   return (

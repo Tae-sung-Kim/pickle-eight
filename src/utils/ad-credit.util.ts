@@ -1,5 +1,5 @@
-import { CREDIT_SPEND_COST } from '@/constants';
-import { CreditCostLabelType } from '@/types';
+import { CREDIT_SPEND_COST } from "@/constants/ad-credit.constant";
+import { CreditCostLabelType } from "@/types/ad-credit.type";
 
 export const formatCooldown = (ms: number): string => {
   const totalSec = Math.ceil(ms / 1000);

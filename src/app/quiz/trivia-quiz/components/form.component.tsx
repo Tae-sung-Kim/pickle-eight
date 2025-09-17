@@ -1,23 +1,23 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { TRIVIA_QUIZ_CATEGORIES, TRIVIA_QUIZ_DIFFICULTIES } from '@/constants';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { TRIVIA_QUIZ_CATEGORIES, TRIVIA_QUIZ_DIFFICULTIES } from "@/constants/trivia-quiz.constant";
+import { TriviaQuizFormValuesType } from "@/types/trivia-quiz.type";
+import { motion } from 'framer-motion';
 import type {
-  UseFormRegister,
-  UseFormHandleSubmit,
-  UseFormWatch,
-  UseFormSetValue,
-  FieldErrors,
+    FieldErrors,
+    UseFormHandleSubmit,
+    UseFormRegister,
+    UseFormSetValue,
+    UseFormWatch,
 } from 'react-hook-form';
-import { TriviaQuizFormValuesType } from '@/types';
 
 type TriviaQuizFormComponentPropsType = {
   onSubmit: (data: TriviaQuizFormValuesType) => void;

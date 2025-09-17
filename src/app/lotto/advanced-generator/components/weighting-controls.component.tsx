@@ -1,10 +1,10 @@
 'use client';
 
-import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { LottoWeightingControlsType } from "@/types/lotto.type";
 import { useEffect, useState } from 'react';
-import { LottoWeightingControlsType } from '@/types';
 
 export function LottoAdvancedWeightingControlsComponent({
   useWeight,

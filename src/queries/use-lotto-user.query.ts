@@ -1,25 +1,20 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  autoCompareMyNumbers,
-  deleteConstraintPreset,
-  deleteMyNumberSet,
-  getHotColdStats,
-  getMyBudget,
-  listConstraintPresets,
-  listGenerationLogs,
-  listMyNumberSets,
-  saveConstraintPreset,
-  saveGenerationLog,
-  saveMyBudget,
-  saveMyNumberSet,
-} from '@/services/lotto-user.service';
 import type { AutoCompareItem } from '@/services/lotto-user.service';
-import type {
-  LottoConstraintPresetType,
-  LottoGenerationLogType,
-  LottoNumberSetType,
-  LottoBudgetDocType,
-} from '@/types';
+import {
+    autoCompareMyNumbers,
+    deleteConstraintPreset,
+    deleteMyNumberSet,
+    getHotColdStats,
+    getMyBudget,
+    listConstraintPresets,
+    listGenerationLogs,
+    listMyNumberSets,
+    saveConstraintPreset,
+    saveGenerationLog,
+    saveMyBudget,
+    saveMyNumberSet,
+} from '@/services/lotto-user.service';
+import type { LottoBudgetDocType, LottoConstraintPresetType, LottoGenerationLogType, LottoNumberSetType } from "@/types/lotto.type";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const keys = {
   numberSets: ['lotto', 'user', 'number-sets'] as const,

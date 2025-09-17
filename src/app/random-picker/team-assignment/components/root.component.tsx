@@ -1,20 +1,18 @@
 'use client';
-
-import { useRef, useState } from 'react';
+import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { Button } from '@/components/ui/button';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { useCapture } from '@/hooks/use-capture.hook';
+import { useNameManager } from '@/hooks/use-name-manager.hook';
+import { cn } from '@/lib/utils';
+import { generateTeams } from '@/utils/team-assignment.util';
 import { motion } from 'framer-motion';
 import { Share2, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useCapture, useNameManager } from '@/hooks';
-import {
-  NameInputComponent,
-  NameBadgeComponent,
-  TitleWrapperComponent,
-} from '@/components';
-import { cn } from '@/lib';
-import { generateTeams } from '@/utils/team-assignment.util';
-import TeamResultListComponent from './result-list.component';
+import { useRef, useState } from 'react';
 import TeamCountInputComponent from './count-input.component';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import TeamResultListComponent from './result-list.component';
+import { NameInputComponent } from '@/components/shared/name/input.component';
+import { NameBadgeComponent } from '@/components/shared/name/badge.component';
 
 /**
  * 팀 배정 페이지

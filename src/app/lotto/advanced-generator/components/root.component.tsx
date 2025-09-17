@@ -1,25 +1,25 @@
 'use client';
-
-import { useState, useEffect } from 'react';
-import { useLottoDrawsQuery, useLatestLottoDrawQuery } from '@/queries';
-import { LottoGenerator, creditBuildCostLabel } from '@/utils';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card } from '@/components/ui/card';
+import { CREDIT_SPEND_COST } from '@/constants/ad-credit.constant';
 import {
+  useLatestLottoDrawQuery,
+  useLottoDrawsQuery,
+} from '@/queries/use-lotto.query';
+import { getLottoDraws } from '@/services/lotto.service';
+import {
+  LottoDrawType,
   LottoGenerateFiltersType,
   LottoWeightingOptionsType,
-  LottoDrawType,
-} from '@/types';
+} from '@/types/lotto.type';
+import { creditBuildCostLabel } from '@/utils/ad-credit.util';
+import { LottoGenerator } from '@/utils/lotto.util';
+import { useEffect, useState } from 'react';
 import { LottoAdvancedGenerateControlsComponent } from './generate-controls.component';
-import { LottoAdvancedWeightingControlsComponent } from './weighting-controls.component';
 import { LottoAdvancedGeneratedListComponent } from './generated-list.component';
-import { Card } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import {
-  // CreditBalancePillComponent,
-  CreditGateButtonComponent,
-} from '@/components';
-import { CREDIT_SPEND_COST } from '@/constants';
-import { ClientCsvButtonComponent } from '@/components';
-import { getLottoDraws } from '@/services';
+import { LottoAdvancedWeightingControlsComponent } from './weighting-controls.component';
+import { CreditGateButtonComponent } from '@/components/shared/credit/credit-gate-button.component';
+import { ClientCsvButtonComponent } from '@/components/shared/lotto/client-csv-button.component';
 
 export function LottoAdvancedGeneratorComponent() {
   const [count, setCount] = useState<number>(3);

@@ -1,6 +1,6 @@
-import { SECTION_ICON_COLOR } from '@/constants';
-import { cn } from '@/lib';
-import { MenuSectionKeyType } from '@/types';
+import { SECTION_ICON_COLOR } from "@/constants/theme.constant";
+import { cn } from "@/lib/utils";
+import { MenuSectionKeyType } from "@/types/menu.type";
 
 export function TitleWrapperComponent({
   type,

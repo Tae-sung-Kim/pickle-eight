@@ -1,6 +1,6 @@
+import { http } from "@/lib/http";
+import { GptEnglishWordQuizResponseType } from "@/types/openai-api.type";
 import { useMutation } from '@tanstack/react-query';
-import { GptEnglishWordQuizResponseType } from '@/types';
-import { http } from '@/lib';
 
 export type EnglishWordQuizRequest = { model?: string };
 

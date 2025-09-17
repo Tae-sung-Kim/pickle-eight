@@ -1,5 +1,5 @@
-import { LottoDrawType } from '@/types';
-import { http } from '@/lib';
+import { http } from "@/lib/http";
+import { LottoDrawType } from "@/types/lotto.type";
 
 const MIN_LOADING_MS: number = (() => {
   const raw = (process.env.NEXT_PUBLIC_LOTTO_MIN_LOADING_MS || '').trim();

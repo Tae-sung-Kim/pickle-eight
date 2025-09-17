@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useConsentContext } from '@/providers';
-import { ConsentNudgeType } from '@/types';
+import { useConsentContext } from "@/providers/consent.provider";
+import { ConsentNudgeType } from "@/types/consent.type";
 
 export function ConsentNudgeComponent({
   variant = 'gratitude',

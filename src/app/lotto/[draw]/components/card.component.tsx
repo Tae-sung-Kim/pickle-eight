@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LottoBallComponent } from '@/components';
+import { LottoDrawCardType } from '@/types/lotto.type';
 import { LottoDrawStatsComponent } from './stats.component';
-import { LottoDrawCardType } from '@/types';
+import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
 
 export function LottoDrawCardComponent({
   drawNumber,

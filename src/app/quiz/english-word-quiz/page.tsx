@@ -1,12 +1,11 @@
+import { EnglishWordQuizComponent } from "@/app/quiz/english-word-quiz/components/root.component";
+import { BackHubPageComponent } from "@/components/back-hub.component";
+import { ContentWrapperComponent } from "@/components/content-wrapper.component";
+import { TitleWrapperComponent } from "@/components/title-warpper.component";
+import { MENU_GROUP_NAME_ENUM } from "@/constants/menu.constant";
+import { generateOgImageUrl } from "@/utils/common.util";
+import { getOgTag } from "@/utils/seo.util";
 import { Metadata } from 'next';
-import { EnglishWordQuizComponent } from './components';
-import { generateOgImageUrl, getOgTag } from '@/utils';
-import {
-  BackHubPageComponent,
-  ContentWrapperComponent,
-  TitleWrapperComponent,
-} from '@/components';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: 'AI 영어 단어 퀴즈 - 뜻 보고 단어 맞히기',

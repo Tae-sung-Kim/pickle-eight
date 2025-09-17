@@ -1,19 +1,14 @@
 'use client';
-
+import { MobileMenuLayout } from "@/components/layouts/mobile-menu.layout";
+import { PcMenuLayout } from "@/components/layouts/pc-menu.layout";
+import { CREDIT_POLICY, CREDIT_REFILL_INTERVAL_MS, CREDIT_RESET_MODE, CREDIT_RESET_MODE_ENUM } from "@/constants/ad-credit.constant";
+import { cancelIdle, scheduleIdle } from "@/lib/idle";
+import { useUserCreditsQuery } from "@/queries/use-credit.query";
+import { useCreditStore } from "@/stores/credit.store";
+import { nextKstMidnightUtcTs } from "@/utils/common.util";
+import { Coins, Home } from 'lucide-react';
 import Link from 'next/link';
-import { Home, Coins } from 'lucide-react';
-import { MobileMenuLayout, PcMenuLayout } from '@/components';
-import { useCreditStore } from '@/stores';
-import {
-  CREDIT_POLICY,
-  CREDIT_REFILL_INTERVAL_MS,
-  CREDIT_RESET_MODE,
-  CREDIT_RESET_MODE_ENUM,
-} from '@/constants';
-import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { scheduleIdle, cancelIdle } from '@/lib';
-import { nextKstMidnightUtcTs } from '@/utils';
-import { useUserCreditsQuery } from '@/queries';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export function HeaderLayout() {
   const { total, hydrated, markHydrated, setServerSync } = useCreditStore();

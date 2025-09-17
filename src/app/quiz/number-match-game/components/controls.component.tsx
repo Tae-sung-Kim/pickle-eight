@@ -1,14 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/components/ui/select';
-import { NUMBER_MATCH_GAME_MAP_SIZE_OPTIONS } from '@/constants';
-import { NumberMatchGameControlsType } from '@/types';
+import { NUMBER_MATCH_GAME_MAP_SIZE_OPTIONS } from "@/constants/number-match-game.constant";
+import { NumberMatchGameControlsType } from "@/types/number-match-game.type";
 
 export function NumberMatchGameControlsComponent({
   matchCount,

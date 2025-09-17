@@ -1,8 +1,9 @@
-import { HeroBannerComponent, HeroTodayMessageComponent } from './components';
+import { HeroBannerComponent } from '@/app/hero/components/banner.component';
+import { HeroTodayMessageComponent } from '@/app/hero/components/today-message.component';
+import { ConsentNudgeComponent } from '@/components/shared/consent/consent-nudge.component';
+import { buildMetadata, canonicalUrl } from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
 import { Metadata } from 'next';
-import { generateOgImageUrl } from '@/utils';
-import { ConsentNudgeComponent } from '@/components';
-import { buildMetadata, canonicalUrl } from '@/lib';
 
 const baseMeta = buildMetadata({
   title: '오늘의 추천 · 메시지',

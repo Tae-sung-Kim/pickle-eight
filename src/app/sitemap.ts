@@ -1,6 +1,6 @@
+import { MENU_LIST } from "@/constants/menu.constant";
+import { SITE_URL } from "@/lib/seo";
 import { MetadataRoute } from 'next';
-import { MENU_LIST } from '@/constants';
-import { SITE_URL } from '@/lib';
 
 const RECENT_DRAWS = 200 as const; // 최근 N개 회차 포함
 

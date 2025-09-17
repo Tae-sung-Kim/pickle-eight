@@ -1,5 +1,5 @@
-import { Smile, Sparkles, ListChecks, UtensilsCrossed } from 'lucide-react';
-import { TodayMessageCardType, TodayMessageType } from '@/types';
+import { TodayMessageCardType, TodayMessageType } from "@/types/today-message.type";
+import { ListChecks, Smile, Sparkles, UtensilsCrossed } from 'lucide-react';
 
 export type CardItem = { key: TodayMessageType; props: TodayMessageCardType };
 
