@@ -1,10 +1,10 @@
+import { buildMetadata, jsonLdOrganization, jsonLdWebSite } from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { Metadata } from 'next';
 import { Toaster } from 'sonner';
 import HeroPage from './hero/page';
 import HomePage from './home/page';
-import { Metadata } from 'next';
-import { generateOgImageUrl } from '@/utils';
-import { JsonLdComponent } from '@/components';
-import { buildMetadata, jsonLdWebSite, jsonLdOrganization } from '@/lib';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 
 const baseMeta = buildMetadata({
   title: `${process.env.NEXT_PUBLIC_SITE_NAME} - 랜덤 추첨·로또·자리배정·퀴즈`,

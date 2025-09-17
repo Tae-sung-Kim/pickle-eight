@@ -34,4 +34,3 @@ export function TeamCountInputComponent({
     </div>
   );
 }
-export default TeamCountInputComponent;

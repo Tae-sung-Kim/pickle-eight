@@ -1,5 +1,5 @@
-import { getCollection } from '@/services';
-import { AdBannerConfigType, AdsConfigDocType } from '@/types';
+import { getCollection } from "@/services/firebase.service";
+import { AdBannerConfigType, AdsConfigDocType } from "@/types/ad-credit.type";
 
 function parseDimension(
   value: string | number | undefined,

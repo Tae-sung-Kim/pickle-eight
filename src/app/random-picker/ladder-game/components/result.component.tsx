@@ -1,8 +1,8 @@
 'use client';
 
+import { LadderResultType } from "@/types/ladder-game.type";
 import { motion } from 'framer-motion';
 import { Award, Gift } from 'lucide-react';
-import { LadderResultType } from '@/types';
 
 export const LadderResultComponent = ({
   results,
@@ -44,5 +44,4 @@ export const LadderResultComponent = ({
     </div>
   );
 };
-
-export default LadderResultComponent;
+export { LadderResultComponent as ResultComponent };

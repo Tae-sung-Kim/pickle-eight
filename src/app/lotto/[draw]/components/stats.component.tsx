@@ -20,5 +20,3 @@ export function LottoDrawStatsComponent({
     </div>
   );
 }
-
-export default LottoDrawStatsComponent;

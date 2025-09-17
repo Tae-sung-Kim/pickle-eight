@@ -1,23 +1,27 @@
+import { AnalyticsClientComponent } from '@/components/analytics-client.component';
+import { FooterLayout } from '@/components/layouts/footer.layout';
+import { HeaderLayout } from '@/components/layouts/header.layout';
+import { LoadingComponent } from '@/components/loading.component';
+import {
+  GLOBAL_KEYWORDS,
+  buildKeywords,
+} from '@/constants/seo-keywords.constant';
+import {
+  SITE_NAME,
+  SITE_URL,
+  jsonLdOrganization,
+  jsonLdWebSite,
+} from '@/lib/seo';
+import { AgeGateProvider } from '@/providers/age-gate.provider';
+import { AuthProvider } from '@/providers/auth.provider';
+import { ConsentProvider } from '@/providers/consent.provider';
+import { QueryClientProviderWrapper } from '@/providers/query-client.provider';
 import type { Metadata, Viewport } from 'next';
-import {
-  LoadingComponent,
-  AnalyticsClientComponent,
-  CookieConsentComponent,
-  FooterLayout,
-  HeaderLayout,
-  AdFitSlotComponent,
-  JsonLdComponent,
-} from '@/components';
 import { Toaster } from 'sonner';
-import {
-  QueryClientProviderWrapper,
-  ConsentProvider,
-  AuthProvider,
-  AgeGateProvider,
-} from '@/providers';
-import { jsonLdWebSite, jsonLdOrganization, SITE_NAME, SITE_URL } from '@/lib';
 import './globals.css';
-import { GLOBAL_KEYWORDS, buildKeywords } from '@/constants';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { AdFitSlotComponent } from '@/components/shared/adfit/adfit-slot.component';
+import { CookieConsentComponent } from '@/components/shared/consent/cookie-consent.component';
 
 export const viewport: Viewport = {
   width: 'device-width',

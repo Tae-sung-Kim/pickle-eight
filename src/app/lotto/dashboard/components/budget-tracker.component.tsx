@@ -1,15 +1,15 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useMyBudgetQuery, useSaveMyBudgetMutation } from "@/queries/use-lotto-user.query";
+import { zodResolver } from '@hookform/resolvers/zod';
 import type { JSX } from 'react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Card } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useMyBudgetQuery, useSaveMyBudgetMutation } from '@/queries';
 
 const schema = z.object({
   currentMonth: z

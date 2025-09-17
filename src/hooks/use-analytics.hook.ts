@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { getAnalyticsClient } from '@/lib';
+import { getAnalyticsClient } from "@/lib/firebase-config";
+import { useConsentContext } from "@/providers/consent.provider";
 import { logEvent } from 'firebase/analytics';
-import { useConsentContext } from '@/providers';
+import { useEffect } from 'react';
 
 export const usePageView = (page: string): void => {
   const { state } = useConsentContext();

@@ -1,8 +1,7 @@
 'use client';
-
+import { NameInputComponent } from '@/components/shared/name/input.component';
+import { DiceInputListComponentType } from '@/types/dice-game.type';
 import { useState } from 'react';
-import { DiceInputListComponentType } from '@/types';
-import { NameInputComponent } from '@/components';
 
 export const DiceInputListComponent = ({
   addName,
@@ -31,5 +30,4 @@ export const DiceInputListComponent = ({
     </div>
   );
 };
-
-export default DiceInputListComponent;
+export { DiceInputListComponent as InputListComponent };

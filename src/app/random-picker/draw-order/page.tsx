@@ -1,13 +1,12 @@
+import { DrawOrderComponent } from '@/app/random-picker/draw-order/components/root.component';
+import { BackHubPageComponent } from '@/components/back-hub.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
 import { Metadata } from 'next';
-import { DrawOrderComponent } from './components';
-import { generateOgImageUrl, getOgTag } from '@/utils';
-import {
-  BackHubPageComponent,
-  ContentWrapperComponent,
-  JsonLdComponent,
-} from '@/components';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '랜덤 순서/상품 추첨기 - 공정한 매칭 뽑기',

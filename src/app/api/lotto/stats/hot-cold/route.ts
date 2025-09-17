@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
 import { lottoRepository } from '@/services/lotto-repository';
-import type { LottoDrawType } from '@/types';
+import type { LottoDrawType } from "@/types/lotto.type";
+import { NextResponse } from 'next/server';
 
 const DOC_ID = 'hot-cold-latest' as const;
 const COLLECTION = 'lotto_stats' as const;

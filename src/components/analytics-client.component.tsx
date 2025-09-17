@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { usePageView } from '@/hooks';
+import { usePageView } from "@/hooks/use-analytics.hook";
+import { useConsentContext } from "@/providers/consent.provider";
+import { getCachedData, setCachedData } from "@/utils/common.util";
 import { usePathname } from 'next/navigation';
-import { useConsentContext } from '@/providers';
-import { getCachedData, setCachedData } from '@/utils';
+import { useEffect } from 'react';
 
 function AnalyticsRunner({ pathname }: { pathname: string }) {
   usePageView(pathname);
@@ -51,5 +51,3 @@ export function AnalyticsClientComponent() {
     </>
   );
 }
-
-export default AnalyticsClientComponent;

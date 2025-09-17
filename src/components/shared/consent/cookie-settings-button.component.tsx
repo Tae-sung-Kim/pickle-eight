@@ -1,7 +1,6 @@
 'use client';
-
-import { useConsentContext } from '@/providers';
 import { Button } from '@/components/ui/button';
+import { useConsentContext } from "@/providers/consent.provider";
 
 export function CookieSettingsButtonComponent() {
   const { onOpen } = useConsentContext();
@@ -17,5 +16,3 @@ export function CookieSettingsButtonComponent() {
     </Button>
   );
 }
-
-export default CookieSettingsButtonComponent;

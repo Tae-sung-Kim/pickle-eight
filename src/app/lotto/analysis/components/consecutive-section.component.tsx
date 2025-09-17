@@ -13,5 +13,3 @@ export function LottoAnalysisConsecutiveSectionComponent({
     </section>
   );
 }
-
-export default LottoAnalysisConsecutiveSectionComponent;

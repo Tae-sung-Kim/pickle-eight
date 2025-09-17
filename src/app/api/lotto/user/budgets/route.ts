@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
-import type { LottoBudgetDocType } from '@/types';
+import type { LottoBudgetDocType } from "@/types/lotto.type";
+import { NextRequest, NextResponse } from 'next/server';
 
 function bad(status: number, message: string) {
   return NextResponse.json({ ok: false, error: message }, { status });

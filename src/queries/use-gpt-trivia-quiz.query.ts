@@ -1,10 +1,6 @@
+import { http } from "@/lib/http";
+import { TriviaQuizCategoryType, TriviaQuizDifficultyType, TriviaQuizQuestionType } from "@/types/trivia-quiz.type";
 import { useMutation } from '@tanstack/react-query';
-import {
-  TriviaQuizCategoryType,
-  TriviaQuizDifficultyType,
-  TriviaQuizQuestionType,
-} from '@/types';
-import { http } from '@/lib';
 
 /**
  * GPT 기반 퀴즈 생성 API를 호출하는 서비스 훅

@@ -1,7 +1,6 @@
 'use client';
-
-import { useConsentContext } from '@/providers';
 import { Button } from '@/components/ui/button';
+import { useConsentContext } from "@/providers/consent.provider";
 import Link from 'next/link';
 
 export function CookieConsentComponent() {
@@ -65,5 +64,3 @@ export function CookieConsentComponent() {
     </div>
   );
 }
-
-export default CookieConsentComponent;

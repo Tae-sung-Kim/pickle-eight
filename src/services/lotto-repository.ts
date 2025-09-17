@@ -1,5 +1,5 @@
 import { adminDb } from '@/lib/firebase-admin';
-import type { LottoDrawType } from '@/types';
+import type { LottoDrawType } from "@/types/lotto.type";
 
 /**
  * Firestore repository for Lotto draws.

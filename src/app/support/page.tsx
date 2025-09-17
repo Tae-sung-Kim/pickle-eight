@@ -1,12 +1,12 @@
-import type { Metadata } from 'next';
-import { JsonLdComponent } from '@/components';
+import { CopyButtonComponent } from '@/components/copy-button.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import {
   buildMetadata,
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
-} from '@/lib';
-import { CopyButtonComponent } from '@/components';
+} from '@/lib/seo';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = buildMetadata({
   title: '후원 | ' + (process.env.NEXT_PUBLIC_SITE_NAME as string),

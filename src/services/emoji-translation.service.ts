@@ -1,10 +1,5 @@
-import {
-  EmojiGenerateValuesType,
-  EmojiTranslationProblemType,
-  EmojiQuizGradeType,
-  EmojiGradeQuizInputType,
-} from '@/types';
-import { http } from '@/lib';
+import { http } from "@/lib/http";
+import { EmojiGenerateValuesType, EmojiGradeQuizInputType, EmojiQuizGradeType, EmojiTranslationProblemType } from "@/types/emoji-translation.type";
 
 /**
  * Generate emoji quiz problem via API

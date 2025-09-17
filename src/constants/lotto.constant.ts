@@ -1,4 +1,4 @@
-import { LottoWarningToneType } from '@/types';
+import { LottoWarningToneType } from "@/types/lotto.type";
 
 export const LOTTO_MAX_HISTORY_RANGE = 500 as const;
 

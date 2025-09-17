@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Share2, RefreshCw } from 'lucide-react';
-import { cn } from '@/lib';
+import { cn } from "@/lib/utils";
+import { motion } from 'framer-motion';
+import { RefreshCw, Share2 } from 'lucide-react';
+import React, { useRef } from 'react';
 
 export type WinnerViewProps = {
   readonly names: readonly string[];
@@ -105,5 +105,3 @@ export function NameRandomWinnerViewComponent({
     </div>
   );
 }
-
-export default NameRandomWinnerViewComponent;

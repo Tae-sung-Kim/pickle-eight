@@ -1,8 +1,8 @@
 'use client';
 
+import { cn } from "@/lib/utils";
 import { motion } from 'framer-motion';
 import { Users } from 'lucide-react';
-import { cn } from '@/lib';
 
 export type SeatAssignmentResultViewType = {
   readonly assignedSeats: Record<number, string>;
@@ -52,5 +52,3 @@ export function SeatAssignmentResultViewComponent({
     </div>
   );
 }
-
-export default SeatAssignmentResultViewComponent;

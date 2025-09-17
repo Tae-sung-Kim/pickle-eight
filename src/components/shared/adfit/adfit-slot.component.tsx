@@ -1,10 +1,9 @@
 'use client';
-
-import React, { useEffect, useId, useState } from 'react';
-import { useConsentContext } from '@/providers';
-import { useLoadingStore } from '@/stores';
-import { useTopBannerAdConfig } from '@/queries';
-import { ConsentNudgeComponent } from '@/components';
+import { useConsentContext } from '@/providers/consent.provider';
+import { useTopBannerAdConfig } from '@/queries/use-ads-config.query';
+import { useLoadingStore } from '@/stores/loading.store';
+import { useEffect, useId, useState } from 'react';
+import { ConsentNudgeComponent } from '../consent/consent-nudge.component';
 
 export type AdFitSlotProps = {
   readonly fixed?: boolean;
@@ -162,5 +161,3 @@ export function AdFitSlotComponent({
     </>
   );
 }
-
-export default AdFitSlotComponent;

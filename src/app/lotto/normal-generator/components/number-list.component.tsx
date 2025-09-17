@@ -1,13 +1,12 @@
 'use client';
-
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LottoNumberListPropsType } from '@/types';
-import { useCapture } from '@/hooks';
-import { useRef } from 'react';
-import { Share2 } from 'lucide-react';
+import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
 import { Button } from '@/components/ui/button';
-import { LottoBallComponent } from '@/components';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useCapture } from '@/hooks/use-capture.hook';
+import { LottoNumberListPropsType } from '@/types/lotto.type';
+import { motion } from 'framer-motion';
+import { Share2 } from 'lucide-react';
+import { useRef } from 'react';
 
 export function LottoNumberListComponent({
   numbersList,
@@ -84,5 +83,3 @@ export function LottoNumberListComponent({
     </Card>
   );
 }
-
-export default LottoNumberListComponent;

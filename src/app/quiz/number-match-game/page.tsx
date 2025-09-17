@@ -1,14 +1,13 @@
+import { NumberMatchGameComponent } from '@/app/quiz/number-match-game/components/root.component';
+import { BackHubPageComponent } from '@/components/back-hub.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
 import { Metadata } from 'next';
-import { NumberMatchGameComponent } from './components';
-import { generateOgImageUrl, getOgTag } from '@/utils';
-import {
-  BackHubPageComponent,
-  ContentWrapperComponent,
-  JsonLdComponent,
-  TitleWrapperComponent,
-} from '@/components';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '숫자 매칭 게임 - 기억력 테스트 두뇌 트레이닝',

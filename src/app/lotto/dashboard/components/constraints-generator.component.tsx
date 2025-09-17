@@ -1,31 +1,30 @@
 'use client';
 
-import type { JSX } from 'react';
-import { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { CreditGateButtonComponent } from '@/components/shared/credit/credit-gate-button.component';
+import { ClientCsvButtonComponent } from '@/components/shared/lotto/client-csv-button.component';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
-  ClientCsvButtonComponent,
-  CreditGateButtonComponent,
-} from '@/components';
-import { creditBuildCostLabel, LottoGenerator } from '@/utils';
-import { toast } from 'sonner';
-import type {
-  LottoConstraintPresetType,
-  LottoGenerateFiltersType,
-} from '@/types';
-import {
   useConstraintPresetsQuery,
   useDeleteConstraintPresetMutation,
   useSaveConstraintPresetMutation,
   useSaveGenerationLogMutation,
-} from '@/queries';
+} from '@/queries/use-lotto-user.query';
+import type {
+  LottoConstraintPresetType,
+  LottoGenerateFiltersType,
+} from '@/types/lotto.type';
+import { creditBuildCostLabel } from '@/utils/ad-credit.util';
+import { LottoGenerator } from '@/utils/lotto.util';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useSearchParams } from 'next/navigation';
+import type { JSX } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 // helper: empty string -> undefined, then coerce to int range
 const toOptionalInt = (min: number, max: number) =>

@@ -1,6 +1,6 @@
+import { getTopBannerAdConfig } from "@/services/ads-config.service";
+import { AdBannerConfigType } from "@/types/ad-credit.type";
 import { useQuery } from '@tanstack/react-query';
-import { getTopBannerAdConfig } from '@/services';
-import { AdBannerConfigType } from '@/types';
 
 export function useTopBannerAdConfig(enabled: boolean = true) {
   return useQuery<AdBannerConfigType | null>({

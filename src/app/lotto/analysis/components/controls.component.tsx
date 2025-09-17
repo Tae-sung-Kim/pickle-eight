@@ -1,16 +1,12 @@
 'use client';
-
+import { CreditGateButtonComponent } from '@/components/shared/credit/credit-gate-button.component';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import {
-  // CreditBalancePillComponent,
-  CreditGateButtonComponent,
-} from '@/components';
+import { Label } from '@/components/ui/label';
+import { LOTTO_MAX_HISTORY_RANGE } from '@/constants/lotto.constant';
+import { LottoAnalysisControlsType } from '@/types/lotto.type';
+import { creditBuildCostLabel } from '@/utils/ad-credit.util';
 import { useEffect, useState } from 'react';
-import { LottoAnalysisControlsType } from '@/types';
-import { creditBuildCostLabel } from '@/utils';
-import { LOTTO_MAX_HISTORY_RANGE } from '@/constants';
 
 export function LottoAnalysisControlsComponent({
   from,
@@ -183,5 +179,3 @@ export function LottoAnalysisControlsComponent({
     </Card>
   );
 }
-
-export default LottoAnalysisControlsComponent;

@@ -1,10 +1,10 @@
 'use client';
 
-import type { JSX } from 'react';
 import { Card } from '@/components/ui/card';
-import { useGenerationLogsQuery } from '@/queries';
+import { useGenerationLogsQuery } from "@/queries/use-lotto-user.query";
+import type { LottoGenerateFiltersType } from "@/types/lotto.type";
 import Link from 'next/link';
-import type { LottoGenerateFiltersType } from '@/types';
+import type { JSX } from 'react';
 
 function buildConstraintsUrl(filters?: LottoGenerateFiltersType): string {
   const base = '/lotto/dashboard#constraints';

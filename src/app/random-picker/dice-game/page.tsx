@@ -1,13 +1,12 @@
-import { generateOgImageUrl, getOgTag } from '@/utils';
-import { DiceGameComponent } from './components';
+import { DiceGameComponent } from '@/app/random-picker/dice-game/components/game.component';
+import { BackHubPageComponent } from '@/components/back-hub.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
 import { Metadata } from 'next';
-import {
-  BackHubPageComponent,
-  ContentWrapperComponent,
-  JsonLdComponent,
-} from '@/components';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '주사위 게임 - 랜덤 주사위 추첨기',

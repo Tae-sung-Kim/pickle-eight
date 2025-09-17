@@ -1,7 +1,7 @@
 'use client';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { EnglishWordQuizStatusType } from '@/types';
+import { EnglishWordQuizStatusType } from "@/types/english-word-quiz.type";
 import { Loader2 } from 'lucide-react';
 
 export function EnglishWordQuizStatusComponent({
@@ -39,5 +39,3 @@ export function EnglishWordQuizStatusComponent({
   }
   return null;
 }
-
-export default EnglishWordQuizStatusComponent;

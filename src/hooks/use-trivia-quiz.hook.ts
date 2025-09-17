@@ -1,5 +1,5 @@
-import { TRIVIA_QUIZ_CATEGORIES, TRIVIA_QUIZ_DIFFICULTIES } from '@/constants';
-import { TriviaQuizStoreStateType } from '@/types';
+import { TRIVIA_QUIZ_CATEGORIES, TRIVIA_QUIZ_DIFFICULTIES } from "@/constants/trivia-quiz.constant";
+import { TriviaQuizStoreStateType } from "@/types/trivia-quiz.type";
 import { create } from 'zustand';
 
 /**

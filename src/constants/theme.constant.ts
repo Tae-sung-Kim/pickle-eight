@@ -1,4 +1,5 @@
-import { MenuSectionKeyType, ThemeColorsType, ThemeVariantType } from '@/types';
+import { MenuSectionKeyType } from "@/types/menu.type";
+import { ThemeColorsType, ThemeVariantType } from "@/types/theme.type";
 
 export const THEME: Readonly<Record<ThemeVariantType, ThemeColorsType>> = {
   light: {

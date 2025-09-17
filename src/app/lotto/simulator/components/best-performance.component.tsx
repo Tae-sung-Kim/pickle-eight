@@ -1,6 +1,6 @@
-import type { ReactElement } from 'react';
-import type { LottoLankType } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { LottoLankType } from "@/types/lotto.type";
+import type { ReactElement } from 'react';
 
 export type BestPerformance = Readonly<{
   rank: LottoLankType;

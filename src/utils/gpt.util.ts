@@ -1,4 +1,4 @@
-import { GPT_MODEL_COST, GPT_MODEL_ENUM } from '@/constants';
+import { GPT_MODEL_COST, GPT_MODEL_ENUM } from "@/constants/gpt-model.constant";
 
 export function getModelCostByKey(key: GPT_MODEL_ENUM): number {
   return GPT_MODEL_COST[key] ?? 0;

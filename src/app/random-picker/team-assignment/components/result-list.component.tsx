@@ -32,4 +32,3 @@ export function TeamResultListComponent({ teams }: TeamResultListPropsType) {
     </div>
   );
 }
-export default TeamResultListComponent;

@@ -1,11 +1,10 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Dice5, Share2 } from 'lucide-react';
-import { cn } from '@/lib';
-import { Loader2 } from 'lucide-react';
-import { DiceRollButtonPropsType } from '@/types';
+import { cn } from "@/lib/utils";
+import { DiceRollButtonPropsType } from "@/types/dice-game.type";
+import { AnimatePresence, motion } from 'framer-motion';
+import { Dice5, Loader2, RefreshCw, Share2 } from 'lucide-react';
 
 export const DiceRollButtonComponent = ({
   onClick,
@@ -110,5 +109,4 @@ export const DiceRollButtonComponent = ({
     </AnimatePresence>
   </motion.div>
 );
-
-export default DiceRollButtonComponent;
+export { DiceRollButtonComponent as RollButtonComponent };

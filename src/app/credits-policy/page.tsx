@@ -1,14 +1,17 @@
-import type { JSX } from 'react';
-import { Metadata } from 'next';
-import { generateOgImageUrl } from '@/utils';
-import { JsonLdComponent } from '@/components';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import {
+  CREDIT_POLICY,
+  CREDIT_SPEND_COST,
+} from '@/constants/ad-credit.constant';
 import {
   buildMetadata,
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
-} from '@/lib';
-import { CREDIT_POLICY, CREDIT_SPEND_COST } from '@/constants';
+} from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { Metadata } from 'next';
+import type { JSX } from 'react';
 
 /**
  * 크레딧 정책 페이지

@@ -1,5 +1,5 @@
+import { EMOJI_CATEGORY_ENUM } from "@/constants/emoji-translation.constant";
 import { z } from 'zod';
-import { EMOJI_CATEGORY_ENUM } from '@/constants';
 
 export const EmojiTranslationGenerateSchema = z.object({
   action: z.literal('generate').optional(),

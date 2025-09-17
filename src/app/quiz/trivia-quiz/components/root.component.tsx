@@ -1,17 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTriviaQuizStore, useDailyLimit } from '@/hooks';
-import { TriviaQuizCategoryType, TriviaQuizDifficultyType } from '@/types';
-import { useGptTriviaQuizQuery } from '@/queries';
-import { toast } from 'sonner';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { TriviaQuizFormSchema, TriviaQuizFormValuesType } from '@/types';
-import TriviaQuizFormComponent from './form.component';
-import TriviaQuizQuestionCardComponent from './question.component';
-import { getKoreaTime } from '@/utils';
 import { Button } from '@/components/ui/button';
+import { useDailyLimit } from "@/hooks/use-daily-limit.hook";
+import { useTriviaQuizStore } from "@/hooks/use-trivia-quiz.hook";
+import { useGptTriviaQuizQuery } from "@/queries/use-gpt-trivia-quiz.query";
+import { TriviaQuizCategoryType, TriviaQuizDifficultyType, TriviaQuizFormSchema, TriviaQuizFormValuesType } from "@/types/trivia-quiz.type";
+import { getKoreaTime } from "@/utils/common.util";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { TriviaQuizFormComponent } from './form.component';
+import { TriviaQuizQuestionCardComponent } from './question.component';
 
 export function TriviaQuizComponent() {
   const [mounted, setMounted] = useState(false);
@@ -215,5 +215,3 @@ export function TriviaQuizComponent() {
     </>
   );
 }
-
-export default TriviaQuizComponent;

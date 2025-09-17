@@ -1,13 +1,13 @@
-import { HomeMenuGridComponent } from './components';
-import { Metadata } from 'next';
-import { generateOgImageUrl } from '@/utils';
+import { HomeMenuGridComponent } from '@/app/home/components/menu-grid.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import {
   buildMetadata,
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
-} from '@/lib';
-import { JsonLdComponent } from '@/components';
+} from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { Metadata } from 'next';
 
 const baseMeta = buildMetadata({
   title: '홈 - 랜덤 추첨 · 게임 · 퀴즈 모음',

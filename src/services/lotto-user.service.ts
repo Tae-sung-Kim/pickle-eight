@@ -1,10 +1,5 @@
-import { http } from '@/lib';
-import type {
-  LottoConstraintPresetType,
-  LottoGenerationLogType,
-  LottoNumberSetType,
-  LottoBudgetDocType,
-} from '@/types';
+import { http } from "@/lib/http";
+import type { LottoBudgetDocType, LottoConstraintPresetType, LottoGenerationLogType, LottoNumberSetType } from "@/types/lotto.type";
 
 export async function listMyNumberSets(): Promise<LottoNumberSetType[]> {
   const res = await http.get<{ ok: boolean; data: LottoNumberSetType[] }>(

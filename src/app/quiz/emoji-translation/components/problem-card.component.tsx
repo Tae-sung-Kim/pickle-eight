@@ -1,7 +1,6 @@
 'use client';
-
-import type { EmojiTranslationProblemType } from '@/types';
 import { Card } from '@/components/ui/card';
+import type { EmojiTranslationProblemType } from "@/types/emoji-translation.type";
 
 export function EmojiTranslationProblemCardComponent({
   problem,
@@ -38,4 +37,3 @@ export function EmojiTranslationProblemCardComponent({
     </Card>
   );
 }
-export default EmojiTranslationProblemCardComponent;

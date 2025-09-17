@@ -54,5 +54,3 @@ export function useNameManager() {
     setDuplicateName,
   };
 }
-
-export default useNameManager;

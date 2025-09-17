@@ -1,8 +1,7 @@
 'use client';
-
-import { LottoBallComponent } from '@/components';
+import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
 import { Card } from '@/components/ui/card';
-import { LottoGeneratedListType } from '@/types';
+import { LottoGeneratedListType } from '@/types/lotto.type';
 
 export function LottoAdvancedGeneratedListComponent({
   items,
@@ -27,5 +26,3 @@ export function LottoAdvancedGeneratedListComponent({
     </div>
   );
 }
-
-export default LottoAdvancedGeneratedListComponent;

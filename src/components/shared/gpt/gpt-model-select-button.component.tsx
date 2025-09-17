@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
+import { CreditGateButtonComponent } from '@/components/shared/credit/credit-gate-button.component';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
@@ -8,11 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import CreditGateButtonComponent from '@/components/shared/credit/credit-gate-button.component';
-import { GPT_MODEL_ENUM, GPT_MODEL_LABEL } from '@/constants';
-import { creditBuildCostLabel, getModelCost, isPaidModel } from '@/utils';
-import { GptModelSelectButtonType } from '@/types';
+import {
+  GPT_MODEL_ENUM,
+  GPT_MODEL_LABEL,
+} from '@/constants/gpt-model.constant';
+import { GptModelSelectButtonType } from '@/types/openai-api.type';
+import { creditBuildCostLabel } from '@/utils/ad-credit.util';
+import { getModelCost, isPaidModel } from '@/utils/gpt.util';
+import { useMemo } from 'react';
 
 export type GptModelSelectButtonInternalProps = GptModelSelectButtonType & {
   readonly disabled?: boolean;
@@ -103,5 +107,3 @@ export function GptModelSelectButtonComponent({
     </div>
   );
 }
-
-export default GptModelSelectButtonComponent;

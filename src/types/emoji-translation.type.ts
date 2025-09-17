@@ -1,9 +1,4 @@
-/**
- * Shared types for Emoji Translation Quiz
- * Use English for code and documentation as per project rules.
- */
-
-import { EMOJI_CATEGORY_ENUM } from '@/constants';
+import { EMOJI_CATEGORY_ENUM } from "@/constants/emoji-translation.constant";
 
 export type EmojiCategoryType =
   (typeof EMOJI_CATEGORY_ENUM)[keyof typeof EMOJI_CATEGORY_ENUM];

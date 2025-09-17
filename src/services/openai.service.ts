@@ -1,8 +1,4 @@
-import {
-  OpenAIErrorResponseType,
-  OpenAIRequestType,
-  OpenAIResponseType,
-} from '@/types';
+import { OpenAIErrorResponseType, OpenAIRequestType, OpenAIResponseType } from "@/types/openai-api.type";
 import axios, { AxiosError } from 'axios';
 
 const OPENAI_TIMEOUT_MS: number = 20000; // per-call timeout

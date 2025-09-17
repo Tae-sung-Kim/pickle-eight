@@ -1,11 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { cn } from '@/lib';
-import { DiceComponent } from './root.component';
 import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { cn } from "@/lib/utils";
 import { DicePlayerComponentPropsType } from '@/types/dice-game.type';
+import { motion } from 'framer-motion';
+import { X } from 'lucide-react';
+import { DiceComponent } from './root.component';
 
 export const DicePlayerComponent = ({
   name,
@@ -80,5 +80,4 @@ export const DicePlayerComponent = ({
     </Button>
   </motion.div>
 );
-
-export default DicePlayerComponent;
+export { DicePlayerComponent as PlayerComponent };

@@ -1,4 +1,4 @@
-import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from '@/constants';
+import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from "@/constants/number-match-game.constant";
 
 export type NumberMatchCardStatusType =
   (typeof NUMBER_MATCH_GAME_CARD_STATUS_ENUM)[keyof typeof NUMBER_MATCH_GAME_CARD_STATUS_ENUM];

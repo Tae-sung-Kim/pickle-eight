@@ -1,10 +1,10 @@
 'use client';
-
-import { ChangeEvent } from 'react';
+import { NameInputComponent } from '@/components/shared/name/input.component';
+import { NameListComponent } from '@/components/shared/name/list.component';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { NameInputComponent, NameListComponent } from '@/components';
-import { Users, RefreshCw, ArrowRight, Share2 } from 'lucide-react';
+import { ArrowRight, RefreshCw, Share2, Users } from 'lucide-react';
+import { ChangeEvent } from 'react';
 
 export type SeatAssignmentInputCardType = {
   readonly names: readonly string[];
@@ -146,5 +146,3 @@ export function SeatAssignmentInputCardComponent({
     </div>
   );
 }
-
-export default SeatAssignmentInputCardComponent;

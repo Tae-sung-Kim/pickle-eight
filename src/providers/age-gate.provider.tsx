@@ -1,16 +1,15 @@
 'use client';
-
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { AgeGateDialogComponent } from '@/components/shared/lotto/age-gate-dialog.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { LottoAgeGateModeType } from '@/types/lotto.type';
 import { useRouter } from 'next/navigation';
-import { AgeGateDialogComponent } from '@/components';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
-import { LottoAgeGateModeType } from '@/types';
+import React, {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 
 const MODE: LottoAgeGateModeType = ((process.env
   .NEXT_PUBLIC_AGE_GATE_MODE as LottoAgeGateModeType) ||
@@ -173,5 +172,3 @@ export function AgeGateProvider({ children }: { children: React.ReactNode }) {
     </>
   );
 }
-
-export default AgeGateProvider;

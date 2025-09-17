@@ -1,28 +1,28 @@
 'use client';
-
-import type { JSX } from 'react';
-import { useMemo, useState } from 'react';
-import type { Metadata } from 'next';
-import { JsonLdComponent } from '@/components';
+import { Card } from '@/components/ui/card';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
 import {
   buildMetadata,
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
-} from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
-import { generateOgImageUrl, getOgTag } from '@/utils';
-import { MyNumbersComponent } from './my-numbers.component';
-import { ConstraintsGeneratorComponent } from './constraints-generator.component';
-import { HotColdTrackerComponent } from './hot-cold-tracker.component';
-import { FairnessLogComponent } from './fairness-log.component';
-import { BudgetTrackerComponent } from './budget-tracker.component';
-import { Card } from '@/components/ui/card';
+} from '@/lib/seo';
 import {
-  useLatestLottoDrawQuery,
-  useMyNumberSetsQuery,
   useMyBudgetQuery,
-} from '@/queries';
+  useMyNumberSetsQuery,
+} from '@/queries/use-lotto-user.query';
+import { useLatestLottoDrawQuery } from '@/queries/use-lotto.query';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
+import type { Metadata } from 'next';
+import type { JSX } from 'react';
+import { useMemo, useState } from 'react';
+import { BudgetTrackerComponent } from './budget-tracker.component';
+import { ConstraintsGeneratorComponent } from './constraints-generator.component';
+import { FairnessLogComponent } from './fairness-log.component';
+import { HotColdTrackerComponent } from './hot-cold-tracker.component';
+import { MyNumbersComponent } from './my-numbers.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 
 const baseMeta = buildMetadata({
   title: '로또 대시보드 - 나의 번호, 고급 생성기, 통계',
@@ -259,5 +259,3 @@ export function LottoDashboardComponent(): JSX.Element {
     </section>
   );
 }
-
-export default LottoDashboardComponent;

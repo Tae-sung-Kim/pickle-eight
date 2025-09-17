@@ -1,6 +1,6 @@
+import { http } from "@/lib/http";
+import { GptTodayMessageResponseType } from "@/types/openai-api.type";
 import { useMutation } from '@tanstack/react-query';
-import { GptTodayMessageResponseType } from '@/types';
-import { http } from '@/lib';
 
 /**
  * GPT 오늘의 문구/운세 요청 훅

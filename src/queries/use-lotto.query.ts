@@ -1,10 +1,6 @@
+import { getLatestLottoDraw, getLottoDrawByNumber, getLottoDraws } from "@/services/lotto.service";
+import type { LottoDrawType, LottoDrawsParamsType } from "@/types/lotto.type";
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  getLatestLottoDraw,
-  getLottoDrawByNumber,
-  getLottoDraws,
-} from '@/services';
-import type { LottoDrawsParamsType, LottoDrawType } from '@/types';
 
 // 회차에 따른 로또 당첨 결과 조회
 export function useLottoDrawsQuery({

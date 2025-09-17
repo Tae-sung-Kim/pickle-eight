@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
  * 사용자가 존재하지 않는 경로에 접근했을 때 보여주는 페이지입니다.
  * @returns {JSX.Element} NotFound 컴포넌트
  */
-export function NotFound() {
+export default function NotFound() {
   const router = useRouter();
 
   /**
@@ -33,5 +33,3 @@ export function NotFound() {
     </div>
   );
 }
-
-export default NotFound;

@@ -1,22 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import type {
-  EmojiTranslationProblemType,
-  EmojiQuizGradeType,
-  EmojiGenerateValuesType,
-} from '@/types';
-import { useGenerateEmojiQuiz, useGradeEmojiQuiz } from '@/queries';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
+import { EMOJI_CATEGORY_ENUM } from "@/constants/emoji-translation.constant";
+import { useDailyLimit } from "@/hooks/use-daily-limit.hook";
+import { useGenerateEmojiQuiz, useGradeEmojiQuiz } from "@/queries/use-emoji-translation.query";
+import { EmojiTranslationGenerateSchema } from "@/schemas/emoji-translation.schema";
+import type { EmojiGenerateValuesType, EmojiQuizGradeType, EmojiTranslationProblemType } from "@/types/emoji-translation.type";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useDailyLimit } from '@/hooks';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { EmojiTranslationControlsSectionComponent } from './controls-section.component';
-import { EmojiTranslationProblemCardComponent } from './problem-card.component';
 import { EmojiTranslationFormComponent } from './form.component';
+import { EmojiTranslationProblemCardComponent } from './problem-card.component';
 import { EmojiTranslationResultNoticeComponent } from './result-notice.component';
-import { EmojiTranslationGenerateSchema } from '@/schemas';
-import { EMOJI_CATEGORY_ENUM } from '@/constants';
 
 type FormGenerateValues = z.input<typeof EmojiTranslationGenerateSchema>;
 
@@ -103,5 +99,3 @@ export function EmojiTranslationComponent() {
     </div>
   );
 }
-
-export default EmojiTranslationComponent;

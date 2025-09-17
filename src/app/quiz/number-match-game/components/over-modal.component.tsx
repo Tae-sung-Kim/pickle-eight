@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { NumberMatchGameOverModalType } from '@/types';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { NumberMatchGameOverModalType } from "@/types/number-match-game.type";
+import { useEffect, useState } from 'react';
 
 export function NumberMatchGameOverModalComponent({
   isOpen,
@@ -42,5 +42,3 @@ export function NumberMatchGameOverModalComponent({
     </Dialog>
   );
 }
-
-export default NumberMatchGameOverModalComponent;

@@ -1,29 +1,28 @@
 'use client';
-
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm, useFieldArray, useWatch } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import type { LottoDrawType, TicketFieldNameType } from '@/types';
-import { LottoUtils } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from '@/components/ui/card';
-import { LottoCheckResultCardComponent } from './result-card.component';
-import { Plus, Sparkles } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   useLatestLottoDrawQuery,
   useLottoDrawByNumberMutation,
-} from '@/queries';
+} from '@/queries/use-lotto.query';
+import type { LottoDrawType, TicketFieldNameType } from '@/types/lotto.type';
+import { LottoUtils } from '@/utils/lotto.util';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus, Sparkles } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
-import { LottoCheckTicketRowComponent } from '@/components';
+import { z } from 'zod';
+import { LottoCheckResultCardComponent } from './result-card.component';
+import { LottoCheckTicketRowComponent } from '@/components/shared/lotto/ticket-row.component';
 
 // 문자열(빈 값 포함)을 숫자로 전처리하는 유틸 스키마
 const toNumber = (min: number, max?: number) =>
@@ -373,5 +372,3 @@ export function LottoCheckComponent() {
     </>
   );
 }
-
-export default LottoCheckComponent;

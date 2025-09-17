@@ -1,6 +1,5 @@
 'use client';
-
-import type { EmojiTranslationResultNoticeType } from '@/types';
+import type { EmojiTranslationResultNoticeType } from "@/types/emoji-translation.type";
 
 export function EmojiTranslationResultNoticeComponent({
   error,
@@ -28,5 +27,3 @@ export function EmojiTranslationResultNoticeComponent({
     </div>
   );
 }
-
-export default EmojiTranslationResultNoticeComponent;

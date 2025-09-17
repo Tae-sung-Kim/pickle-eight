@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { TitleWrapperComponent } from "@/components/title-warpper.component";
+import { MENU_GROUP_NAME_ENUM } from "@/constants/menu.constant";
+import { LadderConfigType, LadderResultType, LadderType } from "@/types/ladder-game.type";
 import { generateLadder, getLadderResults } from '@/utils/ladder-game.util';
-import { LadderType, LadderConfigType, LadderResultType } from '@/types';
-import LadderInputComponent from './input-list.component';
-import LadderGameSectionComponent from './section.component';
-import { TitleWrapperComponent } from '@/components';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { LadderInputComponent } from './input-list.component';
+import { SectionComponent as LadderGameSectionComponent } from './section.component';
 
 export function LadderGameComponent() {
   const [config, setConfig] = useState<LadderConfigType | null>(null);
@@ -58,5 +58,3 @@ export function LadderGameComponent() {
     </div>
   );
 }
-
-export default LadderGameComponent;

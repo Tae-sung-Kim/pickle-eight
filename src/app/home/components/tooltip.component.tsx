@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib';
-import { SECTION_BADGE_COLOR } from '@/constants';
-import type { MenuSectionKeyType } from '@/types';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { SECTION_BADGE_COLOR } from "@/constants/theme.constant";
+import { cn } from "@/lib/utils";
+import type { MenuSectionKeyType } from "@/types/menu.type";
+import { useEffect, useRef, useState } from 'react';
 
 export type MenuTooltipComponentProps = {
   description?: string;
@@ -174,5 +174,3 @@ export function MenuTooltipComponent({
     </>
   );
 }
-
-export default MenuTooltipComponent;

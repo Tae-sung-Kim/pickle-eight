@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { TriviaQuizQuestionType } from '@/types';
+import { TriviaQuizQuestionType } from "@/types/trivia-quiz.type";
+import { AnimatePresence, motion } from 'framer-motion';
 
 type TriviaQuizQuestionCardComponentType = {
   question: TriviaQuizQuestionType;
@@ -173,5 +173,3 @@ export function TriviaQuizQuestionCardComponent({
     </motion.div>
   );
 }
-
-export default TriviaQuizQuestionCardComponent;

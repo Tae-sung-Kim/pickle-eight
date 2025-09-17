@@ -1,14 +1,14 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import { useGptEnglishWordQuizQuery } from '@/queries';
-import { GptEnglishWordQuizResponseType } from '@/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Lightbulb } from 'lucide-react';
-import { useDailyLimit } from '@/hooks';
-import { EnglishWordQuizOptionsComponent } from './options.component';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useDailyLimit } from "@/hooks/use-daily-limit.hook";
+import { useGptEnglishWordQuizQuery } from "@/queries/use-gpt-english-word-quiz.query";
+import { GptEnglishWordQuizResponseType } from "@/types/openai-api.type";
+import { Lightbulb } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { EnglishWordQuizOptionsComponent } from './options.component';
 
 export function EnglishWordQuizComponent() {
   const [quiz, setQuiz] = useState<GptEnglishWordQuizResponseType | null>(null);
@@ -101,5 +101,3 @@ export function EnglishWordQuizComponent() {
     </Card>
   );
 }
-
-export default EnglishWordQuizComponent;

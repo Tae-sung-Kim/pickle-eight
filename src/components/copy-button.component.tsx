@@ -44,5 +44,3 @@ export function CopyButtonComponent({
     </Button>
   );
 }
-
-export default CopyButtonComponent;

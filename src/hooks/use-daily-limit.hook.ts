@@ -1,4 +1,4 @@
-import { getTodayString } from '@/utils';
+import { getTodayString } from "@/utils/common.util";
 import { useCallback, useEffect, useState } from 'react';
 
 const DAILY_LIMIT = 5;

@@ -1,18 +1,17 @@
-import type { Metadata } from 'next';
-import {
-  ContentWrapperComponent,
-  JsonLdComponent,
-  TitleWrapperComponent,
-} from '@/components';
+import { LottoDashboardComponent } from '@/app/lotto/dashboard/components/root.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
 import {
   buildMetadata,
   canonicalUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
-} from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
-import { generateOgImageUrl, getOgTag } from '@/utils';
-import { LottoDashboardComponent } from './components';
+} from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
+import type { Metadata } from 'next';
 
 const baseMeta = buildMetadata({
   title: '로또 대시보드 - 나의 번호, 고급 생성기, 통계',

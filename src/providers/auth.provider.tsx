@@ -1,14 +1,14 @@
 'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ensureAnonymousUser, subscribeAuth } from "@/services/auth.service";
 import type { User } from 'firebase/auth';
-import { ensureAnonymousUser, subscribeAuth } from '@/services';
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 
 type AuthContextValue = {
   readonly user: User | null;

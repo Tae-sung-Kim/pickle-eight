@@ -1,14 +1,13 @@
+import { FourIdiomQuizComponent } from '@/app/quiz/four-idiom-quiz/components/root.component';
+import { BackHubPageComponent } from '@/components/back-hub.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
 import { Metadata } from 'next';
-import { FourIdiomQuizComponent } from './components';
-import { generateOgImageUrl, getOgTag } from '@/utils';
-import {
-  BackHubPageComponent,
-  ContentWrapperComponent,
-  JsonLdComponent,
-  TitleWrapperComponent,
-} from '@/components';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
 
 export const metadata: Metadata = {
   title: '사자성어 퀴즈 - AI 사자성어 퀴즈 게임',

@@ -1,7 +1,7 @@
 'use client';
 
+import { cn } from "@/lib/utils";
 import Link from 'next/link';
-import { cn } from '@/lib';
 import { usePathname } from 'next/navigation';
 
 type NavLinkComponentPropsType = Omit<
@@ -42,4 +42,3 @@ export function NavLinkComponent({
 }
 
 NavLinkComponent.displayName = 'NavLinkComponent';
-export default NavLinkComponent;

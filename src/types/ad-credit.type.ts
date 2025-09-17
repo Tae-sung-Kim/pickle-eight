@@ -1,4 +1,4 @@
-import { CREDIT_RESET_MODE_ENUM, CREDIT_SPEND_COST } from '@/constants';
+import { CREDIT_RESET_MODE_ENUM, CREDIT_SPEND_COST } from "@/constants/ad-credit.constant";
 
 declare global {
   interface Window {

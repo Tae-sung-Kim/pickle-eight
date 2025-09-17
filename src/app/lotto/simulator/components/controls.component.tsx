@@ -1,16 +1,13 @@
 'use client';
-
+import { CreditGateButtonComponent } from '@/components/shared/credit/credit-gate-button.component';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import {
-  CreditGateButtonComponent,
-  // CreditBalancePillComponent,
-} from '@/components';
+import { LottoSimulatorControlsComponentType } from '@/types/lotto.type';
+import { creditBuildCostLabel } from '@/utils/ad-credit.util';
+import { clampInt, parseClamp } from '@/utils/lotto.util';
 import { useEffect, useState } from 'react';
-import { clampInt, creditBuildCostLabel, parseClamp } from '@/utils';
-import { LottoSimulatorControlsComponentType } from '@/types';
 
 export function SimulatorControlsComponent({
   ticketCount,
@@ -143,5 +140,3 @@ export function SimulatorControlsComponent({
     </Card>
   );
 }
-
-export default SimulatorControlsComponent;

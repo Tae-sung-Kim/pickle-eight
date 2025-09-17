@@ -1,20 +1,16 @@
 'use client';
-
-import type {
-  EmojiControlsSectionType,
-  EmojiGenerateValuesType,
-} from '@/types';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { EMOJI_CATEGORY_ENUM } from '@/constants';
+import { EMOJI_CATEGORY_ENUM } from "@/constants/emoji-translation.constant";
+import type { EmojiControlsSectionType, EmojiGenerateValuesType } from "@/types/emoji-translation.type";
 
 export function EmojiTranslationControlsSectionComponent({
   category,
@@ -75,5 +71,3 @@ export function EmojiTranslationControlsSectionComponent({
     </Card>
   );
 }
-
-export default EmojiTranslationControlsSectionComponent;

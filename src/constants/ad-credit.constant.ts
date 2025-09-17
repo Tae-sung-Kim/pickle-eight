@@ -1,8 +1,4 @@
-import type {
-  CreditPolicyType,
-  CreditResetModeType,
-  CreditSpendCostType,
-} from '@/types';
+import type { CreditPolicyType, CreditResetModeType, CreditSpendCostType } from "@/types/ad-credit.type";
 
 // 개발모드일때(분 단위 리셋 테스트용)
 export const ENV_MINUTE_MODE =

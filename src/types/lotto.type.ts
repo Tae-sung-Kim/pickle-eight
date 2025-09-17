@@ -1,7 +1,4 @@
-import {
-  LOTTO_ANALYSIS_VARIANT_ENUM,
-  LOTTO_WARNING_TONE_ENUM,
-} from '@/constants';
+import { LOTTO_ANALYSIS_VARIANT_ENUM, LOTTO_WARNING_TONE_ENUM } from "@/constants/lotto.constant";
 import { ReactNode } from 'react';
 
 export type LottoGeneratorControlsPropsType = {

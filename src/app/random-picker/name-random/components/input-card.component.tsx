@@ -1,6 +1,7 @@
+import { NameInputComponent } from '@/components/shared/name/input.component';
+import { NameListComponent } from '@/components/shared/name/list.component';
 import { Button } from '@/components/ui/button';
-import { NameInputComponent, NameListComponent } from '@/components';
-import { Users, Sparkles } from 'lucide-react';
+import { Sparkles, Users } from 'lucide-react';
 
 export type InputCardProps = {
   readonly names: readonly string[];
@@ -80,5 +81,3 @@ export function NameRandomInputCardComponent({
     </div>
   );
 }
-
-export default NameRandomInputCardComponent;

@@ -1,8 +1,8 @@
 'use client';
 
+import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from "@/constants/number-match-game.constant";
+import { NumberMatchGameCardType } from "@/types/number-match-game.type";
 import { motion } from 'framer-motion';
-import { NumberMatchGameCardType } from '@/types';
-import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from '@/constants';
 
 export function NumberMatchNumberCardComponent({
   card,
@@ -66,5 +66,3 @@ export function NumberMatchNumberCardComponent({
     </div>
   );
 }
-
-export default NumberMatchNumberCardComponent;

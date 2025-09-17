@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useCapture } from '@/hooks';
-import { TodayMessageCardType } from '@/types';
+import { useCapture } from "@/hooks/use-capture.hook";
+import { TodayMessageCardType } from "@/types/today-message.type";
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 export function MessageCardComponent({
@@ -178,5 +178,3 @@ export function MessageCardComponent({
     </div>
   );
 }
-
-export default MessageCardComponent;

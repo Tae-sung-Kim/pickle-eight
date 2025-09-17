@@ -1,12 +1,12 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { TitleWrapperComponent } from "@/components/title-warpper.component";
+import { MENU_GROUP_NAME_ENUM } from "@/constants/menu.constant";
+import { generateLottoNumbers } from "@/utils/lotto.util";
 import { motion } from 'framer-motion';
-import { generateLottoNumbers } from '@/utils';
-import { LottoNumberListComponent } from './number-list.component';
+import { useCallback, useState } from 'react';
 import { LottoGeneratorControlsComponent } from './generator-controls.component';
-import { TitleWrapperComponent } from '@/components';
-import { MENU_GROUP_NAME_ENUM } from '@/constants';
+import { LottoNumberListComponent } from './number-list.component';
 
 export function LottoNormalGeneratorComponent() {
   const [orderCount, setOrderCount] = useState(1);
@@ -100,5 +100,3 @@ export function LottoNormalGeneratorComponent() {
     </div>
   );
 }
-
-export default LottoNormalGeneratorComponent;

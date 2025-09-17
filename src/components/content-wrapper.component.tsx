@@ -1,5 +1,5 @@
-import { BACKGROUND_COLORS } from '@/constants';
-import { MenuSectionKeyType } from '@/types';
+import { BACKGROUND_COLORS } from "@/constants/theme.constant";
+import { MenuSectionKeyType } from "@/types/menu.type";
 
 type ContentWarpperType = {
   className?: string;
@@ -13,5 +13,3 @@ export function ContentWrapperComponent({
 }: ContentWarpperType) {
   return <div className={`w-full ${BACKGROUND_COLORS[type]}`}>{children}</div>;
 }
-
-export default ContentWrapperComponent;

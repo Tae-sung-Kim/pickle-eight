@@ -1,4 +1,4 @@
-import { LadderComponentPropsType } from '@/types';
+import { LadderComponentPropsType } from "@/types/ladder-game.type";
 
 export function LadderComponent({
   ladder,

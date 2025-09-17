@@ -1,6 +1,6 @@
-import { type UseQueryOptions, useQuery } from '@tanstack/react-query';
-import { getUserCredits } from '@/services';
-import type { UserCreditsType } from '@/types';
+import { getUserCredits } from "@/services/credit.service";
+import type { UserCreditsType } from "@/types/ad-credit.type";
+import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 
 /**
  * Shared query key for current user's credits
