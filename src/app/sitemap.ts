@@ -1,10 +1,10 @@
-import { MENU_LIST } from "@/constants/menu.constant";
-import { SITE_URL } from "@/lib/seo";
+import { MENU_LIST } from '@/constants/menu.constant';
+import { SITE_URL } from '@/lib/seo';
 import { MetadataRoute } from 'next';
 
 const RECENT_DRAWS = 200 as const; // 최근 N개 회차 포함
 
-export async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = SITE_URL;
   const isLocalHost = /localhost|127\.0\.0\.1/i.test(siteUrl);
   // Skip when explicitly requested, when running outside Vercel (local build), or when SITE_URL is localhost

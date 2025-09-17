@@ -1,7 +1,7 @@
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL } from '@/lib/seo';
 import { MetadataRoute } from 'next';
 
-export function robots(): MetadataRoute.Robots {
+export default function robots(): MetadataRoute.Robots {
   const siteUrl = SITE_URL;
   return {
     rules: [
