@@ -1,10 +1,10 @@
-import { EnglishWordQuizComponent } from "@/app/quiz/english-word-quiz/components/root.component";
-import { BackHubPageComponent } from "@/components/back-hub.component";
-import { ContentWrapperComponent } from "@/components/content-wrapper.component";
-import { TitleWrapperComponent } from "@/components/title-warpper.component";
-import { MENU_GROUP_NAME_ENUM } from "@/constants/menu.constant";
-import { generateOgImageUrl } from "@/utils/common.util";
-import { getOgTag } from "@/utils/seo.util";
+import { EnglishWordQuizComponent } from '@/app/quiz/english-word-quiz/components/root.component';
+import { BackHubPageComponent } from '@/components/back-hub.component';
+import { ContentWrapperComponent } from '@/components/content-wrapper.component';
+import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { generateOgImageUrl } from '@/utils/common.util';
+import { getOgTag } from '@/utils/seo.util';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   },
 };
 
-export function EnglishWordQuizPage() {
+export default function EnglishWordQuizPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.QUIZ}>
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.QUIZ} />

@@ -73,7 +73,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export function NameRandomPage() {
+export default function NameRandomPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     {

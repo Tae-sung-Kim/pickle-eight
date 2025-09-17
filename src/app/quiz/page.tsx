@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   },
 };
 
-export function QuizHubPage() {
+export default function QuizHubPage() {
   const siteName = process.env.NEXT_PUBLIC_SITE_NAME || '운빨연구소';
   const quizItems = (
     MENU_LIST.find((g) => g.group === MENU_GROUP_NAME_ENUM.QUIZ)?.items ?? []

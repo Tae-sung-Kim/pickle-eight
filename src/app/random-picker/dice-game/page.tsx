@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export function DiceGamePage() {
+export default function DiceGamePage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     {

@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export function SeatAssignmentPage() {
+export default function SeatAssignmentPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     {

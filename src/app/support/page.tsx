@@ -15,7 +15,7 @@ export const metadata: Metadata = buildMetadata({
   pathname: '/support',
 });
 
-export function SupportPage() {
+export default function SupportPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '후원', item: canonicalUrl('/support') },

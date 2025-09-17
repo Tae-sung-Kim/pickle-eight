@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
 };
 
-export function TermsPage() {
+export default function TermsPage() {
   const EFFECTIVE_DATE = '2025-08-18' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },

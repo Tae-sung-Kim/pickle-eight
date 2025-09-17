@@ -78,7 +78,7 @@ export const metadata: Metadata = {
   },
 };
 
-export function AdvancedGeneratorPage() {
+export default function AdvancedGeneratorPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },

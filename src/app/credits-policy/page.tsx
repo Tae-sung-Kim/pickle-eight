@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   },
 };
 
-export function CreditsPolicyPage(): JSX.Element {
+export default function CreditsPolicyPage(): JSX.Element {
   const EFFECTIVE_DATE = '2025-08-28' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
