@@ -10,8 +10,8 @@ export function LottoDrawCardComponent({
   bonusNumber,
   firstWinCount,
   firstPrizeAmount,
-  totalSalesAmount,
-}: LottoDrawCardType) {
+}: // totalSalesAmount,
+LottoDrawCardType) {
   return (
     <Card className="border border-border shadow-sm">
       <CardHeader className="pb-3">
@@ -45,11 +45,11 @@ export function LottoDrawCardComponent({
             title="1등 당첨금"
             unitName="원"
           />
-          <LottoDrawStatsComponent
+          {/* <LottoDrawStatsComponent
             data={totalSalesAmount ?? 0}
             title="총 판매금액"
             unitName="원"
-          />
+          /> */}
         </div>
       </CardContent>
     </Card>

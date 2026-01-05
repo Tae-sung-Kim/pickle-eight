@@ -1,5 +1,5 @@
 import { adminDb } from '@/lib/firebase-admin';
-import type { LottoDrawType } from "@/types/lotto.type";
+import type { LottoDrawType } from '@/types/lotto.type';
 
 /**
  * Firestore repository for Lotto draws.
@@ -71,9 +71,22 @@ async function getDrawByNumber(drwNo: number): Promise<LottoDrawType | null> {
       number
     ],
     bonusNumber: data.bonusNumber as number,
-    firstWinCount: data.firstWinCount as number | undefined,
-    firstPrizeAmount: data.firstPrizeAmount as number | undefined,
-    totalSalesAmount: data.totalSalesAmount as number | undefined,
+    firstWinCount: data.firstWinCount as number,
+    firstPrizeAmount: data.firstPrizeAmount as number,
+    totalSalesAmount: data.totalSalesAmount as number,
+    secondWinCount: data.secondWinCount as number,
+    secondPrizeAmount: data.secondPrizeAmount as number,
+    secondTotalAmount: data.secondTotalAmount as number,
+    thirdWinCount: data.thirdWinCount as number,
+    thirdPrizeAmount: data.thirdPrizeAmount as number,
+    thirdTotalAmount: data.thirdTotalAmount as number,
+    fourthWinCount: data.fourthWinCount as number,
+    fourthPrizeAmount: data.fourthPrizeAmount as number,
+    fourthTotalAmount: data.fourthTotalAmount as number,
+    fifthWinCount: data.fifthWinCount as number,
+    fifthPrizeAmount: data.fifthPrizeAmount as number,
+    fifthTotalAmount: data.fifthTotalAmount as number,
+    totalWinners: data.totalWinners as number,
   };
 }
 
@@ -111,9 +124,22 @@ async function getDrawsRange(
       drawDate: data.drawDate as string,
       numbers,
       bonusNumber: data.bonusNumber as number,
-      firstWinCount: data.firstWinCount as number | undefined,
-      firstPrizeAmount: data.firstPrizeAmount as number | undefined,
-      totalSalesAmount: data.totalSalesAmount as number | undefined,
+      firstWinCount: data.firstWinCount as number,
+      firstPrizeAmount: data.firstPrizeAmount as number,
+      totalSalesAmount: data.totalSalesAmount as number,
+      secondWinCount: data.secondWinCount as number,
+      secondPrizeAmount: data.secondPrizeAmount as number,
+      secondTotalAmount: data.secondTotalAmount as number,
+      thirdWinCount: data.thirdWinCount as number,
+      thirdPrizeAmount: data.thirdPrizeAmount as number,
+      thirdTotalAmount: data.thirdTotalAmount as number,
+      fourthWinCount: data.fourthWinCount as number,
+      fourthPrizeAmount: data.fourthPrizeAmount as number,
+      fourthTotalAmount: data.fourthTotalAmount as number,
+      fifthWinCount: data.fifthWinCount as number,
+      fifthPrizeAmount: data.fifthPrizeAmount as number,
+      fifthTotalAmount: data.fifthTotalAmount as number,
+      totalWinners: data.totalWinners as number,
     });
   });
   return items;

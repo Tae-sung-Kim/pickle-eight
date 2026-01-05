@@ -1,4 +1,7 @@
-import { LOTTO_ANALYSIS_VARIANT_ENUM, LOTTO_WARNING_TONE_ENUM } from "@/constants/lotto.constant";
+import {
+  LOTTO_ANALYSIS_VARIANT_ENUM,
+  LOTTO_WARNING_TONE_ENUM,
+} from '@/constants/lotto.constant';
 import { ReactNode } from 'react';
 
 export type LottoGeneratorControlsPropsType = {
@@ -28,14 +31,37 @@ export type LottoDrawType = {
   readonly numbers: readonly [number, number, number, number, number, number];
   /** 보너스 번호 */
   readonly bonusNumber: number;
-  /** 1등 당첨자 수 (옵션) */
-  readonly firstWinCount?: number;
-  /** 1등 1인당 당첨금 (옵션, KRW) */
-  readonly firstPrizeAmount?: number;
-  /** 총 판매금액 (옵션, KRW) */
-  readonly totalSalesAmount?: number;
-  /** 마지막 회차 번호 */
-  readonly lastDrawNumber?: number;
+  /** 1등 당첨자 수 */
+  readonly firstWinCount: number;
+  /** 1등 1인당 당첨금 (KRW) */
+  readonly firstPrizeAmount: number;
+  /** 2등 당첨자 수 */
+  readonly secondWinCount: number;
+  /** 2등 1인당 당첨금 (KRW) */
+  readonly secondPrizeAmount: number;
+  /** 총 2등 당첨금 (KRW) */
+  readonly secondTotalAmount: number;
+  /** 3등 당첨자 수 */
+  readonly thirdWinCount: number;
+  /** 3등 1인당 당첨금 (KRW) */
+  readonly thirdPrizeAmount: number;
+  /** 총 3등 당첨금 (KRW) */
+  readonly thirdTotalAmount: number;
+  /** 4등 당첨자 수 */
+  readonly fourthWinCount: number;
+  /** 4등 1인당 당첨금 (KRW) */
+  readonly fourthPrizeAmount: number;
+  /** 총 4등 당첨금 (KRW) */
+  readonly fourthTotalAmount: number;
+  /** 5등 당첨자 수 */
+  readonly fifthWinCount: number;
+  /** 5등 1인당 당첨금 (KRW) */
+  readonly fifthPrizeAmount: number;
+  /** 총 5등 당첨금 (KRW) */
+  readonly fifthTotalAmount: number;
+  /** 총 당첨인원 */
+  readonly totalWinners: number;
+  readonly totalSalesAmount: number;
 };
 
 export type LottoTicketType = {
@@ -74,27 +100,48 @@ export type LottoStatsType = {
 };
 
 /**
- * DH Lottery raw API response for a single draw. Fields are optional for safety.
+ * DH Lottery new API response for detailed draw information.
  */
 export type DhLottoApiResponseType = {
-  returnValue?: 'success' | 'fail';
-  drwNo?: number; // 회차
-  drwNoDate?: string; // yyyy-mm-dd
-  drwtNo1?: number;
-  drwtNo2?: number;
-  drwtNo3?: number;
-  drwtNo4?: number;
-  drwtNo5?: number;
-  drwtNo6?: number;
-  bnusNo?: number;
-  /** 총 판매금액 */
-  totSellamnt?: number;
-  /** 1등 총 당첨금? (API 명세에 따라 다름) */
-  firstAccumamnt?: number;
-  /** 1등 당첨자 수 */
-  firstPrzwnerCo?: number;
-  /** 1등 1인당 당첨금 */
-  firstWinamnt?: number;
+  resultCode: null | string;
+  resultMessage: null | string;
+  data: {
+    list: Array<{
+      winType0: number;
+      winType1: number;
+      winType2: number;
+      winType3: number;
+      gmSqNo: number;
+      ltEpsd: number; // 회차
+      tm1WnNo: number; // 당첨번호 1
+      tm2WnNo: number; // 당첨번호 2
+      tm3WnNo: number; // 당첨번호 3
+      tm4WnNo: number; // 당첨번호 4
+      tm5WnNo: number; // 당첨번호 5
+      tm6WnNo: number; // 당첨번호 6
+      bnsWnNo: number; // 보너스 번호
+      ltRflYmd: string; // 추첨일 (YYYYMMDD)
+      rnk1WnNope: number; // 1등 당첨인원
+      rnk1WnAmt: number; // 1등 당첨금액
+      rnk1SumWnAmt: number; // 총 1등 당첨금
+      rnk2WnNope: number; // 2등 당첨인원
+      rnk2WnAmt: number; // 2등 당첨금액
+      rnk2SumWnAmt: number; // 총 2등 당첨금
+      rnk3WnNope: number; // 3등 당첨인원
+      rnk3WnAmt: number; // 3등 당첨금액
+      rnk3SumWnAmt: number; // 총 3등 당첨금
+      rnk4WnNope: number; // 4등 당첨인원
+      rnk4WnAmt: number; // 4등 당첨금액
+      rnk4SumWnAmt: number; // 총 4등 당첨금
+      rnk5WnNope: number; // 5등 당첨인원
+      rnk5WnAmt: number; // 5등 당첨금액
+      rnk5SumWnAmt: number; // 총 5등 당첨금
+      sumWnNope: number; // 총 당첨인원
+      rlvtEpsdSumNtslAmt: number; // 관련 회차 총 낙첨금
+      wholEpsdSumNtslAmt: number; // 전체 회차 총 낙첨금
+      excelRnk: string; // Excel 등수
+    }>;
+  };
 };
 
 /**
@@ -235,6 +282,10 @@ export type LottoDrawCardType = {
   readonly numbers: readonly number[];
   readonly bonusNumber?: number;
   readonly firstWinCount?: number;
+  readonly secondWinCount?: number;
+  readonly thirdWinCount?: number;
+  readonly fourthWinCount?: number;
+  readonly fifthWinCount?: number;
   readonly firstPrizeAmount?: number;
   readonly totalSalesAmount?: number;
 };
