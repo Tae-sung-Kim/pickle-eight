@@ -1,9 +1,14 @@
-import { DH_LOTTO_ENDPOINT } from "@/constants/lotto.constant";
+import { DH_LOTTO_ENDPOINT } from '@/constants/lotto.constant';
 import { lottoRepository } from '@/services/lotto-repository';
-import { DhLottoApiResponseType, LottoDrawType } from "@/types/lotto.type";
+import { DhLottoApiResponseType, LottoDrawType } from '@/types/lotto.type';
 import { NextResponse } from 'next/server';
 
 function requireCronSecret(req: Request): void {
+  // Skip auth in development for testing
+  if (process.env.NODE_ENV === 'development') {
+    return;
+  }
+
   const configured = process.env.CRON_SECRET;
   // Option B: Allow Vercel Cron runs without secret by detecting Vercel env + x-vercel-cron header
   const isVercel = !!process.env.VERCEL;
@@ -25,17 +30,18 @@ function requireCronSecret(req: Request): void {
   }
 }
 
-function mapToLottoDraw(raw: DhLottoApiResponseType): LottoDrawType {
-  if (raw.returnValue !== 'success') throw new Error('DH API returned fail');
+function mapToLottoDraw(
+  raw: DhLottoApiResponseType['data']['list'][0]
+): LottoDrawType {
   const numbers = [
-    raw.drwtNo1,
-    raw.drwtNo2,
-    raw.drwtNo3,
-    raw.drwtNo4,
-    raw.drwtNo5,
-    raw.drwtNo6,
+    raw.tm1WnNo,
+    raw.tm2WnNo,
+    raw.tm3WnNo,
+    raw.tm4WnNo,
+    raw.tm5WnNo,
+    raw.tm6WnNo,
   ];
-  const sorted = (numbers as number[]).slice().sort((a, b) => a - b) as [
+  const sorted = numbers.slice().sort((a, b) => a - b) as [
     number,
     number,
     number,
@@ -43,28 +49,54 @@ function mapToLottoDraw(raw: DhLottoApiResponseType): LottoDrawType {
     number,
     number
   ];
+  // Convert YYYYMMDD to YYYY-MM-DD
+  const drawDate = `${raw.ltRflYmd.slice(0, 4)}-${raw.ltRflYmd.slice(
+    4,
+    6
+  )}-${raw.ltRflYmd.slice(6, 8)}`;
+
   return {
-    drawNumber: raw.drwNo ?? 0,
-    drawDate: raw.drwNoDate ?? '',
+    drawNumber: raw.ltEpsd,
+    drawDate,
     numbers: sorted,
-    bonusNumber: raw.bnusNo ?? 0,
-    firstWinCount: raw.firstPrzwnerCo,
-    firstPrizeAmount: raw.firstWinamnt,
-    totalSalesAmount: raw.totSellamnt,
+    bonusNumber: raw.bnsWnNo,
+    firstWinCount: raw.rnk1WnNope,
+    firstPrizeAmount: raw.rnk1WnAmt,
+    secondWinCount: raw.rnk2WnNope,
+    secondPrizeAmount: raw.rnk2WnAmt,
+    secondTotalAmount: raw.rnk2SumWnAmt,
+    thirdWinCount: raw.rnk3WnNope,
+    thirdPrizeAmount: raw.rnk3WnAmt,
+    thirdTotalAmount: raw.rnk3SumWnAmt,
+    fourthWinCount: raw.rnk4WnNope,
+    fourthPrizeAmount: raw.rnk4WnAmt,
+    fourthTotalAmount: raw.rnk4SumWnAmt,
+    fifthWinCount: raw.rnk5WnNope,
+    fifthPrizeAmount: raw.rnk5WnAmt,
+    fifthTotalAmount: raw.rnk5SumWnAmt,
+    totalWinners: raw.sumWnNope,
+    totalSalesAmount: raw.rlvtEpsdSumNtslAmt,
   };
 }
 
-async function fetchDhDraw(drwNo: number): Promise<LottoDrawType | null> {
-  const url = `${DH_LOTTO_ENDPOINT}&drwNo=${encodeURIComponent(String(drwNo))}`;
-  const res = await fetch(url, { cache: 'no-store' });
+async function fetchDhDraw(): Promise<LottoDrawType | null> {
+  const res = await fetch(DH_LOTTO_ENDPOINT, { cache: 'no-store' });
+
   if (!res.ok) return null;
   const json = (await res.json()) as DhLottoApiResponseType;
-  if (json.returnValue !== 'success') return null;
-  return mapToLottoDraw(json);
+
+  if (json.resultCode !== null || json.resultMessage !== null) {
+    console.error('API error:', json.resultCode, json.resultMessage);
+    return null;
+  }
+
+  if (!json.data?.list?.length) return null;
+
+  return mapToLottoDraw(json.data.list[0]);
 }
 
-async function syncSingle(drwNo: number): Promise<{ upserted: number }> {
-  const data = await fetchDhDraw(drwNo);
+async function syncSingle(): Promise<{ upserted: number }> {
+  const data = await fetchDhDraw();
   if (!data) return { upserted: 0 };
   await lottoRepository.upsertDraw(data);
   return { upserted: 1 };
@@ -77,7 +109,7 @@ async function syncRange(
   let upserted = 0;
   let last: number | null = null;
   for (let n = from; n <= to; n += 1) {
-    const item = await fetchDhDraw(n);
+    const item = await fetchDhDraw();
     if (!item) continue;
     await lottoRepository.upsertDraw(item);
     upserted += 1;
@@ -97,7 +129,7 @@ async function syncForwardFromLatestStored(): Promise<{
   let last: number | null = null;
   // keep fetching until a miss occurs (no more published draws)
   while (true) {
-    const item = await fetchDhDraw(current);
+    const item = await fetchDhDraw();
     if (!item) break;
     await lottoRepository.upsertDraw(item);
     upserted += 1;
@@ -113,18 +145,9 @@ export async function POST(request: Request) {
     requireCronSecret(request);
     const { searchParams } = new URL(request.url);
 
-    const drwNoParam = searchParams.get('drwNo');
     const fromParam = searchParams.get('from');
     const toParam = searchParams.get('to');
     const forwardParam = searchParams.get('forward');
-
-    if (drwNoParam) {
-      const drwNo = Number(drwNoParam);
-      if (!Number.isInteger(drwNo) || drwNo <= 0)
-        return NextResponse.json({ error: 'Invalid drwNo' }, { status: 400 });
-      const res = await syncSingle(drwNo);
-      return NextResponse.json({ mode: 'single', ...res });
-    }
 
     if (fromParam && toParam) {
       const from = Number(fromParam);
@@ -145,9 +168,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ mode: 'forward', ...res });
     }
 
-    // default: forward sync
-    const res = await syncForwardFromLatestStored();
-    return NextResponse.json({ mode: 'forward', ...res });
+    // default: sync latest draw
+    const res = await syncSingle();
+    return NextResponse.json({ mode: 'single', ...res });
   } catch (err) {
     if (err instanceof Error && err.message === 'Unauthorized') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
