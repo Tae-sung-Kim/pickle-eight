@@ -37,6 +37,22 @@ function generateRandomDraw() {
       number
     ],
     bonusNumber: bonus,
+    firstWinCount: 0,
+    firstPrizeAmount: 0,
+    totalSalesAmount: 0,
+    secondWinCount: 0,
+    secondPrizeAmount: 0,
+    secondTotalAmount: 0,
+    thirdWinCount: 0,
+    thirdPrizeAmount: 0,
+    thirdTotalAmount: 0,
+    fourthWinCount: 0,
+    fourthPrizeAmount: 0,
+    fourthTotalAmount: 0,
+    fifthWinCount: 0,
+    fifthPrizeAmount: 0,
+    fifthTotalAmount: 0,
+    totalWinners: 0,
   };
 }
 
