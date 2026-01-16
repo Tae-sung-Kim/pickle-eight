@@ -51,6 +51,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
+    "dotenv": "^17.2.3",
     "downloadjs": "^1.4.7",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
@@ -58,6 +59,8 @@
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.10",
     "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5"
   }
 }
