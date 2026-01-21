@@ -115,6 +115,12 @@ export default function RootLayout({
           name="naver-site-verification"
           content="3b2951ae643e0dd91af8ba5dedd85cb450a7018a"
         />
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
         {/* JSON-LD: WebSite + Organization */}
         <JsonLdComponent data={[jsonLdWebSite(), jsonLdOrganization()]} />
       </head>

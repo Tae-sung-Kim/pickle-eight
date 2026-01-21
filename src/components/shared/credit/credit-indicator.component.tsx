@@ -19,7 +19,7 @@ export function CreditIndicatorComponent({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-muted-foreground',
+        'inline-flex items-center gap-1 rounded-full border border-amber-200/60 bg-amber-50/50 px-1.5 py-0.5 text-muted-foreground',
         textCls,
         className
       )}

@@ -4,7 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --font-geist-sans: 'Inter', sans-serif;
+  --font-geist-sans:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo',
+    'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', sans-serif;
   --font-geist-mono: 'Fira Mono', monospace;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
