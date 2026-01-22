@@ -77,7 +77,7 @@ function TabBar({
   return (
     <div className="sticky top-0 z-10 mt-6 border-b bg-background/80 px-0 shadow-sm ring-1 ring-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto max-w-6xl">
-        <div className="flex gap-2 overflow-x-auto py-2 pr-2">
+        <div className="flex flex-1 justify-center p-2">
           {TABS.map((t) => (
             <button
               key={t.key}

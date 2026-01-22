@@ -33,7 +33,9 @@ function buildCsp(): string {
     "'self'",
     "'unsafe-inline'",
     'https://s3.us-east-1.amazonaws.com',
+    'https://cdn.jsdelivr.net',
   ];
+  const fontSrc = ["'self'", 'data:', 'https://cdn.jsdelivr.net'];
   const imgSrc = [
     "'self'",
     'data:',
@@ -77,6 +79,7 @@ function buildCsp(): string {
     `script-src-elem ${scriptSrcElem.join(' ')}`,
     `style-src ${styleSrc.join(' ')}`,
     `style-src-elem ${styleSrc.join(' ')}`,
+    `font-src ${fontSrc.join(' ')}`,
     `img-src ${imgSrc.join(' ')}`,
     `media-src ${mediaSrc.join(' ')}`,
     `frame-src ${frameSrc.join(' ')}`,
