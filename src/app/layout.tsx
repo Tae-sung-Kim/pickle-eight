@@ -2,6 +2,7 @@ import { AnalyticsClientComponent } from '@/components/analytics-client.componen
 import { FooterLayout } from '@/components/layouts/footer.layout';
 import { HeaderLayout } from '@/components/layouts/header.layout';
 import { LoadingComponent } from '@/components/loading.component';
+import { BackgroundPattern } from '@/components/ui/background-pattern';
 import {
   GLOBAL_KEYWORDS,
   buildKeywords,
@@ -115,6 +116,12 @@ export default function RootLayout({
           name="naver-site-verification"
           content="3b2951ae643e0dd91af8ba5dedd85cb450a7018a"
         />
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
         {/* JSON-LD: WebSite + Organization */}
         <JsonLdComponent data={[jsonLdWebSite(), jsonLdOrganization()]} />
       </head>
@@ -123,6 +130,7 @@ export default function RootLayout({
           <ConsentProvider>
             <AuthProvider>
               <AgeGateProvider>
+                <BackgroundPattern />
                 <HeaderLayout />
                 {/* 모바일 상단 전용 배너 (데스크톱에서는 숨김: 컴포넌트 내부 md:hidden) */}
                 <div className="w-full flex justify-center p-6 pb-0">

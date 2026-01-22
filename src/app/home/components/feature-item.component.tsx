@@ -20,7 +20,7 @@ export function HomeMenuFeatureItemComponent({
     <Link
       href={href}
       className={cn(
-        'flex items-center gap-3 rounded-lg px-4 py-3 bg-white shadow-sm border border-border transition hover:bg-primary/5 hover:shadow-md',
+        'flex items-center gap-3 rounded-lg px-4 py-3 bg-white shadow-sm border border-border transition-all duration-200 hover:bg-primary/5 hover:shadow-md hover:scale-[1.02]',
         'focus-visible:ring-2 focus-visible:ring-primary/30',
         className
       )}

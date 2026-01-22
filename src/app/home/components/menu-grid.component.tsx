@@ -1,26 +1,28 @@
-import { MENU_GROUP_NAME_ENUM, MENU_LIST } from "@/constants/menu.constant";
-import { SECTION_ICON_COLOR } from "@/constants/theme.constant";
-import { MenuSectionKeyType } from "@/types/menu.type";
+import { MENU_LIST } from '@/constants/menu.constant';
+import { SECTION_ICON_COLOR } from '@/constants/theme.constant';
+import { MenuSectionKeyType } from '@/types/menu.type';
 import {
-    BarChart2,
-    BookOpen,
-    Brain,
-    CalendarSearch,
-    CheckCircle2,
-    Dice5,
-    Group,
-    Layout,
-    LayoutDashboard,
-    PlayCircle,
-    ScrollText,
-    Shuffle,
-    SlidersHorizontal,
-    Sparkles,
-    SpellCheck,
-    SquareStack,
-    Ticket,
-    Wand2,
-    type LucideIcon,
+  BarChart2,
+  BookOpen,
+  Bot,
+  Brain,
+  CalendarSearch,
+  CheckCircle2,
+  Circle,
+  Dice5,
+  Group,
+  Layout,
+  LayoutDashboard,
+  PlayCircle,
+  ScrollText,
+  Shuffle,
+  SlidersHorizontal,
+  Sparkles,
+  SpellCheck,
+  SquareStack,
+  Ticket,
+  Wand2,
+  type LucideIcon,
 } from 'lucide-react';
 import { HomeMenuFeatureItemComponent } from './feature-item.component';
 
@@ -45,25 +47,26 @@ const ICONS: Record<string, LucideIcon> = {
   LayoutDashboard,
 };
 
+const SECTION_ICONS: Record<MenuSectionKeyType, LucideIcon> = {
+  lotto: Circle,
+  'random-picker': Dice5,
+  quiz: Bot,
+};
+
 export function HomeMenuGridComponent() {
   return (
     <section className="max-w-6xl mx-auto py-10 px-2">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {MENU_LIST.map((data) => {
           const groupName = data.group as MenuSectionKeyType;
+          const SectionIcon = SECTION_ICONS[groupName];
 
           return (
             <div key={data.group}>
               <div className="flex items-center gap-2 mb-3 px-2">
-                {groupName === MENU_GROUP_NAME_ENUM.LOTTO && (
-                  <span className="text-xl">🎱</span>
-                )}
-                {groupName === MENU_GROUP_NAME_ENUM.RANDOM_PICKER && (
-                  <span className="text-xl">🎲</span>
-                )}
-                {groupName === MENU_GROUP_NAME_ENUM.QUIZ && (
-                  <span className="text-xl">🤖</span>
-                )}
+                <SectionIcon
+                  className={`w-5 h-5 ${SECTION_ICON_COLOR[groupName]}`}
+                />
                 <span
                   className={`text-base font-bold ${SECTION_ICON_COLOR[groupName]}`}
                 >

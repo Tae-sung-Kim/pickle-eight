@@ -1,5 +1,5 @@
-import { getUserCredits } from "@/services/credit.service";
-import type { UserCreditsType } from "@/types/ad-credit.type";
+import { getUserCredits } from '@/services/credit.service';
+import type { UserCreditsType } from '@/types/ad-credit.type';
 import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 
 /**

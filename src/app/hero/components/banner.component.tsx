@@ -1,12 +1,12 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { HERO_BADGE_LIST } from "@/constants/hero.constant";
+import { HERO_BADGE_LIST } from '@/constants/hero.constant';
 import { BrainCircuit } from 'lucide-react';
 import Link from 'next/link';
 
 export function HeroBannerComponent() {
   return (
-    <Alert className="mb-8 surface-card border-0 shadow-lg flex flex-col md:flex-row items-center gap-4 py-4 px-4 sm:py-5 sm:px-6">
+    <Alert className="mb-8 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border border-primary/20 shadow-lg flex flex-col md:flex-row items-center gap-4 py-4 px-4 sm:py-5 sm:px-6 rounded-2xl">
       <div
         className="hidden md:flex flex-shrink-0 items-center justify-center w-14 h-14 rounded-full bg-primary/15 shadow"
         aria-hidden="true"
