@@ -203,7 +203,7 @@ export function LottoCheckComponent() {
   // 숫자 입력 정규화: 숫자만, 최대 2자리, 1~45, 0 금지
   const normalizeTicketInput =
     (idx: number, name: TicketFieldNameType) =>
-    (e: React.FormEvent<HTMLInputElement>) => {
+    (e: React.ChangeEvent<HTMLInputElement>) => {
       const el = e.currentTarget;
       let raw = el.value.replace(/[^0-9]/g, '');
       raw = raw.replace(/^0+/, ''); // 앞자리 0 제거
@@ -389,9 +389,9 @@ export function LottoCheckComponent() {
                         maxLength={2}
                         placeholder="--"
                         className="w-14 text-center ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:w-16"
-                        onInput={normalizeTicketInput(idx, name)}
                         {...register(`tickets.${idx}.${name}` as const, {
                           onBlur: onCheckDuplicateOnBlur(idx, name),
+                          onChange: normalizeTicketInput(idx, name),
                         })}
                       />
                     )}
