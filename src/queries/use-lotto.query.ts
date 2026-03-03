@@ -1,5 +1,9 @@
-import { getLatestLottoDraw, getLottoDrawByNumber, getLottoDraws } from "@/services/lotto.service";
-import type { LottoDrawType, LottoDrawsParamsType } from "@/types/lotto.type";
+import {
+  getLatestLottoDraw,
+  getLottoDrawByNumber,
+  getLottoDraws,
+} from '@/services/lotto.service';
+import type { LottoDrawType, LottoDrawsParamsType } from '@/types/lotto.type';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 // 회차에 따른 로또 당첨 결과 조회
@@ -41,7 +45,17 @@ export function useLatestLottoDrawQuery(options?: {
   });
 }
 
-// 특정 회차 당첨 결과 조회
+// 특정 회차 당첨 결과 조회 (Query)
+export function useLottoDrawByNumberQuery(drwNo?: number) {
+  return useQuery<LottoDrawType, Error>({
+    queryKey: ['lotto-draw', drwNo],
+    queryFn: () => getLottoDrawByNumber(drwNo!),
+    enabled: !!drwNo && drwNo > 0,
+    staleTime: 24 * 60 * 60 * 1000,
+  });
+}
+
+// 특정 회차 당첨 결과 조회 (Mutation)
 export function useLottoDrawByNumberMutation() {
   return useMutation<LottoDrawType, Error, number>({
     mutationFn: (drwNo) => getLottoDrawByNumber(drwNo),

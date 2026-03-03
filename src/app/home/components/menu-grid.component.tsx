@@ -55,7 +55,7 @@ const SECTION_ICONS: Record<MenuSectionKeyType, LucideIcon> = {
 
 export function HomeMenuGridComponent() {
   return (
-    <section className="max-w-6xl mx-auto py-10 px-2">
+    <section className="space-y-6 pt-10">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {MENU_LIST.map((data) => {
           const groupName = data.group as MenuSectionKeyType;

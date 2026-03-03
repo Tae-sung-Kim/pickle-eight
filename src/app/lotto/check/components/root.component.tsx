@@ -12,11 +12,13 @@ import { Label } from '@/components/ui/label';
 import {
   useLatestLottoDrawQuery,
   useLottoDrawByNumberMutation,
+  useLottoDrawByNumberQuery,
 } from '@/queries/use-lotto.query';
 import type { LottoDrawType, TicketFieldNameType } from '@/types/lotto.type';
 import { LottoUtils } from '@/utils/lotto.util';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus, Sparkles } from 'lucide-react';
+import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
+import { Sparkles, Plus } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -145,6 +147,8 @@ export function LottoCheckComponent() {
 
   const { mutateAsync: fetchDraw } = useLottoDrawByNumberMutation();
   const { data: latestDraw } = useLatestLottoDrawQuery();
+  const { data: latestFullDraw, isLoading: isLatestLoading } =
+    useLottoDrawByNumberQuery(latestDraw?.lastDrawNumber);
 
   const canSubmit = useMemo(() => formState.isValid, [formState.isValid]);
 
@@ -258,7 +262,68 @@ export function LottoCheckComponent() {
     };
 
   return (
-    <>
+    <div className="space-y-8">
+      {/* 최근 당첨 번호 섹션 */}
+      {isLatestLoading ? (
+        <section className="relative overflow-hidden rounded-xl border border-gray-100 bg-gray-50/50 p-6 sm:p-8 animate-pulse">
+          <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
+            <div className="space-y-3 flex-1">
+              <div className="h-4 w-24 bg-gray-200 rounded-full" />
+              <div className="h-8 w-32 bg-gray-200 rounded-md" />
+              <div className="h-4 w-40 bg-gray-200 rounded-md" />
+            </div>
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                <div key={i} className="h-12 w-12 rounded-full bg-gray-200" />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : (
+        latestFullDraw && (
+          <section className="relative overflow-hidden rounded-xl border-2 border-primary/10 bg-gradient-to-br from-white to-emerald-50/30 p-6 sm:p-8">
+            <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
+              <div className="space-y-1.5 text-center sm:text-left">
+                <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                  최신 당첨 결과
+                </div>
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                  제{' '}
+                  <span className="text-primary">
+                    {latestFullDraw.drawNumber}
+                  </span>
+                  회
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  추첨일: {latestFullDraw.drawDate}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                <div className="flex gap-2 sm:gap-3">
+                  {latestFullDraw.numbers.map((num, idx) => (
+                    <LottoBallComponent key={idx} number={num} index={idx} />
+                  ))}
+                </div>
+                <div className="mx-1 flex h-12 items-center justify-center text-muted-foreground/40 sm:mx-2">
+                  <Plus className="size-5" />
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <LottoBallComponent
+                    number={latestFullDraw.bonusNumber}
+                    index={6}
+                    isBonus
+                  />
+                  <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider">
+                    Bonus
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+        )
+      )}
+
       <div className="mt-2 rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
         ※ 채점은 보너스 번호 일치 여부를 별도로 판단하여 등수(2등 등)에
         반영합니다. 반면 분석/생성 통계는 보너스 번호를 포함하지 않습니다.
@@ -369,6 +434,6 @@ export function LottoCheckComponent() {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }

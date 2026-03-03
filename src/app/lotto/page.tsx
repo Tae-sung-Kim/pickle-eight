@@ -72,7 +72,7 @@ export default function LottoHubPage() {
   } as const;
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-10 md:px-8 md:py-12">
+    <section className="px-6 py-10 md:px-8 md:py-12">
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <JsonLdComponent
         data={{
