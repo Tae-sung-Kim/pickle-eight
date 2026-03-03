@@ -74,7 +74,7 @@ export default function LottoHistoryPage() {
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
 
-      <div className="mx-auto max-w-5xl py-4 p-4">
+      <div className="py-4 p-4">
         <TitleWrapperComponent
           type={MENU_GROUP_NAME_ENUM.LOTTO}
           title="로또 당첨 결과 히스토리"

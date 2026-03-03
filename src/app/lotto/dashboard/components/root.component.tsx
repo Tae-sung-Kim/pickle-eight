@@ -76,24 +76,22 @@ function TabBar({
 }): JSX.Element {
   return (
     <div className="sticky top-0 z-10 mt-6 border-b bg-background/80 px-0 shadow-sm ring-1 ring-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto max-w-6xl">
-        <div className="flex flex-1 justify-center p-2">
-          {TABS.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => onChange(t.key)}
-              className={`whitespace-nowrap rounded-md px-3.5 py-2 text-sm transition-colors ${
-                active === t.key
-                  ? 'bg-primary/10 text-primary ring-1 ring-primary/20'
-                  : 'text-muted-foreground hover:bg-muted/60'
-              }`}
-              aria-current={active === t.key ? 'page' : undefined}
-            >
-              <span className="mr-1">{t.icon}</span>
-              {t.label}
-            </button>
-          ))}
-        </div>
+      <div className="flex flex-1 justify-center p-2 gap-2">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => onChange(t.key)}
+            className={`whitespace-nowrap rounded-md px-3.5 py-2 text-sm transition-colors ${
+              active === t.key
+                ? 'bg-primary/10 text-primary ring-1 ring-primary/20'
+                : 'text-muted-foreground hover:bg-muted/60'
+            }`}
+            aria-current={active === t.key ? 'page' : undefined}
+          >
+            <span className="mr-1">{t.icon}</span>
+            {t.label}
+          </button>
+        ))}
       </div>
     </div>
   );
@@ -171,7 +169,7 @@ export function LottoDashboardComponent(): JSX.Element {
   }, [budgetQ.data]);
 
   return (
-    <section className="w-full mx-auto max-w-6xl px-6 py-10 md:px-8 md:py-12">
+    <section className="w-full px-6 py-10 md:px-8 md:py-12">
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
 
       {/* Header */}
