@@ -1,10 +1,15 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { useDailyLimit } from "@/hooks/use-daily-limit.hook";
-import { useTriviaQuizStore } from "@/hooks/use-trivia-quiz.hook";
-import { useGptTriviaQuizQuery } from "@/queries/use-gpt-trivia-quiz.query";
-import { TriviaQuizCategoryType, TriviaQuizDifficultyType, TriviaQuizFormSchema, TriviaQuizFormValuesType } from "@/types/trivia-quiz.type";
-import { getKoreaTime } from "@/utils/common.util";
+import { useDailyLimit } from '@/features/quiz/hooks/use-daily-limit.hook';
+import { useTriviaQuizStore } from '@/features/quiz/hooks/use-trivia-quiz.hook';
+import { useGptTriviaQuizQuery } from '@/features/quiz/queries/use-gpt-trivia-quiz.query';
+import {
+  TriviaQuizCategoryType,
+  TriviaQuizDifficultyType,
+  TriviaQuizFormSchema,
+  TriviaQuizFormValuesType,
+} from '@/features/quiz/types/trivia-quiz.type';
+import { getKoreaTime } from '@/utils/common.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';

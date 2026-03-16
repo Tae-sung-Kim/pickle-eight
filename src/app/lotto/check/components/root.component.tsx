@@ -13,18 +13,21 @@ import {
   useLatestLottoDrawQuery,
   useLottoDrawByNumberMutation,
   useLottoDrawByNumberQuery,
-} from '@/queries/use-lotto.query';
-import type { LottoDrawType, TicketFieldNameType } from '@/types/lotto.type';
-import { LottoUtils } from '@/utils/lotto.util';
+} from '@/features/lotto/queries/use-lotto.query';
+import type {
+  LottoDrawType,
+  TicketFieldNameType,
+} from '@/features/lotto/types/lotto.type';
+import { LottoUtils } from '@/features/lotto/utils/lotto.util';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
+import { LottoBallComponent } from '@/features/lotto/components/ball.component';
 import { Sparkles, Plus } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { LottoCheckResultCardComponent } from './result-card.component';
-import { LottoCheckTicketRowComponent } from '@/components/shared/lotto/ticket-row.component';
+import { LottoCheckTicketRowComponent } from '@/features/lotto/components/ticket-row.component';
 
 // 문자열(빈 값 포함)을 숫자로 전처리하는 유틸 스키마
 const toNumber = (min: number, max?: number) =>

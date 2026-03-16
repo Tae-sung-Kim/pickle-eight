@@ -1,13 +1,13 @@
 'use client';
-import { NameBadgeComponent } from '@/components/shared/name/badge.component';
-import { NameInputComponent } from '@/components/shared/name/input.component';
+import { NameBadgeComponent } from '@/features/random-picker/components/badge.component';
+import { NameInputComponent } from '@/features/random-picker/components/input.component';
 import { TitleWrapperComponent } from '@/components/title-warpper.component';
 import { Button } from '@/components/ui/button';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
 import { useCapture } from '@/hooks/use-capture.hook';
-import { useNameManager } from '@/hooks/use-name-manager.hook';
+import { useNameManager } from '@/features/random-picker/hooks/use-name-manager.hook';
 import { cn } from '@/lib/utils';
-import { generateTeams } from '@/utils/team-assignment.util';
+import { generateTeams } from '@/features/random-picker/utils/team-assignment.util';
 import { motion } from 'framer-motion';
 import { Share2, Sparkles } from 'lucide-react';
 import { useRef, useState } from 'react';

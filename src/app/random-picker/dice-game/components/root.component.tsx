@@ -1,7 +1,7 @@
 'use client';
-import { DOT_POSITIONS } from "@/constants/dice-game.constant";
-import { cn } from "@/lib/utils";
-import { DiceComponentPropsType } from '@/types/dice-game.type';
+import { DOT_POSITIONS } from '@/features/random-picker/constants/dice-game.constant';
+import { cn } from '@/lib/utils';
+import { DiceComponentPropsType } from '@/features/random-picker/types/dice-game.type';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const getDiceDots = (value: number) => {

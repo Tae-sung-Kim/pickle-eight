@@ -1,5 +1,5 @@
 'use client';
-import { useNumberMatchGame } from "@/hooks/use-number-match-game.hook";
+import { useNumberMatchGame } from '@/features/quiz/hooks/use-number-match-game.hook';
 import { NumberMatchGameBoardComponent } from './board.component';
 import { NumberMatchGameControlsComponent } from './controls.component';
 import { NumberMatchGameOverModalComponent } from './over-modal.component';

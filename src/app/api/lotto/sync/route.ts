@@ -1,6 +1,9 @@
-import { DH_LOTTO_ENDPOINT } from '@/constants/lotto.constant';
-import { lottoRepository } from '@/services/lotto-repository';
-import { DhLottoApiResponseType, LottoDrawType } from '@/types/lotto.type';
+import { DH_LOTTO_ENDPOINT } from '@/features/lotto/constants/lotto.constant';
+import { lottoRepository } from '@/features/lotto/services/lotto-repository';
+import {
+  DhLottoApiResponseType,
+  LottoDrawType,
+} from '@/features/lotto/types/lotto.type';
 import { NextResponse } from 'next/server';
 
 function requireCronSecret(req: Request): void {
@@ -47,7 +50,7 @@ function mapToLottoDraw(
     number,
     number,
     number,
-    number
+    number,
   ];
   // Convert YYYYMMDD to YYYY-MM-DD
   const drawDate = `${raw.ltRflYmd.slice(0, 4)}-${raw.ltRflYmd.slice(

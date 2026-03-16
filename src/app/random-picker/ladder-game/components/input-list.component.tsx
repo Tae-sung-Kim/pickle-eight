@@ -1,11 +1,11 @@
 'use client';
 
-import { NameBadgeComponent } from '@/components/shared/name/badge.component';
-import { NameInputComponent } from '@/components/shared/name/input.component';
+import { NameBadgeComponent } from '@/features/random-picker/components/badge.component';
+import { NameInputComponent } from '@/features/random-picker/components/input.component';
 import { Button } from '@/components/ui/button';
-import { useNameManager } from '@/hooks/use-name-manager.hook';
+import { useNameManager } from '@/features/random-picker/hooks/use-name-manager.hook';
 import { cn } from '@/lib/utils';
-import { LadderInputComponentPropsType } from '@/types/ladder-game.type';
+import { LadderInputComponentPropsType } from '@/features/random-picker/types/ladder-game.type';
 import { motion } from 'framer-motion';
 import { Sparkles, X } from 'lucide-react';
 import { useState } from 'react';

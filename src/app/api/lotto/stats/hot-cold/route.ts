@@ -1,6 +1,6 @@
 import { adminDb } from '@/lib/firebase-admin';
-import { lottoRepository } from '@/services/lotto-repository';
-import type { LottoDrawType } from "@/types/lotto.type";
+import { lottoRepository } from '@/features/lotto/services/lotto-repository';
+import type { LottoDrawType } from '@/features/lotto/types/lotto.type';
 import { NextResponse } from 'next/server';
 
 const DOC_ID = 'hot-cold-latest' as const;

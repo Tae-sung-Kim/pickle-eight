@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { cn } from "@/lib/utils";
-import { DicePlayerComponentPropsType } from '@/types/dice-game.type';
+import { cn } from '@/lib/utils';
+import { DicePlayerComponentPropsType } from '@/features/random-picker/types/dice-game.type';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { DiceComponent } from './root.component';

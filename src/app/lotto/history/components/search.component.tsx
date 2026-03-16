@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LOTTO_MAX_HISTORY_RANGE } from '@/constants/lotto.constant';
+import { LOTTO_MAX_HISTORY_RANGE } from '@/features/lotto/constants/lotto.constant';
 import { Label } from '@radix-ui/react-label';
 import { useEffect, useMemo, useState } from 'react';
 

@@ -8,9 +8,9 @@ import {
 import type {
   LottoCheckResultCardType,
   LottoLankType,
-} from '@/types/lotto.type';
+} from '@/features/lotto/types/lotto.type';
 import { LottoCheckRankBadgeComponent } from './rank-badge.component';
-import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
+import { LottoBallComponent } from '@/features/lotto/components/ball.component';
 
 export function LottoCheckResultCardComponent({
   draw,
@@ -74,8 +74,8 @@ export function LottoCheckResultCardComponent({
                       const cls = isWin
                         ? 'bg-success text-success-foreground border-success/30'
                         : isBonus
-                        ? 'bg-warning text-warning-foreground border-warning/30'
-                        : 'bg-surface-card text-foreground border-border';
+                          ? 'bg-warning text-warning-foreground border-warning/30'
+                          : 'bg-surface-card text-foreground border-border';
                       return (
                         <span key={idx} className={`${base} ${cls}`}>
                           {n}

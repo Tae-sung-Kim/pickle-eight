@@ -1,6 +1,6 @@
 'use client';
 
-import { DicePlayerListComponentPropsType } from "@/types/dice-game.type";
+import { DicePlayerListComponentPropsType } from '@/features/random-picker/types/dice-game.type';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DicePlayerComponent } from './player.component';
 

@@ -1,13 +1,13 @@
 'use client';
-import { LOTTO_MAX_HISTORY_RANGE } from '@/constants/lotto.constant';
+import { LOTTO_MAX_HISTORY_RANGE } from '@/features/lotto/constants/lotto.constant';
 import {
   useLatestLottoDrawQuery,
   useLottoDrawsQuery,
-} from '@/queries/use-lotto.query';
+} from '@/features/lotto/queries/use-lotto.query';
 import { useEffect, useState } from 'react';
 import { LottoHistoryResultComponent } from './result.component';
 import { LottoHistorySearchComponent } from './search.component';
-import { CsvExportButtonComponent } from '@/components/shared/lotto/csv-export-button.component';
+import { CsvExportButtonComponent } from '@/features/lotto/components/csv-export-button.component';
 
 export function LottoHistoryComponent() {
   const { data: latestDraw } = useLatestLottoDrawQuery();

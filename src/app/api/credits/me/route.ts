@@ -1,6 +1,10 @@
-import { CREDIT_POLICY, CREDIT_REFILL_AMOUNT, CREDIT_REFILL_INTERVAL_MS } from "@/constants/ad-credit.constant";
+import {
+  CREDIT_POLICY,
+  CREDIT_REFILL_AMOUNT,
+  CREDIT_REFILL_INTERVAL_MS,
+} from '@/features/credit/constants/ad-credit.constant';
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
-import { currentResetKey } from "@/utils/common.util";
+import { currentResetKey } from '@/utils/common.util';
 import { NextRequest, NextResponse } from 'next/server';
 
 type UserCreditDoc = {

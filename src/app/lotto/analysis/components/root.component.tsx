@@ -2,8 +2,8 @@
 import {
   useLatestLottoDrawQuery,
   useLottoDrawsQuery,
-} from '@/queries/use-lotto.query';
-import { LottoUtils } from '@/utils/lotto.util';
+} from '@/features/lotto/queries/use-lotto.query';
+import { LottoUtils } from '@/features/lotto/utils/lotto.util';
 import { useEffect, useMemo, useState } from 'react';
 import { LottoAnalysisBucketSectionComponent } from './bucket-section.component';
 import { LottoAnalysisConsecutiveSectionComponent } from './consecutive-section.component';
@@ -11,7 +11,7 @@ import { LottoAnalysisControlsComponent } from './controls.component';
 import { LottoAnalysisFrequencySectionComponent } from './frequency-section.component';
 import { LottoAnalysisOddEvenSectionComponent } from './odd-even-section.component';
 import { LottoAnalysisSumSectionComponent } from './sum-section.component';
-import { CsvExportButtonComponent } from '@/components/shared/lotto/csv-export-button.component';
+import { CsvExportButtonComponent } from '@/features/lotto/components/csv-export-button.component';
 
 export function LottoAnalysisComponent() {
   const [from, setFrom] = useState<number>(1);

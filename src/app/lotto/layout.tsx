@@ -1,6 +1,6 @@
 import { PageHeaderComponent } from '@/components/layouts/page-header.component';
-import { LottoFooterNoticeComponent } from '@/components/shared/lotto/footer-notice.component';
-import { LottoWarningAlertComponent } from '@/components/shared/lotto/warning-alert.component';
+import { LottoFooterNoticeComponent } from '@/features/lotto/components/footer-notice.component';
+import { LottoWarningAlertComponent } from '@/features/lotto/components/warning-alert.component';
 import { Circle } from 'lucide-react';
 import type { JSX, ReactNode } from 'react';
 

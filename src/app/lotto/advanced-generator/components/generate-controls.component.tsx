@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LottoGenerateControlsType } from "@/types/lotto.type";
+import { LottoGenerateControlsType } from '@/features/lotto/types/lotto.type';
 import { useEffect, useState } from 'react';
 
 export function LottoAdvancedGenerateControlsComponent({

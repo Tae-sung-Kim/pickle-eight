@@ -1,4 +1,4 @@
-import { HomeMenuGridComponent } from '@/app/home/components/menu-grid.component';
+import { HomeMenuGridComponent } from '@/features/home/components/menu-grid.component';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import {
   buildMetadata,

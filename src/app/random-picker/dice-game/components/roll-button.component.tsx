@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { cn } from "@/lib/utils";
-import { DiceRollButtonPropsType } from "@/types/dice-game.type";
+import { cn } from '@/lib/utils';
+import { DiceRollButtonPropsType } from '@/features/random-picker/types/dice-game.type';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Dice5, Loader2, RefreshCw, Share2 } from 'lucide-react';
 

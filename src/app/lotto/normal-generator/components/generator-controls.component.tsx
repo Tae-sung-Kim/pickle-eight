@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { cn } from "@/lib/utils";
-import { LottoGeneratorControlsPropsType } from "@/types/lotto.type";
+import { cn } from '@/lib/utils';
+import { LottoGeneratorControlsPropsType } from '@/features/lotto/types/lotto.type';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 

@@ -2,7 +2,7 @@ import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import {
   CREDIT_POLICY,
   CREDIT_SPEND_COST,
-} from '@/constants/ad-credit.constant';
+} from '@/features/credit/constants/ad-credit.constant';
 import {
   buildMetadata,
   canonicalUrl,

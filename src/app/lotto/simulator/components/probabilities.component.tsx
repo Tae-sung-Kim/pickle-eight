@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LottoLankType } from "@/types/lotto.type";
+import { LottoLankType } from '@/features/lotto/types/lotto.type';
 
 export type SimulatorProbabilitiesComponentType = Readonly<{
   total: number;

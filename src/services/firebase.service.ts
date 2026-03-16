@@ -1,16 +1,16 @@
-import { db } from "@/lib/firebase-config";
+import { db } from '@/lib/firebase-config';
 import {
-    addDoc,
-    collection,
-    deleteDoc,
-    doc,
-    getDoc,
-    getDocs,
-    query,
-    serverTimestamp,
-    updateDoc,
-    type DocumentData,
-    type QueryConstraint,
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  updateDoc,
+  type DocumentData,
+  type QueryConstraint,
 } from 'firebase/firestore';
 
 /**

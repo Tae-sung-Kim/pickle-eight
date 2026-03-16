@@ -1,8 +1,8 @@
 'use client';
 
-import { usePageView } from "@/hooks/use-analytics.hook";
-import { useConsentContext } from "@/providers/consent.provider";
-import { getCachedData, setCachedData } from "@/utils/common.util";
+import { usePageView } from '@/hooks/use-analytics.hook';
+import { useConsentContext } from '@/providers/consent.provider';
+import { getCachedData, setCachedData } from '@/utils/common.util';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 

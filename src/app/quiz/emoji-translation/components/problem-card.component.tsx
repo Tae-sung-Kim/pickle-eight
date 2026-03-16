@@ -1,6 +1,6 @@
 'use client';
 import { Card } from '@/components/ui/card';
-import type { EmojiTranslationProblemType } from "@/types/emoji-translation.type";
+import type { EmojiTranslationProblemType } from '@/features/quiz/types/emoji-translation.type';
 
 export function EmojiTranslationProblemCardComponent({
   problem,

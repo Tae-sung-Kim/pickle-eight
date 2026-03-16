@@ -1,9 +1,9 @@
 'use client';
-import { LottoBallComponent } from '@/components/shared/lotto/ball.component';
+import { LottoBallComponent } from '@/features/lotto/components/ball.component';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCapture } from '@/hooks/use-capture.hook';
-import { LottoNumberListPropsType } from '@/types/lotto.type';
+import { LottoNumberListPropsType } from '@/features/lotto/types/lotto.type';
 import { motion } from 'framer-motion';
 import { Share2 } from 'lucide-react';
 import { useRef } from 'react';

@@ -1,6 +1,6 @@
-import { MENU_LIST } from "@/constants/menu.constant";
-import { cn } from "@/lib/utils";
-import { MenuSectionKeyType } from "@/types/menu.type";
+import { MENU_LIST } from '@/constants/menu.constant';
+import { cn } from '@/lib/utils';
+import { MenuSectionKeyType } from '@/types/menu.type';
 import Link from 'next/link';
 import { useMemo } from 'react';
 

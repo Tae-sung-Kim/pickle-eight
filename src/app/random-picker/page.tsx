@@ -1,4 +1,4 @@
-import { CreditIndicatorComponent } from '@/components/shared/credit/credit-indicator.component';
+import { CreditIndicatorComponent } from '@/features/credit/components/credit-indicator.component';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants/menu.constant';
 import {

@@ -1,7 +1,7 @@
 'use client';
-import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants/lotto.constant';
-import { LottoLankType } from '@/types/lotto.type';
-import { LottoGenerator, LottoUtils } from '@/utils/lotto.util';
+import { LOTTO_MAX_CUSTOM_TICKETS } from '@/features/lotto/constants/lotto.constant';
+import { LottoLankType } from '@/features/lotto/types/lotto.type';
+import { LottoGenerator, LottoUtils } from '@/features/lotto/utils/lotto.util';
 import { useEffect, useMemo, useState } from 'react';
 import { SimulatorBestPerformanceComponent } from './best-performance.component';
 import { SimulatorControlsComponent } from './controls.component';
@@ -9,7 +9,7 @@ import { SimulatorCustomTicketsComponent } from './custom-tickets.component';
 import { SimulatorProbabilitiesComponent } from './probabilities.component';
 import { SimulatorResultsSummaryComponent } from './results-summary.component';
 import { SimulatorTicketsComponent } from './tickets.component';
-import { ClientCsvButtonComponent } from '@/components/shared/lotto/client-csv-button.component';
+import { ClientCsvButtonComponent } from '@/features/lotto/components/client-csv-button.component';
 
 function generateRandomDraw() {
   const pool: number[] = [];
@@ -34,7 +34,7 @@ function generateRandomDraw() {
       number,
       number,
       number,
-      number
+      number,
     ],
     bonusNumber: bonus,
     firstWinCount: 0,

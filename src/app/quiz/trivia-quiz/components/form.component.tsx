@@ -2,21 +2,24 @@
 
 import { Label } from '@/components/ui/label';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
-import { TRIVIA_QUIZ_CATEGORIES, TRIVIA_QUIZ_DIFFICULTIES } from "@/constants/trivia-quiz.constant";
-import { TriviaQuizFormValuesType } from "@/types/trivia-quiz.type";
+import {
+  TRIVIA_QUIZ_CATEGORIES,
+  TRIVIA_QUIZ_DIFFICULTIES,
+} from '@/features/quiz/constants/trivia-quiz.constant';
+import { TriviaQuizFormValuesType } from '@/features/quiz/types/trivia-quiz.type';
 import { motion } from 'framer-motion';
 import type {
-    FieldErrors,
-    UseFormHandleSubmit,
-    UseFormRegister,
-    UseFormSetValue,
-    UseFormWatch,
+  FieldErrors,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
 } from 'react-hook-form';
 
 type TriviaQuizFormComponentPropsType = {

@@ -1,6 +1,6 @@
-import { HeroBannerComponent } from '@/app/hero/components/banner.component';
-import { HeroTodayMessageComponent } from '@/app/hero/components/today-message.component';
-import { ConsentNudgeComponent } from '@/components/shared/consent/consent-nudge.component';
+import { HeroBannerComponent } from '@/features/hero/components/banner.component';
+import { HeroTodayMessageComponent } from '@/features/hero/components/today-message.component';
+import { ConsentNudgeComponent } from '@/features/consent/components/consent-nudge.component';
 import { buildMetadata, canonicalUrl } from '@/lib/seo';
 import { generateOgImageUrl } from '@/utils/common.util';
 import { Metadata } from 'next';

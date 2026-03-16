@@ -1,10 +1,10 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { FOUR_IDIOMS_COLLECTION } from "@/constants/four-idiom-quiz.constant";
-import { useDailyLimit } from "@/hooks/use-daily-limit.hook";
-import { useGptFourIdiomQuizQuery } from "@/queries/use-gpt-four-idiom.quiz.query";
-import { FourIdiomQuizDifficultyType } from "@/types/four-idom.type";
+import { FOUR_IDIOMS_COLLECTION } from '@/features/quiz/constants/four-idiom-quiz.constant';
+import { useDailyLimit } from '@/features/quiz/hooks/use-daily-limit.hook';
+import { useGptFourIdiomQuizQuery } from '@/features/quiz/queries/use-gpt-four-idiom.quiz.query';
+import { FourIdiomQuizDifficultyType } from '@/features/quiz/types/four-idom.type';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';

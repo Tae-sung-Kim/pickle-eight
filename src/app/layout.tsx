@@ -21,8 +21,8 @@ import type { Metadata, Viewport } from 'next';
 import { Toaster } from 'sonner';
 import './globals.css';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
-import { AdFitSlotComponent } from '@/components/shared/adfit/adfit-slot.component';
-import { CookieConsentComponent } from '@/components/shared/consent/cookie-consent.component';
+import { AdFitSlotComponent } from '@/features/ad/components/adfit-slot.component';
+import { CookieConsentComponent } from '@/features/consent/components/cookie-consent.component';
 
 export const viewport: Viewport = {
   width: 'device-width',

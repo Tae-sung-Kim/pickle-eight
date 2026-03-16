@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { GptEnglishWordQuizResponseType } from "@/types/openai-api.type";
+import { GptEnglishWordQuizResponseType } from '@/features/quiz/types/openai-api.type';
 
 type EnglishWordQuizOptionsComponentType = {
   quiz: GptEnglishWordQuizResponseType;

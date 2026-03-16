@@ -1,5 +1,5 @@
-import { NameInputComponent } from '@/components/shared/name/input.component';
-import { NameListComponent } from '@/components/shared/name/list.component';
+import { NameInputComponent } from '@/features/random-picker/components/input.component';
+import { NameListComponent } from '@/features/random-picker/components/list.component';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Users } from 'lucide-react';
 

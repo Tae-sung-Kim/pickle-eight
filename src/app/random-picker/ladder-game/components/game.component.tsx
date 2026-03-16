@@ -1,9 +1,16 @@
 'use client';
 
-import { TitleWrapperComponent } from "@/components/title-warpper.component";
-import { MENU_GROUP_NAME_ENUM } from "@/constants/menu.constant";
-import { LadderConfigType, LadderResultType, LadderType } from "@/types/ladder-game.type";
-import { generateLadder, getLadderResults } from '@/utils/ladder-game.util';
+import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import {
+  LadderConfigType,
+  LadderResultType,
+  LadderType,
+} from '@/features/random-picker/types/ladder-game.type';
+import {
+  generateLadder,
+  getLadderResults,
+} from '@/features/random-picker/utils/ladder-game.util';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { LadderInputComponent } from './input-list.component';
