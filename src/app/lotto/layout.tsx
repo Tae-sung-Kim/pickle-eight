@@ -1,6 +1,7 @@
 import { PageHeaderComponent } from '@/components/layouts/page-header.component';
 import { LottoFooterNoticeComponent } from '@/features/lotto/components/footer-notice.component';
 import { LottoWarningAlertComponent } from '@/features/lotto/components/warning-alert.component';
+import { LatestResultBannerComponent } from '@/features/lotto/components/latest-result-banner.component';
 import { Circle } from 'lucide-react';
 import type { JSX, ReactNode } from 'react';
 
@@ -23,6 +24,9 @@ export default function LottoLayout({
           space="md"
           xSpace="lg"
         />
+        <div className="mt-6">
+          <LatestResultBannerComponent />
+        </div>
         <div className="mt-6">{children}</div>
         <LottoFooterNoticeComponent />
       </div>

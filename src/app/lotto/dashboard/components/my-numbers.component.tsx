@@ -13,7 +13,11 @@ import {
   useMyNumberSetsQuery,
   useSaveNumberSetMutation,
 } from '@/features/lotto/queries/use-lotto-user.query';
-import { useLatestLottoDrawQuery } from '@/features/lotto/queries/use-lotto.query';
+import {
+  useLatestLottoDrawQuery,
+  useLottoDrawByNumberQuery,
+} from '@/features/lotto/queries/use-lotto.query';
+import { LottoUtils } from '@/features/lotto/utils/lotto.util';
 import { creditBuildCostLabel } from '@/features/credit/utils/ad-credit.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { JSX } from 'react';
@@ -61,6 +65,9 @@ export function MyNumbersComponent(): JSX.Element {
   const saveMut = useSaveNumberSetMutation();
   const delMut = useDeleteNumberSetMutation();
   const latestQ = useLatestLottoDrawQuery({ enabled: true });
+  const { data: latestFullDraw } = useLottoDrawByNumberQuery(
+    latestQ.data?.lastDrawNumber
+  );
 
   const [range, setRange] = useState<{ from: string; to: string }>(() => ({
     from: '',
@@ -297,52 +304,117 @@ export function MyNumbersComponent(): JSX.Element {
           </p>
         ) : (
           <ul className="mt-4 grid grid-cols-1 gap-3">
-            {list.map((it) => (
-              <li
-                key={it.id}
-                className="flex items-center justify-between rounded-lg border bg-card/50 p-3 transition hover:bg-card"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium">
-                    {it.label || '무제'}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {it.numbers.join(', ')}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() =>
-                      form.reset({
-                        label: it.label ?? undefined,
-                        isFavorite: Boolean(it.isFavorite),
-                        n1: String(it.numbers[0]),
-                        n2: String(it.numbers[1]),
-                        n3: String(it.numbers[2]),
-                        n4: String(it.numbers[3]),
-                        n5: String(it.numbers[4]),
-                        n6: String(it.numbers[5]),
-                      })
-                    }
-                  >
-                    불러오기
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    disabled={delMut.isPending}
-                    onClick={async () => {
-                      if (!it.id) return;
-                      await delMut.mutateAsync(it.id);
-                    }}
-                  >
-                    삭제
-                  </Button>
-                </div>
-              </li>
-            ))}
+            {list.map((it) => {
+              // 최신 회차 결과와 비교
+              let curDrawRank = 0;
+              let matchCount = 0;
+              let isBonusMatch = false;
+
+              if (latestFullDraw) {
+                const matchRes = LottoUtils.checkTicket(
+                  latestFullDraw,
+                  LottoUtils.toTicket([...it.numbers])
+                );
+                curDrawRank = matchRes.rank;
+                matchCount = matchRes.matchCount;
+                isBonusMatch = matchRes.bonusMatch;
+              }
+
+              const isWinning = curDrawRank > 0 && curDrawRank <= 5;
+
+              return (
+                <li
+                  key={it.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between rounded-lg border bg-card/50 p-3 transition hover:bg-card gap-3 sm:gap-0"
+                >
+                  <div className="flex flex-col gap-1.5 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">
+                        {it.label || '무제'}
+                      </span>
+                      {it.isFavorite && (
+                        <span className="text-[10px] bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded font-medium">
+                          ★ 즐겨찾기
+                        </span>
+                      )}
+                    </div>
+
+                    {/* 번호 목록 및 당첨 상태 (작은 뱃지) */}
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">
+                      {it.numbers.map((n, idx) => {
+                        // 일치하는 번호인지 (보너스 포함) 확인하여 강조
+                        let isMatched = false;
+                        let isBnsMatched = false;
+                        if (latestFullDraw) {
+                          isMatched = latestFullDraw.numbers.includes(n);
+                          isBnsMatched = latestFullDraw.bonusNumber === n;
+                        }
+
+                        return (
+                          <span
+                            key={idx}
+                            className={`text-xs w-6 h-6 flex items-center justify-center rounded-full border ${
+                              isMatched
+                                ? 'bg-primary text-primary-foreground border-primary font-bold shadow-sm'
+                                : isBnsMatched
+                                  ? 'bg-amber-500 text-white border-amber-500 font-bold shadow-sm'
+                                  : 'bg-muted border-border text-muted-foreground'
+                            }`}
+                          >
+                            {n}
+                          </span>
+                        );
+                      })}
+
+                      {latestFullDraw && (
+                        <div
+                          className={`ml-2 text-[10px] px-2 py-0.5 rounded-full font-medium border ${
+                            isWinning
+                              ? 'bg-primary/10 text-primary border-primary/20'
+                              : 'bg-muted text-muted-foreground border-border/50 opacity-60'
+                          }`}
+                        >
+                          {latestFullDraw.drawNumber}회:{' '}
+                          {isWinning ? `${curDrawRank}등` : '미당첨'}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() =>
+                        form.reset({
+                          label: it.label ?? undefined,
+                          isFavorite: Boolean(it.isFavorite),
+                          n1: String(it.numbers[0]),
+                          n2: String(it.numbers[1]),
+                          n3: String(it.numbers[2]),
+                          n4: String(it.numbers[3]),
+                          n5: String(it.numbers[4]),
+                          n6: String(it.numbers[5]),
+                        })
+                      }
+                    >
+                      불러오기
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      disabled={delMut.isPending}
+                      onClick={async () => {
+                        if (!it.id) return;
+                        await delMut.mutateAsync(it.id);
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         )}
       </Card>
