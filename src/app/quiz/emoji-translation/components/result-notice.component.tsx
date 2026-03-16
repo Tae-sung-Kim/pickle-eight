@@ -1,5 +1,5 @@
 'use client';
-import type { EmojiTranslationResultNoticeType } from "@/types/emoji-translation.type";
+import type { EmojiTranslationResultNoticeType } from '@/features/quiz/types/emoji-translation.type';
 
 export function EmojiTranslationResultNoticeComponent({
   error,

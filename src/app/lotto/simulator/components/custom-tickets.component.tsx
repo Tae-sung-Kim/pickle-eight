@@ -1,10 +1,10 @@
 'use client';
-import { LottoCheckTicketRowComponent } from '@/components/shared/lotto/ticket-row.component';
+import { LottoCheckTicketRowComponent } from '@/features/lotto/components/ticket-row.component';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { LOTTO_MAX_CUSTOM_TICKETS } from '@/constants/lotto.constant';
-import { TicketFieldNameType } from '@/types/lotto.type';
+import { LOTTO_MAX_CUSTOM_TICKETS } from '@/features/lotto/constants/lotto.constant';
+import { TicketFieldNameType } from '@/features/lotto/types/lotto.type';
 import { useCallback } from 'react';
 
 export type SimulatorCustomTicketsComponentType = Readonly<{
@@ -50,7 +50,7 @@ export function SimulatorCustomTicketsComponent({
                 string,
                 string,
                 string,
-                string
+                string,
               ],
             }
           : t
@@ -78,7 +78,7 @@ export function SimulatorCustomTicketsComponent({
                 string,
                 string,
                 string,
-                string
+                string,
               ],
             }
           : t

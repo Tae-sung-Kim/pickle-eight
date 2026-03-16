@@ -1,5 +1,5 @@
 'use client';
-import { CreditGateButtonComponent } from '@/components/shared/credit/credit-gate-button.component';
+import { CreditGateButtonComponent } from '@/features/credit/components/credit-gate-button.component';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -10,14 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { CREDIT_SPEND_COST } from '@/constants/ad-credit.constant';
+import { CREDIT_SPEND_COST } from '@/features/credit/constants/ad-credit.constant';
 import {
   useHotColdStatsQuery,
   useMyNumberSetsQuery,
-} from '@/queries/use-lotto-user.query';
-import { useLatestLottoDrawQuery } from '@/queries/use-lotto.query';
-import { getLottoDraws } from '@/services/lotto.service';
-import { creditBuildCostLabel } from '@/utils/ad-credit.util';
+} from '@/features/lotto/queries/use-lotto-user.query';
+import { useLatestLottoDrawQuery } from '@/features/lotto/queries/use-lotto.query';
+import { getLottoDraws } from '@/features/lotto/services/lotto.service';
+import { creditBuildCostLabel } from '@/features/credit/utils/ad-credit.util';
 import { useEffect, useMemo, useState } from 'react';
 
 function sortEntries(

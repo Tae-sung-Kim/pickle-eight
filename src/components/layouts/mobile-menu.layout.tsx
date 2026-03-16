@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { CreditIndicatorComponent } from '../shared/credit/credit-indicator.component';
+import { CreditIndicatorComponent } from '@/features/credit/components/credit-indicator.component';
 
 export type MobileMenuLayoutProps = {
   hiddenClass?: string;

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { FourIdiomQuizDifficultyType } from "@/types/four-idom.type";
+import { FourIdiomQuizDifficultyType } from '@/features/quiz/types/four-idom.type';
 
 type FourIdiomQuizDifficultyComponentType = {
   difficulty: FourIdiomQuizDifficultyType | null;

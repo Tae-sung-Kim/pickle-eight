@@ -1,7 +1,11 @@
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
-import { lottoRepository } from '@/services/lotto-repository';
-import type { LottoCheckResultType, LottoDrawType, LottoNumberSetType } from "@/types/lotto.type";
-import { LottoUtils } from '@/utils/lotto.util';
+import { lottoRepository } from '@/features/lotto/services/lotto-repository';
+import type {
+  LottoCheckResultType,
+  LottoDrawType,
+  LottoNumberSetType,
+} from '@/features/lotto/types/lotto.type';
+import { LottoUtils } from '@/features/lotto/utils/lotto.util';
 import { NextRequest, NextResponse } from 'next/server';
 
 function bad(status: number, message: string) {

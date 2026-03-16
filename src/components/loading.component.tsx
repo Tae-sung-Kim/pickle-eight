@@ -1,5 +1,5 @@
 'use client';
-import { useLoadingStore } from "@/stores/loading.store";
+import { useLoadingStore } from '@/stores/loading.store';
 import { Loader2 } from 'lucide-react';
 
 export function LoadingComponent() {

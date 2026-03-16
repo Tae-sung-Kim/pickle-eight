@@ -1,4 +1,7 @@
-import { CREDIT_RESET_MODE, CREDIT_RESET_MODE_ENUM } from "@/constants/ad-credit.constant";
+import {
+  CREDIT_RESET_MODE,
+  CREDIT_RESET_MODE_ENUM,
+} from '@/features/credit/constants/ad-credit.constant';
 import { SITE_URL } from '@/lib/seo';
 
 export function getKoreaTime(date = new Date()): Date {

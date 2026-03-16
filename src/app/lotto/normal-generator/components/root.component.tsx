@@ -1,8 +1,8 @@
 'use client';
 
-import { TitleWrapperComponent } from "@/components/title-warpper.component";
-import { MENU_GROUP_NAME_ENUM } from "@/constants/menu.constant";
-import { generateLottoNumbers } from "@/utils/lotto.util";
+import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { generateLottoNumbers } from '@/features/lotto/utils/lotto.util';
 import { motion } from 'framer-motion';
 import { useCallback, useState } from 'react';
 import { LottoGeneratorControlsComponent } from './generator-controls.component';

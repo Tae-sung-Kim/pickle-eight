@@ -1,4 +1,4 @@
-import { MENU_LIST } from "@/constants/menu.constant";
+import { MENU_LIST } from '@/constants/menu.constant';
 
 type OgTagParams = Readonly<{
   href?: string;

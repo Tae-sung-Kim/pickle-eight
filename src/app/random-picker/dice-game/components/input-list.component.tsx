@@ -1,6 +1,6 @@
 'use client';
-import { NameInputComponent } from '@/components/shared/name/input.component';
-import { DiceInputListComponentType } from '@/types/dice-game.type';
+import { NameInputComponent } from '@/features/random-picker/components/input.component';
+import { DiceInputListComponentType } from '@/features/random-picker/types/dice-game.type';
 import { useState } from 'react';
 
 export const DiceInputListComponent = ({

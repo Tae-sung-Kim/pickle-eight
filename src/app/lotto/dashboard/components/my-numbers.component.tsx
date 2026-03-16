@@ -1,7 +1,7 @@
 'use client';
-import { CreditGateButtonComponent } from '@/components/shared/credit/credit-gate-button.component';
-import { ClientCsvButtonComponent } from '@/components/shared/lotto/client-csv-button.component';
-import { LottoCheckTicketRowComponent } from '@/components/shared/lotto/ticket-row.component';
+import { CreditGateButtonComponent } from '@/features/credit/components/credit-gate-button.component';
+import { ClientCsvButtonComponent } from '@/features/lotto/components/client-csv-button.component';
+import { LottoCheckTicketRowComponent } from '@/features/lotto/components/ticket-row.component';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,9 +12,9 @@ import {
   useDeleteNumberSetMutation,
   useMyNumberSetsQuery,
   useSaveNumberSetMutation,
-} from '@/queries/use-lotto-user.query';
-import { useLatestLottoDrawQuery } from '@/queries/use-lotto.query';
-import { creditBuildCostLabel } from '@/utils/ad-credit.util';
+} from '@/features/lotto/queries/use-lotto-user.query';
+import { useLatestLottoDrawQuery } from '@/features/lotto/queries/use-lotto.query';
+import { creditBuildCostLabel } from '@/features/credit/utils/ad-credit.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { JSX } from 'react';
 import { useMemo, useState } from 'react';
@@ -116,7 +116,7 @@ export function MyNumbersComponent(): JSX.Element {
       number,
       number,
       number,
-      number
+      number,
     ];
     await saveMut.mutateAsync({
       numbers: nums,

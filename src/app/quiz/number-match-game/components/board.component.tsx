@@ -1,5 +1,5 @@
-import { NUMBER_MATCH_GAME_GRID_COLS_MAP } from "@/constants/number-match-game.constant";
-import { NumberMatchGameBoardType } from "@/types/number-match-game.type";
+import { NUMBER_MATCH_GAME_GRID_COLS_MAP } from '@/features/quiz/constants/number-match-game.constant';
+import { NumberMatchGameBoardType } from '@/features/quiz/types/number-match-game.type';
 import { NumberMatchNumberCardComponent } from './card.component';
 
 export function NumberMatchGameBoardComponent({

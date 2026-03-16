@@ -4,7 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useMyBudgetQuery, useSaveMyBudgetMutation } from "@/queries/use-lotto-user.query";
+import {
+  useMyBudgetQuery,
+  useSaveMyBudgetMutation,
+} from '@/features/lotto/queries/use-lotto-user.query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { JSX } from 'react';
 import { useEffect } from 'react';

@@ -9,8 +9,8 @@ import {
   jsonLdWebSite,
   SITE_NAME,
 } from '@/lib/seo';
-import { getLottoDrawByNumber } from '@/services/lotto.service';
-import { LottoDrawType } from '@/types/lotto.type';
+import { getLottoDrawByNumber } from '@/features/lotto/services/lotto.service';
+import { LottoDrawType } from '@/features/lotto/types/lotto.type';
 import type { Metadata } from 'next';
 import { ReactElement } from 'react';
 

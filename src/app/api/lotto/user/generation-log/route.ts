@@ -1,5 +1,8 @@
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
-import type { LottoGenerateFiltersType, LottoGenerationLogType } from "@/types/lotto.type";
+import type {
+  LottoGenerateFiltersType,
+  LottoGenerationLogType,
+} from '@/features/lotto/types/lotto.type';
 import { NextRequest, NextResponse } from 'next/server';
 
 function bad(status: number, message: string) {

@@ -2,14 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
-import { NumberMatchGameOverModalType } from "@/types/number-match-game.type";
+import { NumberMatchGameOverModalType } from '@/features/quiz/types/number-match-game.type';
 import { useEffect, useState } from 'react';
 
 export function NumberMatchGameOverModalComponent({

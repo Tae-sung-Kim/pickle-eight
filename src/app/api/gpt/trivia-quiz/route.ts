@@ -1,5 +1,9 @@
-import { callOpenAI } from "@/services/openai.service";
-import { TriviaQuizCategoryType, TriviaQuizDifficultyType, TriviaRawQuizJsonType } from "@/types/trivia-quiz.type";
+import { callOpenAI } from '@/features/quiz/services/openai.service';
+import {
+  TriviaQuizCategoryType,
+  TriviaQuizDifficultyType,
+  TriviaRawQuizJsonType,
+} from '@/features/quiz/types/trivia-quiz.type';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {

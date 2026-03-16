@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { LottoWeightingControlsType } from "@/types/lotto.type";
+import { LottoWeightingControlsType } from '@/features/lotto/types/lotto.type';
 import { useEffect, useState } from 'react';
 
 export function LottoAdvancedWeightingControlsComponent({

@@ -1,7 +1,7 @@
 'use client';
-import { NameInputComponent } from '@/components/shared/name/input.component';
-import { NameListComponent } from '@/components/shared/name/list.component';
-import { InputListSectionPropsType } from '@/types/draw-order.type';
+import { NameInputComponent } from '@/features/random-picker/components/input.component';
+import { NameListComponent } from '@/features/random-picker/components/list.component';
+import { InputListSectionPropsType } from '@/features/random-picker/types/draw-order.type';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 

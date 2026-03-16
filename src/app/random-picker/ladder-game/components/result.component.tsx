@@ -1,6 +1,6 @@
 'use client';
 
-import { LadderResultType } from "@/types/ladder-game.type";
+import { LadderResultType } from '@/features/random-picker/types/ladder-game.type';
 import { motion } from 'framer-motion';
 import { Award, Gift } from 'lucide-react';
 

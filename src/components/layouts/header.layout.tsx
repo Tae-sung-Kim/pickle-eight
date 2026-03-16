@@ -1,11 +1,16 @@
 'use client';
-import { MobileMenuLayout } from "@/components/layouts/mobile-menu.layout";
-import { PcMenuLayout } from "@/components/layouts/pc-menu.layout";
-import { CREDIT_POLICY, CREDIT_REFILL_INTERVAL_MS, CREDIT_RESET_MODE, CREDIT_RESET_MODE_ENUM } from "@/constants/ad-credit.constant";
-import { cancelIdle, scheduleIdle } from "@/lib/idle";
-import { useUserCreditsQuery } from "@/queries/use-credit.query";
-import { useCreditStore } from "@/stores/credit.store";
-import { nextKstMidnightUtcTs } from "@/utils/common.util";
+import { MobileMenuLayout } from '@/components/layouts/mobile-menu.layout';
+import { PcMenuLayout } from '@/components/layouts/pc-menu.layout';
+import {
+  CREDIT_POLICY,
+  CREDIT_REFILL_INTERVAL_MS,
+  CREDIT_RESET_MODE,
+  CREDIT_RESET_MODE_ENUM,
+} from '@/features/credit/constants/ad-credit.constant';
+import { cancelIdle, scheduleIdle } from '@/lib/idle';
+import { useUserCreditsQuery } from '@/features/credit/queries/use-credit.query';
+import { useCreditStore } from '@/features/credit/stores/credit.store';
+import { nextKstMidnightUtcTs } from '@/utils/common.util';
 import { Coins, Home } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';

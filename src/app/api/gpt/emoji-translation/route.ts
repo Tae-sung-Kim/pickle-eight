@@ -1,7 +1,10 @@
-import { EMOJI_CATEGORY_ENUM } from "@/constants/emoji-translation.constant";
-import { EmojiTranslationRequestSchema } from "@/schemas/emoji-translation.schema";
-import { callOpenAI } from "@/services/openai.service";
-import { EmojiQuizGradeType, EmojiTranslationProblemType } from "@/types/emoji-translation.type";
+import { EMOJI_CATEGORY_ENUM } from '@/features/quiz/constants/emoji-translation.constant';
+import { EmojiTranslationRequestSchema } from '@/features/quiz/schemas/emoji-translation.schema';
+import { callOpenAI } from '@/features/quiz/services/openai.service';
+import {
+  EmojiQuizGradeType,
+  EmojiTranslationProblemType,
+} from '@/features/quiz/types/emoji-translation.type';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
@@ -67,8 +70,8 @@ function buildPrompt(category: string): string {
     category === '영화'
       ? `예시(JSON): {"emojis":"🧪🕒","answer":"시간여행","category":"영화","hint":"과거와 미래"}`
       : category === '음식'
-      ? `예시(JSON): {"emojis":"🍞🧈","answer":"버터빵","category":"음식","hint":"고소한 풍미"}`
-      : `예시(JSON): {"emojis":"🌧️☂️","answer":"우산","category":"${category}","hint":"비오는 날"}`;
+        ? `예시(JSON): {"emojis":"🍞🧈","answer":"버터빵","category":"음식","hint":"고소한 풍미"}`
+        : `예시(JSON): {"emojis":"🌧️☂️","answer":"우산","category":"${category}","hint":"비오는 날"}`;
   return `너는 한국어 이모지 퀴즈 출제자야. 한 문제만 만들고, 반드시 JSON만 출력해.
 요구사항:
 - category: ${category}
@@ -229,8 +232,8 @@ export async function POST(req: NextRequest) {
         typeof request.temperature === 'number'
           ? request.temperature
           : isResp
-          ? 0.55
-          : 0.7;
+            ? 0.55
+            : 0.7;
       const top_p =
         typeof request.top_p === 'number' ? request.top_p : undefined;
       const noRepair = Boolean(request.noRepair);

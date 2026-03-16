@@ -1,4 +1,4 @@
-import { LOTTO_ANALYSIS_VARIANT_ENUM } from "@/constants/lotto.constant";
+import { LOTTO_ANALYSIS_VARIANT_ENUM } from '@/features/lotto/constants/lotto.constant';
 import { LottoAnalysisBarComponent } from './bar.component';
 
 export function LottoAnalysisBucketSectionComponent({

@@ -1,6 +1,9 @@
 import { adminDb } from '../src/lib/firebase-admin';
-import { LottoGenerator, LottoUtils } from '../src/utils/lotto.util';
-import { LottoDrawType } from '../src/types/lotto.type';
+import {
+  LottoGenerator,
+  LottoUtils,
+} from '../src/features/lotto/utils/lotto.util';
+import { LottoDrawType } from '../src/features/lotto/types/lotto.type';
 /**
  * Secret Recommendation Script
  *

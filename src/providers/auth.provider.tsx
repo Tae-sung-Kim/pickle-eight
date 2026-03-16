@@ -1,13 +1,13 @@
 'use client';
 
-import { ensureAnonymousUser, subscribeAuth } from "@/services/auth.service";
+import { ensureAnonymousUser, subscribeAuth } from '@/services/auth.service';
 import type { User } from 'firebase/auth';
 import React, {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from 'react';
 
 type AuthContextValue = {

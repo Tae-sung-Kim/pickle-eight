@@ -1,10 +1,17 @@
 'use client';
 
-import { EMOJI_CATEGORY_ENUM } from "@/constants/emoji-translation.constant";
-import { useDailyLimit } from "@/hooks/use-daily-limit.hook";
-import { useGenerateEmojiQuiz, useGradeEmojiQuiz } from "@/queries/use-emoji-translation.query";
-import { EmojiTranslationGenerateSchema } from "@/schemas/emoji-translation.schema";
-import type { EmojiGenerateValuesType, EmojiQuizGradeType, EmojiTranslationProblemType } from "@/types/emoji-translation.type";
+import { EMOJI_CATEGORY_ENUM } from '@/features/quiz/constants/emoji-translation.constant';
+import { useDailyLimit } from '@/features/quiz/hooks/use-daily-limit.hook';
+import {
+  useGenerateEmojiQuiz,
+  useGradeEmojiQuiz,
+} from '@/features/quiz/queries/use-emoji-translation.query';
+import { EmojiTranslationGenerateSchema } from '@/features/quiz/schemas/emoji-translation.schema';
+import type {
+  EmojiGenerateValuesType,
+  EmojiQuizGradeType,
+  EmojiTranslationProblemType,
+} from '@/features/quiz/types/emoji-translation.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';

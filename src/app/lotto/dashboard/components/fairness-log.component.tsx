@@ -1,8 +1,8 @@
 'use client';
 
 import { Card } from '@/components/ui/card';
-import { useGenerationLogsQuery } from "@/queries/use-lotto-user.query";
-import type { LottoGenerateFiltersType } from "@/types/lotto.type";
+import { useGenerationLogsQuery } from '@/features/lotto/queries/use-lotto-user.query';
+import type { LottoGenerateFiltersType } from '@/features/lotto/types/lotto.type';
 import Link from 'next/link';
 import type { JSX } from 'react';
 

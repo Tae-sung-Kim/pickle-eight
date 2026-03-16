@@ -10,8 +10,8 @@ import {
 import {
   useMyBudgetQuery,
   useMyNumberSetsQuery,
-} from '@/queries/use-lotto-user.query';
-import { useLatestLottoDrawQuery } from '@/queries/use-lotto.query';
+} from '@/features/lotto/queries/use-lotto-user.query';
+import { useLatestLottoDrawQuery } from '@/features/lotto/queries/use-lotto.query';
 import { generateOgImageUrl } from '@/utils/common.util';
 import { getOgTag } from '@/utils/seo.util';
 import type { Metadata } from 'next';

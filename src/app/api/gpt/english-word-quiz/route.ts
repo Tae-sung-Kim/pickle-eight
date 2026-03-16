@@ -1,4 +1,4 @@
-import { callOpenAI } from "@/services/openai.service";
+import { callOpenAI } from '@/features/quiz/services/openai.service';
 import { NextResponse } from 'next/server';
 
 export async function POST() {

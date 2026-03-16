@@ -1,6 +1,6 @@
 'use client';
 
-import { TriviaQuizQuestionType } from "@/types/trivia-quiz.type";
+import { TriviaQuizQuestionType } from '@/features/quiz/types/trivia-quiz.type';
 import { AnimatePresence, motion } from 'framer-motion';
 
 type TriviaQuizQuestionCardComponentType = {

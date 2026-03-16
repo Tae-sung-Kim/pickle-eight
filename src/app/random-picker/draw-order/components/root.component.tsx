@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useNameManager } from "@/hooks/use-name-manager.hook";
+import { useNameManager } from '@/features/random-picker/hooks/use-name-manager.hook';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useState } from 'react';
@@ -157,8 +157,8 @@ export function DrawOrderComponent() {
                   {participants.length === 0 && items.length === 0
                     ? '참가자와 상품을 추가해주세요.'
                     : participants.length === 0
-                    ? '최소 1명 이상의 참가자가 필요합니다.'
-                    : '최소 1개 이상의 상품/번호가 필요합니다.'}
+                      ? '최소 1명 이상의 참가자가 필요합니다.'
+                      : '최소 1개 이상의 상품/번호가 필요합니다.'}
                 </p>
               )}
             </motion.div>

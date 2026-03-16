@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
-import { FourIdiomType } from "@/types/four-idom.type";
+import { cn } from '@/lib/utils';
+import { FourIdiomType } from '@/features/quiz/types/four-idom.type';
 import { CheckCircle2, XCircle } from 'lucide-react';
 
 export function FourIdiomQuizAnswerComponent({

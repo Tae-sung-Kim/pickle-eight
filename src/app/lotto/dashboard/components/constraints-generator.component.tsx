@@ -1,7 +1,7 @@
 'use client';
 
-import { CreditGateButtonComponent } from '@/components/shared/credit/credit-gate-button.component';
-import { ClientCsvButtonComponent } from '@/components/shared/lotto/client-csv-button.component';
+import { CreditGateButtonComponent } from '@/features/credit/components/credit-gate-button.component';
+import { ClientCsvButtonComponent } from '@/features/lotto/components/client-csv-button.component';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,13 +11,13 @@ import {
   useDeleteConstraintPresetMutation,
   useSaveConstraintPresetMutation,
   useSaveGenerationLogMutation,
-} from '@/queries/use-lotto-user.query';
+} from '@/features/lotto/queries/use-lotto-user.query';
 import type {
   LottoConstraintPresetType,
   LottoGenerateFiltersType,
-} from '@/types/lotto.type';
-import { creditBuildCostLabel } from '@/utils/ad-credit.util';
-import { LottoGenerator } from '@/utils/lotto.util';
+} from '@/features/lotto/types/lotto.type';
+import { creditBuildCostLabel } from '@/features/credit/utils/ad-credit.util';
+import { LottoGenerator } from '@/features/lotto/utils/lotto.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSearchParams } from 'next/navigation';
 import type { JSX } from 'react';

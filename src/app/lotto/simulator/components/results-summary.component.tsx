@@ -1,11 +1,11 @@
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
-import type { LottoLankType } from "@/types/lotto.type";
+import type { LottoLankType } from '@/features/lotto/types/lotto.type';
 
 export type SimulatorResultsSummaryComponentType = Readonly<{
   total: number;

@@ -1,6 +1,6 @@
-import { getFourIdiomsByDifficulty } from "@/services/four-idiom.service";
-import { callOpenAI } from "@/services/openai.service";
-import { FourIdiomQuizDifficultyType } from "@/types/four-idom.type";
+import { getFourIdiomsByDifficulty } from '@/features/quiz/services/four-idiom.service';
+import { callOpenAI } from '@/features/quiz/services/openai.service';
+import { FourIdiomQuizDifficultyType } from '@/features/quiz/types/four-idom.type';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {

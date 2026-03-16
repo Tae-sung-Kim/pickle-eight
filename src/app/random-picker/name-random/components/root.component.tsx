@@ -1,9 +1,9 @@
 'use client';
 
-import { TitleWrapperComponent } from "@/components/title-warpper.component";
-import { MENU_GROUP_NAME_ENUM } from "@/constants/menu.constant";
-import { useCapture } from "@/hooks/use-capture.hook";
-import { useNameManager } from "@/hooks/use-name-manager.hook";
+import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { useCapture } from '@/hooks/use-capture.hook';
+import { useNameManager } from '@/features/random-picker/hooks/use-name-manager.hook';
 import { motion } from 'framer-motion';
 import { useCallback, useState } from 'react';
 import { NameRandomInputCardComponent } from './input-card.component';

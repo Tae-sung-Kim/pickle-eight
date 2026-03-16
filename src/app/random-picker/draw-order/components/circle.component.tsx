@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useCapture } from "@/hooks/use-capture.hook";
-import { ParticipantType } from "@/types/draw-order.type";
+import { useCapture } from '@/hooks/use-capture.hook';
+import { ParticipantType } from '@/features/random-picker/types/draw-order.type';
 import { AnimatePresence, motion } from 'framer-motion';
 import { RotateCw, Share2 } from 'lucide-react';
 import React, { useRef, useState } from 'react';

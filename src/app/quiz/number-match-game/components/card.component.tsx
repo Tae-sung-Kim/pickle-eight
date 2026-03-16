@@ -1,7 +1,7 @@
 'use client';
 
-import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from "@/constants/number-match-game.constant";
-import { NumberMatchGameCardType } from "@/types/number-match-game.type";
+import { NUMBER_MATCH_GAME_CARD_STATUS_ENUM } from '@/features/quiz/constants/number-match-game.constant';
+import { NumberMatchGameCardType } from '@/features/quiz/types/number-match-game.type';
 import { motion } from 'framer-motion';
 
 export function NumberMatchNumberCardComponent({
@@ -29,18 +29,18 @@ export function NumberMatchNumberCardComponent({
     relative h-full w-full rounded-lg border-2 transform-style-3d ${
       status === 'selected' ? 'bg-ring text-primary-foreground' : ''
     } ${
-          status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.MATCHED
-            ? 'bg-success text-success-foreground opacity-60'
-            : ''
-        } ${
-          status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.VISIBLE
-            ? 'bg-primary text-primary-foreground'
-            : ''
-        } ${
-          status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.HIDDEN
-            ? 'bg-secondary text-secondary-foreground'
-            : ''
-        }`}
+      status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.MATCHED
+        ? 'bg-success text-success-foreground opacity-60'
+        : ''
+    } ${
+      status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.VISIBLE
+        ? 'bg-primary text-primary-foreground'
+        : ''
+    } ${
+      status === NUMBER_MATCH_GAME_CARD_STATUS_ENUM.HIDDEN
+        ? 'bg-secondary text-secondary-foreground'
+        : ''
+    }`}
         variants={{
           hidden: { rotateY: 0 },
           visible: { rotateY: 180 },

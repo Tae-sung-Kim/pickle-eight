@@ -1,5 +1,5 @@
-import { getAnalyticsClient } from "@/lib/firebase-config";
-import { useConsentContext } from "@/providers/consent.provider";
+import { getAnalyticsClient } from '@/lib/firebase-config';
+import { useConsentContext } from '@/providers/consent.provider';
 import { logEvent } from 'firebase/analytics';
 import { useEffect } from 'react';
 

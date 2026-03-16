@@ -1,5 +1,5 @@
 'use client';
-import { CreditIndicatorComponent } from '@/components/shared/credit/credit-indicator.component';
+import { CreditIndicatorComponent } from '@/features/credit/components/credit-indicator.component';
 import {
   NavigationMenu,
   NavigationMenuContent,
