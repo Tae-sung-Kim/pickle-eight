@@ -1,4 +1,4 @@
-import { callOpenAI } from '@/features/quiz/services/openai.service';
+import { callOpenAiWithRetry } from '@/features/quiz/services/openai.service';
 import {
   TriviaQuizCategoryType,
   TriviaQuizDifficultyType,
@@ -46,28 +46,21 @@ JSON만 출력하세요(마크다운 금지). 이전에 출제되지 않은 새�
 }
 `;
 
-    for (let i = 0; i < 3; i++) {
-      try {
-        const content = await callOpenAI({
-          messages: [
-            {
-              role: 'system',
-              content:
-                '당신은 퀴즈 출제 전문가입니다. 반드시 JSON만 반환합니다.',
-            },
-            { role: 'user', content: prompt },
-          ],
-          max_tokens: 512,
-          temperature: 0.6,
-          json: true,
-          presence_penalty: 0.1,
-          frequency_penalty: 0.3,
-        });
-
-        const parsed = JSON.parse(
-          content.replace(/```json|```/g, '').trim()
-        ) as TriviaRawQuizJsonType;
-
+    
+    try {
+      const data = await callOpenAiWithRetry<TriviaRawQuizJsonType>({
+        messages: [
+          {
+            role: 'system',
+            content: '당신은 퀴즈 출제 전문가입니다. 반드시 JSON만 반환합니다.',
+          },
+          { role: 'user', content: prompt },
+        ],
+        max_tokens: 512,
+        temperature: 0.6,
+        presence_penalty: 0.1,
+        frequency_penalty: 0.3,
+      }, 3, (parsed: any) => {
         if (
           !parsed.question ||
           !parsed.options ||
@@ -78,50 +71,31 @@ JSON만 출력하세요(마크다운 금지). 이전에 출제되지 않은 새�
         ) {
           throw new Error('AI 응답이 유효하지 않습니다.');
         }
+        return parsed as TriviaRawQuizJsonType;
+      });
+      const optionsWithIds = data.options.map((text, index) => ({
+        id: `opt-${index}`,
+        text,
+      }));
+      const answerId = optionsWithIds.find((opt) => opt.text === data.answer)?.id ?? 'opt-0';
 
-        const id = `${category}-${difficulty}-${Date.now()}`;
-        const options = parsed.options.map((text: string, idx: number) => ({
-          id: `opt${idx}`,
-          text,
-        }));
-
-        const answerIdx = options.findIndex(
-          (opt: { text: string }) => opt.text === parsed.answer
-        );
-
-        if (answerIdx === -1) {
-          throw new Error('정답이 선택지에 포함되어 있지 않습니다.');
-        }
-
-        const quiz = {
-          id,
-          category,
-          difficulty,
-          question: parsed.question,
-          options,
-          answerId: options[answerIdx].id,
-          explanation: parsed.explanation,
-        };
-
-        return NextResponse.json(quiz);
-      } catch (e) {
-        console.error(`Trivia quiz generation failed on attempt ${i + 1}:`, e);
-        if (i === 2) {
-          // 마지막 시도에서도 실패하면 에러를 던집니다.
-          throw e;
-        }
-      }
+      return NextResponse.json({
+        id: `q-${Date.now()}`,
+        category,
+        difficulty,
+        question: data.question,
+        options: optionsWithIds,
+        answerId,
+        explanation: data.explanation,
+      });
+    } catch (e: any) {
+      console.error('Trivia quiz failed:', e.message);
+      return NextResponse.json(
+        { error: '문제 생성 실패' },
+        { status: 500 }
+      );
     }
-
-    // 루프가 모두 실패한 경우 (이론적으로는 도달하지 않음)
-    throw new Error('퀴즈 생성에 최종 실패했습니다.');
-  } catch (e) {
-    const error = e as Error;
-    return NextResponse.json(
-      {
-        error: error.message || '퀴즈 생성 중 알 수 없는 오류가 발생했습니다.',
-      },
-      { status: 500 }
-    );
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 400 });
   }
 }

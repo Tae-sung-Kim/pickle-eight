@@ -1,4 +1,4 @@
-import { callOpenAI } from '@/features/quiz/services/openai.service';
+import { callOpenAiWithRetry } from '@/features/quiz/services/openai.service';
 import { NextResponse } from 'next/server';
 
 export async function POST() {
@@ -31,48 +31,42 @@ export async function POST() {
     }
   `;
 
-  for (let i = 0; i < 3; i++) {
-    try {
-      const data = await callOpenAI({
-        messages: [
-          {
-            role: 'system',
-            content:
-              'You are a meticulous quiz generator. Always respond with strict JSON matching the schema.',
-          },
-          { role: 'user', content: prompt },
-        ],
-        temperature: 0.4,
-        json: true,
-        presence_penalty: 0.1,
-        frequency_penalty: 0.3,
-        top_p: 0.9,
-        max_tokens: 350,
-      });
-
-      const quizData = JSON.parse(data || '{}');
-
+  
+  try {
+    const quizData = await callOpenAiWithRetry<any>({
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a meticulous quiz generator. Always respond with strict JSON matching the schema.',
+        },
+        { role: 'user', content: prompt },
+      ],
+      temperature: 0.4,
+      presence_penalty: 0.1,
+      frequency_penalty: 0.3,
+      top_p: 0.9,
+      max_tokens: 350,
+    }, 3, (data) => {
       if (
-        quizData.quiz &&
-        quizData.options &&
-        quizData.answer &&
-        quizData.explanation &&
-        Array.isArray(quizData.options) &&
-        quizData.options.length === 4 &&
-        quizData.options.includes(quizData.answer)
+        data.quiz &&
+        data.options &&
+        data.answer &&
+        data.explanation &&
+        Array.isArray(data.options) &&
+        data.options.length === 4 &&
+        data.options.includes(data.answer)
       ) {
-        return NextResponse.json(quizData);
+        return data;
       }
-    } catch (error) {
-      console.error(
-        `English word quiz generation failed on attempt ${i + 1}:`,
-        error
-      );
-    }
+      throw new Error('Invalid JSON structure');
+    });
+    return NextResponse.json(quizData);
+  } catch (error) {
+    console.error('English word quiz generation failed:', error);
+    return NextResponse.json(
+      { error: '퀴즈 생성에 실패했습니다.' },
+      { status: 500 }
+    );
   }
 
-  return NextResponse.json(
-    { error: '퀴즈 생성에 실패했습니다.' },
-    { status: 500 }
-  );
 }

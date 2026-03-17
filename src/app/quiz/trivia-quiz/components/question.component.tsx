@@ -126,13 +126,13 @@ export function TriviaQuizQuestionCardComponent({
               }
             >
               {isCorrect ? (
-                <>
+                <div key="correct">
                   <span>정답입니다! ✅</span>
-                </>
+                </div>
               ) : (
-                <>
+                <div key="wrong">
                   <span>오답입니다. ❌</span>
-                </>
+                </div>
               )}
             </div>
             <div className="mt-2 flex flex-col gap-1">

@@ -1,27 +1,14 @@
-import { adminAuth, adminDb } from '@/lib/firebase-admin';
+import { bad, verifyUid } from '@/lib/api-utils';
+import { adminDb } from '@/lib/firebase-admin';
 import type {
   LottoGenerateFiltersType,
   LottoGenerationLogType,
 } from '@/features/lotto/types/lotto.type';
 import { NextRequest, NextResponse } from 'next/server';
 
-function bad(status: number, message: string) {
-  return NextResponse.json({ ok: false, error: message }, { status });
-}
 
-async function verifyUid(req: NextRequest): Promise<string | null> {
-  const authHeader = req.headers.get('authorization');
-  const idToken = authHeader?.startsWith('Bearer ')
-    ? authHeader.slice(7)
-    : null;
-  if (!idToken) return null;
-  try {
-    const decoded = await adminAuth.verifyIdToken(idToken);
-    return decoded.uid;
-  } catch {
-    return null;
-  }
-}
+
+
 
 const COOLDOWN_MS = 5000; // 5s
 const HOURLY_CAP = 120; // per user
