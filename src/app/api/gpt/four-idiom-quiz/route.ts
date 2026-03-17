@@ -1,5 +1,5 @@
 import { getFourIdiomsByDifficulty } from '@/features/quiz/services/four-idiom.service';
-import { callOpenAI } from '@/features/quiz/services/openai.service';
+import { callOpenAiWithRetry } from '@/features/quiz/services/openai.service';
 import { FourIdiomQuizDifficultyType } from '@/features/quiz/types/four-idom.type';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -41,41 +41,34 @@ JSON만 출력하세요(마크다운 금지). 정답 사자성어인 '${targetId
 }
 `;
 
-  for (let i = 0; i < 3; i++) {
-    try {
-      const data = await callOpenAI({
-        messages: [
-          { role: 'system', content: '항상 JSON만 반환하세요.' },
-          { role: 'user', content: prompt },
-        ],
-        max_tokens: 400,
-        temperature: 0.4,
-        json: true,
-      });
-      const text = data ?? '{}';
-      const json = JSON.parse(text);
-
+  
+  try {
+    const data = await callOpenAiWithRetry<any>({
+      messages: [
+        { role: 'system', content: '항상 JSON만 반환하세요.' },
+        { role: 'user', content: prompt },
+      ],
+      max_tokens: 400,
+      temperature: 0.3,
+    }, 3, (parsed) => {
       if (
-        json.question &&
-        json.answer === targetIdioms.answer &&
-        json.hint &&
-        json.explanation
+        !parsed.question ||
+        !parsed.answer ||
+        !parsed.hint ||
+        !parsed.explanation ||
+        parsed.answer !== targetIdioms.answer
       ) {
-        return NextResponse.json(json);
+        throw new Error('Invalid JSON structure or answer mismatch');
       }
-    } catch (e) {
-      console.error(
-        `Four-idiom quiz generation failed on attempt ${i + 1}:`,
-        e
-      );
-    }
+      return parsed;
+    });
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Four idiom quiz generation failed:', error);
+    return NextResponse.json(
+      { error: '퀴즈 생성에 실패했습니다.' },
+      { status: 500 }
+    );
   }
 
-  return NextResponse.json(
-    {
-      error:
-        '문제 생성에 실패했습니다. AI가 유효한 응답을 생성하지 못했습니다.',
-    },
-    { status: 500 }
-  );
 }

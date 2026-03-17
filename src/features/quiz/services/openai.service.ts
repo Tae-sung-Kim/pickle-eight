@@ -86,3 +86,32 @@ export async function callOpenAI({
   }
   throw new Error(String(lastError) || 'openai_request_failed');
 }
+
+
+/**
+ * Enhanced callOpenAI with retry and JSON parsing.
+ */
+export async function callOpenAiWithRetry<T>(
+  request: OpenAIRequestType,
+  retries: number = 3,
+  validator?: (data: any) => T
+): Promise<T> {
+  let attempt = 0;
+  let lastError: unknown;
+  while (attempt < retries) {
+    try {
+      const content = await callOpenAI({ ...request, json: true });
+      const rawJson = content.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(rawJson);
+      if (validator) {
+        return validator(parsed);
+      }
+      return parsed as T;
+    } catch (e) {
+      lastError = e;
+      attempt += 1;
+      await sleep(1000 * attempt);
+    }
+  }
+  throw new Error('All retries failed: ' + String(lastError));
+}
