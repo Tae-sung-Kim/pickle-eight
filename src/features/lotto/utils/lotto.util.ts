@@ -2,6 +2,7 @@ import type {
   LottoCheckResultType,
   LottoDrawType,
   LottoGenerateFiltersType,
+  LottoNumberSetType,
   LottoStatsType,
   LottoTicketType,
   LottoWeightingOptionsType,
@@ -46,6 +47,26 @@ function checkTicket(
   const bonusMatch = ticket.numbers.includes(draw.bonusNumber);
   const rank = computeRank(matchCount, bonusMatch);
   return { matchCount, bonusMatch, rank };
+}
+
+function toLocalDateString(iso: string): string {
+  const d = new Date(iso);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
+// 저장한 번호는 저장한 뒤에 추첨되는 회차에만 유효하다
+function isNumberSetValidForDraw(
+  set: LottoNumberSetType,
+  draw: { drawNumber: number; drawDate: string }
+): boolean {
+  if (Number.isInteger(set.startDrawNumber)) {
+    return draw.drawNumber >= (set.startDrawNumber as number);
+  }
+  // 시작 회차 기록이 없는 예전 번호: 저장일 다음 날부터 추첨된 회차만
+  if (!set.createdAt) return false;
+  return draw.drawDate > toLocalDateString(set.createdAt);
 }
 
 function frequencyByNumber(
@@ -113,6 +134,7 @@ export const LottoUtils = {
     return { numbers: normalized };
   },
   checkTicket,
+  isNumberSetValidForDraw,
   computeStats,
 };
 
@@ -333,6 +355,9 @@ export function getNumberColor(num: number): string {
   if (num <= 40) return 'bg-[#6e7782] text-white';
   return 'bg-[#3e8559] text-white';
 }
+
+/** 보너스 번호 전용 색. 번호대 색(노랑/파랑/빨강/회색/초록)과 겹치지 않는다 */
+export const LOTTO_BONUS_COLOR = 'bg-[#7c3aed] text-white border-[#7c3aed]';
 
 /**
  * CSV utility helpers for building and downloading CSV files.

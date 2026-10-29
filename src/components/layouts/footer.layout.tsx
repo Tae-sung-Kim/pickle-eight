@@ -1,8 +1,10 @@
-import { Home, Mail, Send } from 'lucide-react';
+import { Home } from 'lucide-react';
 import Link from 'next/link';
 import { ConsentNudgeComponent } from '@/features/consent/components/consent-nudge.component';
 import { CookieSettingsButtonComponent } from '@/features/consent/components/cookie-settings-button.component';
 import { getKoreaTime } from '@/utils/common.util';
+
+const LINK_CLASS = 'hover:text-primary transition-colors';
 
 export function FooterLayout() {
   const currentYear = getKoreaTime().getFullYear();
@@ -10,9 +12,8 @@ export function FooterLayout() {
   return (
     <footer className="w-full border-t border-border/50 bg-muted/30 pt-12 pb-8 mt-auto">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8 mb-12">
-          {/* 1. Brand Section */}
-          <div className="md:col-span-1 space-y-4">
+        <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between mb-10">
+          <div className="space-y-4 md:max-w-sm">
             <Link href="/" className="flex items-center gap-2 group">
               <div className="p-1.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
                 <Home className="w-5 h-5 text-primary" />
@@ -24,88 +25,32 @@ export function FooterLayout() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               운을 데이터로, 재미로.
               <br />
-              로또 번호 생성과 분석을
-              <br />
-              한곳에서 즐겨보세요.
+              로또 번호 생성과 분석을 한곳에서 즐겨보세요.
             </p>
           </div>
 
-          {/* 2. Services */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-sm tracking-wider text-foreground">
-              서비스
-            </h3>
-            <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li>
-                <Link
-                  href="/lotto"
-                  className="hover:text-primary transition-colors"
-                >
-                  로또 번호 생성
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* 3. Support */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-sm tracking-wider text-foreground">
-              고객 지원
-            </h3>
-            <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li>
-                <a
-                  href="mailto:contact.tskim@gmail.com"
-                  className="hover:text-primary transition-colors flex items-center gap-2"
-                >
-                  문의하기
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* 4. Legal & Social */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-sm tracking-wider text-foreground">
-              정보
-            </h3>
-            <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li>
-                <Link
-                  href="/terms"
-                  className="hover:text-primary transition-colors"
-                >
-                  이용약관
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="hover:text-primary transition-colors"
-                >
-                  개인정보처리방침
-                </Link>
-              </li>
-            </ul>
-            <div className="pt-2 flex gap-3">
-              <a
-                href="mailto:contact.tskim@gmail.com"
-                className="p-2 rounded-full bg-background border border-border hover:border-primary/50 text-muted-foreground hover:text-primary transition-all"
-                aria-label="Email"
-              >
-                <Mail className="w-4 h-4" />
-              </a>
-              <a
-                href="https://t.me/PickleEight"
-                target="_blank"
-                rel="noreferrer"
-                className="p-2 rounded-full bg-background border border-border hover:border-primary/50 text-muted-foreground hover:text-primary transition-all"
-                aria-label="Telegram"
-              >
-                <Send className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
+          <nav
+            aria-label="푸터 링크"
+            className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground"
+          >
+            <Link href="/terms" className={LINK_CLASS}>
+              이용약관
+            </Link>
+            <Link href="/privacy" className={LINK_CLASS}>
+              개인정보처리방침
+            </Link>
+            <a href="mailto:contact.tskim@gmail.com" className={LINK_CLASS}>
+              문의하기
+            </a>
+            <a
+              href="https://t.me/PickleEight"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={LINK_CLASS}
+            >
+              텔레그램
+            </a>
+          </nav>
         </div>
 
         <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">

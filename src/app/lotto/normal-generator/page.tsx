@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { LottoNormalGeneratorComponent } from '@/app/lotto/normal-generator/components/root.component';
-import { BackHubPageComponent } from '@/components/back-hub.component';
 import { ContentWrapperComponent } from '@/components/content-wrapper.component';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -50,10 +49,6 @@ export default function LottoPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     {
-      name: '로또 허브',
-      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`),
-    },
-    {
       name: '로또 번호 생성기',
       item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/normal-generator`),
     },
@@ -61,8 +56,6 @@ export default function LottoPage() {
 
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
-      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
-
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
       <div className="mx-auto max-w-5xl p-8">
         <LottoNormalGeneratorComponent />

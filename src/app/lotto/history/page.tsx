@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { LottoHistoryComponent } from '@/app/lotto/history/components/root.component';
-import { BackHubPageComponent } from '@/components/back-hub.component';
 import { ContentWrapperComponent } from '@/components/content-wrapper.component';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import { TitleWrapperComponent } from '@/components/title-warpper.component';
@@ -63,7 +62,6 @@ export const metadata: Metadata = {
 export default function LottoHistoryPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },
     {
       name: '로또 당첨 결과 히스토리',
       item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/history`),
@@ -72,7 +70,6 @@ export default function LottoHistoryPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
-      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
 
       <div className="py-4 p-4">
         <TitleWrapperComponent

@@ -66,13 +66,38 @@ export function MobileMenuLayout({ hiddenClass = '' }: MobileMenuLayoutProps) {
             </SheetClose>
           </div>
           {/* 메뉴 리스트 */}
-          <nav className="flex-1 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-primary/25 scrollbar-track-transparent space-y-8">
+          <nav className="flex-1 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-primary/25 scrollbar-track-transparent space-y-1">
             {MENU_LIST.map(({ group, href, label, items }) => {
               const groupKey = group as MenuSectionKeyType;
               const Icon = SECTION_ICONS[groupKey] || Sparkles;
 
+              // 항목이 1개면 그룹 제목 없이 바로 이동하는 한 줄 링크
+              if (items.length < 2) {
+                const target = href || items[0]?.href || '#';
+                const isActive = pathname.startsWith(target);
+                return (
+                  <SheetClose asChild key={group}>
+                    <NavLinkComponent
+                      href={target}
+                      isActive={isActive}
+                      className={cn(
+                        'flex w-full items-center gap-2.5 px-3 py-2.5 rounded-xl text-[15px] font-medium transition-all',
+                        isActive
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-foreground/80 hover:bg-muted hover:text-foreground'
+                      )}
+                    >
+                      <Icon
+                        className={cn('w-4 h-4', SECTION_ICON_COLOR[groupKey])}
+                      />
+                      {label}
+                    </NavLinkComponent>
+                  </SheetClose>
+                );
+              }
+
               return (
-                <div key={group} className="space-y-3">
+                <div key={group} className="space-y-3 py-3">
                   <div className="flex items-center gap-2 px-2 text-muted-foreground/80">
                     <Icon
                       className={cn('w-4 h-4', SECTION_ICON_COLOR[groupKey])}

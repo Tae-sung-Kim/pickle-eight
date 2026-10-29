@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { LottoAnalysisComponent } from '@/app/lotto/analysis/components/root.component';
-import { BackHubPageComponent } from '@/components/back-hub.component';
 import { ContentWrapperComponent } from '@/components/content-wrapper.component';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import { TitleWrapperComponent } from '@/components/title-warpper.component';
@@ -72,7 +71,6 @@ export const metadata: Metadata = {
 export default function LottoAnalysisPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },
     {
       name: '로또 분석',
       item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/analysis`),
@@ -108,7 +106,6 @@ export default function LottoAnalysisPage() {
         ]}
       />
       {/* <></> */}
-      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
 
       <div className="mx-auto max-w-5xl p-8">
         <TitleWrapperComponent

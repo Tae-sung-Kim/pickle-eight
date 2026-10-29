@@ -136,26 +136,6 @@ export type MyNumberResultsType = Readonly<{
   items: ReadonlyArray<MyNumberResultItem>;
 }>;
 
-function toLocalDateString(iso: string): string {
-  const d = new Date(iso);
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${mm}-${dd}`;
-}
-
-// 번호는 저장한 뒤에 추첨되는 회차에만 유효하다
-function isValidForDraw(
-  set: LottoNumberSetType,
-  draw: { drawNumber: number; drawDate: string }
-): boolean {
-  if (Number.isInteger(set.startDrawNumber)) {
-    return draw.drawNumber >= (set.startDrawNumber as number);
-  }
-  // 시작 회차 기록이 없는 예전 번호: 저장일 다음 날부터 추첨된 회차만
-  if (!set.createdAt) return false;
-  return draw.drawDate > toLocalDateString(set.createdAt);
-}
-
 export async function compareMyNumbers(): Promise<MyNumberResultsType> {
   const sets = readList<LottoNumberSetType>('number-sets');
   const latestDrawNumber = (await getLatestLottoDraw()).lastDrawNumber ?? 0;
@@ -188,7 +168,7 @@ export async function compareMyNumbers(): Promise<MyNumberResultsType> {
     items: sets.map((set) => ({
       ...empty(set),
       results: draws
-        .filter((draw) => isValidForDraw(set, draw))
+        .filter((draw) => LottoUtils.isNumberSetValidForDraw(set, draw))
         .map((draw) => {
           const res: LottoCheckResultType = LottoUtils.checkTicket(draw, {
             numbers: set.numbers,

@@ -17,6 +17,7 @@ import {
   useMyNumberSetsQuery,
   useSaveNumberSetMutation,
 } from '@/features/lotto/queries/use-lotto-user.query';
+import { LOTTO_BONUS_COLOR } from '@/features/lotto/utils/lotto.util';
 
 const schema = z
   .object({
@@ -325,7 +326,7 @@ export function MyNumbersComponent(): JSX.Element {
                               isMatched
                                 ? 'bg-primary text-primary-foreground border-primary font-bold shadow-sm'
                                 : isBnsMatched
-                                  ? 'bg-amber-500 text-white border-amber-500 font-bold shadow-sm'
+                                  ? `${LOTTO_BONUS_COLOR} font-bold shadow-sm`
                                   : 'bg-muted border-border text-muted-foreground'
                             }`}
                           >

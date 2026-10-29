@@ -14,7 +14,7 @@ export function getOgTag(params: OgTagParams = {}): string {
   if (href) {
     // group match
     const group = MENU_LIST.find((g) => g.href === href);
-    if (group) return `${group.label} 허브`;
+    if (group) return group.label;
     // item match
     for (const g of MENU_LIST) {
       const item = g.items.find((it) => it.href === href);

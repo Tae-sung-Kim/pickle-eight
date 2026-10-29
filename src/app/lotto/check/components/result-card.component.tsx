@@ -10,6 +10,7 @@ import type {
   LottoCheckResultCardType,
   LottoLankType,
 } from '@/features/lotto/types/lotto.type';
+import { LOTTO_BONUS_COLOR } from '@/features/lotto/utils/lotto.util';
 import { withUniqueKeys } from '@/utils/common.util';
 import { LottoCheckRankBadgeComponent } from './rank-badge.component';
 
@@ -64,7 +65,7 @@ export function LottoCheckResultCardComponent({
                       const cls = isWin
                         ? 'bg-success text-success-foreground border-success/30'
                         : isBonus
-                          ? 'bg-warning text-warning-foreground border-warning/30'
+                          ? LOTTO_BONUS_COLOR
                           : 'bg-surface-card text-foreground border-border';
                       return (
                         <span key={n} className={`${base} ${cls}`}>

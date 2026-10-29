@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { MenuCardGridComponent } from '@/components/menu-card-grid.component';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import { MENU_LIST } from '@/constants/menu.constant';
-import { HeroComponent } from '@/features/hero/components/hero.component';
 import { buildMetadata, canonicalUrl, jsonLdWebSite } from '@/lib/seo';
 import { generateOgImageUrl } from '@/utils/common.util';
 
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootPage() {
-  const groups = MENU_LIST.filter((g) => typeof g.href === 'string');
+  const groups = MENU_LIST.filter((g) => g.items.length > 0);
 
   return (
     <section className="px-6 py-10 md:px-8 md:py-12">
@@ -43,36 +43,34 @@ export default function RootPage() {
             '@type': 'ListItem',
             position: idx + 1,
             name: g.label,
-            url: canonicalUrl(g.href as string),
+            url: canonicalUrl(g.href ?? g.items[0].href),
           })),
         }}
       />
-      <HeroComponent siteName={SITE_NAME} description={DESCRIPTION} />
+      <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+        {SITE_NAME}
+      </h1>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+        {DESCRIPTION}
+      </p>
 
-      <div className="mt-10 space-y-10">
+      <div className="mt-8 space-y-10">
         {groups.map((g) => (
           <div key={g.group}>
-            <Link
-              href={g.href as string}
-              className="text-lg font-semibold tracking-tight hover:underline"
-            >
-              {g.label}
-            </Link>
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {g.items.map((it) => (
-                <Link
-                  key={it.href}
-                  href={it.href}
-                  className="group block rounded-xl border border-border bg-card p-5 shadow-sm transition-colors hover:bg-muted/40"
-                >
-                  <div className="text-sm font-semibold tracking-tight">
-                    {it.label}
-                  </div>
-                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
-                    {it.description}
-                  </p>
-                </Link>
-              ))}
+            {g.href ? (
+              <Link
+                href={g.href}
+                className="text-lg font-semibold tracking-tight hover:underline"
+              >
+                {g.label}
+              </Link>
+            ) : (
+              <h2 className="text-lg font-semibold tracking-tight">
+                {g.label}
+              </h2>
+            )}
+            <div className="mt-4">
+              <MenuCardGridComponent items={g.items} />
             </div>
           </div>
         ))}

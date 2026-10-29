@@ -7,6 +7,7 @@
 ## caveman
 
 - caveman 모드가 켜져 있는지 확인한다.
+- 모든 대답은 항상 caveman으로 실행한다.
 - 꺼져 있으면 `caveman:caveman` skill을 실행한다.
 
 ## token-optimizer

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { LottoSimulatorComponent } from '@/app/lotto/simulator/components/root.component';
-import { BackHubPageComponent } from '@/components/back-hub.component';
 import { ContentWrapperComponent } from '@/components/content-wrapper.component';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import { TitleWrapperComponent } from '@/components/title-warpper.component';
@@ -80,7 +79,6 @@ export const metadata: Metadata = {
 export default function LottoSimulatorPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },
     {
       name: '로또 시뮬레이터',
       item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/simulator`),
@@ -116,7 +114,6 @@ export default function LottoSimulatorPage() {
           },
         ]}
       />
-      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
       <div className="mx-auto max-w-5xl p-8">
         <TitleWrapperComponent
           type={MENU_GROUP_NAME_ENUM.LOTTO}

@@ -51,10 +51,6 @@ export const metadata: Metadata = {
 export default function LottoMyNumbersPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    {
-      name: '로또 허브',
-      item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`),
-    },
     { name: '나의 번호', item: canonicalUrl(PATHNAME) },
   ]);
 

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactElement } from 'react';
 import { LottoDrawCardComponent } from '@/app/lotto/[draw]/components/card.component';
-import { BackHubPageComponent } from '@/components/back-hub.component';
 import { ContentWrapperComponent } from '@/components/content-wrapper.component';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -98,7 +97,6 @@ export default async function LottoDrawPage({
 
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
-    { name: '로또 허브', item: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}`) },
     { name: valid ? `${draw}회차` : '잘못된 회차', item: pageUrl },
   ]);
 
@@ -115,7 +113,6 @@ export default async function LottoDrawPage({
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <JsonLdComponent data={[jsonLdWebSite(), crumbs, webPage]} />
-      <BackHubPageComponent type={MENU_GROUP_NAME_ENUM.LOTTO} />
 
       {!valid && (
         <>

@@ -1,7 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -16,6 +17,14 @@ import {
   useLatestLottoDrawQuery,
   useLottoDrawByNumberQuery,
 } from '@/features/lotto/queries/use-lotto.query';
+import { useMyNumberSetsQuery } from '@/features/lotto/queries/use-lotto-user.query';
+import {
+  LOTTO_BONUS_COLOR,
+  LottoUtils,
+} from '@/features/lotto/utils/lotto.util';
+
+/** 배너에 미리 보여주는 내 번호 최대 개수 */
+const MY_NUMBERS_PREVIEW_COUNT = 3;
 
 export function LatestResultBannerComponent() {
   const router = useRouter();
@@ -26,7 +35,38 @@ export function LatestResultBannerComponent() {
   const { data: latestFullDraw, isLoading: isLatestLoading } =
     useLottoDrawByNumberQuery(latestDraw?.lastDrawNumber);
 
+  const { data: mySets = [] } = useMyNumberSetsQuery();
+
   const isAlreadyOnCheckPage = pathname === '/lotto/check';
+  const isOnMyNumbersPage = pathname === '/lotto/my-numbers';
+  const hasSavedNumbers = mySets.length > 0;
+
+  // 저장 번호 전체: 최신 회차에 유효하면 등수, 아직 추첨 전이면 대기 회차.
+  // 당첨된 것 → 추첨 대기 → 미당첨 순
+  const myEntries = useMemo(() => {
+    if (!latestFullDraw) return [];
+    const draw = latestFullDraw;
+    return mySets
+      .map((set) => {
+        if (!LottoUtils.isNumberSetValidForDraw(set, draw)) {
+          return {
+            set,
+            rank: null,
+            waitingDrawNumber: set.startDrawNumber ?? draw.drawNumber + 1,
+            order: 10,
+          };
+        }
+        const { rank } = LottoUtils.checkTicket(draw, { numbers: set.numbers });
+        return {
+          set,
+          rank,
+          waitingDrawNumber: null,
+          order: rank > 0 ? rank : 20,
+        };
+      })
+      .sort((a, b) => a.order - b.order);
+  }, [mySets, latestFullDraw]);
+  const visibleEntries = myEntries.slice(0, MY_NUMBERS_PREVIEW_COUNT);
 
   const handleConfirm = () => {
     setIsDialogOpen(false);
@@ -61,7 +101,7 @@ export function LatestResultBannerComponent() {
               {latestFullDraw.drawNumber}회 당첨 번호
             </h2>
           </div>
-          {!isAlreadyOnCheckPage && (
+          {!isAlreadyOnCheckPage && !hasSavedNumbers && (
             <Button
               variant="outline"
               onClick={() => setIsDialogOpen(true)}
@@ -76,12 +116,73 @@ export function LatestResultBannerComponent() {
           {latestFullDraw.numbers.map((num) => (
             <LottoBallComponent key={num} number={num} />
           ))}
-          <span className="mx-2 h-8 w-px bg-border" aria-hidden="true" />
+          <span className="mx-1 text-xl text-muted-foreground">+</span>
           <div className="flex items-center gap-2">
             <LottoBallComponent number={latestFullDraw.bonusNumber} isBonus />
             <span className="text-sm text-muted-foreground">보너스</span>
           </div>
         </div>
+
+        {!isOnMyNumbersPage &&
+          !isAlreadyOnCheckPage &&
+          myEntries.length > 0 && (
+            <div className="mt-5 border-t border-border pt-4">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">내 번호</p>
+                <Link
+                  href="/lotto/my-numbers"
+                  className="text-xs text-muted-foreground transition-colors hover:text-primary"
+                >
+                  {myEntries.length > visibleEntries.length
+                    ? `외 ${myEntries.length - visibleEntries.length}개 · 전체 보기`
+                    : '나의 번호'}
+                </Link>
+              </div>
+              <ul className="mt-3 space-y-2">
+                {visibleEntries.map(({ set, rank, waitingDrawNumber }) => (
+                  <li
+                    key={set.id ?? set.numbers.join('-')}
+                    className="flex flex-wrap items-center gap-2"
+                  >
+                    {set.numbers.map((n) => {
+                      // 추첨 전 번호는 최신 회차와 비교하지 않는다
+                      const isMatched =
+                        rank !== null && latestFullDraw.numbers.includes(n);
+                      const isBonusMatched =
+                        rank !== null && latestFullDraw.bonusNumber === n;
+                      return (
+                        <span
+                          key={n}
+                          className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs ${
+                            isMatched
+                              ? 'border-primary bg-primary font-bold text-primary-foreground'
+                              : isBonusMatched
+                                ? `${LOTTO_BONUS_COLOR} font-bold`
+                                : 'border-border bg-muted text-muted-foreground'
+                          }`}
+                        >
+                          {n}
+                        </span>
+                      );
+                    })}
+                    <span
+                      className={`ml-1 text-xs ${
+                        rank !== null && rank > 0
+                          ? 'font-semibold text-primary'
+                          : 'text-muted-foreground'
+                      }`}
+                    >
+                      {rank === null
+                        ? `${waitingDrawNumber}회 추첨 대기`
+                        : rank > 0
+                          ? `${rank}등`
+                          : '미당첨'}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
       </section>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
