@@ -1,0 +1,33 @@
+import type { JSX, ReactNode } from 'react';
+import { PageHeaderComponent } from '@/components/layouts/page-header.component';
+import { LottoFooterNoticeComponent } from '@/features/lotto/components/footer-notice.component';
+import { LatestResultBannerComponent } from '@/features/lotto/components/latest-result-banner.component';
+import { LottoWarningAlertComponent } from '@/features/lotto/components/warning-alert.component';
+
+export default function LottoLayout({
+  children,
+}: {
+  children: ReactNode;
+}): JSX.Element {
+  return (
+    <>
+      <PageHeaderComponent
+        title="로또 분석실"
+        description="역대 당첨 번호 분석부터 번호 생성, 가상 시뮬레이션까지 로또의 모든 것을 만나보세요."
+        breadcrumbs={[{ label: '로또 분석실' }]}
+      />
+      <div className="mx-auto max-w-6xl px-6 md:px-8 py-8">
+        <LottoWarningAlertComponent
+          includeAgeNotice={true}
+          space="md"
+          xSpace="lg"
+        />
+        <div className="mt-6">
+          <LatestResultBannerComponent />
+        </div>
+        <div className="mt-6">{children}</div>
+        <LottoFooterNoticeComponent />
+      </div>
+    </>
+  );
+}

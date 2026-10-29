@@ -1,0 +1,84 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { LottoBallComponent } from '@/features/lotto/components/ball.component';
+import type {
+  LottoCheckResultCardType,
+  LottoLankType,
+} from '@/features/lotto/types/lotto.type';
+import { withUniqueKeys } from '@/utils/common.util';
+import { LottoCheckRankBadgeComponent } from './rank-badge.component';
+
+export function LottoCheckResultCardComponent({
+  draw,
+  matchesList,
+  tickets,
+}: LottoCheckResultCardType) {
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base">회차 {draw.drawNumber} 회</CardTitle>
+          <CardDescription>추첨일 · {draw.drawDate}</CardDescription>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="mt-1 flex items-center gap-2">
+          {Array.isArray(draw.numbers) &&
+            draw.numbers.length > 0 &&
+            draw.numbers.map((n) => <LottoBallComponent key={n} number={n} />)}
+          <span className="mx-2 text-sm">+</span>
+          <LottoBallComponent number={draw.bonusNumber} isBonus />
+        </div>
+
+        {matchesList && tickets && (
+          <div className="mt-4 space-y-3 text-sm">
+            {withUniqueKeys(
+              matchesList.map((m, i) => ({ m, nums: tickets[i] ?? [] })),
+              ({ nums }) => nums.join('-')
+            ).map(({ key, item: { m, nums }, position: i }) => {
+              const winSet = new Set(draw.numbers);
+              const bonus = draw.bonusNumber;
+              return (
+                <div key={key}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground">#{i + 1}</span>
+                    <span>
+                      일치 {m.matchCount}개 / 보너스{' '}
+                      {m.bonusMatch ? '예' : '아니오'}
+                    </span>
+                    <LottoCheckRankBadgeComponent
+                      rank={m.rank as LottoLankType}
+                    />
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {nums.map((n) => {
+                      const isWin = winSet.has(n);
+                      const isBonus = n === bonus;
+                      const base =
+                        'inline-flex h-8 w-8 items-center justify-center rounded-full border text-sm';
+                      const cls = isWin
+                        ? 'bg-success text-success-foreground border-success/30'
+                        : isBonus
+                          ? 'bg-warning text-warning-foreground border-warning/30'
+                          : 'bg-surface-card text-foreground border-border';
+                      return (
+                        <span key={n} className={`${base} ${cls}`}>
+                          {n}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

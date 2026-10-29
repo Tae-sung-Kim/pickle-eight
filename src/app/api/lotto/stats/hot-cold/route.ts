@@ -1,0 +1,86 @@
+import { NextResponse } from 'next/server';
+import { lottoRepository } from '@/features/lotto/services/lotto-repository';
+import type { LottoDrawType } from '@/features/lotto/types/lotto.type';
+import { supabaseAdmin } from '@/lib/supabase-server';
+
+const STATS_KEY = 'hot-cold-latest' as const;
+const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6h
+
+export async function GET() {
+  try {
+    const now = Date.now();
+    const { data: cached, error: cacheError } = await supabaseAdmin
+      .from('lotto_stats')
+      .select('payload, updated_at')
+      .eq('key', STATS_KEY)
+      .maybeSingle();
+    if (cacheError) throw cacheError;
+    if (cached) {
+      const updatedAt = new Date(cached.updated_at).getTime();
+      if (Number.isFinite(updatedAt) && now - updatedAt < CACHE_TTL_MS) {
+        return NextResponse.json(
+          { ok: true, data: cached.payload, meta: { cached: true, updatedAt } },
+          { status: 200, headers: { 'Cache-Control': 'public, s-maxage=600' } }
+        );
+      }
+    }
+
+    const latest = (await lottoRepository.getLatestDrawNumber()) ?? 0;
+    if (latest <= 0) {
+      return NextResponse.json(
+        { ok: true, data: null, meta: { latest: 0 } },
+        { status: 200, headers: { 'Cache-Control': 'no-store' } }
+      );
+    }
+    const all: LottoDrawType[] = await lottoRepository.getDrawsRange(1, latest);
+
+    const freq: Record<number, number> = {};
+    for (let n = 1; n <= 45; n += 1) freq[n] = 0;
+    for (const d of all) for (const n of d.numbers) freq[n] += 1;
+
+    const lastSeen: Record<number, number> = {};
+    for (let n = 1; n <= 45; n += 1) lastSeen[n] = 0;
+    for (const d of all) {
+      for (const n of d.numbers) lastSeen[n] = d.drawNumber;
+    }
+    const overdue: Record<number, number> = {};
+    for (let n = 1; n <= 45; n += 1)
+      overdue[n] = lastSeen[n] > 0 ? latest - lastSeen[n] : latest;
+
+    const K = Math.min(50, latest);
+    const recentFrom = Math.max(1, latest - K + 1);
+    const recent: Record<number, number> = {};
+    for (let n = 1; n <= 45; n += 1) recent[n] = 0;
+    const recentDraws = all.filter((d) => d.drawNumber >= recentFrom);
+    for (const d of recentDraws) for (const n of d.numbers) recent[n] += 1;
+
+    const payload = {
+      latest,
+      frequency: freq,
+      overdue,
+      recentWindow: K,
+      recentFrequency: recent,
+    } as const;
+
+    const { error: saveError } = await supabaseAdmin.from('lotto_stats').upsert(
+      {
+        key: STATS_KEY,
+        payload,
+        last_computed_draw_no: latest,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'key' }
+    );
+    if (saveError) throw saveError;
+
+    return NextResponse.json(
+      { ok: true, data: payload, meta: { cached: false } },
+      { status: 200, headers: { 'Cache-Control': 'public, s-maxage=600' } }
+    );
+  } catch (e) {
+    return NextResponse.json(
+      { ok: false, error: `internal/hot_cold_failed _${e}` },
+      { status: 500 }
+    );
+  }
+}

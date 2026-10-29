@@ -1,0 +1,47 @@
+/* src/styles/utilities.css */
+@layer utilities {
+  /* Buttons */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90;
+  }
+  .btn-destructive {
+    @apply bg-destructive text-white hover:opacity-90;
+  }
+
+  /* Surfaces */
+  .surface-card {
+    @apply bg-card text-card-foreground border border-border rounded-lg;
+  }
+
+  /* Links */
+  .muted-link {
+    @apply text-muted-foreground hover:text-foreground underline-offset-4 hover:underline;
+  }
+
+  /* Focus ring helper */
+  .focus-ring {
+    @apply outline outline-2 outline-ring/50;
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-6 md:py-10;
+  }
+
+  /* Badges with state colors */
+  .badge {
+    @apply inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs font-medium text-foreground;
+  }
+  .badge-success {
+    @apply bg-[var(--success)] text-[var(--success-foreground)];
+  }
+  .badge-warning {
+    @apply bg-[var(--warning)] text-[var(--warning-foreground)];
+  }
+  .badge-info {
+    @apply bg-[var(--info)] text-[var(--info-foreground)];
+  }
+}

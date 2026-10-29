@@ -1,0 +1,37 @@
+import type { LucideIcon } from 'lucide-react';
+import type { ComponentType } from 'react';
+
+export type MenuItemType = {
+  href: string;
+  label: string;
+  description: string;
+  colorClass: string;
+  icon: string; // 아이콘 이름만 저장
+  example?: string;
+};
+
+export type MenuGroupType = {
+  group: string;
+  label: string;
+  href?: string;
+  /** 준비 중인 그룹: 사이트맵 제외, 페이지는 noindex */
+  comingSoon?: boolean;
+  items: readonly MenuItemType[];
+};
+
+export type MenuSectionKeyType =
+  | 'lotto'
+  | 'tarot'
+  | 'fortune'
+  | 'lunch'
+  | 'where';
+
+export type FeatureItemType = {
+  section: MenuSectionKeyType;
+  Icon: ComponentType<{ className?: string }> | LucideIcon;
+  href: string;
+  label: string;
+  description?: string;
+  example?: string;
+  className?: string;
+};
