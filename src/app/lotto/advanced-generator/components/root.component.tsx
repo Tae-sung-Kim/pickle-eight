@@ -138,7 +138,7 @@ export function LottoAdvancedGeneratorComponent() {
         </AlertDescription>
       </Alert>
       {error && (
-        <Alert className="mt-2 border-red-200 bg-red-50 text-red-900">
+        <Alert className="mt-2 border-destructive/30 bg-destructive/10 text-foreground">
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}

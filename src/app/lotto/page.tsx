@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { MenuCardGridComponent } from '@/components/menu-card-grid.component';
+import { MenuListComponent } from '@/components/menu-list.component';
 import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants/menu.constant';
 import {
@@ -74,7 +74,7 @@ export default function LottoPage() {
           })),
         }}
       />
-      <MenuCardGridComponent items={items} />
+      <MenuListComponent items={items} />
     </section>
   );
 }

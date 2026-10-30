@@ -1,6 +1,9 @@
 'use client';
-import { useEffect, useId, useState } from 'react';
-import { AD_TOP_BANNER } from '@/features/ad/constants/adfit.constant';
+import { useEffect, useId } from 'react';
+import {
+  AD_TOP_BANNER,
+  ADS_DISABLED,
+} from '@/features/ad/constants/adfit.constant';
 import { ConsentNudgeComponent } from '@/features/consent/components/consent-nudge.component';
 import { useConsentContext } from '@/providers/consent.provider';
 import { useLoadingStore } from '@/stores/loading.store';
@@ -20,23 +23,9 @@ export function AdFitSlotComponent({
 
   const adConfig = AD_TOP_BANNER;
 
-  // 임의로 광고 노출하지 않을 경우 - SSR에서 localStorage 접근 금지
-  const [adsDisabledOverride, setAdsDisabledOverride] =
-    useState<boolean>(false);
-  useEffect(() => {
-    try {
-      const v =
-        typeof window !== 'undefined' &&
-        window.localStorage?.getItem('adfit-disabled') === 'true';
-      setAdsDisabledOverride(Boolean(v));
-    } catch {
-      setAdsDisabledOverride(false);
-    }
-  }, []);
-
   useEffect(() => {
     // Only proceed when consent is explicitly accepted
-    if (adsDisabledOverride || state !== 'accepted' || !adConfig) return;
+    if (state !== 'accepted' || !adConfig) return;
 
     showLoading();
 
@@ -93,7 +82,9 @@ export function AdFitSlotComponent({
         /* noop */
       })
       .finally(() => hideLoading());
-  }, [state, adsDisabledOverride, showLoading, hideLoading]);
+  }, [state, showLoading, hideLoading]);
+
+  if (ADS_DISABLED) return null;
 
   // 동의하지 않은 경우: 공용 컨센트 너지 컴포넌트를 활용해 안내 및 동의 유도
   if (state !== 'accepted') {
@@ -140,7 +131,7 @@ export function AdFitSlotComponent({
     </section>
   );
 
-  if (!fixed || adsDisabledOverride) return AdInner;
+  if (!fixed) return AdInner;
 
   // Fixed top bar + spacer to preserve layout
   const h = Number(adConfig.height) || 0;

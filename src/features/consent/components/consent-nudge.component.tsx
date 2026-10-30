@@ -33,7 +33,7 @@ export function ConsentNudgeComponent({
           title: '광고 동의로 모든 기능을 계속 무료로',
           description: '광고 수익으로 서버·유지 비용을 충당하고 있어요',
           buttonText: '광고에 동의',
-          bgClass: 'bg-blue-50 border border-blue-200',
+          bgClass: 'bg-secondary border border-border',
         };
 
       case 'transparent':
@@ -43,7 +43,7 @@ export function ConsentNudgeComponent({
           description:
             '월 서버비 약 5만 원 · 이용자 1,000+ — 광고 동의가 큰 힘이 됩니다',
           buttonText: '광고 동의로 지원',
-          bgClass: 'bg-gray-50 border border-gray-200',
+          bgClass: 'bg-secondary border border-border',
         };
 
       case 'ad-slot':
@@ -61,7 +61,7 @@ export function ConsentNudgeComponent({
           title: '',
           description: '광고 동의로 무료 서비스 유지를 함께해 주세요',
           buttonText: '동의하기',
-          bgClass: 'bg-yellow-50',
+          bgClass: 'bg-warning/15',
         };
     }
   };
@@ -92,7 +92,7 @@ export function ConsentNudgeComponent({
   if (variant === 'gentle') {
     return (
       <div className="text-center py-2">
-        <div className="text-xs text-gray-500 flex items-center justify-center gap-2">
+        <div className="text-xs text-muted-foreground flex items-center justify-center gap-2">
           <span>{content.emoji}</span>
           <span>{content.description}</span>
           <Button
@@ -114,11 +114,11 @@ export function ConsentNudgeComponent({
         <div className="text-2xl">{content.emoji}</div>
         <div className="flex-1">
           {content.title && (
-            <p className="text-sm font-medium text-gray-900 mb-1">
+            <p className="text-sm font-medium text-foreground mb-1">
               {content.title}
             </p>
           )}
-          <p className="text-xs text-gray-700">{content.description}</p>
+          <p className="text-xs text-foreground/80">{content.description}</p>
         </div>
         <Button
           size="sm"

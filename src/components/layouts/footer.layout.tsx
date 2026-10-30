@@ -1,4 +1,3 @@
-import { Home } from 'lucide-react';
 import Link from 'next/link';
 import { ConsentNudgeComponent } from '@/features/consent/components/consent-nudge.component';
 import { CookieSettingsButtonComponent } from '@/features/consent/components/cookie-settings-button.component';
@@ -10,15 +9,19 @@ export function FooterLayout() {
   const currentYear = getKoreaTime().getFullYear();
 
   return (
-    <footer className="w-full border-t border-border/50 bg-muted/30 pt-12 pb-8 mt-auto">
+    <footer className="w-full border-t border-border bg-secondary/60 pt-12 pb-8 mt-auto">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between mb-10">
           <div className="space-y-4 md:max-w-sm">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="p-1.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                <Home className="w-5 h-5 text-primary" />
-              </div>
-              <span className="text-lg font-bold tracking-tight">
+            <Link href="/" className="flex items-center gap-2.5 w-fit">
+              <span
+                className="lotto-ball bg-jar"
+                data-size="sm"
+                aria-hidden="true"
+              >
+                8
+              </span>
+              <span className="text-lg font-extrabold tracking-tight">
                 {process.env.NEXT_PUBLIC_SITE_NAME}
               </span>
             </Link>
@@ -53,7 +56,7 @@ export function FooterLayout() {
           </nav>
         </div>
 
-        <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground text-center md:text-left">
             © {currentYear} {process.env.NEXT_PUBLIC_SITE_NAME}. All rights
             reserved.

@@ -347,17 +347,18 @@ export function generateLottoNumbers(): number[] {
   return Array.from(numbers).sort((a, b) => a - b);
 }
 
-// 로또 번호에 따른 색상 클래스 반환
-export function getNumberColor(num: number): string {
-  if (num <= 10) return 'bg-[#e9b312] text-[#1b2430]';
-  if (num <= 20) return 'bg-[#3f7cc4] text-white';
-  if (num <= 30) return 'bg-[#c94741] text-white';
-  if (num <= 40) return 'bg-[#6e7782] text-white';
-  return 'bg-[#3e8559] text-white';
+/** 번호대 구간(1~5). 색은 globals.css 의 --ball-* 토큰이 정한다 */
+export function getBallRange(num: number): '1' | '2' | '3' | '4' | '5' {
+  if (num <= 10) return '1';
+  if (num <= 20) return '2';
+  if (num <= 30) return '3';
+  if (num <= 40) return '4';
+  return '5';
 }
 
 /** 보너스 번호 전용 색. 번호대 색(노랑/파랑/빨강/회색/초록)과 겹치지 않는다 */
-export const LOTTO_BONUS_COLOR = 'bg-[#7c3aed] text-white border-[#7c3aed]';
+export const LOTTO_BONUS_COLOR =
+  'bg-[var(--ball-bonus)] text-white border-[var(--ball-bonus)]';
 
 /**
  * CSV utility helpers for building and downloading CSV files.

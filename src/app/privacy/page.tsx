@@ -211,7 +211,7 @@ export default function PrivacyPolicyPage() {
               href="https://t.me/PickleEight"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 underline"
+              className="text-primary underline underline-offset-4"
             >
               {process.env.NEXT_PUBLIC_SITE_NAME}
             </a>

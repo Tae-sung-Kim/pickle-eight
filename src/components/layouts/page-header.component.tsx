@@ -44,9 +44,9 @@ export function PageHeaderComponent({
             ))}
           </nav>
         )}
-        <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
+        <h1 className="text-3xl font-extrabold md:text-4xl">{title}</h1>
         {description && (
-          <p className="mt-2 max-w-[68ch] text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-3 max-w-[60ch] text-sm md:text-base leading-relaxed text-muted-foreground">
             {description}
           </p>
         )}

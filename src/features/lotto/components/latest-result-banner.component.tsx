@@ -18,10 +18,7 @@ import {
   useLottoDrawByNumberQuery,
 } from '@/features/lotto/queries/use-lotto.query';
 import { useMyNumberSetsQuery } from '@/features/lotto/queries/use-lotto-user.query';
-import {
-  LOTTO_BONUS_COLOR,
-  LottoUtils,
-} from '@/features/lotto/utils/lotto.util';
+import { getBallRange, LottoUtils } from '@/features/lotto/utils/lotto.util';
 
 /** 배너에 미리 보여주는 내 번호 최대 개수 */
 const MY_NUMBERS_PREVIEW_COUNT = 3;
@@ -75,12 +72,18 @@ export function LatestResultBannerComponent() {
 
   if (isLatestLoading) {
     return (
-      <section className="animate-pulse border-y border-border py-6">
-        <div className="h-4 w-32 rounded bg-muted" />
-        <div className="mt-3 h-7 w-48 rounded bg-muted" />
-        <div className="mt-5 flex gap-2">
+      <section
+        aria-busy="true"
+        className="animate-pulse rounded-panel bg-jar p-5 md:p-7"
+      >
+        <div className="h-4 w-32 rounded bg-jar-foreground/15" />
+        <div className="mt-3 h-8 w-52 rounded bg-jar-foreground/15" />
+        <div className="mt-6 flex gap-2.5">
           {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-            <div key={i} className="h-11 w-11 rounded-full bg-muted" />
+            <div
+              key={i}
+              className="size-11 rounded-full bg-jar-foreground/15"
+            />
           ))}
         </div>
       </section>
@@ -91,19 +94,19 @@ export function LatestResultBannerComponent() {
 
   return (
     <>
-      <section className="border-y border-border py-6">
+      <section className="rounded-panel bg-jar p-5 text-jar-foreground md:p-7">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-jar-muted">
               {latestFullDraw.drawDate} 추첨
             </p>
-            <h2 className="mt-1 text-2xl font-bold tracking-tight">
+            <h2 className="mt-1 text-2xl font-extrabold md:text-3xl">
               {latestFullDraw.drawNumber}회 당첨 번호
             </h2>
           </div>
           {!isAlreadyOnCheckPage && !hasSavedNumbers && (
             <Button
-              variant="outline"
+              variant="secondary"
               onClick={() => setIsDialogOpen(true)}
               className="self-start sm:self-auto"
             >
@@ -112,37 +115,51 @@ export function LatestResultBannerComponent() {
           )}
         </div>
 
-        <div className="mt-5 flex flex-wrap items-center gap-2">
-          {latestFullDraw.numbers.map((num) => (
-            <LottoBallComponent key={num} number={num} />
+        <div className="mt-6 flex flex-wrap items-center gap-2.5">
+          {latestFullDraw.numbers.map((num, i) => (
+            <LottoBallComponent
+              key={num}
+              number={num}
+              size="lg"
+              className="ball-drop"
+              style={{ '--i': i } as React.CSSProperties}
+            />
           ))}
-          <span className="mx-1 text-xl text-muted-foreground">+</span>
+          <span className="mx-1 text-xl text-jar-muted" aria-hidden="true">
+            +
+          </span>
           <div className="flex items-center gap-2">
-            <LottoBallComponent number={latestFullDraw.bonusNumber} isBonus />
-            <span className="text-sm text-muted-foreground">보너스</span>
+            <LottoBallComponent
+              number={latestFullDraw.bonusNumber}
+              isBonus
+              size="lg"
+              className="ball-drop"
+              style={{ '--i': 6 } as React.CSSProperties}
+            />
+            <span className="text-sm text-jar-muted">보너스</span>
           </div>
         </div>
 
         {!isOnMyNumbersPage &&
           !isAlreadyOnCheckPage &&
           myEntries.length > 0 && (
-            <div className="mt-5 border-t border-border pt-4">
+            <div className="mt-6 border-t border-jar-foreground/15 pt-4">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium">내 번호</p>
+                <p className="text-sm font-semibold">내 번호</p>
                 <Link
                   href="/lotto/my-numbers"
-                  className="text-xs text-muted-foreground transition-colors hover:text-primary"
+                  className="text-xs text-jar-muted underline-offset-4 transition-colors hover:text-jar-foreground hover:underline"
                 >
                   {myEntries.length > visibleEntries.length
-                    ? `외 ${myEntries.length - visibleEntries.length}개 · 전체 보기`
-                    : '나의 번호'}
+                    ? `외 ${myEntries.length - visibleEntries.length}개 전체 보기`
+                    : '나의 번호 보기'}
                 </Link>
               </div>
-              <ul className="mt-3 space-y-2">
+              <ul className="mt-3 space-y-2.5">
                 {visibleEntries.map(({ set, rank, waitingDrawNumber }) => (
                   <li
                     key={set.id ?? set.numbers.join('-')}
-                    className="flex flex-wrap items-center gap-2"
+                    className="flex flex-wrap items-center gap-1.5"
                   >
                     {set.numbers.map((n) => {
                       // 추첨 전 번호는 최신 회차와 비교하지 않는다
@@ -150,32 +167,34 @@ export function LatestResultBannerComponent() {
                         rank !== null && latestFullDraw.numbers.includes(n);
                       const isBonusMatched =
                         rank !== null && latestFullDraw.bonusNumber === n;
-                      return (
+                      return isMatched || isBonusMatched ? (
+                        <LottoBallComponent
+                          key={n}
+                          number={n}
+                          isBonus={isBonusMatched && !isMatched}
+                          size="sm"
+                        />
+                      ) : (
                         <span
                           key={n}
-                          className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs ${
-                            isMatched
-                              ? 'border-primary bg-primary font-bold text-primary-foreground'
-                              : isBonusMatched
-                                ? `${LOTTO_BONUS_COLOR} font-bold`
-                                : 'border-border bg-muted text-muted-foreground'
-                          }`}
+                          data-range={getBallRange(n)}
+                          className="flex size-7 items-center justify-center rounded-full border border-jar-foreground/20 text-xs tabular-nums text-jar-muted"
                         >
                           {n}
                         </span>
                       );
                     })}
                     <span
-                      className={`ml-1 text-xs ${
+                      className={`ml-1.5 text-xs ${
                         rank !== null && rank > 0
-                          ? 'font-semibold text-primary'
-                          : 'text-muted-foreground'
+                          ? 'font-bold text-warning'
+                          : 'text-jar-muted'
                       }`}
                     >
                       {rank === null
                         ? `${waitingDrawNumber}회 추첨 대기`
                         : rank > 0
-                          ? `${rank}등`
+                          ? `${rank}등 당첨`
                           : '미당첨'}
                     </span>
                   </li>

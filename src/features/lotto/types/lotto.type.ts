@@ -19,6 +19,9 @@ export type LottoNumberListPropsType = {
 export type LottoBallPropsType = {
   number: number;
   isBonus?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+  style?: React.CSSProperties;
 };
 
 export type LottoDrawType = {

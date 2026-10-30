@@ -300,7 +300,7 @@ export function MyNumbersComponent(): JSX.Element {
                         {it.label || '무제'}
                       </span>
                       {it.isFavorite && (
-                        <span className="text-[10px] bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded font-medium">
+                        <span className="text-[10px] bg-warning/20 text-foreground px-1.5 py-0.5 rounded font-medium">
                           ★ 즐겨찾기
                         </span>
                       )}

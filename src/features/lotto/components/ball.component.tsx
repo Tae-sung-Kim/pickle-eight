@@ -1,16 +1,19 @@
 import type { LottoBallPropsType } from '@/features/lotto/types/lotto.type';
-import {
-  getNumberColor,
-  LOTTO_BONUS_COLOR,
-} from '@/features/lotto/utils/lotto.util';
+import { getBallRange } from '@/features/lotto/utils/lotto.util';
 
 export function LottoBallComponent({
   number,
   isBonus = false,
+  size = 'md',
+  className,
+  style,
 }: LottoBallPropsType) {
   return (
     <span
-      className={`flex h-11 w-11 items-center justify-center rounded-full text-base font-semibold tabular-nums ${isBonus ? LOTTO_BONUS_COLOR : getNumberColor(number)}`}
+      className={`lotto-ball${className ? ` ${className}` : ''}`}
+      data-range={isBonus ? 'bonus' : getBallRange(number)}
+      data-size={size === 'md' ? undefined : size}
+      style={style}
     >
       {number}
     </span>

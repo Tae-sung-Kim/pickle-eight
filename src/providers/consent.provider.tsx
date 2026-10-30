@@ -22,7 +22,7 @@ type ConsentContextValueType = {
 };
 
 const ConsentContext = createContext<ConsentContextValueType | null>(null);
-const STORAGE_KEY = `${process.env.NEXT_PUBLIC_SITE_NAME}_cookie_consent_v1`;
+const STORAGE_KEY = `${process.env.NEXT_PUBLIC_SITE_ENG_NAME}_cookie_consent_v1`;
 
 export function ConsentProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<ConsentStateType>('unknown');

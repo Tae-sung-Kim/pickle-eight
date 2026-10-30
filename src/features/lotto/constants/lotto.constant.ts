@@ -44,16 +44,16 @@ export const LOTTO_ALERT_TONE_STYLES: Record<
   { container: string; icon: string }
 > = {
   danger: {
-    container: 'border-red-200 bg-red-50 text-red-900',
-    icon: 'text-red-600',
+    container: 'border-destructive/30 bg-destructive/10 text-foreground',
+    icon: 'text-destructive',
   },
   warning: {
-    container: 'border-amber-200 bg-amber-50 text-amber-900',
-    icon: 'text-amber-600',
+    container: 'border-warning/50 bg-warning/15 text-foreground',
+    icon: 'text-warning',
   },
   muted: {
-    container: 'border-gray-200 bg-gray-50 text-gray-900',
-    icon: 'text-gray-600',
+    container: 'border-border bg-secondary text-foreground',
+    icon: 'text-muted-foreground',
   },
 } as const;
 

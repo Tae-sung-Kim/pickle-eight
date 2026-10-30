@@ -13,7 +13,6 @@ import {
   SITE_NAME,
   SITE_URL,
 } from '@/lib/seo';
-import { AgeGateProvider } from '@/providers/age-gate.provider';
 import { ConsentProvider } from '@/providers/consent.provider';
 import { QueryClientProviderWrapper } from '@/providers/query-client.provider';
 import './globals.css';
@@ -106,22 +105,20 @@ export default function RootLayout({
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
         <QueryClientProviderWrapper>
           <ConsentProvider>
-            <AgeGateProvider>
-              <HeaderLayout />
-              {/* 모바일 상단 전용 배너 (데스크톱에서는 숨김: 컴포넌트 내부 md:hidden) */}
-              <div className="w-full flex justify-center p-6 pb-0">
-                <AdFitSlotComponent fixed topOffsetPx={64} />
+            <HeaderLayout />
+            {/* 모바일 상단 전용 배너 (데스크톱에서는 숨김: 컴포넌트 내부 md:hidden) */}
+            <div className="w-full flex justify-center p-6 pb-0">
+              <AdFitSlotComponent fixed topOffsetPx={64} />
+            </div>
+            <main className="flex-1 py-8">
+              <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                {children}
               </div>
-              <main className="flex-1 py-8">
-                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                  {children}
-                </div>
-              </main>
-              <FooterLayout />
-              <Toaster />
-              <LoadingComponent />
-              <CookieConsentComponent />
-            </AgeGateProvider>
+            </main>
+            <FooterLayout />
+            <Toaster />
+            <LoadingComponent />
+            <CookieConsentComponent />
           </ConsentProvider>
         </QueryClientProviderWrapper>
       </body>

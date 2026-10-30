@@ -1,8 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { type ReactNode, useCallback, useEffect, useState } from 'react';
 import { AgeGateDialogComponent } from '@/features/lotto/components/age-gate-dialog.component';
 import type { LottoAgeGateModeType } from '@/features/lotto/types/lotto.type';
 
@@ -11,20 +9,7 @@ const MODE: LottoAgeGateModeType = ((process.env
   (process.env.NODE_ENV === 'development'
     ? 'always'
     : 'session')) as LottoAgeGateModeType;
-const SESSION_KEY = `${process.env.NEXT_PUBLIC_SITE_NAME}_age_gate_verified_sess_v1`;
-
-function isSameOrigin(url: string): boolean {
-  try {
-    const u = new URL(url, window.location.href);
-    return u.origin === window.location.origin;
-  } catch {
-    return false;
-  }
-}
-
-function shouldGuardPath(pathname: string): boolean {
-  return pathname.startsWith(`/${MENU_GROUP_NAME_ENUM.LOTTO}`);
-}
+const SESSION_KEY = `${process.env.NEXT_PUBLIC_SITE_EGN_NAME}_age_gate_verified_sess_v1`;
 
 function isVerified(): boolean {
   if (MODE === 'always') return false; // 항상 확인
@@ -44,123 +29,35 @@ function markVerified(): void {
   }
 }
 
-export function AgeGateProvider({ children }: { children: React.ReactNode }) {
+/**
+ * 로또 영역 전용 성인 확인 게이트. 로또 layout 안에서만 사용한다.
+ * 확인 전에는 children을 렌더링하지 않고, 닫기/X/dim/Esc는 모두 홈으로 보낸다.
+ */
+export function AgeGateProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const [open, setOpen] = useState<boolean>(false);
-  const pendingHrefRef = useRef<string | null>(null);
-  const openRef = useRef<boolean>(false);
-  const mountedRef = useRef<boolean>(false);
+  const [verified, setVerified] = useState<boolean>(false);
+  const [ready, setReady] = useState<boolean>(false);
 
-  const close = useCallback(() => setOpen(false), []);
+  // 마운트 후 세션 저장소 확인 (SSR 불일치 방지)
+  useEffect(() => {
+    setVerified(isVerified());
+    setReady(true);
+  }, []);
 
   const handleConfirm = useCallback(() => {
-    const href = pendingHrefRef.current;
     markVerified();
-    close();
-    if (href) router.push(href);
-    pendingHrefRef.current = null;
-  }, [close, router]);
+    setVerified(true);
+  }, []);
 
   const handleCancel = useCallback(() => {
-    const hadPending = Boolean(pendingHrefRef.current);
-    pendingHrefRef.current = null;
-    close();
-    // 직접 진입(대기 href 없음)일 때만 홈으로 이동
-    if (!hadPending) {
-      router.replace('/');
-    }
-  }, [close, router]);
-
-  const clickHandler = useMemo<(e: MouseEvent) => void>(() => {
-    return (e: MouseEvent) => {
-      // 수정키 클릭, 비좌클릭, 이미 취소된 이벤트는 패스
-      if (e.defaultPrevented) return;
-      if (e.button !== 0) return;
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-
-      const target = e.target as Element | null;
-      if (!target) return;
-      const anchor = target.closest('a');
-      if (!anchor) return;
-
-      const hrefAttr = (anchor as HTMLAnchorElement).getAttribute('href') || '';
-      if (!hrefAttr || hrefAttr.startsWith('#')) return;
-
-      // 외부 링크/다른 오리진/target=_blank 등은 패스
-      const aEl = anchor as HTMLAnchorElement;
-      if (aEl.target === '_blank') return;
-
-      const url = new URL(aEl.href, window.location.href);
-      if (!isSameOrigin(url.href)) return;
-
-      const pathname = url.pathname;
-      if (!shouldGuardPath(pathname)) return;
-
-      if (isVerified()) return; // 이미 검증됨
-
-      // 여기서 네비게이션 차단 후 모달 오픈
-      e.preventDefault();
-      pendingHrefRef.current = url.pathname + url.search + url.hash;
-      if (!openRef.current) {
-        try {
-          const active = document.activeElement as HTMLElement | null;
-          active?.blur();
-          requestAnimationFrame(() => {
-            // Sheet는 Escape로 닫힘; 버블링 가능한 이벤트로 보냄
-            const evt = new KeyboardEvent('keydown', {
-              key: 'Escape',
-              code: 'Escape',
-              bubbles: true,
-              cancelable: true,
-            });
-            document.dispatchEvent(evt);
-            // 다음 태스크로 모달 오픈하여 레이스 방지
-            setTimeout(() => setOpen(true), 0);
-          });
-        } catch {
-          setOpen(true);
-        }
-      } else {
-        console.log('[AgeGate] open suppressed (already open)');
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    // capture 단계에서 가로채기
-    document.addEventListener('click', clickHandler, true);
-    return () => document.removeEventListener('click', clickHandler, true);
-  }, [clickHandler]);
-
-  // 직접 URL로 진입한 경우도 가드
-  useEffect(() => {
-    if (mountedRef.current) {
-      return;
-    }
-    mountedRef.current = true;
-    try {
-      const pathname = window.location.pathname;
-      if (!shouldGuardPath(pathname)) return;
-      if (isVerified()) return;
-      pendingHrefRef.current = null; // 현재 페이지 유지
-      if (!openRef.current) {
-        setOpen(true);
-      }
-    } catch {
-      // noop
-    }
-  }, []);
-
-  // openRef 동기화 및 중복 마운트 가시화
-  useEffect(() => {
-    openRef.current = open;
-  }, [open]);
+    router.replace('/');
+  }, [router]);
 
   return (
     <>
-      {children}
+      {verified ? children : null}
       <AgeGateDialogComponent
-        open={open}
+        open={ready && !verified}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />

@@ -36,8 +36,10 @@ pnpm dev
 | 이름                               | 설명                                                       |
 | ---------------------------------- | ---------------------------------------------------------- |
 | `NEXT_PUBLIC_SITE_NAME`            | 사이트 이름                                                |
+| `NEXT_PUBLIC_SITE_ENG_NAME`        | 사이트 영어 이름                                           |
 | `NEXT_PUBLIC_SITE_URL`             | 사이트 절대 URL                                            |
 | `NEXT_PUBLIC_ADFIT_UNIT_ID`        | 카카오 AdFit 상단 배너 유닛 ID (없으면 광고 미노출)        |
+| `NEXT_PUBLIC_ADFIT_DISABLED`       | `true`면 광고 영역 전체 숨김 (로컬 개발용)                 |
 | `NEXT_PUBLIC_LOTTO_MIN_LOADING_MS` | 로딩 최소 표시 시간(ms)                                    |
 | `LOTTO_DELAY_MS`                   | 서버 응답 인위적 지연(ms)                                  |
 | `SITEMAP_SKIP_FETCH`               | `1`이면 sitemap 생성 시 회차 목록 조회 생략                |

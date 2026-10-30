@@ -10,7 +10,7 @@ export function LottoCheckTicketRowComponent({
   onRemove,
 }: LottoCheckTicketRowType) {
   return (
-    <div className="group flex items-center gap-2 rounded-xl border border-muted bg-card/60 p-2 shadow-sm transition hover:bg-card sm:p-3">
+    <div className="group flex items-center gap-2 rounded-lg border border-border bg-card p-2 sm:p-3">
       <span className="mr-1 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-muted px-2 text-xs text-muted-foreground">
         #{index + 1}
       </span>
@@ -25,7 +25,7 @@ export function LottoCheckTicketRowComponent({
             type="button"
             variant="ghost"
             size="icon"
-            className="text-red-600 transition hover:bg-destructive/10 hover:text-red-700"
+            className="text-destructive transition hover:bg-destructive/10"
             onClick={onRemove}
             aria-label={`티켓 #${index + 1} 삭제`}
           >

@@ -107,15 +107,13 @@ export function MobileMenuLayout({ hiddenClass = '' }: MobileMenuLayoutProps) {
                         <Link
                           href={href}
                           prefetch
-                          className="text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors"
+                          className="text-sm font-bold hover:text-primary transition-colors"
                         >
                           {label}
                         </Link>
                       </SheetClose>
                     ) : (
-                      <span className="text-xs font-bold uppercase tracking-widest">
-                        {label}
-                      </span>
+                      <span className="text-sm font-bold">{label}</span>
                     )}
                   </div>
                   <div className="space-y-1">

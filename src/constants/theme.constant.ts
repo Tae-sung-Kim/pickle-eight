@@ -11,20 +11,20 @@ import type { ThemeColorsType, ThemeVariantType } from '@/types/theme.type';
 
 export const THEME: Readonly<Record<ThemeVariantType, ThemeColorsType>> = {
   light: {
-    primary: '#16a34a',
-    primaryAlt: '#22c55e',
-    success: '#16a34a',
-    warning: '#f59e0b',
-    info: '#0284c7',
-    destructive: '#dc2626',
+    primary: '#2d6a3e',
+    primaryAlt: '#3e8a52',
+    success: '#2d6a3e',
+    warning: '#d9a21b',
+    info: '#3b73b8',
+    destructive: '#b23a48',
   },
   dark: {
-    primary: '#4ade80',
-    primaryAlt: '#22c55e',
-    success: '#4ade80',
-    warning: '#fbbf24',
-    info: '#38bdf8',
-    destructive: '#dc2626',
+    primary: '#6fbf84',
+    primaryAlt: '#3e8a52',
+    success: '#6fbf84',
+    warning: '#e8b93a',
+    info: '#6b9bd6',
+    destructive: '#e0707c',
   },
 };
 

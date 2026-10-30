@@ -361,7 +361,7 @@ export function LottoCheckComponent() {
       {result && Array.isArray(result?.matchesList) && (
         <div className="mt-8">
           {result?.error && (
-            <p className="text-sm text-red-600">오류: {result.error}</p>
+            <p className="text-sm text-destructive">오류: {result.error}</p>
           )}
           {result?.draw && result.matchesList && result.tickets && (
             <LottoCheckResultCardComponent

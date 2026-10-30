@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * 디자인 토큰: "피클 병 속 연구실"
+ * 종이(브라인) 위에 딜 그린 잉크, 강조는 겨자. 로또 공 색은 --ball-* 로 한곳에서 관리한다.
+ */
 :root {
   --font-geist-sans:
     "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
@@ -10,46 +14,62 @@
     "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", sans-serif;
   --font-geist-mono: "Fira Mono", monospace;
-  --radius: 0.25rem;
-  --background: #f4f5f2;
-  --foreground: #1b2430;
-  --card: #fbfbf9;
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  /* Brand Primary (light) */
-  --primary: #0e6b5e;
-  --primary-foreground: #ffffff;
-  --secondary: #e9ece7;
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: #e9ece7;
-  --muted-foreground: #5e6873;
-  --accent: #e9ece7;
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  /* State colors (light) */
-  --success: #16a34a;
-  --success-foreground: #ffffff;
-  --warning: #f59e0b;
-  --warning-foreground: #0b1220;
-  --info: #0284c7;
+  /* 컨트롤 8px / 패널 14px / 공 완전 원형. 계층마다 반경을 다르게 쓴다 */
+  --radius: 0.5rem;
+  --radius-panel: 0.875rem;
+
+  --background: #eef0e6;
+  --foreground: #1b3328;
+  --card: #f7f8f1;
+  --card-foreground: #1b3328;
+  --popover: #fbfcf7;
+  --popover-foreground: #1b3328;
+  /* 딜 그린 (브랜드) */
+  --primary: #2d6a3e;
+  --primary-foreground: #f7f8f1;
+  --secondary: #e1e6d4;
+  --secondary-foreground: #1b3328;
+  --muted: #e1e6d4;
+  --muted-foreground: #5a6a5f;
+  --accent: #e1e6d4;
+  --accent-foreground: #1b3328;
+  --destructive: #b23a48;
+  /* 병 속 심록: 최신 회차 관측판 */
+  --jar: #173a2b;
+  --jar-foreground: #eef0e6;
+  --jar-muted: #9db5a3;
+  /* 상태 */
+  --success: #2d6a3e;
+  --success-foreground: #f7f8f1;
+  --warning: #d9a21b;
+  --warning-foreground: #2a2108;
+  --info: #3b73b8;
   --info-foreground: #ffffff;
-  --border: #d7dbd5;
-  --input: #d7dbd5;
-  --ring: #0e6b5e;
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --border: #d3d9c4;
+  --input: #c4cbb2;
+  --ring: #2d6a3e;
+  /* 로또 공 번호대 색 (1-10 / 11-20 / 21-30 / 31-40 / 41-45) + 보너스 */
+  --ball-1: #e3a917;
+  --ball-1-foreground: #2a2108;
+  --ball-2: #3b73b8;
+  --ball-3: #c0443d;
+  --ball-4: #6b7a70;
+  --ball-5: #3e8a52;
+  --ball-bonus: #6b4bb8;
+  /* 통계 차트는 공 색과 같은 순서를 쓴다 */
+  --chart-1: var(--ball-1);
+  --chart-2: var(--ball-2);
+  --chart-3: var(--ball-3);
+  --chart-4: var(--ball-4);
+  --chart-5: var(--ball-5);
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 @theme inline {
@@ -57,9 +77,11 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-panel: var(--radius-panel);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
+  --color-surface-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
@@ -72,6 +94,9 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-jar: var(--jar);
+  --color-jar-foreground: var(--jar-foreground);
+  --color-jar-muted: var(--jar-muted);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
@@ -97,45 +122,33 @@
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  /* Brand Primary (dark) */
-  --primary: #4ade80; /* tailwind green-400 */
-  --primary-foreground: #0b1220; /* near slate-950 for contrast */
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  /* State colors (dark) */
-  --success: #4ade80;
-  --success-foreground: #0b1220;
-  --warning: #fbbf24;
-  --warning-foreground: #0b1220;
-  --info: #38bdf8;
-  --info-foreground: #0b1220;
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: #101d17;
+  --foreground: #e7ecdc;
+  --card: #172a21;
+  --card-foreground: #e7ecdc;
+  --popover: #172a21;
+  --popover-foreground: #e7ecdc;
+  --primary: #6fbf84;
+  --primary-foreground: #0f2018;
+  --secondary: #213529;
+  --secondary-foreground: #e7ecdc;
+  --muted: #213529;
+  --muted-foreground: #9db5a3;
+  --accent: #213529;
+  --accent-foreground: #e7ecdc;
+  --destructive: #e0707c;
+  --jar: #0a1812;
+  --jar-foreground: #e7ecdc;
+  --jar-muted: #8aa493;
+  --success: #6fbf84;
+  --success-foreground: #0f2018;
+  --warning: #e8b93a;
+  --warning-foreground: #2a2108;
+  --info: #6b9bd6;
+  --info-foreground: #0f2018;
+  --border: #2a4033;
+  --input: #35503f;
+  --ring: #6fbf84;
 }
 
 @layer base {
@@ -144,10 +157,105 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "tnum" 1;
+  }
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
 
   button,
   button * {
     cursor: pointer;
+  }
+}
+
+/*
+ * 로또 공: 유리구슬 질감. 번호대 색은 배경색으로, 하이라이트와 그림자는 공통 레이어로 얹는다.
+ * 크기는 --ball-size 로 조절한다.
+ */
+@layer components {
+  .lotto-ball {
+    --ball-size: 2.75rem;
+    display: inline-flex;
+    height: var(--ball-size);
+    width: var(--ball-size);
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    font-size: calc(var(--ball-size) * 0.4);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #fff;
+    background-image:
+      radial-gradient(
+        circle at 32% 26%,
+        rgb(255 255 255 / 0.5) 0,
+        rgb(255 255 255 / 0) 42%
+      ),
+      radial-gradient(
+        circle at 70% 82%,
+        rgb(0 0 0 / 0.22) 0,
+        rgb(0 0 0 / 0) 55%
+      );
+    box-shadow:
+      inset 0 -2px 3px rgb(0 0 0 / 0.18),
+      0 1px 2px rgb(0 0 0 / 0.2);
+  }
+  .lotto-ball[data-range="1"] {
+    background-color: var(--ball-1);
+    color: var(--ball-1-foreground);
+  }
+  .lotto-ball[data-range="2"] {
+    background-color: var(--ball-2);
+  }
+  .lotto-ball[data-range="3"] {
+    background-color: var(--ball-3);
+  }
+  .lotto-ball[data-range="4"] {
+    background-color: var(--ball-4);
+  }
+  .lotto-ball[data-range="5"] {
+    background-color: var(--ball-5);
+  }
+  .lotto-ball[data-range="bonus"] {
+    background-color: var(--ball-bonus);
+  }
+  .lotto-ball[data-size="sm"] {
+    --ball-size: 1.75rem;
+    box-shadow: inset 0 -1px 2px rgb(0 0 0 / 0.18);
+  }
+  .lotto-ball[data-size="lg"] {
+    --ball-size: 3.25rem;
+  }
+
+  /* 관측판 공이 순서대로 떨어지는 장면. 페이지당 이 한 번만 쓴다 */
+  .ball-drop {
+    animation: ball-drop 560ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+}
+
+@keyframes ball-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ball-drop {
+    animation: none;
   }
 }
