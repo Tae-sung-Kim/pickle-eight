@@ -74,6 +74,9 @@ export const LOTTO_WARNING_X_PADDING: Record<string, string> = {
 
 export const LOTTO_MAX_CUSTOM_TICKETS = 50 as const;
 
+// 번호 생성기에서 한 번에 뽑을 수 있는 최대 게임 수
+export const LOTTO_MAX_GAMES = 20 as const;
+
 export enum LOTTO_WARNING_TONE_ENUM {
   WARNING = 'warning',
   DANGER = 'danger',

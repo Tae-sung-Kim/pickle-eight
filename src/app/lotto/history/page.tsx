@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
-import { LottoHistoryComponent } from '@/app/lotto/history/components/root.component';
-import { ContentWrapperComponent } from '@/components/content-wrapper.component';
-import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
-import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
+import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
-import { generateOgImageUrl } from '@/utils/common.util';
-import { getOgTag } from '@/utils/seo.util';
+import { LottoHistoryComponent } from '@/features/lotto/history/components/root.component';
+import {
+  canonicalUrl,
+  generateOgImageUrl,
+  getOgTag,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+} from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: '로또 당첨 결과 히스토리 - 회차별 당첨번호 조회',

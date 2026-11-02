@@ -90,11 +90,23 @@ const csp = buildCsp();
 const cspReportOnly = `${csp}; report-uri /api/csp-report`;
 
 const nextConfig: NextConfig = {
+  // next dev가 AGENTS.md를 자동 생성하지 않도록 끈다
+  agentRules: false,
   async redirects() {
     return [
       {
         source: '/lotto/dashboard',
         destination: '/lotto/my-numbers',
+        permanent: true,
+      },
+      {
+        source: '/lotto/normal-generator',
+        destination: '/lotto/generator',
+        permanent: true,
+      },
+      {
+        source: '/lotto/advanced-generator',
+        destination: '/lotto/generator',
         permanent: true,
       },
     ];

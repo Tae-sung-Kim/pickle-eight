@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
-import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import {
   buildMetadata,
   canonicalUrl,
+  generateOgImageUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
 } from '@/lib/seo';
-import { generateOgImageUrl } from '@/utils/common.util';
 
 const baseMeta = buildMetadata({
-  title: `이용약관 - ${process.env.NEXT_PUBLIC_SITE_NAME as string}`,
+  title: '이용약관',
   description: '서비스 이용 조건, 권리와 의무, 책임 제한 등 약관을 확인하세요.',
   pathname: '/terms',
 });

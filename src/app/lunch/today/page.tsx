@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { ComingSoonComponent } from '@/components/coming-soon.component';
+import { ComingSoonComponent } from '@/components/common/coming-soon.component';
 
 export const metadata: Metadata = {
   title: '오늘 뭐 먹지 - 점심 메뉴 추천',

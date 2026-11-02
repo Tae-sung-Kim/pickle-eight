@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
-import { LottoCheckComponent } from '@/app/lotto/check/components/root.component';
-import { ContentWrapperComponent } from '@/components/content-wrapper.component';
-import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
-import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
+import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
-import { generateOgImageUrl } from '@/utils/common.util';
-import { getOgTag } from '@/utils/seo.util';
+import { LottoCheckComponent } from '@/features/lotto/check/components/root.component';
+import {
+  canonicalUrl,
+  generateOgImageUrl,
+  getOgTag,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+} from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: '로또 번호 채점기 - 당첨 등수 확인',

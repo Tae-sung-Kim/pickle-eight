@@ -1,11 +1,16 @@
 import { ChevronRight } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { ComingSoonBadgeComponent } from '@/components/common/coming-soon-badge.component';
+import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_LIST } from '@/constants/menu.constant';
-import { LatestResultBannerComponent } from '@/features/lotto/components/latest-result-banner.component';
-import { buildMetadata, canonicalUrl, jsonLdWebSite } from '@/lib/seo';
-import { generateOgImageUrl } from '@/utils/common.util';
+import { LatestResultBannerComponent } from '@/features/lotto/shared/components/latest-result-banner.component';
+import {
+  buildMetadata,
+  canonicalUrl,
+  generateOgImageUrl,
+  jsonLdWebSite,
+} from '@/lib/seo';
 
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME as string;
 const TITLE = `${SITE_NAME} - 로또 분석 · 번호 생성`;
@@ -74,11 +79,7 @@ export default function RootPage() {
                 <span className="min-w-0">
                   <span className="flex items-center gap-2">
                     <span className="text-base font-bold">{g.label}</span>
-                    {g.comingSoon && (
-                      <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-muted-foreground">
-                        준비 중
-                      </span>
-                    )}
+                    {g.comingSoon && <ComingSoonBadgeComponent />}
                   </span>
                   <span className="mt-0.5 block text-sm text-muted-foreground">
                     {g.items.map((item) => item.label).join(', ')}

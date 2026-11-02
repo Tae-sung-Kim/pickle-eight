@@ -1,17 +1,12 @@
 import type { Metadata } from 'next';
 import type { ReactElement } from 'react';
-import { LottoDrawCardComponent } from '@/app/lotto/[draw]/components/card.component';
-import { ContentWrapperComponent } from '@/components/content-wrapper.component';
-import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { LottoDrawCardComponent } from '@/features/lotto/draw/components/card.component';
 import { getLottoDrawByNumber } from '@/features/lotto/services/lotto.service';
 import type { LottoDrawType } from '@/features/lotto/types/lotto.type';
-import {
-  canonicalUrl,
-  jsonLdBreadcrumb,
-  jsonLdWebSite,
-  SITE_NAME,
-} from '@/lib/seo';
+import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
 
 type Params = { draw: string };
 
@@ -35,7 +30,7 @@ export async function generateMetadata({
   const baseTitle = valid
     ? `로또 ${draw}회차 - 당첨번호 상세`
     : '로또 회차 - 잘못된 회차';
-  const title = `${baseTitle} | ${SITE_NAME}`;
+  const title = baseTitle;
   const description = valid
     ? `${draw}회차 당첨 번호, 보너스 번호, 추첨일 및 간단 통계를 확인하세요.`
     : '요청하신 회차 값이 올바르지 않습니다.';

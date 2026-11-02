@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
-import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import {
   buildMetadata,
   canonicalUrl,
+  generateOgImageUrl,
   jsonLdBreadcrumb,
   jsonLdWebSite,
 } from '@/lib/seo';
-import { generateOgImageUrl } from '@/utils/common.util';
 
 const baseMeta = buildMetadata({
-  title: `개인정보처리방침 - ${process.env.NEXT_PUBLIC_SITE_NAME as string}`,
+  title: '개인정보처리방침',
   description:
     '이용자의 개인정보 보호 원칙과 수집·이용·보관·파기 정책을 안내합니다.',
   pathname: '/privacy',

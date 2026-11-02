@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Toaster } from 'sonner';
-import { FooterLayout } from '@/components/layouts/footer.layout';
-import { HeaderLayout } from '@/components/layouts/header.layout';
-import { LoadingComponent } from '@/components/loading.component';
+import { LoadingComponent } from '@/components/common/loading.component';
+import { FooterComponent } from '@/components/layout/footer.component';
+import { HeaderComponent } from '@/components/layout/header.component';
 import {
   buildKeywords,
   GLOBAL_KEYWORDS,
@@ -16,7 +16,7 @@ import {
 import { ConsentProvider } from '@/providers/consent.provider';
 import { QueryClientProviderWrapper } from '@/providers/query-client.provider';
 import './globals.css';
-import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { AdFitSlotComponent } from '@/features/ad/components/adfit-slot.component';
 import { CookieConsentComponent } from '@/features/consent/components/cookie-consent.component';
 
@@ -105,7 +105,7 @@ export default function RootLayout({
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
         <QueryClientProviderWrapper>
           <ConsentProvider>
-            <HeaderLayout />
+            <HeaderComponent />
             {/* 모바일 상단 전용 배너 (데스크톱에서는 숨김: 컴포넌트 내부 md:hidden) */}
             <div className="w-full flex justify-center p-6 pb-0">
               <AdFitSlotComponent fixed topOffsetPx={64} />
@@ -115,7 +115,7 @@ export default function RootLayout({
                 {children}
               </div>
             </main>
-            <FooterLayout />
+            <FooterComponent />
             <Toaster />
             <LoadingComponent />
             <CookieConsentComponent />

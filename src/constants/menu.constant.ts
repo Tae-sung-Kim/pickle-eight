@@ -15,12 +15,14 @@ export const MENU_LIST: MenuGroupType[] = [
     href: `/${MENU_GROUP_NAME_ENUM.LOTTO}`,
     items: [
       {
-        href: `/${MENU_GROUP_NAME_ENUM.LOTTO}/normal-generator`,
-        label: '번호 무작위 생성',
+        href: `/${MENU_GROUP_NAME_ENUM.LOTTO}/generator`,
+        label: '번호 생성기',
         icon: 'Ticket',
         colorClass: 'text-primary',
-        description: 'CSPRNG 기반으로 로또 번호를 무작위 추천.',
-        example: '예: 로또 구매 전, 재미로 번호 조합이 필요할 때',
+        description:
+          'CSPRNG 기반 무작위 생성. 고급 옵션으로 합계·연속·홀짝·고정/제외 번호·가중치 조건도 설정.',
+        example:
+          '예: 구매 전 재미로 번호가 필요할 때, 합계 100~200·7번 고정 조건으로 생성',
       },
       {
         href: `/${MENU_GROUP_NAME_ENUM.LOTTO}/history`,
@@ -54,14 +56,6 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-primary',
         description: '빈도, 구간, 홀짝, 합계, 연속수, 핫/콜드/지연 번호 분석.',
         example: '예: 1~200회 빈도 상위/하위 번호, 오래 안 나온 번호',
-      },
-      {
-        href: `/${MENU_GROUP_NAME_ENUM.LOTTO}/advanced-generator`,
-        label: '고급 번호 생성기',
-        icon: 'Wand2',
-        colorClass: 'text-primary',
-        description: '합계/연속/홀짝/구간/고정·제외 번호/가중치 조건으로 생성.',
-        example: '예: 합계 100~200, 연속 최대 2, 7번 고정, 최근 제외',
       },
       {
         href: `/${MENU_GROUP_NAME_ENUM.LOTTO}/simulator`,

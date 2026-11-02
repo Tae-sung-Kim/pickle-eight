@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
-import { MenuListComponent } from '@/components/menu-list.component';
-import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
+import { MenuListComponent } from '@/components/common/menu-list.component';
+import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants/menu.constant';
 import {
   buildMetadata,
   canonicalUrl,
+  generateOgImageUrl,
+  getOgTag,
   jsonLdBreadcrumb,
   jsonLdWebSite,
 } from '@/lib/seo';
-import { generateOgImageUrl } from '@/utils/common.util';
-import { getOgTag } from '@/utils/seo.util';
 
 const PATHNAME = `/${MENU_GROUP_NAME_ENUM.LOTTO}`;
 const TITLE = '로또 - 번호 생성 · 분석 · 당첨 확인';

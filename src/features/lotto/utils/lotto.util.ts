@@ -7,6 +7,10 @@ import type {
   LottoTicketType,
   LottoWeightingOptionsType,
 } from '@/features/lotto/types/lotto.type';
+import {
+  secureRandomFloat,
+  secureRandomInt,
+} from '@/features/lotto/utils/random.util';
 
 function uniqueSortedSix(
   numbers: number[]
@@ -211,7 +215,7 @@ function passesFilters(
 }
 
 function randomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return secureRandomInt(max - min + 1) + min;
 }
 
 function weightedSample(
@@ -227,7 +231,7 @@ function weightedSample(
     Math.max(0.0001, (weights[n] ?? 0) ** alpha)
   );
   const sum = norm.reduce((a, b) => a + b, 0);
-  let r = Math.random() * sum;
+  let r = secureRandomFloat() * sum;
   for (let i = 0; i < uniquePool.length; i += 1) {
     r -= norm[i];
     if (r <= 0) return uniquePool[i];
@@ -311,43 +315,13 @@ export const LottoGenerator = {
 
 // 로또 랜덤 번호 추출
 export function generateLottoNumbers(): number[] {
-  // Use Web Crypto if available for better randomness (unbiased via rejection sampling)
-  const hasWebCrypto =
-    typeof globalThis !== 'undefined' &&
-    typeof (globalThis as unknown as { crypto?: Crypto }).crypto !==
-      'undefined' &&
-    typeof (globalThis as unknown as { crypto: Crypto }).crypto
-      .getRandomValues === 'function';
-
-  const pickUnbiased = (maxInclusive: number): number => {
-    if (hasWebCrypto) {
-      // Rejection sampling to avoid modulo bias
-      const range = maxInclusive + 1; // [0, maxInclusive]
-      const maxUint32 = 0xffffffff;
-      const threshold = Math.floor((maxUint32 + 1) / range) * range - 1;
-      const buf = new Uint32Array(1);
-      while (true) {
-        (globalThis as unknown as { crypto: Crypto }).crypto.getRandomValues(
-          buf
-        );
-        const r = buf[0];
-        if (r <= threshold) return r % range; // uniform in [0, maxInclusive]
-      }
-    }
-    // Fallback
-    return Math.floor(Math.random() * (maxInclusive + 1));
-  };
-
   const numbers = new Set<number>();
   while (numbers.size < 6) {
-    // pick in [1,45]
-    const n = pickUnbiased(45 - 1) + 1;
-    numbers.add(n);
+    numbers.add(secureRandomInt(45) + 1);
   }
   return Array.from(numbers).sort((a, b) => a - b);
 }
 
-/** 번호대 구간(1~5). 색은 globals.css 의 --ball-* 토큰이 정한다 */
 export function getBallRange(num: number): '1' | '2' | '3' | '4' | '5' {
   if (num <= 10) return '1';
   if (num <= 20) return '2';

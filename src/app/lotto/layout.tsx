@@ -1,8 +1,8 @@
 import type { JSX, ReactNode } from 'react';
-import { PageHeaderComponent } from '@/components/layouts/page-header.component';
-import { LottoFooterNoticeComponent } from '@/features/lotto/components/footer-notice.component';
-import { LatestResultBannerComponent } from '@/features/lotto/components/latest-result-banner.component';
-import { LottoWarningAlertComponent } from '@/features/lotto/components/warning-alert.component';
+import { PageHeaderComponent } from '@/components/common/page-header.component';
+import { LottoFooterNoticeComponent } from '@/features/lotto/shared/components/footer-notice.component';
+import { LatestResultBannerComponent } from '@/features/lotto/shared/components/latest-result-banner.component';
+import { LottoWarningAlertComponent } from '@/features/lotto/shared/components/warning-alert.component';
 import { AgeGateProvider } from '@/providers/age-gate.provider';
 
 export default function LottoLayout({

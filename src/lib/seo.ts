@@ -5,6 +5,8 @@
 
 import type { Metadata } from 'next';
 
+import { MENU_LIST } from '@/constants/menu.constant';
+
 /** Site base URL derived from env with trailing slash removed */
 export const SITE_URL: string = (
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pickle-eight.vercel.app'
@@ -37,10 +39,8 @@ export function buildMetadata(input: {
   const url: string = canonicalUrl(pathname);
   return {
     metadataBase: new URL(SITE_URL),
-    title: {
-      default: `${title} | ${SITE_NAME}`,
-      template: `%s | ${SITE_NAME}`,
-    },
+    // 사이트명은 루트 레이아웃의 title.template이 붙인다
+    title,
     description,
     alternates: {
       canonical: url,
@@ -130,4 +130,55 @@ export function jsonLdFaq(
       },
     })),
   } as const;
+}
+
+/**
+ * Build Open Graph image descriptor used by Next.js Metadata images.
+ * Appends title/subtitle (and optional tag) to `/api/og-image` URL.
+ *
+ * @param {string} title - Main title text.
+ * @param {string} description - Subtitle text.
+ * @param {string} alt - Alternative text for the image.
+ * @param {string} [tag] - Optional short badge text to display.
+ * @returns {{ url: string; width: number; height: number; alt: string }} Image descriptor.
+ */
+export function generateOgImageUrl(
+  title: string,
+  description: string,
+  alt: string,
+  tag?: string
+): { url: string; width: number; height: number; alt: string } {
+  const params = new URLSearchParams({ title, subtitle: description });
+  if (tag) params.set('tag', tag);
+  return {
+    url: `${SITE_URL}/api/og-image?${params}`,
+    width: 1200,
+    height: 630,
+    alt,
+  };
+}
+
+type OgTagParams = Readonly<{
+  href?: string;
+  label?: string;
+}>;
+
+/**
+ * Return a concise tag for OG image pill.
+ */
+export function getOgTag(params: OgTagParams = {}): string {
+  const href: string | undefined = params.href;
+  const label: string | undefined = params.label;
+  if (href) {
+    // group match
+    const group = MENU_LIST.find((g) => g.href === href);
+    if (group) return group.label;
+    // item match
+    for (const g of MENU_LIST) {
+      const item = g.items.find((it) => it.href === href);
+      if (item) return item.label;
+    }
+  }
+  if (label) return label;
+  return process.env.NEXT_PUBLIC_SITE_NAME ?? '운빨연구소';
 }

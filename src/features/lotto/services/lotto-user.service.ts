@@ -4,6 +4,7 @@ import {
 } from '@/features/lotto/services/lotto.service';
 import type {
   LottoCheckResultType,
+  LottoHotColdStatsType,
   LottoNumberSetType,
 } from '@/features/lotto/types/lotto.type';
 import { LottoUtils } from '@/features/lotto/utils/lotto.util';
@@ -187,13 +188,7 @@ export async function compareMyNumbers(): Promise<MyNumberResultsType> {
   };
 }
 
-export type HotColdStats = Readonly<{
-  latest: number;
-  frequency: Readonly<Record<number, number>>;
-  overdue: Readonly<Record<number, number>>; // how many draws since last appearance
-  recentWindow: number;
-  recentFrequency: Readonly<Record<number, number>>;
-}>;
+export type HotColdStats = LottoHotColdStatsType;
 
 export async function getHotColdStats(): Promise<HotColdStats | null> {
   const res = await http.get<{ ok: boolean; data: HotColdStats | null }>(

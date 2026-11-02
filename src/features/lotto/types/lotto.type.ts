@@ -249,20 +249,10 @@ export type LottoDrawCardType = {
 };
 
 export type LottoGenerateControlsType = {
-  readonly count: number;
   readonly filters: LottoGenerateFiltersType;
-  readonly onChangeCount: (next: number) => void;
   readonly onChangeFilters: (
     updater: (prev: LottoGenerateFiltersType) => LottoGenerateFiltersType
   ) => void;
-};
-
-export type LottoGeneratedItemType = {
-  readonly numbers: readonly [number, number, number, number, number, number];
-};
-
-export type LottoGeneratedListType = {
-  readonly items: ReadonlyArray<LottoGeneratedItemType>;
 };
 
 export type LottoWeightingControlsType = {
@@ -324,3 +314,12 @@ export type LottoSimulatorControlsComponentType = Readonly<{
 }>;
 
 export type LottoAgeGateModeType = 'always' | 'session' | 'ttl';
+
+// 핫/콜드 통계 (서버 캐시 payload와 클라이언트 계산 결과가 같은 형태)
+export type LottoHotColdStatsType = Readonly<{
+  latest: number;
+  frequency: Readonly<Record<number, number>>;
+  overdue: Readonly<Record<number, number>>; // 마지막 출현 이후 지난 회차 수
+  recentWindow: number;
+  recentFrequency: Readonly<Record<number, number>>;
+}>;

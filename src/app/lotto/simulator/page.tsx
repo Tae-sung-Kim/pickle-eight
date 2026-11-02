@@ -1,17 +1,19 @@
 import type { Metadata } from 'next';
-import { LottoSimulatorComponent } from '@/app/lotto/simulator/components/root.component';
-import { ContentWrapperComponent } from '@/components/content-wrapper.component';
-import { JsonLdComponent } from '@/components/shared/seo/json-ld.component';
-import { TitleWrapperComponent } from '@/components/title-warpper.component';
+import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
+import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
-import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
-import { generateOgImageUrl } from '@/utils/common.util';
-import { getOgTag } from '@/utils/seo.util';
+import { LottoSimulatorComponent } from '@/features/lotto/simulator/components/root.component';
+import {
+  canonicalUrl,
+  generateOgImageUrl,
+  getOgTag,
+  jsonLdBreadcrumb,
+  jsonLdWebSite,
+} from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title:
-    '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | ' +
-    (process.env.NEXT_PUBLIC_SITE_NAME as string),
+  title: '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인',
   description:
     '티켓 수와 반복 횟수를 설정해 로또 추첨을 다회 시뮬레이션하고 등수 분포를 확인하세요. 난수 기반 참고용이며 당첨 보장 없음.',
   keywords: [
@@ -24,9 +26,7 @@ export const metadata: Metadata = {
     '반복',
   ],
   openGraph: {
-    title:
-      '로또 시뮬레이터 - 확률/분포 체감 | ' +
-      (process.env.NEXT_PUBLIC_SITE_NAME as string),
+    title: '로또 시뮬레이터 - 확률/분포 체감',
     description:
       '대량 난수 추첨으로 결과 분포를 시각화. 티켓 수/반복 횟수 설정 지원. 참고용 통계이며 당첨 보장 없음.',
     url: canonicalUrl(`${MENU_GROUP_NAME_ENUM.LOTTO}/simulator`),
@@ -45,9 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title:
-      '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인 | ' +
-      (process.env.NEXT_PUBLIC_SITE_NAME as string),
+    title: '로또 시뮬레이터 - 대량 무작위 추첨 분포 확인',
     description:
       '대량 난수 기반 시뮬레이션으로 등수 분포를 확인. 티켓 수/반복 설정 지원. 참고용이며 당첨 보장 없음.',
     images: [

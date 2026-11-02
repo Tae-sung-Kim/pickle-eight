@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { type ReactNode, useCallback, useEffect, useState } from 'react';
-import { AgeGateDialogComponent } from '@/features/lotto/components/age-gate-dialog.component';
+import { AgeGateDialogComponent } from '@/features/lotto/shared/components/age-gate-dialog.component';
 import type { LottoAgeGateModeType } from '@/features/lotto/types/lotto.type';
 
 const MODE: LottoAgeGateModeType = ((process.env
@@ -9,7 +9,7 @@ const MODE: LottoAgeGateModeType = ((process.env
   (process.env.NODE_ENV === 'development'
     ? 'always'
     : 'session')) as LottoAgeGateModeType;
-const SESSION_KEY = `${process.env.NEXT_PUBLIC_SITE_EGN_NAME}_age_gate_verified_sess_v1`;
+const SESSION_KEY = `${process.env.NEXT_PUBLIC_SITE_ENG_NAME}_age_gate_verified_sess_v1`;
 
 function isVerified(): boolean {
   if (MODE === 'always') return false; // 항상 확인
