@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 @import "../styles/index.css";
 
 @custom-variant dark (&:is(.dark *));
@@ -70,6 +71,12 @@
   --sidebar-accent-foreground: var(--accent-foreground);
   --sidebar-border: var(--border);
   --sidebar-ring: var(--ring);
+  /* 메뉴 라벨 색: 피클 병마다 라벨 색이 다르다. 메뉴 아이콘·배지·강조 한 곳에만 쓴다 */
+  --menu-lotto: var(--primary); /* 딜 */
+  --menu-tarot: #7a3358; /* 비트 */
+  --menu-fortune: #8a6110; /* 강황 */
+  --menu-lunch: #a5481f; /* 당근 */
+  --menu-where: #2a6672; /* 염수 */
 }
 
 @theme inline {
@@ -95,6 +102,11 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-jar: var(--jar);
+  --color-menu-lotto: var(--menu-lotto);
+  --color-menu-tarot: var(--menu-tarot);
+  --color-menu-fortune: var(--menu-fortune);
+  --color-menu-lunch: var(--menu-lunch);
+  --color-menu-where: var(--menu-where);
   --color-jar-foreground: var(--jar-foreground);
   --color-jar-muted: var(--jar-muted);
   --color-success: var(--success);

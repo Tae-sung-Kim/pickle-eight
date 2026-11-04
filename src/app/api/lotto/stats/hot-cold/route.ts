@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import { lottoRepository } from '@/features/lotto/services/lotto-repository';
+import { lottoRepository } from '@/features/lotto/services/lotto.repository';
 import { computeHotCold } from '@/features/lotto/utils/hot-cold.util';
-import { supabaseAdmin } from '@/lib/supabase-server';
 
 const STATS_KEY = 'hot-cold-latest' as const;
 
@@ -16,12 +15,7 @@ export async function GET() {
     }
 
     // 새 회차가 저장되기 전까지는 통계가 바뀌지 않으므로 회차 번호로 캐시를 판단한다
-    const { data: cached, error: cacheError } = await supabaseAdmin
-      .from('lotto_stats')
-      .select('payload, updated_at, last_computed_draw_no')
-      .eq('key', STATS_KEY)
-      .maybeSingle();
-    if (cacheError) throw cacheError;
+    const cached = await lottoRepository.getStats(STATS_KEY);
     if (cached && cached.last_computed_draw_no >= latest) {
       return NextResponse.json(
         {
@@ -39,16 +33,7 @@ export async function GET() {
     const all = await lottoRepository.getDrawsRange(1, latest);
     const payload = computeHotCold(all, { from: 1, to: latest });
 
-    const { error: saveError } = await supabaseAdmin.from('lotto_stats').upsert(
-      {
-        key: STATS_KEY,
-        payload,
-        last_computed_draw_no: latest,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'key' }
-    );
-    if (saveError) throw saveError;
+    await lottoRepository.saveStats(STATS_KEY, payload, latest);
 
     return NextResponse.json(
       { ok: true, data: payload, meta: { cached: false } },

@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}${MENU_GROUP_NAME_ENUM.LOTTO}/check`,
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/${MENU_GROUP_NAME_ENUM.LOTTO}/check`,
   },
 };
 

@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useId } from 'react';
+import { ConsentNudgeComponent } from '@/components/consent/consent-nudge.component';
 import {
   AD_TOP_BANNER,
   ADS_DISABLED,
 } from '@/features/ad/constants/adfit.constant';
-import { ConsentNudgeComponent } from '@/features/consent/components/consent-nudge.component';
 import { useConsentContext } from '@/providers/consent.provider';
 import { useLoadingStore } from '@/stores/loading.store';
 

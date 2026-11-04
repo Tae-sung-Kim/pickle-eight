@@ -5,7 +5,7 @@ import {
   LOTTO_RATE_LIMIT_MAX,
   LOTTO_RATE_LIMIT_WINDOW_MS,
 } from '@/features/lotto/constants/lotto.constant';
-import { lottoRepository } from '@/features/lotto/services/lotto-repository';
+import { lottoRepository } from '@/features/lotto/services/lotto.repository';
 import type { LottoDrawType } from '@/features/lotto/types/lotto.type';
 
 // ===== Simple in-memory rate limiter =====

@@ -44,8 +44,8 @@ export function MobileMenuComponent({
           side="right"
           hideCloseButton={true}
           className={cn(
-            'w-[85%] max-w-sm p-0 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85',
-            'flex flex-col animate-in fade-in-0 slide-in-from-right-10 duration-300',
+            'w-[85%] max-w-sm p-0 bg-popover/95 backdrop-blur supports-[backdrop-filter]:bg-popover/85',
+            'flex flex-col animate-in fade-in-0 slide-in-from-right-10 duration-300 motion-reduce:animate-none',
             'rounded-l-2xl shadow-2xl border-l border-primary/10'
           )}
         >
@@ -53,7 +53,7 @@ export function MobileMenuComponent({
             원하는 메뉴를 선택하세요.
           </SheetDescription>
           {/* 상단 헤더 */}
-          <div className="sticky top-0 z-10 flex items-center justify-between px-5 pt-5 pb-4 bg-white/90 backdrop-blur border-b border-primary/5">
+          <div className="sticky top-0 z-10 flex items-center justify-between px-5 pt-5 pb-4 bg-popover/90 backdrop-blur border-b border-primary/5">
             <SheetTitle className="text-xl font-bold flex items-center gap-2">
               <span className="text-primary">메뉴</span>
             </SheetTitle>

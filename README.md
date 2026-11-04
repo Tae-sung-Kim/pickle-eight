@@ -18,10 +18,11 @@
 ## 기술 스택
 
 - Next.js 16 (App Router), React 19, TypeScript
-- Tailwind CSS 4, Radix UI, lucide-react
+- Tailwind CSS 4, shadcn/ui (Radix UI), lucide-react, framer-motion, tw-animate-css
 - TanStack Query v5, Zustand, react-hook-form, zod
 - 데이터베이스: Supabase (Postgres)
 - 린트 / 포맷: Biome
+- E2E 테스트: Playwright (`pnpm e2e`)
 
 ## 시작하기
 
@@ -83,7 +84,7 @@ pnpm dev
 | `GET /api/lotto/draws`          | `latest=1` 또는 `drwNo=` 또는 `from=&to=`           |
 | `GET /api/lotto/export`         | CSV 내보내기 (`from`, `to` 선택, IP 기준 분당 제한) |
 | `GET /api/lotto/stats/hot-cold` | 핫/콜드 통계                                        |
-| `GET                            | POST /api/lotto/sync`                               | 크론 동기화 |
+| `GET` / `POST /api/lotto/sync` | 크론 동기화 |
 
 ## 배포
 

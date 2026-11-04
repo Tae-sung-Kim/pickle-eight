@@ -4,7 +4,7 @@ import { ContentWrapperComponent } from '@/components/common/content-wrapper.com
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
 import { LottoDrawCardComponent } from '@/features/lotto/draw/components/card.component';
-import { getLottoDrawByNumber } from '@/features/lotto/services/lotto.service';
+import { lottoRepository } from '@/features/lotto/services/lotto.repository';
 import type { LottoDrawType } from '@/features/lotto/types/lotto.type';
 import { canonicalUrl, jsonLdBreadcrumb, jsonLdWebSite } from '@/lib/seo';
 
@@ -76,9 +76,10 @@ export default async function LottoDrawPage({
   let data: LottoDrawType | null = null;
   if (valid) {
     try {
-      data = await getLottoDrawByNumber(Number(draw));
+      // 서버 렌더링이므로 자기 API를 HTTP로 거치지 않고 DB에서 바로 읽는다
+      data = await lottoRepository.getDrawByNumber(Number(draw));
     } catch (e) {
-      console.log(e);
+      console.error(e);
       data = null;
     }
   }

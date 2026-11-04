@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { ConsentNudgeComponent } from '@/features/consent/components/consent-nudge.component';
-import { CookieSettingsButtonComponent } from '@/features/consent/components/cookie-settings-button.component';
+import { ConsentNudgeComponent } from '@/components/consent/consent-nudge.component';
+import { CookieSettingsButtonComponent } from '@/components/consent/cookie-settings-button.component';
 import { getKoreaTime } from '@/lib/date';
 
 const LINK_CLASS = 'hover:text-primary transition-colors';

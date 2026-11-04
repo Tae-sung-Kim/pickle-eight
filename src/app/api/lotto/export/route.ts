@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { lottoRepository } from '@/features/lotto/services/lotto-repository';
+import { lottoRepository } from '@/features/lotto/services/lotto.repository';
 import type { LottoDrawType } from '@/features/lotto/types/lotto.type';
 
 const RATE_LIMIT_WINDOW_MS = 60_000 as const; // 1 minute

@@ -1,11 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { useLatestLottoDrawQuery } from '@/features/lotto/queries/use-lotto.query';
+import { useGenerationResult } from '@/features/lotto/generator/hooks/use-generation-result.hook';
+import { useWeightingOptions } from '@/features/lotto/generator/hooks/use-weighting-options.hook';
 import { getLottoDraws } from '@/features/lotto/services/lotto.service';
 import { ClientCsvButtonComponent } from '@/features/lotto/shared/components/client-csv-button.component';
 import type {
@@ -24,46 +25,22 @@ import { LottoNumberListComponent } from './number-list.component';
 import { LottoGeneratorWeightingControlsComponent } from './weighting-controls.component';
 
 const DEFAULT_ORDER_COUNT = 5 as const; // 로또 용지 1장 = 5게임
-const WEIGHT_RANGE_SIZE = 50 as const;
 
 export function LottoGeneratorComponent() {
+  // 화면 입력 (게임 수, 고급 옵션, 필터)
   const [orderCount, setOrderCount] = useState<number>(DEFAULT_ORDER_COUNT);
-  const [numbersList, setNumbersList] = useState<number[][]>([]);
-  const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [generatedAt, setGeneratedAt] = useState<string>('');
-  const [rngLabel, setRngLabel] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-
-  // 고급 옵션 (꺼져 있으면 조건 없는 무작위 생성)
   const [useAdvanced, setUseAdvanced] = useState<boolean>(false);
   const [filters, setFilters] = useState<LottoGenerateFiltersType>({
     sumMin: 100,
     sumMax: 200,
     maxConsecutive: 2,
   });
-  const [useWeight, setUseWeight] = useState<boolean>(false);
-  const [from, setFrom] = useState<number>(1);
-  const [to, setTo] = useState<number>(WEIGHT_RANGE_SIZE);
-  const [excludeLatest, setExcludeLatest] = useState<boolean>(false);
-  const [rangeInitialized, setRangeInitialized] = useState<boolean>(false);
-
-  const weightActive = useAdvanced && useWeight;
-  const { data: latestDraw } = useLatestLottoDrawQuery({
-    enabled: weightActive,
-  });
-
-  useEffect(() => {
-    if (!weightActive) {
-      setRangeInitialized(false);
-      return;
-    }
-    if (!latestDraw) return;
-    const latestNo = latestDraw.lastDrawNumber;
-    if (!Number.isInteger(latestNo) || latestNo <= 0) return;
-    setFrom(Math.max(1, latestNo - (WEIGHT_RANGE_SIZE - 1)));
-    setTo(latestNo);
-    setRangeInitialized(true);
-  }, [weightActive, latestDraw]);
+  // 가중치 옵션과 생성 결과는 훅으로 묶는다
+  const weightOptions = useWeightingOptions(useAdvanced);
+  const { useWeight, from, to, excludeLatest, rangeInitialized } =
+    weightOptions;
+  const result = useGenerationResult();
+  const { numbersList, isGenerating, generatedAt, rngLabel, error } = result;
 
   // 조건 없는 무작위 생성
   const generatePlain = useCallback(async (): Promise<number[][]> => {
@@ -71,35 +48,31 @@ export function LottoGeneratorComponent() {
     return Array.from({ length: orderCount }, () => generateLottoNumbers());
   }, [orderCount]);
 
-  // 필터/가중치를 적용한 생성. 실패하면 화면에 오류를 띄우고 null을 돌려준다
-  const generateAdvanced = useCallback(async (): Promise<number[][] | null> => {
+  // 필터/가중치를 적용한 생성. 실패하면 화면에 띄울 문구로 Error를 던진다
+  const generateAdvanced = useCallback(async (): Promise<number[][]> => {
     if (
       filters.sumMin !== undefined &&
       filters.sumMax !== undefined &&
       filters.sumMin > filters.sumMax
     ) {
-      setError('합계 최소값이 최대값보다 클 수 없습니다.');
-      return null;
+      throw new Error('합계 최소값이 최대값보다 클 수 없습니다.');
     }
 
     let drawsData: LottoDrawType[] | undefined;
     if (useWeight) {
       if (!rangeInitialized || from <= 0 || to < from) {
-        setError('가중치 범위(From/To)가 올바르지 않습니다.');
-        return null;
+        throw new Error('가중치 범위(From/To)가 올바르지 않습니다.');
       }
       // 버튼 클릭 순간에 최신 데이터를 직접 조회(HTTP -> 전역 로딩 보장)
       try {
         drawsData = await getLottoDraws({ from, to });
       } catch (e) {
-        setError(
+        throw new Error(
           `가중치 데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.${e}`
         );
-        return null;
       }
       if (!drawsData || drawsData.length === 0) {
-        setError('가중치 데이터가 비어 있습니다.');
-        return null;
+        throw new Error('가중치 데이터가 비어 있습니다.');
       }
     }
 
@@ -127,12 +100,11 @@ export function LottoGeneratorComponent() {
       );
       return tickets.map((t) => [...t.numbers]);
     } catch (e) {
-      setError(
+      throw new Error(
         `조건이 너무 엄격합니다. 필터를 완화하고 다시 시도하세요.${
           e instanceof Error ? ` ${e.message}` : ''
         }`
       );
-      return null;
     }
   }, [
     orderCount,
@@ -144,21 +116,18 @@ export function LottoGeneratorComponent() {
     excludeLatest,
   ]);
 
+  const { start, succeed, fail } = result;
   const handleGenerate = useCallback(async () => {
-    setError(null);
-    setIsGenerating(true);
+    start();
     try {
       const list = useAdvanced
         ? await generateAdvanced()
         : await generatePlain();
-      if (!list) return;
-      setNumbersList(list);
-      setRngLabel(getRandomSourceLabel());
-      setGeneratedAt(new Date().toLocaleString('ko-KR', { hour12: false }));
-    } finally {
-      setIsGenerating(false);
+      succeed(list, getRandomSourceLabel());
+    } catch (e) {
+      fail(e instanceof Error ? e.message : String(e));
     }
-  }, [useAdvanced, generateAdvanced, generatePlain]);
+  }, [useAdvanced, generateAdvanced, generatePlain, start, succeed, fail]);
 
   return (
     <div className="space-y-10">
@@ -213,10 +182,10 @@ export function LottoGeneratorComponent() {
                 from={from}
                 to={to}
                 excludeLatest={excludeLatest}
-                onToggleUseWeight={setUseWeight}
-                onChangeFrom={setFrom}
-                onChangeTo={setTo}
-                onToggleExcludeLatest={setExcludeLatest}
+                onToggleUseWeight={weightOptions.setUseWeight}
+                onChangeFrom={weightOptions.setFrom}
+                onChangeTo={weightOptions.setTo}
+                onToggleExcludeLatest={weightOptions.setExcludeLatest}
               />
             </Card>
           </div>

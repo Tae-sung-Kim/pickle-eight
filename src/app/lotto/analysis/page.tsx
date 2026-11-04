@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: '로또 분석 - 빈도·패턴·구간 통계',
     description:
       '회차별 로또 당첨번호를 기반으로 빈도, 구간, 패턴을 한눈에 확인. 전략 수립 참고용 분석 도구입니다.',
-    url: canonicalUrl(`${MENU_GROUP_NAME_ENUM.LOTTO}/analysis`),
+    url: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/analysis`),
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: canonicalUrl(`${MENU_GROUP_NAME_ENUM.LOTTO}/analysis`),
+    canonical: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/analysis`),
   },
   robots: {
     index: true,

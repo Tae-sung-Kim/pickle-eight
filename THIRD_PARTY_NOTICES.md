@@ -12,27 +12,31 @@ This project depends on the following third-party software. Their licenses permi
 - React Hook Form — MIT License — https://github.com/react-hook-form/react-hook-form
 - Zod — MIT License — https://github.com/colinhacks/zod
 - Zustand — MIT License — https://github.com/pmndrs/zustand
-- Firebase JS SDK — Apache License 2.0 — https://github.com/firebase/firebase-js-sdk
-- Firebase Admin SDK — Apache License 2.0 — https://github.com/firebase/firebase-admin-node
+- Supabase JS (@supabase/supabase-js) — MIT License — https://github.com/supabase/supabase-js
+- tw-animate-css — MIT License — https://github.com/Wombosvideo/tw-animate-css
+- downloadjs — MIT License — https://github.com/rndme/download
 - Axios — MIT License — https://github.com/axios/axios
 - Framer Motion — MIT License — https://github.com/framer/motion
 - Lucide React — ISC License — https://github.com/lucide-icons/lucide
-- uuid — MIT License — https://github.com/uuidjs/uuid
 - clsx — MIT License — https://github.com/lukeed/clsx
-- class-variance-authority — MIT License — https://github.com/joe-bell/cva
+- class-variance-authority — Apache-2.0 — https://github.com/joe-bell/cva
 - tailwind-merge — MIT License — https://github.com/dcastil/tailwind-merge
 - html-to-image — MIT License — https://github.com/bubkoo/html-to-image
 - sonner — MIT License — https://github.com/emilkowalski/sonner
-- next-themes — MIT License — https://github.com/pacocoursey/next-themes
 
 Dev dependencies (selection):
 
 - Biome (@biomejs/biome) — MIT License
 - PostCSS — MIT License
-- Autoprefixer — MIT License
 - @types/\* — MIT License
+- Playwright (@playwright/test) — Apache-2.0
+
+Fonts (loaded from CDN at runtime):
+
+- Pretendard — SIL Open Font License 1.1 — https://github.com/orioncactus/pretendard
 
 Notes:
 
-- Google Firebase SDKs are Apache-2.0; include NOTICE requirements if you redistribute.
+- Apache-2.0 packages: class-variance-authority (client bundle), TypeScript and Playwright (development only).
+- Pretendard is used unmodified under SIL OFL 1.1, which permits commercial use. The font may not be sold by itself.
 - This project does not embed or redistribute ad network SDKs; they are loaded from vendor CDNs at runtime subject to vendor terms.

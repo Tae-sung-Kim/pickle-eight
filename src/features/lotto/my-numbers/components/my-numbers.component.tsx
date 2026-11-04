@@ -155,7 +155,7 @@ export function MyNumbersComponent(): JSX.Element {
 
   return (
     <div className="grid grid-cols-1 gap-8">
-      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
+      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7">
         <h3 className="font-semibold">번호 저장</h3>
         <form
           onSubmit={onSubmit}
@@ -257,7 +257,7 @@ export function MyNumbersComponent(): JSX.Element {
         </form>
       </Card>
 
-      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
+      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold">저장된 번호</h3>
           <ClientCsvButtonComponent

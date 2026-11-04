@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: '로또 시뮬레이터 - 확률/분포 체감',
     description:
       '대량 난수 추첨으로 결과 분포를 시각화. 티켓 수/반복 횟수 설정 지원. 참고용 통계이며 당첨 보장 없음.',
-    url: canonicalUrl(`${MENU_GROUP_NAME_ENUM.LOTTO}/simulator`),
+    url: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/simulator`),
     siteName: process.env.NEXT_PUBLIC_SITE_NAME,
     locale: 'ko_KR',
     type: 'website',
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: canonicalUrl(`${MENU_GROUP_NAME_ENUM.LOTTO}/simulator`),
+    canonical: canonicalUrl(`/${MENU_GROUP_NAME_ENUM.LOTTO}/simulator`),
   },
   robots: {
     index: true,

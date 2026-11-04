@@ -132,9 +132,46 @@ async function getDrawsRange(
   return items;
 }
 
+type LottoStatsRow = {
+  payload: unknown;
+  updated_at: string;
+  last_computed_draw_no: number;
+};
+
+// 통계 캐시(lotto_stats) 조회
+async function getStats(key: string): Promise<LottoStatsRow | null> {
+  const { data, error } = await supabaseAdmin
+    .from('lotto_stats')
+    .select('payload, updated_at, last_computed_draw_no')
+    .eq('key', key)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as LottoStatsRow | null) ?? null;
+}
+
+// 통계 캐시(lotto_stats) 저장
+async function saveStats(
+  key: string,
+  payload: unknown,
+  lastComputedDrawNo: number
+): Promise<void> {
+  const { error } = await supabaseAdmin.from('lotto_stats').upsert(
+    {
+      key,
+      payload,
+      last_computed_draw_no: lastComputedDrawNo,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'key' }
+  );
+  if (error) throw error;
+}
+
 export const lottoRepository = {
   upsertDraw,
   getLatestDrawNumber,
   getDrawByNumber,
   getDrawsRange,
+  getStats,
+  saveStats,
 };

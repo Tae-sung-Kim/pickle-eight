@@ -20,7 +20,7 @@ export function LottoCheckRankBadgeComponent({
               : 'bg-muted text-muted-foreground';
   return (
     <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium text-white ${color}`}
+      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${color}`}
     >
       {label}
     </span>

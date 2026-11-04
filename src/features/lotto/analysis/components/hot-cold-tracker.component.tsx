@@ -197,7 +197,7 @@ export function LottoAnalysisHotColdTrackerComponent() {
 
   return (
     <div className="grid grid-cols-1 gap-8">
-      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7 bg-white">
+      <Card className="rounded-xl border border-border bg-surface-card p-6 shadow-sm md:p-7">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <h3 className="font-semibold">핫/콜드/지연 요약</h3>
           <div className="flex flex-col items-end gap-2">

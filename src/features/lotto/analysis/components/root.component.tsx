@@ -109,7 +109,7 @@ export function LottoAnalysisComponent() {
           )}
 
           {stats && (
-            <div className="mt-6 space-y-8 bg-white rounded-md shadow p-4">
+            <div className="mt-6 space-y-8 bg-card rounded-md shadow p-4">
               <LottoAnalysisFrequencySectionComponent
                 frequencyByNumber={stats.frequencyByNumber}
               />

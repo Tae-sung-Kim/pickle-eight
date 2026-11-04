@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next';
-import { Toaster } from 'sonner';
 import { LoadingComponent } from '@/components/common/loading.component';
 import { FooterComponent } from '@/components/layout/footer.component';
 import { HeaderComponent } from '@/components/layout/header.component';
+import { Toaster } from '@/components/ui/sonner';
 import {
   buildKeywords,
   GLOBAL_KEYWORDS,
@@ -14,11 +14,12 @@ import {
   SITE_URL,
 } from '@/lib/seo';
 import { ConsentProvider } from '@/providers/consent.provider';
+import { MotionProvider } from '@/providers/motion.provider';
 import { QueryClientProviderWrapper } from '@/providers/query-client.provider';
 import './globals.css';
+import { CookieConsentComponent } from '@/components/consent/cookie-consent.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { AdFitSlotComponent } from '@/features/ad/components/adfit-slot.component';
-import { CookieConsentComponent } from '@/features/consent/components/cookie-consent.component';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -105,20 +106,22 @@ export default function RootLayout({
       <body className="flex flex-col bg-background text-foreground antialiased min-h-screen">
         <QueryClientProviderWrapper>
           <ConsentProvider>
-            <HeaderComponent />
-            {/* 모바일 상단 전용 배너 (데스크톱에서는 숨김: 컴포넌트 내부 md:hidden) */}
-            <div className="w-full flex justify-center p-6 pb-0">
-              <AdFitSlotComponent fixed topOffsetPx={64} />
-            </div>
-            <main className="flex-1 py-8">
-              <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                {children}
+            <MotionProvider>
+              <HeaderComponent />
+              {/* 모바일 상단 전용 배너 (데스크톱에서는 숨김: 컴포넌트 내부 md:hidden) */}
+              <div className="w-full flex justify-center p-6 pb-0">
+                <AdFitSlotComponent fixed topOffsetPx={64} />
               </div>
-            </main>
-            <FooterComponent />
-            <Toaster />
-            <LoadingComponent />
-            <CookieConsentComponent />
+              <main className="flex-1 py-8">
+                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                  {children}
+                </div>
+              </main>
+              <FooterComponent />
+              <Toaster />
+              <LoadingComponent />
+              <CookieConsentComponent />
+            </MotionProvider>
           </ConsentProvider>
         </QueryClientProviderWrapper>
       </body>

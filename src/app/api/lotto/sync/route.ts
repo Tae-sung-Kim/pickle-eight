@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { DH_LOTTO_ENDPOINT } from '@/features/lotto/constants/lotto.constant';
-import { lottoRepository } from '@/features/lotto/services/lotto-repository';
+import { lottoRepository } from '@/features/lotto/services/lotto.repository';
 import type {
   DhLottoApiResponseType,
   LottoDrawType,

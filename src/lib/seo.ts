@@ -34,14 +34,35 @@ export function buildMetadata(input: {
   description: string;
   pathname: string;
   locale?: string;
+  keywords?: string[];
+  /** OG 이미지를 만든다. alt는 이미지 대체 텍스트, tag는 생략하면 메뉴 라벨(getOgTag) */
+  ogImage?: { alt: string; tag?: string };
 }): Metadata {
-  const { title, description, pathname, locale = 'ko-KR' } = input;
+  const {
+    title,
+    description,
+    pathname,
+    locale = 'ko-KR',
+    keywords,
+    ogImage,
+  } = input;
   const url: string = canonicalUrl(pathname);
+  const images = ogImage
+    ? [
+        generateOgImageUrl(
+          title,
+          description,
+          ogImage.alt,
+          ogImage.tag ?? getOgTag({ href: pathname })
+        ),
+      ]
+    : undefined;
   return {
     metadataBase: new URL(SITE_URL),
     // 사이트명은 루트 레이아웃의 title.template이 붙인다
     title,
     description,
+    ...(keywords && { keywords }),
     alternates: {
       canonical: url,
       languages: {
@@ -55,11 +76,13 @@ export function buildMetadata(input: {
       description,
       siteName: SITE_NAME,
       locale,
+      ...(images && { images }),
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      ...(images && { images }),
     },
     robots: {
       index: true,

@@ -36,20 +36,21 @@ export const SECTION_ICONS: Record<MenuSectionKeyType, LucideIcon> = {
   where: MapPin,
 };
 
+// 색 값은 globals.css의 --menu-* 토큰에서 온다
 export const SECTION_ICON_COLOR: Record<MenuSectionKeyType, string> = {
-  lotto: 'text-primary',
-  tarot: 'text-violet-600',
-  fortune: 'text-amber-600',
-  lunch: 'text-orange-600',
-  where: 'text-sky-600',
+  lotto: 'text-menu-lotto',
+  tarot: 'text-menu-tarot',
+  fortune: 'text-menu-fortune',
+  lunch: 'text-menu-lunch',
+  where: 'text-menu-where',
 } as const;
 
 export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
-  lotto: 'bg-primary/10 text-primary border-primary/20',
-  tarot: 'bg-violet-600/10 text-violet-600 border-violet-600/20',
-  fortune: 'bg-amber-600/10 text-amber-600 border-amber-600/20',
-  lunch: 'bg-orange-600/10 text-orange-600 border-orange-600/20',
-  where: 'bg-sky-600/10 text-sky-600 border-sky-600/20',
+  lotto: 'bg-menu-lotto/10 text-menu-lotto border-menu-lotto/20',
+  tarot: 'bg-menu-tarot/10 text-menu-tarot border-menu-tarot/20',
+  fortune: 'bg-menu-fortune/10 text-menu-fortune border-menu-fortune/20',
+  lunch: 'bg-menu-lunch/10 text-menu-lunch border-menu-lunch/20',
+  where: 'bg-menu-where/10 text-menu-where border-menu-where/20',
 } as const;
 
 export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
