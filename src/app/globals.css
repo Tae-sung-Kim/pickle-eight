@@ -170,6 +170,9 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "tnum" 1;
+    /* 한글은 어절 단위로 줄바꿈. 너무 긴 문자열만 강제로 끊는다. */
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   h1,
   h2,

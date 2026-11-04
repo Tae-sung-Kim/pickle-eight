@@ -55,7 +55,7 @@ export default function RootPage() {
           })),
         }}
       />
-      <div className="max-w-2xl">
+      <div className="max-w-4xl">
         <h1 className="text-4xl font-extrabold md:text-5xl">{SITE_NAME}</h1>
         <p className="mt-3 text-base leading-relaxed text-muted-foreground md:text-lg">
           {HERO_DESCRIPTION}

@@ -24,7 +24,7 @@ const RULES = [
     msg: 'git push는 사용자가 직접 하거나 명시적으로 요청할 때만 한다.',
   },
   {
-    re: /\bgit\s+(reset\s+--hard|clean\s+-[a-zA-Z]*f|checkout\s+--\s|restore\s)/,
+    re: /\bgit\s+(reset\s+--hard|clean\s+-[a-zA-Z]*f|checkout\s+--\s|restore\b(?!\s+--staged\b(?!.*(--worktree|\s-W))))/,
     msg: '작업 내용을 지우는 git 명령은 막혀 있다. 사용자에게 확인받아라.',
   },
   {
