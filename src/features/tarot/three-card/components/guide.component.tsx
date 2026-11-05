@@ -1,0 +1,48 @@
+import type { JSX } from 'react';
+
+import { TAROT_SPREAD_POSITIONS } from '@/features/tarot/constants/tarot-spread.constant';
+import { TarotCardBackComponent } from '@/features/tarot/shared/components/card-back.component';
+
+const GUIDE_TITLE = '3장 타로 읽는 법';
+
+const GUIDE_PARAGRAPHS: readonly string[] = [
+  '3장 타로(쓰리카드 타로)는 카드 세 장을 차례로 놓고 과거, 현재, 미래의 흐름을 살펴보는 방식입니다. 세 장을 따로 떼어 보기보다 하나의 이야기로 이어 읽으면 도움이 될 수 있습니다.',
+  '첫 번째 카드는 과거로, 지금 상황에 영향을 준 지난 흐름을 돌아보는 자리입니다. 두 번째 카드는 현재로, 지금 마주한 상황과 마음을 살피는 자리입니다. 세 번째 카드는 미래로, 지금의 흐름이 이어질 때 나타날 수 있는 모습을 참고하는 자리입니다.',
+  '과거, 현재, 미래 순서로 한 장씩 읽은 뒤, 마지막에 세 장을 함께 놓고 흐름을 정리해 보시기 바랍니다.',
+  '같은 질문으로 여러 번 뽑기보다 한 번의 결과를 차분히 돌아보는 편이 도움이 될 수 있습니다. 카드는 앞날을 알려 주는 것이 아니라 고민을 다른 시각에서 정리해 보는 참고 자료입니다.',
+];
+
+/**
+ * TarotThreeCardGuideComponent
+ * - 스프레드 위치 설명과 뒷면 3장 배치도(과거·현재·미래). 서버 컴포넌트.
+ * - 위치 이름은 TAROT_SPREAD_POSITIONS를 그대로 쓴다.
+ */
+export function TarotThreeCardGuideComponent(): JSX.Element {
+  return (
+    <section className="space-y-4">
+      <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
+        {GUIDE_TITLE}
+      </h2>
+      <div className="space-y-3">
+        {GUIDE_PARAGRAPHS.map((paragraph) => (
+          <p
+            key={paragraph}
+            className="max-w-[68ch] text-sm leading-7 text-foreground sm:text-base"
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
+      <ol className="flex items-start gap-3">
+        {TAROT_SPREAD_POSITIONS.map((position) => (
+          <li key={position.key} className="flex flex-col items-center gap-2">
+            <TarotCardBackComponent className="w-[88px] text-menu-tarot sm:w-[104px]" />
+            <span className="text-sm font-medium text-muted-foreground">
+              {position.label}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}

@@ -108,7 +108,6 @@ export default function RootLayout({
           <ConsentProvider>
             <MotionProvider>
               <HeaderComponent />
-              {/* 모바일 상단 전용 배너 (데스크톱에서는 숨김: 컴포넌트 내부 md:hidden) */}
               <div className="w-full flex justify-center p-6 pb-0">
                 <AdFitSlotComponent fixed topOffsetPx={64} />
               </div>

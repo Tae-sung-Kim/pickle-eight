@@ -7,10 +7,7 @@ import type {
   LottoTicketType,
   LottoWeightingOptionsType,
 } from '@/features/lotto/types/lotto.type';
-import {
-  secureRandomFloat,
-  secureRandomInt,
-} from '@/features/lotto/utils/random.util';
+import { secureRandomFloat, secureRandomInt } from '@/lib/random';
 
 function uniqueSortedSix(
   numbers: number[]

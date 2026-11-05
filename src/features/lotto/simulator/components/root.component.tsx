@@ -8,7 +8,7 @@ import {
   LottoGenerator,
   LottoUtils,
 } from '@/features/lotto/utils/lotto.util';
-import { secureRandomInt } from '@/features/lotto/utils/random.util';
+import { secureRandomInt } from '@/lib/random';
 import { SimulatorBestPerformanceComponent } from './best-performance.component';
 import { SimulatorControlsComponent } from './controls.component';
 import { SimulatorCustomTicketsComponent } from './custom-tickets.component';

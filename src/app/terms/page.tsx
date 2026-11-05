@@ -39,7 +39,7 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
-  const EFFECTIVE_DATE = '2026-10-29' as const;
+  const EFFECTIVE_DATE = '2026-11-04' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '이용약관', item: canonicalUrl('/terms') },
@@ -59,6 +59,10 @@ export default function TermsPage() {
             당첨 확인 등 오락적 기능을 제공합니다. 본 서비스는 정보 제공
             목적이며, 당첨 또는 수익을 보장하지 않습니다. 본 서비스의 정보 및
             번호 생성 결과는 투자·재정·법률 자문이 아닙니다.
+          </p>
+          <p className="mt-2">
+            또한 본 서비스는 카드 뽑기, 오늘의 카드 등 타로 기능을 오락과 자기
+            성찰 목적으로 제공합니다.
           </p>
         </section>
         <section>
@@ -115,7 +119,18 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">6. 광고 및 쿠키</h2>
+          <h2 className="font-medium text-foreground">6. 타로 서비스</h2>
+          <p>
+            타로 서비스는 오락과 자기 성찰을 목적으로 제공됩니다. 타로 결과는
+            미래를 예측하거나 보장하지 않으며, 건강·법률·투자 등 중요한 결정은
+            전문가와 상담하시기 바랍니다. 본 서비스는 특정 타로 덱 제작사나
+            출판사와 제휴·후원 관계가 없습니다. 오늘의 카드는 날짜와 카드 정보만
+            이용자의 기기(localStorage)를 기준으로 저장되므로, 다른 기기나
+            브라우저에서는 다른 카드가 나올 수 있습니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">7. 광고 및 쿠키</h2>
           <p>
             서비스에는 광고(예: 카카오 애드핏)가 게재될 수 있으며, 광고 이용은
             자발적이어야 합니다. 핵심 기능 접근을 광고 시청으로 강제하지
@@ -125,14 +140,14 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">7. 금지 행위</h2>
+          <h2 className="font-medium text-foreground">8. 금지 행위</h2>
           <p>
             다음 행위는 금지됩니다: 불법적 이용, 자동화된 과도한 요청/스크래핑,
             서비스 방해, 저작권/상표권 침해, 타인의 개인정보 침해 등.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">8. 지식재산권</h2>
+          <h2 className="font-medium text-foreground">9. 지식재산권</h2>
           <p>
             서비스 및 제공되는 콘텐츠의 권리는 각 권리자에게 귀속됩니다. 별도
             허락 없는 복제/배포/2차적 저작물 작성은 금지됩니다.
@@ -140,7 +155,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            9. 책임 제한 및 제3자 서비스
+            10. 책임 제한 및 제3자 서비스
           </h2>
           <p>
             본 서비스 이용으로 인한 손실(직접/간접/부수적 손해 포함)에 대해
@@ -151,7 +166,7 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">10. 면책 및 보상</h2>
+          <h2 className="font-medium text-foreground">11. 면책 및 보상</h2>
           <p>
             이용자가 약관 위반 또는 불법행위로 인해 제3자와의 분쟁·청구가 발생한
             경우, 이용자는 당사에 발생한 합리적 손해와 비용(변호사 비용 포함)을
@@ -161,7 +176,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            11. 서비스 변경 및 중단
+            12. 서비스 변경 및 중단
           </h2>
           <p>
             당사는 서비스의 전부 또는 일부를 변경·중단할 수 있습니다. 필요 시
@@ -169,7 +184,7 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">12. 약관 변경</h2>
+          <h2 className="font-medium text-foreground">13. 약관 변경</h2>
           <p>
             본 약관은 사전 고지 후 변경될 수 있습니다. 변경 후에도 서비스를 계속
             이용하면 변경 사항에 동의한 것으로 간주됩니다.
@@ -177,21 +192,21 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            13. 준거법 및 분쟁 해결
+            14. 준거법 및 분쟁 해결
           </h2>
           <p>
             본 약관은 대한민국 법률에 따릅니다. 분쟁은 관할 법원에서 해결합니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">14. 분리가능성</h2>
+          <h2 className="font-medium text-foreground">15. 분리가능성</h2>
           <p>
             본 약관의 일부 조항이 무효·집행 불능으로 판단되더라도, 나머지 조항의
             유효성에는 영향을 미치지 않습니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">15. 문의</h2>
+          <h2 className="font-medium text-foreground">16. 문의</h2>
           <p className="break-all">문의: contact.tskim@gmail.com</p>
           <p>
             텔레그램:{' '}

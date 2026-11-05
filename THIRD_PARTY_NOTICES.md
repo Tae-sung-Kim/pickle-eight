@@ -35,6 +35,13 @@ Fonts (loaded from CDN at runtime):
 
 - Pretendard — SIL Open Font License 1.1 — https://github.com/orioncactus/pretendard
 
+Original artwork and content (Tarot):
+
+- Tarot card artwork (78 card faces and the card back) is original work drawn as inline SVG code in `src/features/tarot/shared/components/` (created 2026-11, authored in this repository). No third-party tarot deck images, scans, icon sets, stock images or AI image-generation tools were used. The artwork does not reproduce any existing deck's composition.
+- Card interpretation text, position guides, topic examples, FAQ and guide copy are original text written for this project (authored by an AI assistant under the project owner's direction, without reference to third-party interpretation texts; reviewed by the project owner). Authorship, dates and review status are logged in `docs/tarot/copy-log.md`, which also records a sampled web-search check for matching sentences (not an exhaustive check).
+- No new dependencies, fonts or icon sets were added for the Tarot feature. Lucide React icons are used only for general UI (buttons, menu), never for card artwork.
+- This service is not affiliated with, endorsed by or sponsored by any tarot deck publisher, author or trademark holder.
+
 Notes:
 
 - Apache-2.0 packages: class-variance-authority (client bundle), TypeScript and Playwright (development only).

@@ -1,6 +1,6 @@
 # Compliance Checklist (Production)
 
-Last updated: 2025-09-05
+Last updated: 2026-11-04
 
 This document summarizes legal/commercial and operational compliance items for Pickle-eight prior to production deployment.
 
@@ -10,6 +10,7 @@ This document summarizes legal/commercial and operational compliance items for P
   - Global `ConsentProvider` manages `unknown | accepted | declined` with persistence in `localStorage`.
   - Analytics/ads scripts run only when consent is `accepted`.
   - `CookieSettingsButton` in footer allows reopening consent banner.
+  - Tarot (`/tarot/*`): works regardless of consent state. The optional question text is kept in React state only (never sent to a server, never stored in localStorage, sessionStorage, cookies or URLs, never included in analytics/alert events). The only value stored is today's card in one localStorage key (`<site>_tarot_daily_v1`: date, card number, orientation); stale or corrupted values are deleted on the next visit. Crisis/expert-topic keyword detection runs in the browser only and is never reported anywhere.
 - Actions:
   - Confirm Privacy Policy and Terms list third parties (Firebase, analytics, ad networks if used) and data usage.
   - Provide contact email and effective date.
@@ -105,5 +106,13 @@ This document summarizes legal/commercial and operational compliance items for P
 
 - Non-affiliation notice for lottery organizations.
 - Responsible use guidance and age restrictions stated on relevant pages.
+- Tarot (`/tarot/daily`, `/tarot/three-card`):
+  - Entertainment/self-reflection notice shown directly under the h1 on every tarot page (always visible, never collapsed) and a short notice below the result area. Wording: "본 타로 서비스는 오락 및 엔터테인먼트 목적으로 제공되며, 전문적인 법률·의학·재정적 조언을 대신할 수 없습니다."
+  - Results are not presented as predictions or guarantees. Forbidden phrasing (guarantee/accuracy claims, deterministic future statements, trademark names of third-party decks) is listed in `src/features/tarot/constants/tarot-copy-rule.constant.ts` and checked by `e2e/tarot-copy.spec.ts`.
+  - Non-affiliation: no affiliation with any tarot deck publisher or author. Card artwork is original (inline SVG, no external deck images or icon sets); interpretation text is original (authorship log: `docs/tarot/copy-log.md`).
+  - Crisis guidance: five counseling hotlines are always displayed in the result area: suicide prevention 109, mental health crisis 1577-0199, Korea Lifeline 1588-9191 (national representative number), youth 1388, women's emergency 1366 (all stated as 24h). When crisis wording is detected in the question, 109, 1577-0199 and 1588-9191 are shown before the result. Re-verify every number and operating hour before release. Last verified: 2026-11-05 (web search only; re-check before launch).
+  - No server-side storage of tarot input; only today's card (date, card number, orientation) is stored in the browser and is deleted on the next visit after the day changes.
+  - No paid or credit features. Revenue is AdFit display ads only; ads never gate results.
+  - No legal review has been obtained for tarot content (accepted risk, see `docs/tarot/plan.md`).
 
 All items above should be reviewed before each release. Keep this file updated with changes in dependencies, ad networks, or data sources.

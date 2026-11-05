@@ -18,7 +18,7 @@ import {
   generateLottoNumbers,
   LottoGenerator,
 } from '@/features/lotto/utils/lotto.util';
-import { getRandomSourceLabel } from '@/features/lotto/utils/random.util';
+import { getRandomSourceLabel } from '@/lib/random';
 import { LottoGeneratorFilterControlsComponent } from './filter-controls.component';
 import { LottoGeneratorControlsComponent } from './generator-controls.component';
 import { LottoNumberListComponent } from './number-list.component';

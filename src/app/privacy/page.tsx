@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const EFFECTIVE_DATE = '2026-10-29' as const;
+  const EFFECTIVE_DATE = '2026-11-04' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '개인정보처리방침', item: canonicalUrl('/privacy') },
@@ -81,6 +81,9 @@ export default function PrivacyPolicyPage() {
             수집·검증해 내부 데이터베이스(Supabase)에 저장하며, 이용자 정보와
             연결되지 않습니다.
           </p>
+          <p className="mt-2">
+            타로 서비스에서 입력한 질문은 서버로 전송하거나 저장하지 않습니다.
+          </p>
         </section>
         <section>
           <h2 className="font-medium text-foreground">
@@ -95,6 +98,11 @@ export default function PrivacyPolicyPage() {
             <li>쿠키 동의 선택 상태 (localStorage)</li>
             <li>
               나의 번호: 이용자가 저장한 번호와 라벨, 즐겨찾기 (localStorage)
+            </li>
+            <li>
+              오늘의 타로: 날짜·카드 번호·정/역방향만 이 기기(localStorage)에
+              저장합니다. 저장된 값은 다음 날 방문 시 자동으로 삭제되며,
+              브라우저 설정에서도 삭제할 수 있습니다.
             </li>
             <li>연령 확인 여부 (sessionStorage, 탭을 닫으면 삭제)</li>
             <li>화면 표시 속도를 위한 임시 캐시 (localStorage)</li>
