@@ -52,3 +52,6 @@ next-env.d.ts
 
 # Claude Code hook 캐시
 .claude/.verify-cache
+
+# 운세 달력 검증 결과(실행할 때마다 바뀜)
+scripts/fortune-calendar/verify-result.json

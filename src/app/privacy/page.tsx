@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const EFFECTIVE_DATE = '2026-11-04' as const;
+  const EFFECTIVE_DATE = '2026-11-05' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '개인정보처리방침', item: canonicalUrl('/privacy') },
@@ -84,6 +84,11 @@ export default function PrivacyPolicyPage() {
           <p className="mt-2">
             타로 서비스에서 입력한 질문은 서버로 전송하거나 저장하지 않습니다.
           </p>
+          <p className="mt-2">
+            운세 서비스에서 입력한 생년월일과 태어난 시각은 서버로 전송하거나
+            저장하지 않으며, 이용자의 브라우저 메모리에서만 사용합니다. 페이지를
+            벗어나거나 새로고침하면 사라집니다.
+          </p>
         </section>
         <section>
           <h2 className="font-medium text-foreground">
@@ -105,6 +110,11 @@ export default function PrivacyPolicyPage() {
               브라우저 설정에서도 삭제할 수 있습니다.
             </li>
             <li>연령 확인 여부 (sessionStorage, 탭을 닫으면 삭제)</li>
+            <li>
+              운세 이용 동의: 동의 여부, 동의한 안내문 버전, 동의 시각만 이
+              탭(sessionStorage)에 저장하며 탭을 닫으면 삭제됩니다. 생년월일은
+              저장하지 않습니다.
+            </li>
             <li>화면 표시 속도를 위한 임시 캐시 (localStorage)</li>
           </ul>
           <p className="mt-2">
@@ -201,10 +211,18 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="font-medium text-foreground">10. 어린이의 개인정보</h2>
           <p>
-            본 서비스는 어린이를 대상으로 제공되지 않습니다. 로또 관련 기능은 만
-            19세 이상에게만 제공되며 연령 확인 절차를 통해 접근이 제한됩니다.
-            법정 대리인의 동의 없이 어린이의 개인정보가 수집된 것으로 확인되면
-            지체 없이 삭제 조치를 취합니다.
+            본 서비스는 어린이를 주된 대상으로 제공하지 않습니다. 운세 서비스는
+            만 14세 이상이 이용할 수 있으며, 로또 등 연령 제한이 있는 기능은 각
+            기능의 안내를 따릅니다. 로또 관련 기능은 만 19세 이상에게만 제공되며
+            연령 확인 절차를 통해 접근이 제한됩니다. 법정 대리인의 동의 없이
+            어린이의 개인정보가 수집된 것으로 확인되면 지체 없이 삭제 조치를
+            취합니다.
+          </p>
+          <p className="mt-2">
+            운세 서비스는 만 14세 이상 이용자를 대상으로 합니다. 이용 전 만 14세
+            이상인지 확인하는 절차를 거치며, 생년월일을 입력하면 이용자의
+            브라우저 안에서 만 나이를 한 번 더 확인합니다. 이 확인에 쓴
+            생년월일과 확인 결과는 저장하지 않습니다.
           </p>
         </section>
         <section>

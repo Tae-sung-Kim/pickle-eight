@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import {
+  FORTUNE_MAX_BIRTH,
+  FORTUNE_MIN_BIRTH,
+} from '@/features/fortune/constants/fortune-input.constant';
+import {
   buildMetadata,
   canonicalUrl,
   generateOgImageUrl,
@@ -39,7 +43,8 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
-  const EFFECTIVE_DATE = '2026-11-04' as const;
+  const EFFECTIVE_DATE = '2026-11-05' as const;
+  const fortuneBirthRange = `${FORTUNE_MIN_BIRTH.year}년부터 ${FORTUNE_MAX_BIRTH.year}년까지`;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '이용약관', item: canonicalUrl('/terms') },
@@ -63,6 +68,10 @@ export default function TermsPage() {
           <p className="mt-2">
             또한 본 서비스는 카드 뽑기, 오늘의 카드 등 타로 기능을 오락과 자기
             성찰 목적으로 제공합니다.
+          </p>
+          <p className="mt-2">
+            또한 본 서비스는 오늘의 운세, 띠별 운세, 별자리 운세 등 운세 기능을
+            오락과 참고 목적으로 제공합니다.
           </p>
         </section>
         <section>
@@ -130,7 +139,28 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">7. 광고 및 쿠키</h2>
+          <h2 className="font-medium text-foreground">7. 운세 서비스</h2>
+          <p>
+            운세 서비스는 오락과 참고를 목적으로 제공됩니다. 이용하려면 이용 전
+            확인 화면에서 만 14세 이상임, 오락과 참고를 위한 서비스이며 결과를
+            바탕으로 한 판단과 선택에 대한 책임은 이용자 본인에게 있음, 입력한
+            생년월일이 서버로 전송되거나 저장되지 않음을 확인하고 동의해야
+            합니다. 건강·법률·투자 등 중요한 결정은 전문가와 상담하시기
+            바랍니다.
+          </p>
+          <p className="mt-2">
+            운세 서비스는 만 14세 이상 이용자를 대상으로 하며, 만 14세 미만은
+            이용할 수 없습니다. 이용 동의 상태는 이용자의 브라우저
+            (sessionStorage)에만 저장되고 탭을 닫으면 삭제됩니다. 생년월일은
+            저장하지 않으며, 자세한 내용은 개인정보처리방침을 따릅니다. 본
+            서비스는 특정 운세·점술 서비스나 단체와 제휴·후원 관계가 없습니다.
+          </p>
+          <p className="mt-2">
+            운세 서비스에서 지원하는 출생 연도는 {fortuneBirthRange}입니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">8. 광고 및 쿠키</h2>
           <p>
             서비스에는 광고(예: 카카오 애드핏)가 게재될 수 있으며, 광고 이용은
             자발적이어야 합니다. 핵심 기능 접근을 광고 시청으로 강제하지
@@ -140,14 +170,14 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">8. 금지 행위</h2>
+          <h2 className="font-medium text-foreground">9. 금지 행위</h2>
           <p>
             다음 행위는 금지됩니다: 불법적 이용, 자동화된 과도한 요청/스크래핑,
             서비스 방해, 저작권/상표권 침해, 타인의 개인정보 침해 등.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">9. 지식재산권</h2>
+          <h2 className="font-medium text-foreground">10. 지식재산권</h2>
           <p>
             서비스 및 제공되는 콘텐츠의 권리는 각 권리자에게 귀속됩니다. 별도
             허락 없는 복제/배포/2차적 저작물 작성은 금지됩니다.
@@ -155,7 +185,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            10. 책임 제한 및 제3자 서비스
+            11. 책임 제한 및 제3자 서비스
           </h2>
           <p>
             본 서비스 이용으로 인한 손실(직접/간접/부수적 손해 포함)에 대해
@@ -166,7 +196,7 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">11. 면책 및 보상</h2>
+          <h2 className="font-medium text-foreground">12. 면책 및 보상</h2>
           <p>
             이용자가 약관 위반 또는 불법행위로 인해 제3자와의 분쟁·청구가 발생한
             경우, 이용자는 당사에 발생한 합리적 손해와 비용(변호사 비용 포함)을
@@ -176,7 +206,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            12. 서비스 변경 및 중단
+            13. 서비스 변경 및 중단
           </h2>
           <p>
             당사는 서비스의 전부 또는 일부를 변경·중단할 수 있습니다. 필요 시
@@ -184,7 +214,7 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">13. 약관 변경</h2>
+          <h2 className="font-medium text-foreground">14. 약관 변경</h2>
           <p>
             본 약관은 사전 고지 후 변경될 수 있습니다. 변경 후에도 서비스를 계속
             이용하면 변경 사항에 동의한 것으로 간주됩니다.
@@ -192,21 +222,21 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            14. 준거법 및 분쟁 해결
+            15. 준거법 및 분쟁 해결
           </h2>
           <p>
             본 약관은 대한민국 법률에 따릅니다. 분쟁은 관할 법원에서 해결합니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">15. 분리가능성</h2>
+          <h2 className="font-medium text-foreground">16. 분리가능성</h2>
           <p>
             본 약관의 일부 조항이 무효·집행 불능으로 판단되더라도, 나머지 조항의
             유효성에는 영향을 미치지 않습니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">16. 문의</h2>
+          <h2 className="font-medium text-foreground">17. 문의</h2>
           <p className="break-all">문의: contact.tskim@gmail.com</p>
           <p>
             텔레그램:{' '}

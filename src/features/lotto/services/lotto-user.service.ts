@@ -10,7 +10,7 @@ import type {
 import { LottoUtils } from '@/features/lotto/utils/lotto.util';
 import { http } from '@/lib/http';
 
-const STORAGE_PREFIX = 'pickle-eight:lotto:';
+const STORAGE_PREFIX = `${process.env.NEXT_PUBLIC_SITE_ENG_NAME}:lotto:`;
 
 function createId(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;

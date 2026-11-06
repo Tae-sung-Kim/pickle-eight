@@ -17,71 +17,13 @@ export const TAROT_DISCLAIMER_TEXT =
 export const TAROT_RESULT_DISCLAIMER_TEXT =
   '타로는 오락과 자기 성찰을 위한 콘텐츠이며, 결과는 미래를 예측하거나 보장하지 않습니다. 건강·법률·투자 등 중요한 결정은 전문가와 상담하시기 바랍니다.';
 
-// 위기 안내 (상시). "109"는 화면에서 tel 링크로 만든다.
-export type TarotCrisisPhoneType = {
-  id: string;
-  /** 기관 이름 (번호 제외) */
-  name: string;
-  /** 화면에 보이는 번호 (하이픈 포함) */
-  displayNumber: string;
-  /** tel 링크. 숫자만 쓴다 */
-  href: string;
-  /** 결과 하단에만 보이는 상담 분야 설명 */
-  description: string;
-  /** 위기 안내 패널 노출 여부 (109는 주 버튼, 나머지는 "다른 상담전화" 링크) */
-  showInCrisisPanel: boolean;
-};
-
-// 순서가 곧 화면 순서 = DOM 순서 = 탭 순서다. 바꾸지 않는다.
-export const TAROT_CRISIS_PHONES: readonly TarotCrisisPhoneType[] = [
-  {
-    id: 'suicide-prevention',
-    name: '자살예방 상담전화',
-    displayNumber: '109',
-    href: 'tel:109',
-    description: '자살 생각과 위기 상황 상담',
-    showInCrisisPanel: true,
-  },
-  {
-    id: 'mental-health-crisis',
-    name: '정신건강위기상담전화',
-    displayNumber: '1577-0199',
-    href: 'tel:15770199',
-    description: '우울·불안 등 정신건강 위기 상담',
-    showInCrisisPanel: true,
-  },
-  {
-    id: 'life-line',
-    name: '한국생명의전화',
-    displayNumber: '1588-9191',
-    href: 'tel:15889191',
-    description: '삶의 고민과 마음의 어려움 상담',
-    showInCrisisPanel: true,
-  },
-  {
-    id: 'youth',
-    name: '청소년전화',
-    displayNumber: '1388',
-    href: 'tel:1388',
-    description: '청소년의 고민과 위기 상담',
-    showInCrisisPanel: false,
-  },
-  {
-    id: 'women-emergency',
-    name: '여성긴급전화',
-    displayNumber: '1366',
-    href: 'tel:1366',
-    description: '가정폭력·성폭력 등 폭력 피해 상담',
-    showInCrisisPanel: false,
-  },
-];
+// 위기 안내 (상시). 상담전화 목록·결과 하단 안내 첫 줄은 공용 상수(src/constants/crisis-phone.constant.ts)를 쓴다.
+// 아래 두 문구는 터치 상태 링크에서만 쓴다(PC 상태 글자에는 넣지 않는다).
 export const TAROT_CRISIS_PHONE_ARIA_LABEL = '자살예방 상담전화 109 전화 연결';
 export const TAROT_CRISIS_OTHER_PHONES_TITLE = '다른 상담전화';
-// 위기 패널 본문 / 결과 하단 안내 첫 줄 (끝 문장만 다르다)
+// 위기 패널 본문
 export const TAROT_CRISIS_PANEL_BODY =
   '마음이 많이 힘드시다면 혼자 견디지 마시고 아래 상담전화에서 이야기를 나눠 보시기 바랍니다. 세 곳 모두 24시간 운영합니다.';
-export const TAROT_CRISIS_RESULT_LINE =
-  '마음이 많이 힘드시다면 혼자 견디지 마시고 아래 상담전화에서 이야기를 나눠 보시기 바랍니다. 모두 24시간 운영합니다.';
 
 // 위기 안내 패널 (입력 감지 시)
 export const TAROT_CRISIS_NOTICE_TITLE =

@@ -42,6 +42,13 @@ Original artwork and content (Tarot):
 - No new dependencies, fonts or icon sets were added for the Tarot feature. Lucide React icons are used only for general UI (buttons, menu), never for card artwork.
 - This service is not affiliated with, endorsed by or sponsored by any tarot deck publisher, author or trademark holder.
 
+Original content and data (Fortune):
+
+- Fortune copy (personal daily reading, zodiac, star-sign, common advice/caution pools, guides, FAQ and notices) is original text written for this project (authored by an AI assistant under the project owner's direction, without reference to third-party fortune texts; reviewed by the project owner). Authorship, dates and review status are logged in `docs/fortune/copy-log.md`, which also records a sampled web-search check for matching sentences (not an exhaustive check).
+- Calendar tables (`src/features/fortune/constants/calendar/`) were generated from the Korea Astronomy and Space Science Institute (KASI) public data (Special Day Information for the 24 solar terms and Lunar/Solar Calendar Information) provided via data.go.kr. Queried 2026-11-05. The usage scope shown on the portal is "제한 없음" (no restriction), as confirmed by the project owner. No legal review of the terms has been obtained. Record: `docs/fortune/calendar-verification.md`.
+- No new dependencies, fonts or icon sets were added for the Fortune feature.
+- This service is not affiliated with, endorsed by or sponsored by KASI or any fortune-telling service.
+
 Notes:
 
 - Apache-2.0 packages: class-variance-authority (client bundle), TypeScript and Playwright (development only).

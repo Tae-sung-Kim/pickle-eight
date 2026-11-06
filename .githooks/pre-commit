@@ -1,0 +1,17 @@
+#!/bin/sh
+# 커밋 전 검사: 스테이징된 파일 Biome 검사 + 전체 타입체크.
+# 실패하면 커밋이 중단된다. 급한 경우에만 `git commit --no-verify`로 건너뛴다.
+
+echo "[pre-commit] biome check (staged)"
+pnpm exec biome check --staged --no-errors-on-unmatched || {
+  echo ""
+  echo "[pre-commit] Biome 검사 실패. 'pnpm lint:fix' 후 다시 add 하고 커밋하세요."
+  exit 1
+}
+
+echo "[pre-commit] typecheck"
+pnpm typecheck || {
+  echo ""
+  echo "[pre-commit] 타입 오류. 고친 뒤 다시 커밋하세요."
+  exit 1
+}

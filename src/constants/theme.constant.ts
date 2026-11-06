@@ -48,7 +48,7 @@ export const SECTION_ICON_COLOR: Record<MenuSectionKeyType, string> = {
 export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
   lotto: 'bg-menu-lotto/10 text-menu-lotto border-menu-lotto/20',
   tarot: 'bg-menu-tarot/10 text-menu-tarot border-menu-tarot/20',
-  fortune: 'bg-menu-fortune/10 text-menu-fortune border-menu-fortune/20',
+  fortune: 'bg-menu-fortune/10 text-foreground border-menu-fortune/40',
   lunch: 'bg-menu-lunch/10 text-menu-lunch border-menu-lunch/20',
   where: 'bg-menu-where/10 text-menu-where border-menu-where/20',
 } as const;

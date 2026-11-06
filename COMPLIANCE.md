@@ -1,6 +1,6 @@
 # Compliance Checklist (Production)
 
-Last updated: 2026-11-04
+Last updated: 2026-11-06
 
 This document summarizes legal/commercial and operational compliance items for Pickle-eight prior to production deployment.
 
@@ -11,6 +11,7 @@ This document summarizes legal/commercial and operational compliance items for P
   - Analytics/ads scripts run only when consent is `accepted`.
   - `CookieSettingsButton` in footer allows reopening consent banner.
   - Tarot (`/tarot/*`): works regardless of consent state. The optional question text is kept in React state only (never sent to a server, never stored in localStorage, sessionStorage, cookies or URLs, never included in analytics/alert events). The only value stored is today's card in one localStorage key (`<site>_tarot_daily_v1`: date, card number, orientation); stale or corrupted values are deleted on the next visit. Crisis/expert-topic keyword detection runs in the browser only and is never reported anywhere.
+  - Fortune (`/fortune/*`): works regardless of cookie consent state. Birth date/time input is kept in React state only (never sent to a server, never stored in localStorage, cookies or URLs, never included in analytics/alert events). The only stored value is the fortune use-consent flag in one sessionStorage key (`<site>_fortune_consent_v1`: version and agreed-at time), which disappears when the browser tab/session ends. Fortune content (copy pools, calendar tables) is loaded only after the user agrees; the hub (`/fortune`) and the server-rendered guide/FAQ/notices are not gated.
 - Actions:
   - Confirm Privacy Policy and Terms list third parties (Firebase, analytics, ad networks if used) and data usage.
   - Provide contact email and effective date.
@@ -18,8 +19,9 @@ This document summarizes legal/commercial and operational compliance items for P
 ## 2) Age Gate (Lottery)
 
 - State: Implemented.
-  - AgeGate shows on `/lotto/*` routes with 30-day TTL.
-  - Legacy true supported.
+  - AgeGate shows on `/lotto/*` routes. Verification is kept in sessionStorage (`<site>_age_gate_verified_sess_v1`) per `src/providers/age-gate.provider.tsx`; there is no 30-day TTL in the current code.
+  - Mode is controlled by `NEXT_PUBLIC_AGE_GATE_MODE` (`always | session | ttl`). When unset, development defaults to `always` and other environments to `session`.
+  - Fortune (`/fortune/*`) does not use AgeGate. It uses its own use-consent gate with a minimum age of 14 (see section 11).
 - Actions:
   - Verify copy and jurisdictional messaging where applicable.
 
@@ -72,6 +74,7 @@ This document summarizes legal/commercial and operational compliance items for P
 - Actions:
   - Remove `public/robots.txt` to avoid confusion; `robots.ts` is source of truth.
   - Confirm JSON-LD (WebSite, BreadcrumbList, ItemList) on major pages.
+  - Fortune: the hub and the three feature pages are indexable (no `noindex`) and listed in the sitemap once the menu group is released (`comingSoon` removed). The fortune copy itself is not in the server HTML (it is loaded after consent); the server HTML has the guide, FAQ, notices and calculation basis. `/fortune/saju` is not published.
 
 ## 8) Licenses and Notices
 
@@ -110,9 +113,18 @@ This document summarizes legal/commercial and operational compliance items for P
   - Entertainment/self-reflection notice shown directly under the h1 on every tarot page (always visible, never collapsed) and a short notice below the result area. Wording: "본 타로 서비스는 오락 및 엔터테인먼트 목적으로 제공되며, 전문적인 법률·의학·재정적 조언을 대신할 수 없습니다."
   - Results are not presented as predictions or guarantees. Forbidden phrasing (guarantee/accuracy claims, deterministic future statements, trademark names of third-party decks) is listed in `src/features/tarot/constants/tarot-copy-rule.constant.ts` and checked by `e2e/tarot-copy.spec.ts`.
   - Non-affiliation: no affiliation with any tarot deck publisher or author. Card artwork is original (inline SVG, no external deck images or icon sets); interpretation text is original (authorship log: `docs/tarot/copy-log.md`).
-  - Crisis guidance: five counseling hotlines are always displayed in the result area: suicide prevention 109, mental health crisis 1577-0199, Korea Lifeline 1588-9191 (national representative number), youth 1388, women's emergency 1366 (all stated as 24h). When crisis wording is detected in the question, 109, 1577-0199 and 1588-9191 are shown before the result. Re-verify every number and operating hour before release. Last verified: 2026-11-05 (web search only; re-check before launch).
+  - Crisis guidance: five counseling hotlines are always displayed in the result area: suicide prevention 109, mental health crisis 1577-0199, Korea Lifeline 1588-9191 (national representative number), youth 1388, women's emergency 1366 (all stated as 24h). When crisis wording is detected in the question, 109, 1577-0199 and 1588-9191 are shown before the result. Re-verify every number and operating hour before release. Last verified: 2026-11-05 (web search only); re-confirmed by the project owner on 2026-11-06.
   - No server-side storage of tarot input; only today's card (date, card number, orientation) is stored in the browser and is deleted on the next visit after the day changes.
   - No paid or credit features. Revenue is AdFit display ads only; ads never gate results.
   - No legal review has been obtained for tarot content (accepted risk, see `docs/tarot/plan.md`).
+- Fortune (`/fortune`, `/fortune/today`, `/fortune/tti`, `/fortune/star-sign`):
+  - Entertainment/self-reflection notice shown near the top of every fortune page and a short notice below the result area. Wording is fixed in `src/features/fortune/constants/fortune-notice.constant.ts`.
+  - Results are not presented as predictions or guarantees. Forbidden phrasing (guarantee/accuracy claims, deterministic future statements, health/medical terms, third-party service names) and the rule for the word "사주" (allowed only in whitelisted sentences, with its gloss on first mention) live in `src/features/fortune/constants/fortune-copy-rule.constant.ts` and are checked by `e2e/fortune-copy.spec.ts`.
+  - Lotto link: lucky numbers (1 to 10, one or two) may link to the lotto generator (`/lotto/generator`, no query). The notice states there is no relation to winning and no change in probability.
+  - Use-consent gate: users must agree before any fortune content is shown; without agreement the service is not provided. Users under 14 are blocked; users 14 and over see a responsibility notice. Supported birth dates are 1920-01-01 to 2028-12-31 (24 solar term data from KASI is provided up to 2028; follow-up F-1, due 2028-12-01).
+  - Crisis guidance: the same five hotlines as tarot (shared constants in `src/constants/crisis-phone.constant.ts`), shown below every result area and on the hub. Display: touch devices show a tappable `tel:` link, mouse-and-keyboard devices show plain text (CSS media query only). Re-verify every number and operating hour before release. Last verified: 2026-11-05 (web search only); re-confirmed by the project owner on 2026-11-06.
+  - Birth date is never sent to a server or stored; only the consent flag is stored in sessionStorage. No paid or credit features. Revenue is AdFit display ads only.
+  - Original copy, authorship log and a sampled web-search similarity check: `docs/fortune/copy-log.md`. Calendar data source: KASI public data (see `THIRD_PARTY_NOTICES.md`, `docs/fortune/calendar-verification.md`).
+  - **No legal review has been obtained for the fortune feature; the operator accepts the risk (decided 2026-11-05).** The use-consent gate is the minimum safeguard: it lowers risk but does not remove it. Accepted-risk items: handling of users under 14 and Feb 29 birthdays, consent gate and sessionStorage handling, responsibility notice wording, the lotto link wording, existing full-liability wording in the Terms (chapter 11), legal-basis wording in the Privacy Policy (chapter 4), the age gap in Terms chapter 2, and interpretation of the KASI terms ("usage scope: no restriction" as confirmed by the owner). Non-legal pre-release checks remain: crisis hotline numbers, AdFit policy, final notice wording, final Privacy/Terms check, manual screen-reader check.
 
 All items above should be reviewed before each release. Keep this file updated with changes in dependencies, ad networks, or data sources.

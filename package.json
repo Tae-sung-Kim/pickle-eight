@@ -11,6 +11,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
+    "prepare": "git config core.hooksPath .githooks",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",

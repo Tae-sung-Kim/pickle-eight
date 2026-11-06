@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { expect, type Page, test } from '@playwright/test';
+import * as crisisPhoneConstants from '@/constants/crisis-phone.constant';
 import { MENU_LIST } from '@/constants/menu.constant';
 import { TAROT_CARDS } from '@/features/tarot/constants/tarot-cards.constant';
 import {
@@ -183,6 +184,7 @@ const OTHER_TEXTS: NamedText[] = collect([
   ['FAQ 오늘의 타로', TAROT_DAILY_FAQ],
   ['FAQ 3장 타로', TAROT_THREE_CARD_FAQ],
   ['고지 문구', { ...noticeConstants }],
+  ['상담전화 공용 상수', { ...crisisPhoneConstants }],
   ['질문·분야 문구', { ...questionConstants }],
   ['위치 안내', { ...spreadConstants }],
   ['SEO 상수', { ...seoConstants }],
@@ -247,7 +249,7 @@ test.describe('문구 데이터: 카드 78장·FAQ·고지·분야 예시·위�
     // 효과·결과를 약속하는 표현은 쓰지 않는다 (design: 상담전화 문구)
     const promises = OTHER_TEXTS.filter(
       (item) =>
-        item.where.includes('TAROT_CRISIS') &&
+        /TAROT_CRISIS|CRISIS_PHONES|CRISIS_RESULT_LINE/.test(item.where) &&
         /도와 드립니다|해결해 드립니다/.test(item.text)
     );
     expect(promises.map((p) => `${p.where}: ${p.text}`)).toEqual([]);

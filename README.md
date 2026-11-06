@@ -12,6 +12,7 @@
 - 시뮬레이터 (다회 추첨 등수 분포)
 - 나의 번호: 생성한 번호 저장, 저장 이후 추첨 회차와 자동 당첨 체크(회차별 등수) (브라우저 localStorage에 저장, 로그인 없음)
 - 타로: 오늘의 타로(원카드, 하루 1장 고정), 3장 타로(과거·현재·미래). 카드 그림과 해석 문구는 모두 자체 제작이며, 질문은 서버나 브라우저에 저장하지 않습니다(오늘의 카드 날짜·번호·방향만 localStorage에 저장). 오락·자기 성찰 목적이며 결과를 보장하지 않습니다.
+- 운세: 허브(`/fortune`), 오늘의 운세(`/fortune/today`), 띠별 운세(`/fortune/tti`), 별자리 운세(`/fortune/star-sign`). 2단계로 사주(`/fortune/saju`)를 예정하고 있으며 아직 공개하지 않습니다. 생년월일은 브라우저 메모리에서만 쓰고 서버로 보내거나 저장하지 않습니다. 이용 동의는 sessionStorage에만 저장합니다. 문구는 모두 직접 작성했고, 오락·자기 성찰 목적이며 결과를 보장하지 않습니다.
 - 쿠키 동의 / 연령 확인 / 광고(AdFit) 슬롯
 
 로또 번호는 Web Crypto(`getRandomValues`) 기반 무작위이며, AI 예측이나 당첨을 보장하지 않습니다. 자세한 내용은 [COMPLIANCE.md](COMPLIANCE.md)를 참고하세요.
@@ -48,6 +49,7 @@ pnpm dev
 | `SUPABASE_URL`                     | Supabase 프로젝트 URL (서버 전용)                          |
 | `SUPABASE_SERVICE_ROLE_KEY`        | Supabase service role 키 (서버 전용, 클라이언트 노출 금지) |
 | `CRON_SECRET`                      | `/api/lotto/sync` 인증 비밀값                              |
+| `DATA_GO_KR_API_KEY`               | 운세 달력 표 생성 스크립트 전용(개발 시점, 런타임 미사용, `NEXT_PUBLIC_` 아님) |
 
 ### 스크립트
 
@@ -77,6 +79,16 @@ pnpm dev
 - `?from=&to=` : 지정 범위 회차 동기화
 - 인증: `Authorization: Bearer ${CRON_SECRET}` 또는 `x-cron-secret: ${CRON_SECRET}` 헤더 필요 (개발 환경 제외)
 - 스케줄: [vercel.json](vercel.json)의 cron 설정 (토요일 추첨 이후 UTC 12:00, 16:00)
+
+## 운세 달력 데이터
+
+운세 기능의 음력 변환과 절기(입춘, 중기) 판정은 런타임에 외부 API를 부르지 않고 미리 만들어 둔 표를 씁니다.
+
+- 표 위치: `src/features/fortune/constants/calendar/` (`lunar-table.constant.ts`, `solar-term-table.constant.ts`)
+- 출처: 한국천문연구원(KASI) 공공데이터포털 특일 정보(24절기)와 음양력 정보
+- 지원 범위: 출생일 1920-01-01 ~ 2028-12-31. 절기 표는 1920~2028년, 음력 표는 1919~2049년입니다. 2029년 이후 출생은 후속 작업 F-1(기한 2028-12-01)에서 다룹니다.
+- 다시 만드는 방법: `.env`에 `DATA_GO_KR_API_KEY`를 넣고 `node --env-file=.env scripts/fortune-calendar/generate.mjs`로 표를 만든 뒤 `node --env-file=.env scripts/fortune-calendar/verify.mjs`로 대조합니다. 키는 저장소에 적지 않습니다.
+- 검증 기록: [docs/fortune/calendar-verification.md](docs/fortune/calendar-verification.md)
 
 ## API
 

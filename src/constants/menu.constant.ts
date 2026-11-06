@@ -93,16 +93,32 @@ export const MENU_LIST: MenuGroupType[] = [
   {
     group: MENU_GROUP_NAME_ENUM.FORTUNE,
     label: '운세',
-    href: `/${MENU_GROUP_NAME_ENUM.FORTUNE}/today`,
-    comingSoon: true,
+    href: `/${MENU_GROUP_NAME_ENUM.FORTUNE}`,
     items: [
       {
         href: `/${MENU_GROUP_NAME_ENUM.FORTUNE}/today`,
         label: '오늘의 운세',
         icon: 'Star',
-        colorClass: 'text-amber-600',
+        colorClass: 'text-menu-fortune',
         description: '생년월일로 오늘의 총운과 행운 포인트를 확인.',
-        example: '예: 띠별, 별자리별 오늘 운세',
+        example: '예: 출근 전에 오늘의 총운과 재물·애정 운세 확인',
+      },
+      {
+        href: `/${MENU_GROUP_NAME_ENUM.FORTUNE}/tti`,
+        label: '띠별 운세',
+        icon: 'PawPrint',
+        colorClass: 'text-menu-fortune',
+        description: '12띠의 오늘 운세와 입춘 기준 내 띠 찾기.',
+        example: '예: 1~2월생이 입춘·설날 기준 띠를 함께 확인',
+      },
+      {
+        href: `/${MENU_GROUP_NAME_ENUM.FORTUNE}/star-sign`,
+        label: '별자리 운세',
+        icon: 'Telescope',
+        colorClass: 'text-menu-fortune',
+        description:
+          '12별자리의 오늘 운세와 경계일 시각까지 반영한 내 별자리 찾기.',
+        example: '예: 3월 20일생이 태어난 시각으로 별자리 확인',
       },
     ],
   },
