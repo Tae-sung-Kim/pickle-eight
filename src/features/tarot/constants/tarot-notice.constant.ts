@@ -70,6 +70,18 @@ export const TAROT_NOSCRIPT_NOTICE =
 export const TAROT_REDRAW_NOTICE =
   '같은 질문으로 반복해서 뽑기보다 한 번의 결과를 차분히 돌아보시기 바랍니다.';
 
+// 질문 입력칸 용도 안내 (1장·3장, 입력칸 위)
+export const TAROT_QUESTION_USAGE_NOTICE =
+  '입력한 내용은 카드 선택과 해석에 쓰이지 않으며, 위기 안내가 필요한지 확인하는 데만 쓰입니다.';
+
+// 3장 흐름 이야기 아래 안내
+export const TAROT_STORY_NOTICE =
+  '이야기는 세 장의 카드 의미를 이어 쓴 참고용 문장입니다. 미래를 예측하거나 보장하지 않습니다.';
+
+// 3장 결과의 다시 뽑기 버튼 옆 안내
+export const TAROT_REDRAW_RESULT_NOTICE =
+  '다시 뽑으면 지금 결과는 사라집니다. 같은 고민을 여러 번 뽑기보다 한 번의 결과를 차분히 돌아보시기 바랍니다.';
+
 // 역방향 스위치
 export const TAROT_QUESTION_LINE_PREFIX = '질문:';
 

@@ -11,6 +11,12 @@ import {
   TAROT_QUESTION_LINE_PREFIX,
 } from '@/features/tarot/constants/tarot-notice.constant';
 import { TAROT_QUESTION_PLACEHOLDER_DAILY } from '@/features/tarot/constants/tarot-question.constant';
+import {
+  TAROT_TOPIC_APPLIED_NOTICE,
+  TAROT_TOPIC_CLEARED_NOTICE,
+  TAROT_TOPIC_DEFAULT,
+  TAROT_TOPICS,
+} from '@/features/tarot/constants/tarot-topic.constant';
 import { useDailyReading } from '@/features/tarot/daily/hooks/use-daily-reading.hook';
 import { useTarotQuestion } from '@/features/tarot/hooks/use-tarot-question.hook';
 import { TarotCardReadingComponent } from '@/features/tarot/shared/components/card-reading.component';
@@ -19,10 +25,13 @@ import { TarotExpertNoticeComponent } from '@/features/tarot/shared/components/e
 import { TarotQuestionInputComponent } from '@/features/tarot/shared/components/question-input.component';
 import { TarotReversedToggleComponent } from '@/features/tarot/shared/components/reversed-toggle.component';
 import { TarotCardComponent } from '@/features/tarot/shared/components/tarot-card.component';
+import { TarotTopicChipsComponent } from '@/features/tarot/shared/components/topic-chips.component';
+import type { TarotTopicSelectionType } from '@/features/tarot/types/tarot.type';
 import {
   hasTarotCrisisSignal,
   hasTarotExpertTopic,
 } from '@/features/tarot/utils/tarot-safety.util';
+import { getTarotTopicReading } from '@/features/tarot/utils/tarot-topic.util';
 
 const MD_MEDIA_QUERY = '(min-width: 768px)';
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
@@ -59,6 +68,11 @@ export function TarotDailyComponent(): JSX.Element {
   const { question, setQuestion, trimmedQuestion, hasQuestion } =
     useTarotQuestion();
   const [isReversedEnabled, setIsReversedEnabled] = useState<boolean>(true);
+  // 분야는 메모리에만 둔다(저장하지 않음). 재방문 복원 때도 'all'로 시작한다
+  const [topic, setTopic] =
+    useState<TarotTopicSelectionType>(TAROT_TOPIC_DEFAULT);
+  // 결과가 나온 뒤 사용자가 칩을 바꿨을 때만 채우는 sr-only 알림. 질문은 넣지 않는다
+  const [topicAnnouncement, setTopicAnnouncement] = useState<string>('');
 
   const panelRef = useRef<HTMLDivElement>(null);
   const resultTitleRef = useRef<HTMLHeadingElement>(null);
@@ -87,6 +101,17 @@ export function TarotDailyComponent(): JSX.Element {
     }
   }, [focusTarget]);
 
+  function handleTopicSelect(key: TarotTopicSelectionType): void {
+    setTopic(key);
+    if (!isRevealed) return;
+    const label = TAROT_TOPICS.find((item) => item.key === key)?.label ?? '';
+    setTopicAnnouncement(
+      key === 'all'
+        ? TAROT_TOPIC_CLEARED_NOTICE
+        : `${label} ${TAROT_TOPIC_APPLIED_NOTICE}`
+    );
+  }
+
   function handleDraw(): void {
     // 위기 표현 감지는 이 클릭에서 계산해 다음 상태를 고르는 데만 쓴다
     draw({ isReversedEnabled, hasCrisis: hasTarotCrisisSignal(question) });
@@ -105,6 +130,9 @@ export function TarotDailyComponent(): JSX.Element {
       {/* 공개 시에만 채운다. 질문 텍스트는 넣지 않는다 */}
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         {announcement}
+      </div>
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {topicAnnouncement}
       </div>
 
       <div className="space-y-6 md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:items-start md:gap-8 md:space-y-0">
@@ -136,7 +164,8 @@ export function TarotDailyComponent(): JSX.Element {
           {state.status === 'checking' ? (
             <div aria-hidden="true" className="space-y-5">
               <div className={`h-14 ${SKELETON_CLASS}`} />
-              <div className={`h-24 ${SKELETON_CLASS}`} />
+              <div className={`h-32 ${SKELETON_CLASS}`} />
+              <div className={`h-32 ${SKELETON_CLASS}`} />
               <div className={`h-11 ${SKELETON_CLASS}`} />
             </div>
           ) : null}
@@ -146,6 +175,10 @@ export function TarotDailyComponent(): JSX.Element {
               <TarotReversedToggleComponent
                 checked={isReversedEnabled}
                 onCheckedChange={setIsReversedEnabled}
+              />
+              <TarotTopicChipsComponent
+                selectedKey={topic}
+                onSelect={handleTopicSelect}
               />
               <TarotQuestionInputComponent
                 value={question}
@@ -185,6 +218,13 @@ export function TarotDailyComponent(): JSX.Element {
                 </p>
               ) : null}
 
+              <div className="border-b border-border pb-5">
+                <TarotTopicChipsComponent
+                  selectedKey={topic}
+                  onSelect={handleTopicSelect}
+                />
+              </div>
+
               {showQuestionLine ? (
                 <p className="text-sm leading-6 break-words text-muted-foreground">
                   {TAROT_QUESTION_LINE_PREFIX} {trimmedQuestion}
@@ -196,6 +236,11 @@ export function TarotDailyComponent(): JSX.Element {
                 isReversed={state.drawn.isReversed}
                 titleAs="h2"
                 titleRef={resultTitleRef}
+                topicSentence={getTarotTopicReading(
+                  card,
+                  state.drawn.isReversed,
+                  topic
+                )}
               />
 
               {showExpertNotice ? <TarotExpertNoticeComponent /> : null}

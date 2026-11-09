@@ -53,6 +53,10 @@ export type FortuneBirthTimeFormComponentPropsType = Readonly<{
   onUnknown: () => void;
   /** 화면이 나타날 때 부모가 제목으로 포커스를 옮기는 데 쓴다(tabIndex -1) */
   titleRef?: Ref<HTMLHeadingElement>;
+  /** 문구 덮어쓰기(사주 등). 생략한 항목은 기본 문구를 쓴다 */
+  texts?: Readonly<
+    Partial<{ title: string; help: string; submit: string; unknown: string }>
+  >;
 }>;
 
 function parseTimeField(value: string, max: number): number | null {
@@ -74,7 +78,12 @@ export function FortuneBirthTimeFormComponent({
   onSubmit,
   onUnknown,
   titleRef,
+  texts,
 }: FortuneBirthTimeFormComponentPropsType): JSX.Element {
+  const title = texts?.title ?? BIRTH_TIME_TEXTS.title;
+  const help = texts?.help ?? BIRTH_TIME_TEXTS.help;
+  const submitLabel = texts?.submit ?? BIRTH_TIME_TEXTS.submit;
+  const unknownLabel = texts?.unknown ?? BIRTH_TIME_TEXTS.unknown;
   const baseId = useId();
   const titleId = `${baseId}-title`;
   const descriptionId = `${baseId}-description`;
@@ -142,7 +151,7 @@ export function FortuneBirthTimeFormComponent({
         tabIndex={-1}
         className="rounded-sm text-lg leading-snug font-semibold break-keep text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        {BIRTH_TIME_TEXTS.title}
+        {title}
       </h3>
       <p
         id={descriptionId}
@@ -157,7 +166,7 @@ export function FortuneBirthTimeFormComponent({
         className="space-y-3"
       >
         <fieldset className="min-w-0">
-          <legend className="sr-only">{BIRTH_TIME_TEXTS.title}</legend>
+          <legend className="sr-only">{title}</legend>
           <div className="flex items-end gap-3">
             {renderField(hourId, BIRTH_TIME_TEXTS.hour, hour, setHour, hourRef)}
             {renderField(
@@ -173,7 +182,7 @@ export function FortuneBirthTimeFormComponent({
           id={helpId}
           className="text-sm leading-6 break-keep text-muted-foreground"
         >
-          {BIRTH_TIME_TEXTS.help}
+          {help}
         </p>
         <div aria-live="polite">
           {hasError ? (
@@ -198,7 +207,7 @@ export function FortuneBirthTimeFormComponent({
               'bg-menu-fortune px-6 text-primary-foreground hover:bg-menu-fortune/90'
             )}
           >
-            {BIRTH_TIME_TEXTS.submit}
+            {submitLabel}
           </Button>
           <Button
             type="button"
@@ -206,7 +215,7 @@ export function FortuneBirthTimeFormComponent({
             onClick={onUnknown}
             className={cn(BUTTON_CLASS, 'px-6')}
           >
-            {BIRTH_TIME_TEXTS.unknown}
+            {unknownLabel}
           </Button>
         </div>
       </form>

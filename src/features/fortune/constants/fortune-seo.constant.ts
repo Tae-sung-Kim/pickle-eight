@@ -3,7 +3,7 @@ import { FORTUNE_ROUTES } from '@/features/fortune/constants/fortune-route.const
 /**
  * 페이지별 SEO 값 (design.md 13.1). 금지 표현·"사주" 용어 검사 대상이라 상수로 한곳에 둔다.
  * 허브와 방식 A 페이지(오늘·띠·별자리)의 title·description·OG alt·keywords에는 "사주"를 쓰지 않는다.
- * 사주(2단계) 항목은 출시 전이라 만들지 않는다.
+ * 사주(2단계) 항목(FORTUNE_SAJU_SEO)은 출시 전까지 메뉴·sitemap에 연결하지 않는다.
  */
 
 export type FortunePageSeoType = Readonly<{
@@ -76,6 +76,25 @@ export const FORTUNE_STAR_SIGN_SEO: FortunePageSeoType = {
     '별자리 날짜',
   ],
   ogImageAlt: '12별자리 오늘의 별자리 운세',
+};
+
+/** 사주(2단계, design-saju-v2 V9). keywords에 "사주 4기둥"·"사주 네 기둥"·"사주 풀이"는 넣지 않는다 */
+export const FORTUNE_SAJU_SEO: FortunePageSeoType = {
+  heading: '사주',
+  headerDescription:
+    '사주(태어난 연·월·일·시로 세우는 네 기둥)를 만세력으로 계산하고, 오늘 일진(오늘 날짜의 천간)과 비교한 오늘의 사주 운세를 보여 드립니다.',
+  title: '사주 만세력 - 생년월일시로 보는 무료 사주와 오늘의 사주 운세',
+  description:
+    '생년월일과 태어난 시간으로 사주(태어난 연·월·일·시로 세우는 네 기둥)와 오행 분포를 계산하고, 오늘의 일진과 비교한 오늘의 사주 운세를 보여 드립니다. 계산 기준도 함께 안내합니다. 오락·참고용 콘텐츠입니다.',
+  pathname: FORTUNE_ROUTES.saju,
+  keywords: [
+    '사주',
+    '무료 사주',
+    '사주 만세력',
+    '만세력 사주',
+    '오늘의 사주 운세',
+  ],
+  ogImageAlt: '연·월·일·시 기둥과 오늘의 사주 운세',
 };
 
 /** BreadcrumbList 2단계(운세 그룹). 허브는 홈 > 운세, 기능 페이지는 홈 > 운세 > 페이지 */

@@ -77,7 +77,7 @@ export const MENU_LIST: MenuGroupType[] = [
         label: '오늘의 타로',
         icon: 'Moon',
         colorClass: 'text-menu-tarot',
-        description: '카드 한 장을 뽑아 오늘의 흐름을 확인.',
+        description: '카드 한 장으로 가볍게 보는 오늘의 흐름.',
         example: '예: 출근 전, 오늘 하루 분위기가 궁금할 때',
       },
       {
@@ -85,7 +85,7 @@ export const MENU_LIST: MenuGroupType[] = [
         label: '3장 타로 (과거·현재·미래)',
         icon: 'Layers',
         colorClass: 'text-menu-tarot',
-        description: '카드 세 장으로 과거·현재·미래의 흐름을 정리.',
+        description: '세 장의 흐름을 이야기로 엮어 고민을 정리.',
         example: '예: 고민되는 일의 흐름을 차분히 정리해 보고 싶을 때',
       },
     ],

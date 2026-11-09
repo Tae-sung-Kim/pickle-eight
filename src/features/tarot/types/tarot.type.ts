@@ -41,15 +41,51 @@ export type TarotSpreadPositionType = Readonly<{
   guide: string;
 }>;
 
-export type TarotQuestionTopicKeyType = 'love' | 'career' | 'money' | 'daily';
+/** 분야 해석 문장을 고르는 수트 그룹. 메이저 22장은 'major', 마이너는 수트 */
+export type TarotSuitGroupType = 'major' | TarotSuitType;
 
-export type TarotQuestionTopicType = Readonly<{
-  key: TarotQuestionTopicKeyType;
-  /** '연애·인간관계' | '직업·학업' | '재물·생활' | '일상 조언' */
+/** 분야 4개 */
+export type TarotTopicKeyType = 'love' | 'career' | 'money' | 'daily';
+
+/** 분야 칩 선택값. 'all'(전체)이 기본이며 공통 문장을 쓴다 */
+export type TarotTopicSelectionType = 'all' | TarotTopicKeyType;
+
+export type TarotTopicType = Readonly<{
+  key: TarotTopicSelectionType;
+  /** '전체' | '연애·인간관계' | '직업·학업' | '재물·생활' | '일상 조언' */
   label: string;
-  /** 칩을 누르면 입력칸에 채울 예시 (투자·도박 예시 금지) */
-  examples: readonly string[];
 }>;
+
+/** 방향별 문장 한 쌍 */
+export type TarotOrientationTextType = Readonly<
+  Record<TarotOrientationType, string>
+>;
+
+/** 분야 해석 문장 40개: 수트 그룹 5 x 분야 4 x 방향 2 */
+export type TarotTopicReadingMapType = Readonly<
+  Record<
+    TarotSuitGroupType,
+    Readonly<Record<TarotTopicKeyType, TarotOrientationTextType>>
+  >
+>;
+
+/** 세 장 방향 구성. 역방향 0장 'upright', 3장 'reversed', 그 외 'mixed' */
+export type TarotStoryToneType = 'upright' | 'mixed' | 'reversed';
+
+/** 분야 하나의 이야기 문장 세트 */
+export type TarotStorySetType = Readonly<{
+  /** 위치별 연결 문장 틀. 자리표시자 {card}, {keyword} */
+  positions: Readonly<
+    Record<TarotSpreadPositionKeyType, TarotOrientationTextType>
+  >;
+  /** 마무리 문장(자리표시자 없음). 세 장 방향 구성으로 고른다 */
+  closing: Readonly<Record<TarotStoryToneType, string>>;
+}>;
+
+/** 'all'(공통) + 분야 4개 = 5세트 */
+export type TarotStoryMapType = Readonly<
+  Record<TarotTopicSelectionType, TarotStorySetType>
+>;
 
 /** localStorage 저장 형식 (오늘의 카드) */
 export type TarotDailyStoredType = Readonly<{

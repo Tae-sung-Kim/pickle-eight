@@ -1,6 +1,7 @@
 import {
   TAROT_DETAIL_NOTICE_ITEMS,
   TAROT_RESULT_DISCLAIMER_TEXT,
+  TAROT_STORY_NOTICE,
 } from '@/features/tarot/constants/tarot-notice.constant';
 
 /**
@@ -52,4 +53,8 @@ export const TAROT_TRADEMARK_TERMS: readonly string[] = [
 export const TAROT_COPY_ALLOWED_SENTENCES: readonly string[] = [
   TAROT_RESULT_DISCLAIMER_TEXT,
   TAROT_DETAIL_NOTICE_ITEMS[1],
+  TAROT_STORY_NOTICE,
 ];
+
+/** 이야기 문장(위치 틀 30 + 마무리 15) 각각의 끝 검사용 */
+export const TAROT_STORY_ENDING_PATTERN = /수 있습니다\.$/;

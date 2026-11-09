@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { FORTUNE_FINDER_BASIS_STAR_SIGN_NOTICE } from '@/features/fortune/constants/fortune-notice.constant';
 import { FORTUNE_STAR_SIGNS } from '@/features/fortune/constants/fortune-star-sign.constant';
 import { useBirthFlow } from '@/features/fortune/hooks/use-birth-flow.hook';
 import { FortuneAgeBlockedComponent } from '@/features/fortune/shared/components/age-blocked.component';
@@ -264,9 +265,14 @@ export function FortuneStarSignFinderComponent({
       ) : null}
 
       {foundKey ? (
-        <p className="border-l-2 border-menu-fortune/40 pl-3 text-base leading-7 font-medium break-keep text-foreground">
-          {`${STAR_SIGN_NAMES[foundKey]}${FINDER_TEXTS.foundSuffix}`}
-        </p>
+        <div className="space-y-1 border-l-2 border-menu-fortune/40 pl-3">
+          <p className="text-base leading-7 font-medium break-keep text-foreground">
+            {`${STAR_SIGN_NAMES[foundKey]}${FINDER_TEXTS.foundSuffix}`}
+          </p>
+          <p className="text-sm leading-6 break-keep text-muted-foreground">
+            {FORTUNE_FINDER_BASIS_STAR_SIGN_NOTICE}
+          </p>
+        </div>
       ) : null}
     </section>
   );

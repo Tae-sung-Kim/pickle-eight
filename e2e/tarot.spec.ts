@@ -17,6 +17,9 @@ import {
 import {
   TAROT_CRISIS_CALL_LABEL,
   TAROT_CRISIS_PHONE_ARIA_LABEL,
+  TAROT_REDRAW_NOTICE,
+  TAROT_REDRAW_RESULT_NOTICE,
+  TAROT_STORY_NOTICE,
 } from '@/features/tarot/constants/tarot-notice.constant';
 
 // 개발 서버(첫 컴파일 포함)와 애니메이션을 감안해 기본 대기를 늘린다
@@ -247,9 +250,6 @@ async function storageSnapshot(page: Page) {
     cookie: document.cookie,
   }));
 }
-
-const FORBIDDEN_EXAMPLE_PATTERN =
-  /주식|코인|비트코인|가상화폐|투자|매수|매도|종목|복권|로또|도박|베팅|배팅|선물/;
 
 // ---------- 공통 검사 (두 페이지) ----------
 
@@ -659,76 +659,35 @@ test.describe('3장 타로', () => {
     }
   });
 
-  test('AC-11: 분야 칩을 누르면 질문 예시가 채워지고 분야와 무관하다는 안내가 보인다', async ({
+  // v2: 기존 AC-11(칩이 질문 예시를 채움)·AC-12(질문 예시 금지어) 테스트는 삭제했다.
+  // 대체: e2e/tarot-v2.spec.ts의 "v2 AC-3·AC-12"(칩 5개, 기본 전체, 예시 채우기 없음),
+  // "v2 AC-4·AC-5"(분야 문장), e2e/tarot-copy.spec.ts의 분야 문장 금지 표현 검사.
+
+  test('v2 AC-15: 뽑기 전에는 반복 뽑기 안내, 결과에서는 "다시 뽑으면 사라집니다" 안내가 보이고 다시 뽑을 수 있다', async ({
     page,
   }) => {
     await openIdle(page, THREE_PATH);
-    const group = page.getByRole('group', { name: '분야' });
-    await expect(group).toBeVisible();
-    const labels = ['연애·인간관계', '직업·학업', '재물·생활', '일상 조언'];
-    await expect(group.getByRole('button')).toHaveCount(4);
     await expect(
-      page.getByText(/해석 문구는 분야와 관계없이 같습니다/).first()
+      page.getByText(TAROT_REDRAW_NOTICE, { exact: true })
     ).toBeVisible();
-
-    const input = questionInput(page);
-    for (const label of labels) {
-      const chip = group.getByRole('button', { name: label });
-      await expect(chip).toHaveAttribute('aria-pressed', 'false');
-      await chip.click();
-      await expect(chip).toHaveAttribute('aria-pressed', 'true');
-      await expect(input).not.toHaveValue('');
-      const first = await input.inputValue();
-      // 같은 칩을 다시 누르면 다음 예시
-      await chip.click();
-      await expect(input).not.toHaveValue(first);
-    }
-  });
-
-  test('AC-12: 어느 분야의 질문 예시에도 투자 종목·매수 시점·복권·도박·로또 질문이 없다 (화면 확인)', async ({
-    page,
-  }) => {
-    await openIdle(page, THREE_PATH);
-    const group = page.getByRole('group', { name: '분야' });
-    const input = questionInput(page);
-    const seen: string[] = [];
-    for (const chip of await group.getByRole('button').all()) {
-      for (let i = 0; i < 5; i++) {
-        await chip.click();
-        seen.push(await input.inputValue());
-      }
-    }
-    expect(seen.length).toBe(20);
-    for (const example of seen) {
-      expect(example.length).toBeGreaterThan(0);
-      expect(example).not.toMatch(FORBIDDEN_EXAMPLE_PATTERN);
-    }
-    // 분야마다 예시가 둘 이상이다 (5번 눌러 서로 다른 값이 2개 이상)
-    for (let g = 0; g < 4; g++) {
-      expect(new Set(seen.slice(g * 5, g * 5 + 5)).size).toBeGreaterThanOrEqual(
-        2
-      );
-    }
-  });
-
-  test('AC-13: 다시 뽑기로 새로 세 장을 뽑을 수 있고 재뽑기 안내가 보인다', async ({
-    page,
-  }) => {
-    const notice =
-      /같은 질문으로 반복해서 뽑기보다 한 번의 결과를 차분히 돌아보시기 바랍니다/;
-    await openIdle(page, THREE_PATH);
-    await expect(page.getByText(notice).first()).toBeVisible();
     await questionInput(page).fill('요즘 마음에 둔 일');
 
     await drawThree(page);
-    await expect(page.getByText(notice).first()).toBeVisible();
+    await expect(
+      page.getByText(TAROT_REDRAW_RESULT_NOTICE, { exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByText(TAROT_REDRAW_NOTICE, { exact: true })
+    ).toHaveCount(0);
     await page.getByRole('button', { name: '다시 뽑기', exact: true }).click();
 
     // 뽑기 전 상태로 돌아가고 질문은 그대로, 포커스는 "세 장 뽑기"
     await expect(threeDrawButton(page)).toBeVisible();
     await expect(threeDrawButton(page)).toBeFocused();
     await expect(questionInput(page)).toHaveValue('요즘 마음에 둔 일');
-    await expect(page.getByText(notice).first()).toBeVisible();
+    await expect(
+      page.getByText(TAROT_REDRAW_NOTICE, { exact: true })
+    ).toBeVisible();
     await expect(page.getByRole('img', { name: CARD_FACE_NAME })).toHaveCount(
       0
     );
@@ -1635,21 +1594,33 @@ test.describe('AC-36 뽑기 -> 결과 확인 흐름', () => {
     expect(hydration).toEqual([]);
   });
 
-  test('AC-36: 3장 타로 분야 선택 -> 뽑기 -> 결과 -> 다시 뽑기까지 끊김 없이 된다', async ({
+  test('v2 AC-24: 3장 타로 분야 선택 -> 뽑기 -> 결과(분야 표시줄·흐름 이야기) -> 다시 뽑기까지 끊김 없이 된다', async ({
     page,
   }) => {
     const { pageErrors, hydration } = watchErrors(page);
     await openIdle(page, THREE_PATH);
-    await page
+    const chip = page
       .getByRole('group', { name: '분야' })
-      .getByRole('button', { name: '일상 조언' })
-      .click();
-    await expect(questionInput(page)).not.toHaveValue('');
+      .getByRole('button', { name: '일상 조언' });
+    await chip.click();
+    // v2: 칩은 질문 입력칸을 채우지 않는다
+    await expect(questionInput(page)).toHaveValue('');
     await drawThree(page);
     const labels = await readThreeFaceLabels(page);
     expect(labels).toHaveLength(3);
+    await expect(
+      page.getByText('분야: 일상 조언', { exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: '흐름 이야기' })
+    ).toBeVisible();
+    await expect(
+      page.getByText(TAROT_STORY_NOTICE, { exact: true })
+    ).toBeVisible();
     await page.getByRole('button', { name: '다시 뽑기', exact: true }).click();
     await expect(threeDrawButton(page)).toBeVisible();
+    // 분야 선택은 다시 뽑기 뒤에도 유지된다
+    await expect(chip).toHaveAttribute('aria-pressed', 'true');
     expect(pageErrors).toEqual([]);
     expect(hydration).toEqual([]);
   });

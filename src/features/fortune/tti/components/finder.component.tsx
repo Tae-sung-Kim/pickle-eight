@@ -1,5 +1,6 @@
 import { type JSX, useEffect, useId, useMemo, useRef, useState } from 'react';
 import {
+  FORTUNE_FINDER_BASIS_NOTICE,
   FORTUNE_SEOLLAL_TEMPLATE,
   FORTUNE_SUPPORTED_RANGE_NOTICE,
 } from '@/features/fortune/constants/fortune-notice.constant';
@@ -277,6 +278,9 @@ export function FortuneTtiFinderComponent({
               )}
             </p>
           ) : null}
+          <p className="text-sm leading-6 break-keep text-muted-foreground">
+            {FORTUNE_FINDER_BASIS_NOTICE}
+          </p>
         </div>
       ) : null}
     </section>

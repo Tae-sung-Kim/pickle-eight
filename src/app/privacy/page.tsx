@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const EFFECTIVE_DATE = '2026-11-05' as const;
+  const EFFECTIVE_DATE = '2026-11-09' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '개인정보처리방침', item: canonicalUrl('/privacy') },
@@ -83,6 +83,9 @@ export default function PrivacyPolicyPage() {
           </p>
           <p className="mt-2">
             타로 서비스에서 입력한 질문은 서버로 전송하거나 저장하지 않습니다.
+            입력한 질문은 카드 선택과 해석에 쓰이지 않으며, 위기 안내가 필요한지
+            확인하는 데만 이 기기에서 쓰입니다. 선택한 분야와 3장 타로 결과도
+            저장하지 않습니다.
           </p>
           <p className="mt-2">
             운세 서비스에서 입력한 생년월일과 태어난 시각은 서버로 전송하거나

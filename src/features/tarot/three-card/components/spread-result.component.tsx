@@ -11,6 +11,8 @@ export type TarotThreeCardSpreadResultEntryType = Readonly<{
   position: TarotSpreadPositionType;
   card: TarotCardType;
   isReversed: boolean;
+  /** 분야 관점 문장. 분야가 '전체'이면 null */
+  topicSentence: string | null;
 }>;
 
 export type TarotThreeCardSpreadResultComponentPropsType = {
@@ -56,6 +58,7 @@ export function TarotThreeCardSpreadResultComponent({
             card={entry.card}
             isReversed={entry.isReversed}
             titleAs="p"
+            topicSentence={entry.topicSentence}
           />
         </div>
       ))}

@@ -1,4 +1,5 @@
-import type { JSX, Ref } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { type JSX, type Ref, useState } from 'react';
 
 import { TAROT_ORIENTATION_LABELS } from '@/features/tarot/constants/tarot-notice.constant';
 import type { TarotCardType } from '@/features/tarot/types/tarot.type';
@@ -11,6 +12,8 @@ export type TarotCardReadingComponentPropsType = {
   titleAs: 'h2' | 'p';
   /** titleAs="h2"일 때만 쓴다 */
   titleRef?: Ref<HTMLHeadingElement>;
+  /** 분야 관점 문장. 요약 바로 아래에 그린다. null·undefined면 그리지 않는다 */
+  topicSentence?: string | null;
 };
 
 /**
@@ -23,7 +26,22 @@ export function TarotCardReadingComponent({
   isReversed,
   titleAs,
   titleRef,
+  topicSentence,
 }: TarotCardReadingComponentPropsType): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
+  // 이전 값과 비교: 문장이 있다가 다른 문장으로 바뀔 때만 150ms 투명도 전환.
+  // 첫 렌더와 null 전환에는 효과가 없다.
+  const [tracked, setTracked] = useState<{
+    value: string | null | undefined;
+    animate: boolean;
+  }>({ value: topicSentence, animate: false });
+  if (tracked.value !== topicSentence) {
+    setTracked({
+      value: topicSentence,
+      animate: Boolean(tracked.value) && Boolean(topicSentence),
+    });
+  }
+
   const meaning = isReversed ? card.reversed : card.upright;
   const orientationLabel = isReversed
     ? TAROT_ORIENTATION_LABELS.reversed
@@ -75,6 +93,18 @@ export function TarotCardReadingComponent({
       <p className="max-w-[68ch] text-base leading-7 text-foreground sm:text-lg sm:leading-8">
         {meaning.summary}
       </p>
+
+      {topicSentence ? (
+        <motion.p
+          key={topicSentence}
+          initial={tracked.animate ? { opacity: 0 } : false}
+          animate={{ opacity: 1 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.15 }}
+          className="max-w-[68ch] border-l-2 border-menu-tarot/40 pl-3 text-sm leading-7 break-keep text-foreground sm:text-base"
+        >
+          {topicSentence}
+        </motion.p>
+      ) : null}
 
       {card.note ? (
         <p className="max-w-[68ch] border-l-2 border-menu-tarot/40 pl-3 text-sm leading-7 text-foreground">

@@ -141,6 +141,12 @@ export const FORTUNE_DIFFERENT_BASIS_NOTICE =
 export const FORTUNE_DIFFERENT_BASIS_STAR_SIGN_NOTICE =
   '별자리 운세는 같은 별자리에게 같은 내용을 보여 드리며, 생년월일로 보는 오늘의 운세와 기준이 달라 점수와 문구가 다를 수 있습니다.';
 
+// 찾기 결과 아래 안내: 생년월일은 찾는 데만 쓰인다 (fortune-v2 F-3, F-4)
+export const FORTUNE_FINDER_BASIS_NOTICE =
+  '생년월일은 내 띠를 찾는 데 쓰이며, 띠별 운세 문구는 누구에게나 같습니다.';
+export const FORTUNE_FINDER_BASIS_STAR_SIGN_NOTICE =
+  '생년월일은 내 별자리를 찾는 데 쓰이며, 별자리별 운세 문구는 누구에게나 같습니다.';
+
 // 띠·별자리 → 오늘의 운세 링크 라벨 (D12)
 export const FORTUNE_TODAY_LINK_LABEL = '생년월일로 보는 오늘의 운세';
 

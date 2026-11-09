@@ -1,6 +1,6 @@
 'use client';
 
-import { type JSX, useEffect, useRef, useState } from 'react';
+import { type JSX, useEffect, useId, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -9,30 +9,36 @@ import {
   TAROT_ORIENTATION_LABELS,
   TAROT_REDRAW_BUTTON_LABEL,
   TAROT_REDRAW_NOTICE,
+  TAROT_REDRAW_RESULT_NOTICE,
 } from '@/features/tarot/constants/tarot-notice.constant';
-import {
-  TAROT_QUESTION_PLACEHOLDER_THREE_CARD,
-  TAROT_QUESTION_TOPICS,
-} from '@/features/tarot/constants/tarot-question.constant';
+import { TAROT_QUESTION_PLACEHOLDER_THREE_CARD } from '@/features/tarot/constants/tarot-question.constant';
 import { TAROT_SPREAD_POSITIONS } from '@/features/tarot/constants/tarot-spread.constant';
+import {
+  TAROT_TOPIC_DEFAULT,
+  TAROT_TOPIC_LINE_PREFIX,
+  TAROT_TOPICS,
+} from '@/features/tarot/constants/tarot-topic.constant';
 import { useTarotQuestion } from '@/features/tarot/hooks/use-tarot-question.hook';
 import { TarotCrisisNoticeComponent } from '@/features/tarot/shared/components/crisis-notice.component';
 import { TarotExpertNoticeComponent } from '@/features/tarot/shared/components/expert-notice.component';
 import { TarotQuestionInputComponent } from '@/features/tarot/shared/components/question-input.component';
 import { TarotReversedToggleComponent } from '@/features/tarot/shared/components/reversed-toggle.component';
 import { TarotCardComponent } from '@/features/tarot/shared/components/tarot-card.component';
+import { TarotTopicChipsComponent } from '@/features/tarot/shared/components/topic-chips.component';
 import { TarotThreeCardSpreadResultComponent } from '@/features/tarot/three-card/components/spread-result.component';
-import { TarotThreeCardTopicChipsComponent } from '@/features/tarot/three-card/components/topic-chips.component';
+import { TarotThreeCardStoryComponent } from '@/features/tarot/three-card/components/story.component';
 import { useThreeCardReading } from '@/features/tarot/three-card/hooks/use-three-card-reading.hook';
 import type {
   TarotCardType,
-  TarotQuestionTopicKeyType,
+  TarotTopicSelectionType,
 } from '@/features/tarot/types/tarot.type';
 import {
   formatTarotCardName,
   getTarotCardById,
 } from '@/features/tarot/utils/tarot-card.util';
 import { hasTarotExpertTopic } from '@/features/tarot/utils/tarot-safety.util';
+import { buildTarotThreeCardStory } from '@/features/tarot/utils/tarot-story.util';
+import { getTarotTopicReading } from '@/features/tarot/utils/tarot-topic.util';
 
 const FLIP_DURATION_MS = 500;
 const FLIP_STAGGER_MS = 120;
@@ -92,10 +98,11 @@ export function TarotThreeCardComponent(): JSX.Element {
     useThreeCardReading();
   const { question, setQuestion } = useTarotQuestion();
   const [isReversedEnabled, setIsReversedEnabled] = useState<boolean>(true);
-  const [selectedTopicKey, setSelectedTopicKey] =
-    useState<TarotQuestionTopicKeyType | null>(null);
-  const [exampleIndex, setExampleIndex] = useState<number>(0);
+  // 분야는 메모리에만 둔다. 다시 뽑기(RESET) 뒤에도 질문과 같이 남는다
+  const [topic, setTopic] =
+    useState<TarotTopicSelectionType>(TAROT_TOPIC_DEFAULT);
 
+  const redrawNoticeId = useId();
   const stageRef = useRef<HTMLDivElement>(null);
   const crisisTitleRef = useRef<HTMLHeadingElement>(null);
   const resultTitleRef = useRef<HTMLHeadingElement>(null);
@@ -131,9 +138,34 @@ export function TarotThreeCardComponent(): JSX.Element {
   const spreadEntries = TAROT_SPREAD_POSITIONS.flatMap((position, index) => {
     const item = revealedCards[index];
     return item
-      ? [{ position, card: item.card, isReversed: item.isReversed }]
+      ? [
+          {
+            position,
+            card: item.card,
+            isReversed: item.isReversed,
+            topicSentence: getTarotTopicReading(
+              item.card,
+              item.isReversed,
+              topic
+            ),
+          },
+        ]
       : [];
   });
+
+  // 렌더링 중 계산값. null이면 이야기 블록을 그리지 않는다
+  const story =
+    spreadEntries.length === TAROT_SPREAD_POSITIONS.length
+      ? buildTarotThreeCardStory(
+          spreadEntries.map((entry) => ({
+            positionKey: entry.position.key,
+            card: entry.card,
+            isReversed: entry.isReversed,
+          })),
+          topic
+        )
+      : null;
+  const topicLabel = TAROT_TOPICS.find((item) => item.key === topic)?.label;
 
   const announcement = isRevealed ? buildAnnouncement(revealedCards) : '';
   const showExpertNotice = isRevealed && hasTarotExpertTopic(question);
@@ -141,21 +173,6 @@ export function TarotThreeCardComponent(): JSX.Element {
   function handleDraw(): void {
     if (state.status !== 'idle') return;
     draw(isReversedEnabled, question);
-  }
-
-  // 같은 칩을 다시 누르면 다음 예시(마지막 다음은 처음). 이미 적은 질문은 예시로 바뀐다.
-  // 예시가 없으면 질문을 바꾸지 않는다(칩 선택 표시만 바뀐다).
-  function handleTopicSelect(key: TarotQuestionTopicKeyType): void {
-    const examples =
-      TAROT_QUESTION_TOPICS.find((topic) => topic.key === key)?.examples ?? [];
-    const nextIndex =
-      key === selectedTopicKey && examples.length > 0
-        ? (exampleIndex + 1) % examples.length
-        : 0;
-    setSelectedTopicKey(key);
-    setExampleIndex(nextIndex);
-    const example = examples[nextIndex];
-    if (example !== undefined) setQuestion(example);
   }
 
   return (
@@ -217,10 +234,7 @@ export function TarotThreeCardComponent(): JSX.Element {
             checked={isReversedEnabled}
             onCheckedChange={setIsReversedEnabled}
           />
-          <TarotThreeCardTopicChipsComponent
-            selectedKey={selectedTopicKey}
-            onSelect={handleTopicSelect}
-          />
+          <TarotTopicChipsComponent selectedKey={topic} onSelect={setTopic} />
           <TarotQuestionInputComponent
             value={question}
             onValueChange={setQuestion}
@@ -256,15 +270,22 @@ export function TarotThreeCardComponent(): JSX.Element {
 
       {isRevealed ? (
         <div className="mt-6 space-y-6">
+          {topic !== 'all' && topicLabel ? (
+            <p className="text-sm leading-6 text-muted-foreground md:px-6">
+              {TAROT_TOPIC_LINE_PREFIX} {topicLabel}
+            </p>
+          ) : null}
           <TarotThreeCardSpreadResultComponent
             entries={spreadEntries}
             titleRef={resultTitleRef}
           />
+          {story ? <TarotThreeCardStoryComponent story={story} /> : null}
           {showExpertNotice ? <TarotExpertNoticeComponent /> : null}
-          <div className="space-y-2">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-4">
             <Button
               type="button"
               variant="outline"
+              aria-describedby={redrawNoticeId}
               onClick={reset}
               disabled={isFlipping}
               aria-busy={isFlipping || undefined}
@@ -272,8 +293,11 @@ export function TarotThreeCardComponent(): JSX.Element {
             >
               {TAROT_REDRAW_BUTTON_LABEL}
             </Button>
-            <p className="max-w-[68ch] text-xs leading-5 text-muted-foreground">
-              {TAROT_REDRAW_NOTICE}
+            <p
+              id={redrawNoticeId}
+              className="max-w-[68ch] text-sm leading-6 text-muted-foreground md:pt-2.5"
+            >
+              {TAROT_REDRAW_RESULT_NOTICE}
             </p>
           </div>
         </div>

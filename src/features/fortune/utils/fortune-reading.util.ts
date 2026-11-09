@@ -32,7 +32,8 @@ const CATEGORY_ORDER: readonly FortuneCategoryKeyType[] = [
   'health',
 ];
 
-const BASE_SCORE_SPREAD = 10;
+/** 사주 기본 점수 변동 폭(±15, SQ-2 안 A). baseScores 경로에서만 쓴다 */
+const BASE_SCORE_SPREAD = 30;
 
 export type BuildFortuneReadingInputType = Readonly<{
   seedText: string;

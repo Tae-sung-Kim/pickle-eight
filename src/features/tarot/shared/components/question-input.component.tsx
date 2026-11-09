@@ -4,7 +4,10 @@ import { type JSX, type KeyboardEvent, useId } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { TAROT_SENSITIVE_INPUT_NOTICE } from '@/features/tarot/constants/tarot-notice.constant';
+import {
+  TAROT_QUESTION_USAGE_NOTICE,
+  TAROT_SENSITIVE_INPUT_NOTICE,
+} from '@/features/tarot/constants/tarot-notice.constant';
 import {
   TAROT_QUESTION_LABEL,
   TAROT_QUESTION_LIMIT_NOTICE,
@@ -33,6 +36,7 @@ export function TarotQuestionInputComponent({
 }: TarotQuestionInputComponentPropsType): JSX.Element {
   const baseId = useId();
   const inputId = `${baseId}-input`;
+  const usageId = `${baseId}-usage`;
   const noticeId = `${baseId}-notice`;
   const countId = `${baseId}-count`;
 
@@ -50,6 +54,12 @@ export function TarotQuestionInputComponent({
       <Label htmlFor={inputId} className="text-sm font-medium">
         {TAROT_QUESTION_LABEL}
       </Label>
+      <p
+        id={usageId}
+        className="max-w-[68ch] text-xs leading-5 text-muted-foreground"
+      >
+        {TAROT_QUESTION_USAGE_NOTICE}
+      </p>
       <Input
         id={inputId}
         type="text"
@@ -61,7 +71,7 @@ export function TarotQuestionInputComponent({
           onValueChange(event.target.value.slice(0, TAROT_QUESTION_MAX_LENGTH))
         }
         onKeyDown={handleKeyDown}
-        aria-describedby={`${noticeId} ${countId}`}
+        aria-describedby={`${usageId} ${noticeId} ${countId}`}
         className="rounded-lg"
       />
       <div className="flex items-start justify-between gap-3">

@@ -1,6 +1,6 @@
 # Compliance Checklist (Production)
 
-Last updated: 2026-11-06
+Last updated: 2026-11-09
 
 This document summarizes legal/commercial and operational compliance items for Pickle-eight prior to production deployment.
 
@@ -116,6 +116,9 @@ This document summarizes legal/commercial and operational compliance items for P
   - Crisis guidance: five counseling hotlines are always displayed in the result area: suicide prevention 109, mental health crisis 1577-0199, Korea Lifeline 1588-9191 (national representative number), youth 1388, women's emergency 1366 (all stated as 24h). When crisis wording is detected in the question, 109, 1577-0199 and 1588-9191 are shown before the result. Re-verify every number and operating hour before release. Last verified: 2026-11-05 (web search only); re-confirmed by the project owner on 2026-11-06.
   - No server-side storage of tarot input; only today's card (date, card number, orientation) is stored in the browser and is deleted on the next visit after the day changes.
   - No paid or credit features. Revenue is AdFit display ads only; ads never gate results.
+  - Topic selection (v2): the chosen topic only changes which original reading sentences are shown; the card draw is random and independent of the topic. The topic notice states this directly under the topic chips on both tarot pages.
+  - Question input (v2): text typed in the question field is not used for card selection or interpretation; it is used only to check whether crisis guidance is needed. It is not sent to a server or stored.
+  - Three-card story (v2): the flow story is original text that links the three card meanings, shown as a reference only and never as a prediction or guarantee. A fixed notice is shown below the story (`TAROT_STORY_NOTICE`, allowed as an exception sentence in `tarot-copy-rule.constant.ts`). The word "상담" is not used in the three-card h1, description or intro.
   - No legal review has been obtained for tarot content (accepted risk, see `docs/tarot/plan.md`).
 - Fortune (`/fortune`, `/fortune/today`, `/fortune/tti`, `/fortune/star-sign`):
   - Entertainment/self-reflection notice shown near the top of every fortune page and a short notice below the result area. Wording is fixed in `src/features/fortune/constants/fortune-notice.constant.ts`.
