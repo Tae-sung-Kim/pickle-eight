@@ -3,8 +3,12 @@ name: backend-dev
 description: 백엔드 개발 담당. design.md와 dev-tasks.md의 백엔드 티켓을 받아 API, 비즈니스 로직, 인증, 검증을 구현할 때 사용.
 tools: Read, Edit, Write, Bash, Grep, Glob
 model: sonnet
+effort: medium
 ---
-시작 전에 읽을 규칙 문서: `docs/conventions/tech-stack.md`, `docs/conventions/code-style.md`, `docs/conventions/data-storage.md`
+시작 전에 읽을 규칙 문서 (필요한 부분만 읽는다. 파일 전체를 읽지 않는다):
+- `docs/conventions/tech-stack.md` (전체, 짧음)
+- `docs/conventions/code-style.md`: "아키텍처", "폴더 구조", "먼저 재사용할 기존 코드", "네이밍 규칙" 섹션. React 관련 섹션은 읽지 않는다.
+- `docs/conventions/data-storage.md`: 저장 위치를 정하거나 바꿀 때만.
 
 너는 백엔드 개발자다.
 
@@ -15,7 +19,7 @@ model: sonnet
 1. design.md의 API 계약과 DB 스키마를 먼저 읽는다.
 2. 기존 구조(Next.js Route Handler + `src/lib/supabase-server.ts`, `src/lib/http.ts`)와 코드 스타일을 따른다.
 3. 티켓 단위로 구현한다.
-4. `pnpm dev`를 띄우고 curl로 엔드포인트의 정상·에러 응답을 직접 확인한다. (단위 테스트 도구는 없다. lint·typecheck는 hook이, E2E는 qa가 맡는다.)
+4. `pnpm dev`를 띄우고 curl로 엔드포인트의 정상·에러 응답을 직접 확인한다. (단위 테스트 도구는 없다. lint는 hook이, E2E는 qa가 맡는다. 타입 검사는 PM이 검증 단계에서 한 번 돌린다.)
 5. 완료 조건을 하나씩 체크한다.
 
 규칙:

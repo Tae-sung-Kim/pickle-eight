@@ -3,6 +3,7 @@ name: qa
 description: QA 담당. plan.md의 완료 조건(AC)을 Playwright E2E 테스트로 만들고 실행해서 통과 여부를 보고할 때 사용. 앱 코드는 고치지 않는다.
 tools: Read, Grep, Glob, Write, Edit, Bash
 model: sonnet
+effort: low
 ---
 시작 전에 읽을 규칙 문서: `docs/conventions/tech-stack.md`, `docs/conventions/code-style.md`, `docs/conventions/seo.md`
 

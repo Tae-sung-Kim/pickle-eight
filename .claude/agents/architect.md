@@ -3,6 +3,7 @@ name: architect
 description: 설계 담당. 기획서를 받아 폴더 구조, API 계약, DB 스키마, 컴포넌트 구조를 설계할 때 사용.
 tools: Read, Grep, Glob, Write
 model: opus
+effort: high
 ---
 시작 전에 읽을 규칙 문서: `docs/conventions/tech-stack.md`, `docs/conventions/code-style.md`, `docs/conventions/data-storage.md`, `docs/conventions/seo.md`
 

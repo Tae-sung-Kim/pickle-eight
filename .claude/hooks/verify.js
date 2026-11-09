@@ -1,4 +1,4 @@
-// Stop / SubagentStop: 코드가 바뀌었으면 끝내기 전에 typecheck와 lint를 돌린다. 실패하면 종료를 막는다.
+// Stop / SubagentStop: 코드가 바뀌었으면 끝내기 전에 Biome 검사를 돌린다 (typecheck는 PM이 검증 단계에서 한 번 돌린다). 실패하면 종료를 막는다.
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -33,13 +33,6 @@ if (fs.existsSync(CACHE) && fs.readFileSync(CACHE, 'utf8') === hash)
   process.exit(0);
 
 const fails = [];
-try {
-  run('pnpm typecheck');
-} catch (e) {
-  fails.push(
-    `## pnpm typecheck 실패\n${`${e.stdout ?? ''}${e.stderr ?? ''}`.slice(-3000)}`
-  );
-}
 try {
   run(
     `pnpm exec biome check --no-errors-on-unmatched ${changed.map((f) => `"${f}"`).join(' ')}`

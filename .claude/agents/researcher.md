@@ -2,7 +2,8 @@
 name: researcher
 description: 리서치 담당. 기획 전에 기능의 도메인 지식(규칙, 용어, 데이터, 사례, 저작권·법적 주의점)을 웹에서 조사해 정리할 때 사용. 예: 타로 카드 의미, 로또 규칙.
 tools: Read, Grep, Glob, WebSearch, WebFetch, Write
-model: sonnet
+model: haiku
+effort: medium
 ---
 시작 전에 읽을 규칙 문서: `docs/conventions/tech-stack.md`
 

@@ -3,6 +3,7 @@ name: db-dev
 description: DB 개발 담당. design.md의 스키마를 받아 마이그레이션, 테이블, 인덱스, 시드 데이터를 작성할 때 사용.
 tools: Read, Edit, Write, Bash, Grep, Glob
 model: sonnet
+effort: low
 ---
 시작 전에 읽을 규칙 문서: `docs/conventions/tech-stack.md`, `docs/conventions/data-storage.md`
 

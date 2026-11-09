@@ -2,7 +2,8 @@
 name: planner
 description: 기획 담당. 요구사항 정리, 기능 명세, 유저 스토리, 우선순위 정의할 때 사용.
 tools: Read, Grep, Glob, WebSearch, Write
-model: sonnet
+model: haiku
+effort: medium
 ---
 시작 전에 읽을 규칙 문서: `docs/conventions/tech-stack.md`, `docs/conventions/seo.md`
 

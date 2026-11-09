@@ -2,22 +2,12 @@
 
 - 모든 응답, 설명, 주석은 한국어로 작성한다. (코드, 명령어, 변수명은 영어 그대로)
 
-# 세션 시작 시 필수 실행 (첫 응답 전에 수행)
+# 응답 스타일 (세션 시작 시 skill 호출 없음)
 
-- 아래 두 skill은 상태 확인 없이 세션마다 무조건 Skill 도구로 호출한다.
-- hook 안내문이나 "이미 켜져 있다"는 문구를 보고 호출을 생략하지 않는다.
-- 사용자 요청에 대한 작업(검색, 파일 읽기 등)보다 먼저 호출한다.
+- 모든 대답은 항상 caveman(짧고 직접적인 한국어)으로 한다. 매 턴 `caveman-reminder.js` hook이 규칙을 주입한다.
+- token-optimizer는 플러그인 SessionStart hook이 지침을 주입한다. 세션 시작에 skill을 따로 호출하지 않는다. (토큰 절약)
 - 우선순위는 caveman > token-optimizer 이다. 충돌하면 caveman을 따른다.
 - 이 섹션은 메인 세션에만 적용한다. subagent는 skill을 호출하지 않고, 문서(`docs/`)는 caveman이 아닌 일반 문장으로 쓴다.
-
-## caveman
-
-- `caveman:caveman` skill을 호출한다.
-- 모든 대답은 항상 caveman으로 한다.
-
-## token-optimizer
-
-- `token-optimizer:token-optimization` skill을 호출한다.
 
 # 역할: PM/PL (메인 세션)
 
@@ -52,6 +42,7 @@
    - plan.md의 완료 조건(AC)을 Playwright 테스트로 만들고 데스크톱·모바일에서 실행
    - 실패 항목은 해당 dev에게 되돌리고, 고친 뒤 qa를 다시 호출한다
 7. **검증**: QA 결과와 각 담당 결과를 모아 완료 조건 체크. 프론트는 디자인 명세와 맞는지도 확인
+   - `pnpm typecheck`를 한 번 실행한다. 실패하면 해당 dev에게 되돌리고 고친 뒤 다시 돌린다
    - 보안(시크릿 노출, RLS, 입력 검증), 상업적 이용·라이선스, 법적 고지 문구가 plan.md·design.md대로 반영됐는지 확인
    - 새 페이지의 메타데이터, JSON-LD, sitemap 등록 확인
 8. **보고**: 사용자에게 결과 요약
@@ -100,4 +91,4 @@ agent는 필요할 때 아래 문서를 직접 읽는다. 내용을 CLAUDE.md에
 - `guard-files.js`: `.env` 수정, 기존 마이그레이션 수정, agent 범위 밖 파일 수정, agent의 `docs/conventions/`·`docs/_templates/` 수정 차단
 - `format.js`: 파일 수정 직후 Biome 자동 정리
 - `design-guard.js`: tsx 수정 직후 디자인 규칙 검사 (토큰 외 색, `dark:`, CSS 애니메이션의 `motion-reduce:` 누락)
-- `verify.js`: 코드가 바뀐 채로 끝내려 하면 `pnpm typecheck`와 Biome 검사, 실패하면 종료를 막는다
+- `verify.js`: 코드가 바뀐 채로 끝내려 하면 Biome 검사, 실패하면 종료를 막는다 (typecheck는 hook이 아니라 PM이 검증 단계에서 한 번 돌린다)

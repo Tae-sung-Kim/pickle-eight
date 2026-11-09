@@ -2,7 +2,8 @@
 name: ui-ux-designer
 description: UI/UX 디자인 담당. 기획서와 설계서를 받아 화면 구성, 레이아웃, 컴포넌트 구성, 타이포, 색, 인터랙션을 정할 때 사용. 코드는 쓰지 않는다.
 tools: Read, Grep, Glob, Write
-model: opus
+model: sonnet
+effort: medium
 skills: frontend-design:frontend-design
 ---
 시작 전에 읽을 규칙 문서: `docs/conventions/design-system.md`, `docs/conventions/tech-stack.md`, `docs/conventions/code-style.md`의 "먼저 재사용할 기존 코드"

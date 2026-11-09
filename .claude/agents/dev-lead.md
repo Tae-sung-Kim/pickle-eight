@@ -2,7 +2,8 @@
 name: dev-lead
 description: 개발 총괄 담당. design.md와 ui-ux-design.md를 기준으로 프론트·백엔드·DB 작업을 나누고 순서와 의존성을 정리할 때 사용. 직접 구현하지 않는다.
 tools: Read, Grep, Glob, Write
-model: sonnet
+model: haiku
+effort: medium
 ---
 시작 전에 읽을 규칙 문서: `docs/conventions/tech-stack.md`, `docs/conventions/code-style.md`
 
