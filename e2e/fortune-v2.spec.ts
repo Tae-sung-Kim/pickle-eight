@@ -221,6 +221,7 @@ async function readStable(locator: Locator): Promise<string> {
   let previous = '';
   await expect
     .poll(async () => {
+      // biome-ignore lint/performance/useDomNodeTextContent: 화면에 보이는 글자만 비교해야 해서 innerText를 쓴다
       const current = await locator.innerText();
       const isSame = current === previous && current.length > 0;
       previous = current;
@@ -674,6 +675,7 @@ for (const [def, birth, notice] of [
     await submitBirth(page, def, birth);
     const line = page.getByText(notice, { exact: true });
     await expect(line).toBeVisible();
+    // biome-ignore lint/performance/useDomNodeTextContent: 화면에 보이는 글자만 비교해야 해서 innerText를 쓴다
     const shown = await line.innerText();
     expect(findForbidden(shown)).toEqual([]);
   });

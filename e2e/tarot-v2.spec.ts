@@ -470,6 +470,7 @@ for (const target of PAGES) {
           page.getByRole('img', { name: CARD_FACE_NAME }).first()
         ).toBeVisible();
       }
+      // biome-ignore lint/performance/useDomNodeTextContent: 화면에 보이는 글자만 비교해야 해서 innerText를 쓴다
       const mainText = await page.getByRole('main').innerText();
       for (const number of PHONE_NUMBERS) {
         expect(mainText, `상담전화 ${number}`).toContain(number);
@@ -1120,11 +1121,13 @@ for (const target of PAGES) {
             page.getByRole('img', { name: CARD_FACE_NAME }).first()
           ).toBeVisible();
         }
+        // biome-ignore lint/performance/useDomNodeTextContent: 화면에 보이는 글자만 비교해야 해서 innerText를 쓴다
         texts.push(await page.getByRole('main').innerText());
       } else {
         await topicChip(page, topic.label).click();
         await drawThree(page);
         await expect(storyHeading(page)).toBeVisible();
+        // biome-ignore lint/performance/useDomNodeTextContent: 화면에 보이는 글자만 비교해야 해서 innerText를 쓴다
         texts.push(await page.getByRole('main').innerText());
         await redrawButton(page).click();
         await expect(threeDrawButton(page)).toBeVisible();
