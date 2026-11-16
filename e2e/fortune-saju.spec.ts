@@ -291,17 +291,19 @@ function ddOf(page: Page, label: string): Locator {
 
 async function readTodayAndTenGod(page: Page) {
   const today = (
-    await ddOf(page, FORTUNE_SAJU_PANEL_TEXTS.todayPillarLabel)
+    (await ddOf(page, FORTUNE_SAJU_PANEL_TEXTS.todayPillarLabel)
       .first()
-      .innerText()
+      .textContent()) ?? ''
   ).trim();
   const myStem = (
-    await ddOf(page, FORTUNE_SAJU_PANEL_TEXTS.myDayStemLabel)
+    (await ddOf(page, FORTUNE_SAJU_PANEL_TEXTS.myDayStemLabel)
       .first()
-      .innerText()
+      .textContent()) ?? ''
   ).trim();
   const tenGod = (
-    await ddOf(page, FORTUNE_SAJU_PANEL_TEXTS.tenGodLabel).first().innerText()
+    (await ddOf(page, FORTUNE_SAJU_PANEL_TEXTS.tenGodLabel)
+      .first()
+      .textContent()) ?? ''
   ).trim();
   return {
     todayPillar: today.slice(0, 2),
