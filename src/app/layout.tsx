@@ -17,6 +17,7 @@ import { ConsentProvider } from '@/providers/consent.provider';
 import { MotionProvider } from '@/providers/motion.provider';
 import { QueryClientProviderWrapper } from '@/providers/query-client.provider';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 import { CookieConsentComponent } from '@/components/consent/cookie-consent.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { AdFitSlotComponent } from '@/features/ad/components/adfit-slot.component';
@@ -123,6 +124,7 @@ export default function RootLayout({
             </MotionProvider>
           </ConsentProvider>
         </QueryClientProviderWrapper>
+        <Analytics />
       </body>
     </html>
   );

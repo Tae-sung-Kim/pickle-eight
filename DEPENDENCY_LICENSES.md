@@ -16,6 +16,7 @@ This document summarizes the primary licenses of first-level dependencies declar
 - @radix-ui/react-visually-hidden — MIT
 - @supabase/supabase-js — MIT
 - @tanstack/react-query — MIT
+- @vercel/analytics — MIT
 - axios — MIT
 - class-variance-authority — Apache-2.0
 - clsx — MIT

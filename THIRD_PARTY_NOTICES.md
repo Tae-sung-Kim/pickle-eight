@@ -13,6 +13,7 @@ This project depends on the following third-party software. Their licenses permi
 - Zod — MIT License — https://github.com/colinhacks/zod
 - Zustand — MIT License — https://github.com/pmndrs/zustand
 - Supabase JS (@supabase/supabase-js) — MIT License — https://github.com/supabase/supabase-js
+- Vercel Web Analytics (@vercel/analytics) — MIT License — https://github.com/vercel/analytics
 - tw-animate-css — MIT License — https://github.com/Wombosvideo/tw-animate-css
 - downloadjs — MIT License — https://github.com/rndme/download
 - Axios — MIT License — https://github.com/axios/axios
