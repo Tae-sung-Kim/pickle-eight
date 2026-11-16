@@ -11,16 +11,19 @@ import {
   FORTUNE_HEALTH_TERMS,
   FORTUNE_INTERNAL_PILLAR_TERMS,
   FORTUNE_SAJU_ALLOWED_TEXTS_METHOD_A,
+  FORTUNE_SAJU_PAGE_FORBIDDEN_TERMS,
   FORTUNE_SAJU_REDUNDANT_TERMS,
 } from '@/features/fortune/constants/fortune-copy-rule.constant';
 import {
   FORTUNE_HUB_FAQ,
+  FORTUNE_SAJU_FAQ,
   FORTUNE_STAR_SIGN_FAQ,
   FORTUNE_TODAY_FAQ,
   FORTUNE_TTI_FAQ,
 } from '@/features/fortune/constants/fortune-faq.constant';
 import {
   FORTUNE_HUB_GUIDE,
+  FORTUNE_SAJU_GUIDE,
   FORTUNE_STAR_SIGN_GUIDE,
   FORTUNE_TODAY_GUIDE,
   FORTUNE_TTI_GUIDE,
@@ -32,9 +35,11 @@ import {
 import { FORTUNE_LUCKY_TABLE } from '@/features/fortune/constants/fortune-lucky.constant';
 import * as noticeConstants from '@/features/fortune/constants/fortune-notice.constant';
 import { FORTUNE_ROUTES } from '@/features/fortune/constants/fortune-route.constant';
+import * as sajuNoticeConstants from '@/features/fortune/constants/fortune-saju-notice.constant';
 import {
   FORTUNE_BREADCRUMB_GROUP,
   FORTUNE_HUB_SEO,
+  FORTUNE_SAJU_SEO,
   FORTUNE_STAR_SIGN_SEO,
   FORTUNE_TODAY_SEO,
   FORTUNE_TTI_SEO,
@@ -47,6 +52,10 @@ import {
 import { FORTUNE_ZODIAC } from '@/features/fortune/constants/fortune-zodiac.constant';
 import { FORTUNE_COMMON_POOL } from '@/features/fortune/constants/pools/common.constant';
 import { FORTUNE_PERSONAL_POOL } from '@/features/fortune/constants/pools/personal.constant';
+import {
+  FORTUNE_SAJU_BASE_SCORES,
+  FORTUNE_SAJU_POOLS,
+} from '@/features/fortune/constants/pools/saju-pools.constant';
 import { FORTUNE_STAR_SIGN_POOLS } from '@/features/fortune/constants/pools/star-sign-pools.constant';
 import { FORTUNE_TTI_POOLS } from '@/features/fortune/constants/pools/tti-pools.constant';
 
@@ -172,6 +181,8 @@ function stripSajuAllowed(text: string): string {
 }
 
 function findSajuMisplaced(item: NamedText): string[] {
+  // 출시 후 허브 목록·메뉴의 항목 이름 "사주"(AC-88)
+  if (item.text.trim() === '사주') return [];
   const rest = stripSajuAllowed(item.text);
   const index = rest.indexOf('사주');
   return index >= 0
@@ -762,6 +773,12 @@ test.describe('AC-37: 금지 표현 (문구 데이터)', () => {
 
 // ---------- "사주" 위치 (AC-10, AC-58 방식 A 해당분, design.md 8.3) ----------
 
+/** 허브 FAQ 7번 질문(SJ-G3 안 A). 괄호 설명 없이 "사주"로 시작하는 유일한 승인 예외 */
+const HUB_FAQ_Q7_EXCEPTION = '사주는 다른 운세와 무엇이 다른가요?';
+/** 허브 가이드 사주 소개 단락의 둘째 문장(W3). 같은 단락 첫 문장(W2)이 괄호 설명을 이미 붙였고 "사주 페이지" 링크 설명이다 */
+const HUB_GUIDE_W3_EXCEPTION =
+  '태어난 시간을 모르셔도 시주 없이 보실 수 있고, 23시대 출생 처리 같은 계산 기준은 사주 페이지에서 확인하실 수 있습니다.';
+
 test.describe('AC-10, AC-58: "사주" 위치와 겹침 표현', () => {
   test('AC-10: 괄호 설명 상수가 정해진 문자열이고 방식 A 안내 3문장이 plan 원문과 같다', () => {
     expect(noticeConstants.FORTUNE_SAJU_GLOSS).toBe(
@@ -786,6 +803,13 @@ test.describe('AC-10, AC-58: "사주" 위치와 겹침 표현', () => {
     for (const sentence of FORTUNE_SAJU_ALLOWED_TEXTS_METHOD_A) {
       const first = sentence.indexOf('사주');
       if (first < 0) problems.push(`"사주" 없음: ${sentence}`);
+      // 허브 FAQ 7번 질문(안 A)은 V8.3 규칙 4의 승인된 예외 1건이다
+      if (
+        sentence === HUB_FAQ_Q7_EXCEPTION ||
+        sentence === HUB_GUIDE_W3_EXCEPTION
+      ) {
+        continue;
+      }
       if (first !== sentence.indexOf(noticeConstants.FORTUNE_SAJU_GLOSS)) {
         problems.push(`첫 "사주"가 괄호 설명이 아님: ${sentence}`);
       }
@@ -804,12 +828,7 @@ test.describe('AC-10, AC-58: "사주" 위치와 겹침 표현', () => {
   });
 
   test('AC-10, AC-37: 문구 풀 4종·SEO 4개·메뉴·상담전화·행운 요소에 "사주"가 없다', () => {
-    const strict = [
-      ...POOL_SENTENCES,
-      ...SEO_TEXTS,
-      ...MENU_TEXTS,
-      ...SHARED_TEXTS,
-    ];
+    const strict = [...POOL_SENTENCES, ...SEO_TEXTS, ...SHARED_TEXTS];
     const hits = strict
       .filter((item) => item.text.includes('사주'))
       .map((item) => `${item.where}: ${item.text}`);
@@ -830,7 +849,11 @@ test.describe('AC-10, AC-58: "사주" 위치와 겹침 표현', () => {
     const problems: string[] = [];
     for (const [name, items] of FAQ_SETS) {
       for (const item of items) {
-        if (item.question.includes('사주')) {
+        // 허브 FAQ 7번 질문(안 A)은 V8.3 규칙 4의 승인된 예외 1건이다
+        if (
+          item.question.includes('사주') &&
+          item.question !== HUB_FAQ_Q7_EXCEPTION
+        ) {
           problems.push(`${name} 질문에 사주: ${item.question}`);
         }
         const first = item.answer.indexOf('사주');
@@ -854,20 +877,31 @@ test.describe('AC-10, AC-58: "사주" 위치와 겹침 표현', () => {
     expect(FORTUNE_INTERNAL_PILLAR_TERMS).toEqual(['4기둥', '3기둥']);
   });
 
-  test('AC-58, AC-61: 메뉴 운세 그룹은 허브·세 기능 링크만 있고 사주 항목이 없다 (1단계)', () => {
+  test('AC-58, AC-61, AC-88: 메뉴 운세 그룹은 네 기능 링크(사주는 마지막)이고 "사주"는 메뉴 label에만 있다', () => {
     expect(fortuneMenuGroup?.href).toBe(FORTUNE_ROUTES.hub);
     expect(fortuneMenuGroup?.items.map((i) => i.href)).toEqual([
       FORTUNE_ROUTES.today,
       FORTUNE_ROUTES.tti,
       FORTUNE_ROUTES.starSign,
+      FORTUNE_ROUTES.saju,
     ]);
     expect(fortuneMenuGroup?.items.map((i) => i.label)).toEqual([
       '오늘의 운세',
       '띠별 운세',
       '별자리 운세',
+      '사주',
     ]);
+    const sajuItem = fortuneMenuGroup?.items.find(
+      (i) => i.href === FORTUNE_ROUTES.saju
+    );
+    expect(sajuItem?.description ?? '').not.toContain('사주');
+    expect(sajuItem?.example ?? '').not.toContain('사주');
+    // 그룹 안에서 "사주" 글자는 label 하나뿐
     const saju = MENU_TEXTS.filter(
-      (item) => item.text.includes('사주') || item.text.includes('saju')
+      (item) =>
+        item.text.includes('사주') &&
+        !item.where.includes('label') &&
+        item.text !== '사주'
     );
     expect(saju.map((s) => `${s.where}: ${s.text}`)).toEqual([]);
   });
@@ -1793,9 +1827,10 @@ test.describe('서버 HTML (request로 받은 응답): 본문, title, descriptio
     }) => {
       const res = await request.get(pagePath);
       const texts = await readTexts(page, await res.text());
+      // 허브 ItemList의 사주 항목 이름 "사주"는 출시 후 허용(AC-88)
       const flat = JSON.stringify(texts.jsonLdRaw, (key, value: unknown) =>
         key === 'mainEntity' ? undefined : value
-      );
+      ).replace(/"name":"사주"/g, '');
       expect(
         texts.head.filter((h) => h.text.includes('사주')).map((h) => h.where)
       ).toEqual([]);
@@ -1868,7 +1903,7 @@ test.describe('서버 HTML (request로 받은 응답): 본문, title, descriptio
     });
   }
 
-  test('AC-61, AC-80: 허브 서버 HTML에 기능 링크 3개가 있고 사주 링크와 입력칸이 없다', async ({
+  test('AC-61, AC-88: 허브 서버 HTML에 기능 링크 4개(사주 포함)가 있고 입력칸이 없다', async ({
     page,
     request,
   }) => {
@@ -1878,10 +1913,10 @@ test.describe('서버 HTML (request로 받은 응답): 본문, title, descriptio
       FORTUNE_ROUTES.today,
       FORTUNE_ROUTES.tti,
       FORTUNE_ROUTES.starSign,
+      FORTUNE_ROUTES.saju,
     ]) {
       expect(texts.hrefs, href).toContain(href);
     }
-    expect(texts.hrefs.filter((h) => h.includes('saju'))).toEqual([]);
     expect(
       texts.blocks.filter((b) => /동의하고 시작|생년월일 입력/.test(b.text))
     ).toEqual([]);
@@ -1900,6 +1935,537 @@ test.describe('서버 HTML (request로 받은 응답): 본문, title, descriptio
         pagePath
       ).toBe(true);
     }
+  });
+});
+
+// =====================================================================
+// SJ-QA2 사주 문구 검사 (design-saju-v2 V10.2, V10.3). 1단계 케이스는 이 블록 앞뒤에 그대로 있다.
+// =====================================================================
+
+const SAJU_PAGE_FORBIDDEN: readonly string[] = [
+  ...FORTUNE_FORBIDDEN_TERMS.filter(
+    (term) => term !== '사주 분석' && term !== '사주분석'
+  ),
+  ...FORTUNE_SAJU_PAGE_FORBIDDEN_TERMS,
+];
+
+/** 사주 페이지 기준 금지어(사주 분석 허용, 페이지 전용 금지어 추가) + 패턴 + 겹침 표현 */
+function findSajuPageViolations(item: NamedText): string[] {
+  const text = stripAllowed(item.text);
+  const found: string[] = [];
+  for (const term of SAJU_PAGE_FORBIDDEN) {
+    const index = text.indexOf(term);
+    if (index >= 0) {
+      found.push(
+        `${item.where}: 금지 표현 "${term}" -> ${excerpt(text, index, term.length)}`
+      );
+    }
+  }
+  for (const pattern of FORTUNE_FORBIDDEN_PATTERNS) {
+    const match = pattern.exec(text);
+    if (match) {
+      found.push(
+        `${item.where}: 금지 패턴 ${pattern} -> ${excerpt(text, match.index, match[0].length)}`
+      );
+    }
+  }
+  found.push(...findRedundant(item));
+  return found;
+}
+
+const SAJU_KEYS = [
+  'bigyeon',
+  'geopjae',
+  'siksin',
+  'sanggwan',
+  'pyeonjae',
+  'jeongjae',
+  'pyeongwan',
+  'jeonggwan',
+  'pyeonin',
+  'jeongin',
+] as const;
+
+const SAJU_POOL_SENTENCES: PoolSentence[] = SAJU_KEYS.flatMap((key) =>
+  poolSentences({
+    id: `사주 ${key}`,
+    kind: 'personal',
+    pool: FORTUNE_SAJU_POOLS[key],
+  })
+);
+
+const SAJU_NOTICE_TEXTS: NamedText[] = collect(
+  Object.entries(sajuNoticeConstants).map(
+    ([name, value]): [string, unknown] => [`사주 고지 ${name}`, value]
+  )
+);
+const SAJU_SEO_TEXTS: NamedText[] = collect([['SEO 사주', FORTUNE_SAJU_SEO]]);
+const SAJU_FAQ_TEXTS: NamedText[] = collect([['FAQ 사주', FORTUNE_SAJU_FAQ]]);
+const SAJU_GUIDE_TEXTS: NamedText[] = collect([
+  ['가이드 사주', FORTUNE_SAJU_GUIDE],
+]);
+const SAJU_ALL_TEXTS: NamedText[] = [
+  ...SAJU_POOL_SENTENCES,
+  ...SAJU_NOTICE_TEXTS,
+  ...SAJU_SEO_TEXTS,
+  ...SAJU_FAQ_TEXTS,
+  ...SAJU_GUIDE_TEXTS,
+];
+
+const SAJU_CALC_BASIS = [
+  sajuNoticeConstants.FORTUNE_SAJU_CALC_BASIS_PILLARS,
+  sajuNoticeConstants.FORTUNE_SAJU_CALC_BASIS_DAY_HOUR,
+  sajuNoticeConstants.FORTUNE_SAJU_CALC_BASIS_SCHOOLS,
+  sajuNoticeConstants.FORTUNE_SAJU_CALC_BASIS_ZI_START,
+  sajuNoticeConstants.FORTUNE_SAJU_CALC_BASIS_NO_CORRECTION,
+  sajuNoticeConstants.FORTUNE_SAJU_CALC_BASIS_STATEMENT,
+];
+
+test.describe('SJ-QA2 사주 문구 풀·점수', () => {
+  test('AC-54, AC-90: 사주 풀은 십신 10 x 항목 5 x 구간 3 x 변형 3 = 450문장이고 비어 있지 않다', () => {
+    expect(Object.keys(FORTUNE_SAJU_POOLS).sort()).toEqual(
+      [...SAJU_KEYS].sort()
+    );
+    expect(SAJU_POOL_SENTENCES).toHaveLength(450);
+    for (const key of SAJU_KEYS) {
+      const pool = FORTUNE_SAJU_POOLS[key] as Record<
+        string,
+        Record<string, readonly string[]>
+      >;
+      expect(Object.keys(pool).sort(), key).toEqual([...CATEGORY_KEYS].sort());
+      for (const category of CATEGORY_KEYS) {
+        expect(
+          Object.keys(pool[category]).sort(),
+          `${key}.${category}`
+        ).toEqual([...BAND_KEYS].sort());
+        for (const band of BAND_KEYS) {
+          expect(
+            pool[category][band],
+            `${key}.${category}.${band}`
+          ).toHaveLength(3);
+        }
+      }
+    }
+    const empty = SAJU_POOL_SENTENCES.filter((s) => s.text.trim().length < 20);
+    expect(empty.map((s) => s.where)).toEqual([]);
+  });
+
+  test('AC-90: 사주 풀 450문장에 같은 문장이 두 번 나오지 않는다', () => {
+    const seen = new Map<string, string>();
+    const dup: string[] = [];
+    for (const s of SAJU_POOL_SENTENCES) {
+      const before = seen.get(s.text);
+      if (before) dup.push(`${before} = ${s.where}`);
+      seen.set(s.text, s.where);
+    }
+    expect(dup, dup.join('\n')).toEqual([]);
+  });
+
+  test('AC-54, AC-90: FORTUNE_SAJU_BASE_SCORES는 십신 10 x 항목 5, 모두 60~69 정수이고 총운 차이가 6 이하다', () => {
+    expect(Object.keys(FORTUNE_SAJU_BASE_SCORES).sort()).toEqual(
+      [...SAJU_KEYS].sort()
+    );
+    const bad: string[] = [];
+    for (const key of SAJU_KEYS) {
+      const scores = FORTUNE_SAJU_BASE_SCORES[key] as Record<string, number>;
+      expect(Object.keys(scores).sort(), key).toEqual(
+        [...CATEGORY_KEYS].sort()
+      );
+      for (const category of CATEGORY_KEYS) {
+        const value = scores[category];
+        if (!Number.isInteger(value) || value < 60 || value > 69) {
+          bad.push(`${key}.${category}=${value}`);
+        }
+      }
+    }
+    expect(bad).toEqual([]);
+    const totals = SAJU_KEYS.map((key) => FORTUNE_SAJU_BASE_SCORES[key].total);
+    expect(Math.max(...totals) - Math.min(...totals)).toBeLessThanOrEqual(6);
+  });
+
+  test('AC-39: 사주 풀의 건강 칸에 병명·약 말이 없고 재물 칸에 투자 권유 말이 없다', () => {
+    const hits: string[] = [];
+    for (const s of SAJU_POOL_SENTENCES) {
+      if (s.category === 'health') {
+        for (const term of FORTUNE_HEALTH_TERMS) {
+          const isHit =
+            term === '암' ? isStandaloneCancer(s.text) : s.text.includes(term);
+          if (isHit) hits.push(`${s.where}: "${term}" -> ${s.text}`);
+        }
+      }
+      if (s.category === 'money') {
+        for (const term of MONEY_RISK_TERMS) {
+          if (s.text.includes(term)) hits.push(`${s.where}: "${term}"`);
+        }
+      }
+    }
+    expect(hits, hits.join('\n')).toEqual([]);
+  });
+
+  test('AC-38: 사주 풀 450문장과 십신 설명이 합니다체다 (명백한 해요체는 실패, 나머지는 후보 보고)', async () => {
+    const result = checkStyle([
+      ...SAJU_POOL_SENTENCES,
+      ...collect([
+        ['십신 설명', sajuNoticeConstants.FORTUNE_SAJU_TEN_GOD_DESCRIPTIONS],
+      ]),
+    ]);
+    await report('사주 합니다체 후보', [
+      ...result.questionHaeyo,
+      ...result.haeyoCandidates,
+      ...result.nonHabnidaCandidates,
+    ]);
+    expect(result.hard, result.hard.join('\n')).toEqual([]);
+  });
+
+  test('AC-39(참고): 사주 풀 낮은 구간 문장의 마지막 문장이 행동 조언 어미인지 후보를 보고한다', async () => {
+    const lines: string[] = [];
+    for (const s of SAJU_POOL_SENTENCES.filter((p) => p.band === 'low')) {
+      const sentences = splitSentences(s.text);
+      const last = sentences[sentences.length - 1] ?? s.text;
+      if (!ACTION_ENDING.test(last.trim())) lines.push(`${s.where}: ${last}`);
+    }
+    await report('사주 낮은 구간 행동 조언 후보', lines);
+  });
+});
+
+test.describe('SJ-QA2 사주 금지어 (AC-37, AC-52, AC-56, AC-58, AC-89)', () => {
+  test('AC-58: 사주 페이지 추가 금지어 6개와 기존 금지어(정통, 전문가 수준, AI 분석, AI가)가 목록에 있다', () => {
+    expect(FORTUNE_SAJU_PAGE_FORBIDDEN_TERMS).toEqual(
+      expect.arrayContaining([
+        '정확한',
+        'AI',
+        '정자시',
+        'same-day',
+        'next-day',
+        '평생 운을 알려',
+      ])
+    );
+    expect(FORTUNE_FORBIDDEN_TERMS).toEqual(
+      expect.arrayContaining(['정통', '전문가 수준', 'AI 분석', 'AI가'])
+    );
+  });
+
+  test('AC-37, AC-58: 사주 풀 450문장·notice 전체·SEO·FAQ·가이드에 금지어(사주 페이지 기준)와 겹침 표현이 없다', () => {
+    expect(SAJU_NOTICE_TEXTS.length).toBeGreaterThan(40);
+    const violations = uniqueLines(
+      SAJU_ALL_TEXTS.flatMap(findSajuPageViolations)
+    );
+    expect(violations, violations.join('\n')).toEqual([]);
+  });
+
+  test('AC-56: 사주 화면 문구 상수 어디에도 정자시, same-day, next-day 글자가 없다', () => {
+    const hits = SAJU_ALL_TEXTS.filter((item) =>
+      /정자시|same-day|next-day/i.test(item.text)
+    ).map((item) => `${item.where}: ${item.text}`);
+    expect(hits, hits.join('\n')).toEqual([]);
+  });
+
+  test('AC-52, AC-89: 사주 메타데이터·keywords·FAQ 질문에 "사주 네 기둥", "사주 4기둥", "사주 풀이"가 없다', () => {
+    const targets: NamedText[] = [
+      ...SAJU_SEO_TEXTS,
+      ...FORTUNE_SAJU_FAQ.map((f, i) => ({
+        where: `FAQ 질문 ${i + 1}`,
+        text: f.question,
+      })),
+    ];
+    for (const item of targets) {
+      for (const term of ['사주 네 기둥', '사주 4기둥', '사주 풀이']) {
+        expect(item.text, `${item.where} / ${term}`).not.toContain(term);
+      }
+    }
+  });
+});
+
+test.describe('SJ-QA2 사주 상수 내용 (V10.1, V9, AC-56, AC-89)', () => {
+  test('V10.1: fortune-saju-notice 필수 키가 있고 십신 설명 10개, 절기 이름 12개, 템플릿 자리표시자가 맞다', () => {
+    const s = sajuNoticeConstants;
+    expect(Object.keys(s.FORTUNE_SAJU_TEN_GOD_DESCRIPTIONS).sort()).toEqual(
+      [...SAJU_KEYS].sort()
+    );
+    for (const text of Object.values(s.FORTUNE_SAJU_TEN_GOD_DESCRIPTIONS)) {
+      expect(text.length).toBeGreaterThan(20);
+    }
+    expect([...s.FORTUNE_SAJU_SOLAR_TERM_NAMES]).toEqual([
+      '소한',
+      '입춘',
+      '경칩',
+      '청명',
+      '입하',
+      '망종',
+      '소서',
+      '입추',
+      '백로',
+      '한로',
+      '입동',
+      '대설',
+    ]);
+    expect(Object.keys(s.FORTUNE_SAJU_PANEL_TEXTS)).toEqual(
+      expect.arrayContaining([
+        'summaryTemplate',
+        'calcBasisLinkLabel',
+        'dateSubmitLabel',
+      ])
+    );
+    expect(s.FORTUNE_SAJU_BOUNDARY_NOTICE_TEMPLATE).toContain('{절기}');
+    expect(s.FORTUNE_SAJU_BOUNDARY_NOTICE_TEMPLATE).toContain('{기둥}');
+    expect(s.FORTUNE_SAJU_CANDIDATE_LABEL_TEMPLATES.year).toContain('{간지}');
+    expect(s.FORTUNE_SAJU_CANDIDATE_LABEL_TEMPLATES.month).toContain('{간지}');
+    expect(s.FORTUNE_SAJU_PANEL_TEXTS.summaryTemplate).toContain('{연}');
+    for (const item of SAJU_NOTICE_TEXTS) {
+      expect(item.text.trim().length, item.where).toBeGreaterThan(0);
+    }
+  });
+
+  test('AC-56: 계산 기준 6항목에 연주·월주 기준, 자정·23:00~23:59(야자시 한 번), 학설·자시 통합, 23:30 만세력, 경도·표준시·서머타임, 학파별 기준이 있다', () => {
+    const [pillars, dayHour, schools, ziStart, noCorrection, statement] =
+      SAJU_CALC_BASIS;
+    expect(pillars).toContain('입춘');
+    expect(pillars).toContain('절기');
+    expect(dayHour).toContain('자정');
+    expect(dayHour).toContain('23:00~23:59');
+    expect(dayHour.split('야자시')).toHaveLength(2);
+    expect(schools).toContain('학설');
+    expect(schools).toContain('자시 통합');
+    expect(schools).toContain('다를 수');
+    expect(ziStart).toContain('23:00');
+    expect(ziStart).toContain('23:30');
+    for (const word of ['경도', '표준시', '서머타임']) {
+      expect(noCorrection).toContain(word);
+    }
+    expect(statement).toContain('학파');
+    expect(statement).toContain('이 서비스의 기준');
+    expect(sajuNoticeConstants.FORTUNE_SAJU_TIME_UNKNOWN_NOTICE).toContain(
+      '시주'
+    );
+  });
+
+  test('AC-89: FORTUNE_SAJU_SEO는 heading 사주, keywords 5개, 경로 /fortune/saju이고 괄호 설명이 첫 "사주"다', () => {
+    expect(FORTUNE_SAJU_SEO.heading).toBe('사주');
+    expect(FORTUNE_SAJU_SEO.pathname).toBe(FORTUNE_ROUTES.saju);
+    expect([...FORTUNE_SAJU_SEO.keywords]).toEqual([
+      '사주',
+      '무료 사주',
+      '사주 만세력',
+      '만세력 사주',
+      '오늘의 사주 운세',
+    ]);
+    const gloss = noticeConstants.FORTUNE_SAJU_GLOSS;
+    expect(FORTUNE_SAJU_SEO.description).toContain(gloss);
+    expect(FORTUNE_SAJU_SEO.description).toContain('오락·참고용');
+    for (const text of [
+      FORTUNE_SAJU_SEO.description,
+      FORTUNE_SAJU_SEO.headerDescription,
+    ]) {
+      expect(text.indexOf('사주')).toBe(text.indexOf(gloss));
+    }
+  });
+
+  test('AC-89: FORTUNE_SAJU_FAQ는 질문 5개(의문형)이고 1번 답이 괄호 설명으로 시작하며 5번 답이 오늘의 사주 운세만 제공한다고 말한다', () => {
+    expect(FORTUNE_SAJU_FAQ.map((f) => f.question)).toEqual([
+      '사주란 무엇인가요?',
+      '태어난 시간을 모르면 어떻게 되나요?',
+      '계산 기준은 무엇인가요?',
+      '23시 이후에 태어났으면 어떻게 계산하나요?',
+      '평생 운이나 성격도 알 수 있나요?',
+    ]);
+    expect(
+      FORTUNE_SAJU_FAQ[0].answer.startsWith(noticeConstants.FORTUNE_SAJU_GLOSS)
+    ).toBe(true);
+    expect(FORTUNE_SAJU_FAQ[4].answer).toContain('오늘의 사주 운세만');
+  });
+
+  test('AC-89: FORTUNE_SAJU_GUIDE는 소제목 3개이고 첫 "사주"가 괄호 설명이며 가이드 + 계산 기준 + FAQ가 600자 이상이다', () => {
+    expect(FORTUNE_SAJU_GUIDE.map((g) => g.heading)).toEqual([
+      '사주와 만세력',
+      '이용 방법',
+      '오늘의 운세와의 차이',
+    ]);
+    const body = FORTUNE_SAJU_GUIDE.flatMap((g) => g.paragraphs).join('');
+    expect(body.indexOf('사주')).toBe(
+      body.indexOf(noticeConstants.FORTUNE_SAJU_GLOSS)
+    );
+    const total =
+      body.length +
+      SAJU_CALC_BASIS.join('').length +
+      FORTUNE_SAJU_FAQ.map((f) => f.question + f.answer).join('').length;
+    expect(total).toBeGreaterThanOrEqual(600);
+  });
+});
+
+test.describe('SJ-QA2 허브 개정 (AC-88)', () => {
+  test('AC-88: 허브 가이드·FAQ에 "세 가지", "세 운세"가 없다', () => {
+    const texts = collect([
+      ['가이드 허브', FORTUNE_HUB_GUIDE],
+      ['FAQ 허브', FORTUNE_HUB_FAQ],
+    ]);
+    const hits = texts
+      .filter((t) => /세 가지|세가지|세 운세/.test(t.text))
+      .map((t) => `${t.where}: ${t.text}`);
+    expect(hits, hits.join('\n')).toEqual([]);
+  });
+
+  test('AC-88: 허브 FAQ는 7쌍이고 7번째(안 A)가 사주와 다른 운세의 차이를 묻는다', () => {
+    expect(FORTUNE_HUB_FAQ).toHaveLength(7);
+    expect(FORTUNE_HUB_FAQ[6].question).toBe(
+      '사주는 다른 운세와 무엇이 다른가요?'
+    );
+    expect(
+      FORTUNE_HUB_FAQ[6].answer.startsWith(noticeConstants.FORTUNE_SAJU_GLOSS)
+    ).toBe(true);
+    for (const item of FORTUNE_HUB_FAQ) {
+      expect(item.question.trim()).toMatch(/\?$/);
+    }
+  });
+
+  test('AC-88: 허브 가이드가 문구 선택 방식과 만세력 계산 방식의 차이를 말하고 허브 SEO·Breadcrumb에 "사주"가 없다', () => {
+    const guide = FORTUNE_HUB_GUIDE.flatMap((g) => g.paragraphs).join(' ');
+    expect(guide).toContain('미리 작성해 둔 문구를 고르는 방식');
+    expect(guide).toContain('만세력으로');
+    const meta = collect([
+      ['SEO 허브', FORTUNE_HUB_SEO],
+      ['Breadcrumb', FORTUNE_BREADCRUMB_GROUP],
+    ]).filter((t) => t.text.includes('사주'));
+    expect(meta).toEqual([]);
+  });
+
+  test('AC-88, V10.2: 방식 A 화이트리스트에 옛 "세 운세" 문장이 없고 허브 FAQ 7번 질문이 등록돼 있다', () => {
+    expect(
+      FORTUNE_SAJU_ALLOWED_TEXTS_METHOD_A.filter((t) => /세 운세/.test(t))
+    ).toEqual([]);
+    expect(FORTUNE_SAJU_ALLOWED_TEXTS_METHOD_A).toContain(
+      '사주는 다른 운세와 무엇이 다른가요?'
+    );
+  });
+
+  test('AC-61, AC-88: 출시 후 메뉴(운세 그룹) 마지막에 사주 항목이 있다', () => {
+    expect(fortuneMenuGroup?.items.map((i) => i.href)).toEqual([
+      FORTUNE_ROUTES.today,
+      FORTUNE_ROUTES.tti,
+      FORTUNE_ROUTES.starSign,
+      FORTUNE_ROUTES.saju,
+    ]);
+  });
+});
+
+test.describe('SJ-QA2 사주 페이지 서버 HTML과 결과 DOM', () => {
+  test.describe.configure({ timeout: 120_000 });
+
+  test('AC-89, AC-56: /fortune/saju 서버 HTML이 h1 하나, title·description·canonical·OG를 갖고 noindex가 없다(출시)', async ({
+    page,
+    request,
+  }) => {
+    const res = await request.get(FORTUNE_ROUTES.saju);
+    expect(res.status()).toBeLessThan(400);
+    const html = await res.text();
+    const texts = await readTexts(page, html);
+    expect(texts.h1).toEqual([FORTUNE_SAJU_SEO.heading]);
+    const get = (where: string) =>
+      texts.head.find((h) => h.where === `head ${where}`)?.text ?? '';
+    expect(get('title')).toContain(FORTUNE_SAJU_SEO.title);
+    expect(get('description')).toBe(FORTUNE_SAJU_SEO.description);
+    expect(get('og:title')).toContain(FORTUNE_SAJU_SEO.title);
+    expect(get('og:image:alt')).toBe(FORTUNE_SAJU_SEO.ogImageAlt);
+    expect(html).toMatch(/<link[^>]+rel="canonical"[^>]+\/fortune\/saju/);
+    expect(html).not.toMatch(/<meta[^>]+name="robots"[^>]*noindex/);
+    expect(res.headers()['x-robots-tag'] ?? '').not.toMatch(/noindex/i);
+    for (const needle of [
+      FORTUNE_SAJU_SEO.headerDescription,
+      ...SAJU_CALC_BASIS,
+      ...FORTUNE_SAJU_FAQ.map((f) => f.question),
+    ]) {
+      expect(hasText(texts, needle), needle.slice(0, 30)).toBe(true);
+    }
+  });
+
+  test('AC-37, AC-52, AC-56: /fortune/saju 서버 HTML(본문·메타·JSON-LD·속성)에 금지어와 겹침 표현이 없다', async ({
+    page,
+    request,
+  }) => {
+    const res = await request.get(FORTUNE_ROUTES.saju);
+    const texts = await readTexts(page, await res.text());
+    expect(texts.blocks.length).toBeGreaterThan(10);
+    const violations = uniqueLines(
+      allTexts(texts).flatMap(findSajuPageViolations)
+    );
+    expect(violations, violations.join('\n')).toEqual([]);
+  });
+
+  test('AC-89: 서버 HTML JSON-LD에 홈 > 운세 > 사주 BreadcrumbList와 화면 FAQ와 같은 FAQPage가 있고 리뷰·평점이 없다', async ({
+    page,
+    request,
+  }) => {
+    const res = await request.get(FORTUNE_ROUTES.saju);
+    const texts = await readTexts(page, await res.text());
+    const flat = texts.jsonLdRaw.flatMap((v) =>
+      Array.isArray(v) ? v : [v]
+    ) as Array<Record<string, unknown>>;
+    const crumb = flat.find((v) => v['@type'] === 'BreadcrumbList') as
+      | { itemListElement: Array<{ name: string; item: string }> }
+      | undefined;
+    expect(crumb?.itemListElement.map((e) => e.name).slice(1)).toEqual([
+      '운세',
+      '사주',
+    ]);
+    expect(crumb?.itemListElement[1].item).toMatch(/\/fortune$/);
+    expect(crumb?.itemListElement[2].item).toMatch(/\/fortune\/saju$/);
+    const faq = flat.find((v) => v['@type'] === 'FAQPage') as
+      | {
+          mainEntity: Array<{
+            name: string;
+            acceptedAnswer: { text: string };
+          }>;
+        }
+      | undefined;
+    expect(faq?.mainEntity.map((e) => e.name)).toEqual(
+      FORTUNE_SAJU_FAQ.map((f) => f.question)
+    );
+    expect(faq?.mainEntity.map((e) => e.acceptedAnswer.text)).toEqual(
+      FORTUNE_SAJU_FAQ.map((f) => f.answer)
+    );
+    expect(JSON.stringify(flat)).not.toMatch(/Review|AggregateRating/);
+  });
+
+  test('AC-72: 동의 전 서버 HTML에는 기둥 표·십신·점수 같은 개인 결과가 없다', async ({
+    page,
+    request,
+  }) => {
+    const res = await request.get(FORTUNE_ROUTES.saju);
+    const texts = await readTexts(page, await res.text());
+    for (const word of ['오늘 일진과 내 일간', '오행 분포']) {
+      expect(
+        texts.blocks.some((b) => b.text === word),
+        word
+      ).toBe(false);
+    }
+    expect(texts.blocks.some((b) => /\d+점/.test(b.text))).toBe(false);
+  });
+
+  test('AC-37, AC-52, AC-58: 동의 후 시간 모름 결과 DOM(기둥·오행·십신·점수·문구)에 금지어와 겹침 표현이 없다', async ({
+    page,
+  }) => {
+    const errors = trackPageErrors(page);
+    await page.goto(FORTUNE_ROUTES.saju);
+    await grantConsent(page);
+    await expect(
+      page.getByRole('heading', { name: '생년월일 입력', level: 2 })
+    ).toBeVisible();
+    await submitBirth(
+      page,
+      { year: '1990', month: '6', day: '15' },
+      '생년월일 확인'
+    );
+    await page.getByRole('button', { name: '시간 모름', exact: true }).click();
+    await expect(
+      page.getByRole('heading', { name: '연·월·일·시 기둥', level: 2 })
+    ).toBeVisible();
+    const texts = await readTexts(page, null);
+    const violations = uniqueLines(
+      allTexts(texts).flatMap(findSajuPageViolations)
+    );
+    expect(violations, violations.join('\n')).toEqual([]);
+    const style = checkStyle(allTexts(texts));
+    expect(style.hard, style.hard.join('\n')).toEqual([]);
+    expect(errors).toEqual([]);
   });
 });
 

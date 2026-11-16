@@ -20,8 +20,8 @@ import {
   FORTUNE_SAJU_STEMS,
 } from '@/features/fortune/constants/fortune-saju.constant';
 import {
+  buildSajuCandidateLabel,
   FORTUNE_SAJU_BOUNDARY_NOTICE_TEMPLATE,
-  FORTUNE_SAJU_CANDIDATE_LABEL_TEMPLATES,
   FORTUNE_SAJU_PANEL_TEXTS,
   FORTUNE_SAJU_SOLAR_TERM_NAMES,
   FORTUNE_SAJU_TIME_QUESTION_TEXT,
@@ -424,23 +424,20 @@ export function FortuneSajuPanelComponent({
             candidates={[
               {
                 key: '0',
-                label: FORTUNE_SAJU_CANDIDATE_LABEL_TEMPLATES[
-                  boundary.kind
-                ].replace(
-                  '{간지}',
+                label: buildSajuCandidateLabel(
+                  boundary.kind,
                   toGanji(needChoice.charts[0][boundary.kind])
                 ),
               },
               {
                 key: '1',
-                label: FORTUNE_SAJU_CANDIDATE_LABEL_TEMPLATES[
-                  boundary.kind
-                ].replace(
-                  '{간지}',
+                label: buildSajuCandidateLabel(
+                  boundary.kind,
                   toGanji(needChoice.charts[1][boundary.kind])
                 ),
               },
             ]}
+            labelledById={boundaryNoticeId}
             selectedKey={selectedCandidate}
             onSelect={handleChoose}
             firstButtonRef={firstCandidateRef}

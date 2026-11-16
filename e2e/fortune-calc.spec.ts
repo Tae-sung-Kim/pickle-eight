@@ -2321,19 +2321,20 @@ test.describe('FORTUNE_ROUTES와 MENU_LIST', () => {
       FORTUNE_ROUTES.today,
       FORTUNE_ROUTES.tti,
       FORTUNE_ROUTES.starSign,
+      FORTUNE_ROUTES.saju,
     ]);
     expect(FORTUNE_ROUTES.today).toBe('/fortune/today');
     expect(FORTUNE_ROUTES.tti).toBe('/fortune/tti');
     expect(FORTUNE_ROUTES.starSign).toBe('/fortune/star-sign');
   });
 
-  test('1단계 메뉴에는 사주 항목이 없다 (D8, D11)', () => {
+  test('출시 후 메뉴 마지막에 사주 항목이 있고 "사주"는 label에만 있다 (AC-88)', () => {
     expect(FORTUNE_ROUTES.saju).toBe('/fortune/saju');
-    expect(group?.items.some((item) => item.href === FORTUNE_ROUTES.saju)).toBe(
-      false
-    );
-    expect(JSON.stringify(group)).not.toContain('saju');
-    expect(JSON.stringify(group)).not.toContain('사주');
+    const last = group?.items[group.items.length - 1];
+    expect(last?.href).toBe(FORTUNE_ROUTES.saju);
+    expect(last?.label).toBe('사주');
+    expect(last?.description).not.toContain('사주');
+    expect(last?.example).not.toContain('사주');
   });
 
   test('메뉴 항목마다 라벨·설명·아이콘이 있고 색은 운세 토큰이다', () => {

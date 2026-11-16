@@ -9,7 +9,7 @@ import type { FortuneFaqItemType } from '@/features/fortune/types/fortune.type';
  * 페이지별 FAQ. 화면과 FAQPage JSON-LD가 같은 배열을 쓴다.
  * 허브는 C-3a, 오늘·띠·별자리는 C-3b가 쓴 초안이다. 비어 있는 상태로 출시하지 않는다.
  */
-/** 허브 FAQ 6쌍. ui-ux-design.md "승인됨 (U-1, 2026-11-05)" 문구 그대로 */
+/** 허브 FAQ 7쌍(7번째는 SJ-G3 승인, 안 A, 2026-11-16). 1~6번은 ui-ux-design.md "승인됨 (U-1, 2026-11-05)" 문구 그대로 */
 export const FORTUNE_HUB_FAQ: readonly FortuneFaqItemType[] = [
   {
     question: '오늘의 운세는 어떻게 정해지나요?',
@@ -40,6 +40,10 @@ export const FORTUNE_HUB_FAQ: readonly FortuneFaqItemType[] = [
     question: '운세 결과는 믿을 만한가요?',
     answer:
       '운세는 과학적으로 입증된 것이 아니며 오락과 참고를 위한 콘텐츠입니다. 결과를 바탕으로 한 판단과 선택은 이용자 본인에게 있으며, 중요한 결정은 해당 분야 전문가와 상담하시기 바랍니다.',
+  },
+  {
+    question: '사주는 다른 운세와 무엇이 다른가요?',
+    answer: `${FORTUNE_SAJU_GLOSS}는 만세력으로 연·월·일·시 기둥을 실제로 계산하고, 내 일간(태어난 날의 천간)과 오늘 일진(오늘 날짜의 천간)을 비교해 결과를 보여 드립니다. 오늘의 운세, 띠별 운세, 별자리 운세는 만세력 계산 없이 서비스가 정한 규칙에 따라 미리 작성해 둔 문구를 고릅니다.`,
   },
 ];
 

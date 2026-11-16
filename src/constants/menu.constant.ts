@@ -120,6 +120,15 @@ export const MENU_LIST: MenuGroupType[] = [
           '12별자리의 오늘 운세와 경계일 시각까지 반영한 내 별자리 찾기.',
         example: '예: 3월 20일생이 태어난 시각으로 별자리 확인',
       },
+      {
+        href: `/${MENU_GROUP_NAME_ENUM.FORTUNE}/saju`,
+        label: '사주',
+        icon: 'ScrollText',
+        colorClass: 'text-menu-fortune',
+        description:
+          '태어난 연·월·일·시로 기둥을 세우고 오늘 일진(오늘 날짜의 천간)과 비교.',
+        example: '예: 태어난 시간을 몰라도 연·월·일 기둥으로 확인',
+      },
     ],
   },
   {

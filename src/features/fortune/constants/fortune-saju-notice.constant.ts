@@ -107,15 +107,33 @@ export const FORTUNE_SAJU_TIME_QUESTION_TEXT =
 export const FORTUNE_SAJU_BOUNDARY_NOTICE_TEMPLATE =
   '이 날은 절기 {절기}에 드는 날이라 태어난 시간을 모르면 {기둥}를 하나로 정할 수 없습니다. 두 경우를 함께 보여 드립니다.';
 
-/** `{간지}`를 바꿔 쓴다. 초안(SJ-C3, SJ-G2 대기). 기준 설계 V10.1 */
+/** `{간지}`, `{조사}`(으로/로)를 바꿔 쓴다. 초안(SJ-C3, SJ-G2 대기). 기준 설계 V10.1, 4.3 */
 export const FORTUNE_SAJU_CANDIDATE_LABEL_TEMPLATES = {
-  year: '연주 {간지}로 보기',
-  month: '월주 {간지}로 보기',
+  year: '연주 {간지}{조사} 보기',
+  month: '월주 {간지}{조사} 보기',
 } as const;
+
+export const FORTUNE_SAJU_JOSA_EURO = '으로';
+export const FORTUNE_SAJU_JOSA_RO = '로';
+
+/** 후보 버튼 라벨. 받침이 있으면 "으로", ㄹ받침이나 받침이 없으면 "로" */
+export function buildSajuCandidateLabel(
+  kind: keyof typeof FORTUNE_SAJU_CANDIDATE_LABEL_TEMPLATES,
+  ganji: string
+): string {
+  const code = ganji.charCodeAt(ganji.length - 1) - 0xac00;
+  const isHangul = code >= 0 && code <= 11171;
+  const jong = isHangul ? code % 28 : 0;
+  const josa =
+    jong === 0 || jong === 8 ? FORTUNE_SAJU_JOSA_RO : FORTUNE_SAJU_JOSA_EURO;
+  return FORTUNE_SAJU_CANDIDATE_LABEL_TEMPLATES[kind]
+    .replace('{간지}', ganji)
+    .replace('{조사}', josa);
+}
 
 // 초안(SJ-C3, SJ-G2 대기). 기준 설계 V10.1(S2-5)
 export const FORTUNE_SAJU_ELEMENTS_NOTE =
-  '오행(목·화·토·금·수 다섯 가지 기운)은 글자마다 하나씩 정해져 있으며, 이 표는 위 표에 보이는 글자의 오행 개수를 센 것입니다. 좋고 나쁨을 뜻하지 않습니다.';
+  '오행(목·화·토·금·수 다섯 가지 기운)은 글자마다 하나씩 정해져 있으며, 이 표는 위 표에 보이는 글자의 오행 개수를 센 것입니다. 개수가 많고 적은 것으로 운의 흐름을 판단하지 않습니다.';
 
 /** 짝수 인덱스 절기 이름 12개. 배열 순서 = 소한(0), 입춘(2) … 대설(22) */
 export const FORTUNE_SAJU_SOLAR_TERM_NAMES = [
@@ -132,3 +150,8 @@ export const FORTUNE_SAJU_SOLAR_TERM_NAMES = [
   '입동',
   '대설',
 ] as const;
+
+/** 사주 화면 조사와 로딩 문구. 값은 기존 컴포넌트 안 문자열과 같다 */
+export const FORTUNE_SAJU_LOADING_LABEL = '불러오는 중입니다';
+export const FORTUNE_SAJU_JOSA_WA = '와';
+export const FORTUNE_SAJU_JOSA_GWA = '과';

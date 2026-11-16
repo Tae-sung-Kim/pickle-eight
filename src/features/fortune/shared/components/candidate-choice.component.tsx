@@ -20,6 +20,8 @@ export type FortuneCandidateChoiceComponentPropsType<K extends string> =
     onSelect: (key: K) => void;
     /** 이 화면이 나타날 때 부모가 첫 후보 버튼으로 포커스를 옮기는 데 쓴다 */
     firstButtonRef?: Ref<HTMLButtonElement>;
+    /** 부모가 이미 안내 문장을 보여 줄 때 그 요소의 id. 주면 기본 안내 문장을 그리지 않고 이 요소를 접근 이름으로 쓴다 */
+    labelledById?: string;
   }>;
 
 /**
@@ -31,14 +33,23 @@ export function FortuneCandidateChoiceComponent<K extends string>({
   selectedKey,
   onSelect,
   firstButtonRef,
+  labelledById,
 }: FortuneCandidateChoiceComponentPropsType<K>): JSX.Element {
   const noticeId = useId();
 
   return (
-    <fieldset aria-labelledby={noticeId} className="min-w-0 space-y-3">
-      <p id={noticeId} className="text-sm leading-6 break-keep text-foreground">
-        {FORTUNE_TIME_UNKNOWN_NOTICE}
-      </p>
+    <fieldset
+      aria-labelledby={labelledById ?? noticeId}
+      className="min-w-0 space-y-3"
+    >
+      {labelledById ? null : (
+        <p
+          id={noticeId}
+          className="text-sm leading-6 break-keep text-foreground"
+        >
+          {FORTUNE_TIME_UNKNOWN_NOTICE}
+        </p>
+      )}
       <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
         {candidates.map((candidate, index) => {
           const isSelected = candidate.key === selectedKey;

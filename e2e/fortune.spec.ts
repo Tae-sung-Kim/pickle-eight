@@ -896,12 +896,13 @@ for (const def of ALL_PAGES) {
         FORTUNE_ROUTES.today,
         FORTUNE_ROUTES.tti,
         FORTUNE_ROUTES.starSign,
+        FORTUNE_ROUTES.saju,
       ]);
     }
   });
 }
 
-test('AC-65, AC-80: sitemap.xml에 운세 네 페이지가 있고 /fortune/saju는 없다', async ({
+test('AC-65, AC-88, AC-89: sitemap.xml에 운세 허브와 네 기능 페이지(사주 포함)가 있다', async ({
   request,
 }) => {
   const res = await request.get('/sitemap.xml');
@@ -915,14 +916,14 @@ test('AC-65, AC-80: sitemap.xml에 운세 네 페이지가 있고 /fortune/saju�
     FORTUNE_ROUTES.today,
     FORTUNE_ROUTES.tti,
     FORTUNE_ROUTES.starSign,
+    FORTUNE_ROUTES.saju,
   ]) {
     expect(paths, route).toContain(route);
   }
-  expect(paths.filter((path) => path.includes('saju'))).toEqual([]);
 });
 
-test.describe('AC-61, AC-80: 메뉴', () => {
-  test('운세 그룹 링크는 /fortune으로 가고 "준비 중" 배지가 없으며 사주 링크가 없다', async ({
+test.describe('AC-61, AC-88: 메뉴', () => {
+  test('운세 그룹 링크는 /fortune으로 가고 "준비 중" 배지가 없으며 사주 링크가 있다', async ({
     page,
   }, testInfo) => {
     await prepare(page, { consent: false });
@@ -940,12 +941,12 @@ test.describe('AC-61, AC-80: 메뉴', () => {
         ['오늘의 운세', FORTUNE_ROUTES.today],
         ['띠별 운세', FORTUNE_ROUTES.tti],
         ['별자리 운세', FORTUNE_ROUTES.starSign],
+        ['사주', FORTUNE_ROUTES.saju],
       ] as const) {
         await expect(
           header.getByRole('link', { name: label }).first()
         ).toHaveAttribute('href', href);
       }
-      expect(await header.locator('a[href*="saju"]').count()).toBe(0);
     } else {
       await page.getByRole('button', { name: '메뉴 열기' }).click();
       const dialog = page.getByRole('dialog');
@@ -956,12 +957,12 @@ test.describe('AC-61, AC-80: 메뉴', () => {
         ['오늘의 운세', FORTUNE_ROUTES.today],
         ['띠별 운세', FORTUNE_ROUTES.tti],
         ['별자리 운세', FORTUNE_ROUTES.starSign],
+        ['사주', FORTUNE_ROUTES.saju],
       ] as const) {
         await expect(
           dialog.getByRole('link', { name: label, exact: true })
         ).toHaveAttribute('href', href);
       }
-      expect(await dialog.locator('a[href*="saju"]').count()).toBe(0);
     }
   });
 
@@ -985,7 +986,7 @@ test.describe('AC-61, AC-80: 메뉴', () => {
 // =====================================================================
 
 test.describe('허브 /fortune', () => {
-  test('AC-79, AC-80: h1 "운세"와 세 링크가 보이고 동의 화면·입력칸·선택·점수·문구가 DOM에 없으며 사주 링크가 없다', async ({
+  test('AC-79, AC-88: h1 "운세"와 네 링크(사주 포함)가 보이고 동의 화면·입력칸·선택·점수·문구가 DOM에 없다', async ({
     page,
   }) => {
     await prepare(page, { consent: false });
@@ -997,6 +998,7 @@ test.describe('허브 /fortune', () => {
       ['오늘의 운세', FORTUNE_ROUTES.today],
       ['띠별 운세', FORTUNE_ROUTES.tti],
       ['별자리 운세', FORTUNE_ROUTES.starSign],
+      ['사주', FORTUNE_ROUTES.saju],
     ] as const) {
       const link = page
         .getByRole('main')
@@ -1015,7 +1017,6 @@ test.describe('허브 /fortune', () => {
     await expect(page.getByText(SCORE_PATTERN)).toHaveCount(0);
     await expect(page.getByRole('heading', { name: '총운' })).toHaveCount(0);
     await expect(resetButton(page)).toHaveCount(0);
-    expect(await page.locator('a[href*="saju"]').count()).toBe(0);
   });
 
   test('AC-33: 상시 면책이 h1 바로 아래에 처음부터 보이고 하단 면책(책임 관련 고지)은 목록·설명 뒤에 있다', async ({
@@ -1420,9 +1421,10 @@ test.describe('오늘의 운세 /fortune/today', () => {
     expect(sajuLines.length).toBeGreaterThan(0);
     for (const line of sajuLines) {
       expect(
-        FORTUNE_SAJU_ALLOWED_TEXTS_METHOD_A.some((allowed) =>
-          line.includes(allowed)
-        ),
+        line.trim() === '사주' ||
+          FORTUNE_SAJU_ALLOWED_TEXTS_METHOD_A.some((allowed) =>
+            line.includes(allowed)
+          ),
         `허용되지 않은 "사주" 사용: ${line}`
       ).toBe(true);
     }
@@ -2979,6 +2981,7 @@ test.describe('JS 끔', () => {
           ['오늘의 운세', FORTUNE_ROUTES.today],
           ['띠별 운세', FORTUNE_ROUTES.tti],
           ['별자리 운세', FORTUNE_ROUTES.starSign],
+          ['사주', FORTUNE_ROUTES.saju],
         ] as const) {
           const link = page
             .getByRole('link', {
@@ -2989,7 +2992,6 @@ test.describe('JS 끔', () => {
           await expect(link).toHaveAttribute('href', href);
           await expect(link).toBeAttached();
         }
-        expect(await page.locator('a[href*="saju"]').count()).toBe(0);
       } else {
         // 안내: "운세 이용에는 JavaScript가 필요합니다"
         await expect(
@@ -3054,9 +3056,10 @@ test.describe('JS 끔', () => {
       const text = await mainText(page);
       for (const line of text.split('\n').filter((l) => l.includes('사주'))) {
         expect(
-          FORTUNE_SAJU_ALLOWED_TEXTS_METHOD_A.some((allowed) =>
-            line.includes(allowed)
-          ),
+          line.trim() === '사주' ||
+            FORTUNE_SAJU_ALLOWED_TEXTS_METHOD_A.some((allowed) =>
+              line.includes(allowed)
+            ),
           `${def.path}: ${line}`
         ).toBe(true);
       }

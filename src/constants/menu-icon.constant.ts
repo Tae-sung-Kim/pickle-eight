@@ -9,6 +9,7 @@ import {
   Moon,
   PawPrint,
   PlayCircle,
+  ScrollText,
   Star,
   Telescope,
   Ticket,
@@ -32,4 +33,5 @@ export const MENU_ICONS: Readonly<Record<string, LucideIcon>> = {
   MapPin,
   PawPrint,
   Telescope,
+  ScrollText,
 };
