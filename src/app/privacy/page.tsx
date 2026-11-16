@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const EFFECTIVE_DATE = '2026-11-09' as const;
+  const EFFECTIVE_DATE = '2026-11-16' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '개인정보처리방침', item: canonicalUrl('/privacy') },
@@ -68,6 +68,10 @@ export default function PrivacyPolicyPage() {
             <li>
               오류·보안 보고: 브라우저가 전송하는 보안 정책(CSP) 위반 보고. 서버
               로그에만 기록됩니다.
+            </li>
+            <li>
+              방문 통계: 페이지 조회, 유입 경로, 브라우저·기기 정보 등 집계
+              정보. 쿠키를 사용하지 않습니다.
             </li>
             <li>
               광고 정보: 광고에 동의한 경우에 한해 광고 사업자가 광고 식별자,
@@ -128,16 +132,18 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="font-medium text-foreground">3. 이용 목적</h2>
           <p>
-            서비스 제공 및 운영, 오류 분석, 보안/부정 이용 방지, 광고
-            게재(동의한 경우), 법적 의무 이행을 위해 활용됩니다.
+            서비스 제공 및 운영, 오류 분석, 방문 통계 분석 및 서비스 개선,
+            보안/부정 이용 방지, 광고 게재(동의한 경우), 법적 의무 이행을 위해
+            활용됩니다.
           </p>
         </section>
         <section>
           <h2 className="font-medium text-foreground">4. 처리의 법적 근거</h2>
           <p>
             (1) 이용자 동의(광고 등 비필수 기능), (2) 법적 의무의 준수, (3)
-            정당한 이익(서비스 보안, 오류 분석). 광고 등 비필수 목적은 이용자의
-            사전 동의가 있는 경우에만 실행됩니다.
+            정당한 이익(서비스 보안, 오류 분석, 쿠키·광고 식별자를 사용하지 않는
+            방문 통계). 광고 목적은 이용자의 사전 동의가 있는 경우에만
+            실행됩니다.
           </p>
         </section>
         <section>
@@ -169,6 +175,11 @@ export default function PrivacyPolicyPage() {
               불러옵니다.
             </li>
             <li>
+              Vercel Web Analytics: 방문 통계. 쿠키를 사용하지 않고 페이지 조회
+              수 등 집계 정보를 처리하며, 쿠키 동의 여부와 관계없이 동작합니다.
+              국외에서 처리될 수 있습니다.
+            </li>
+            <li>
               jsDelivr(CDN): 웹폰트 제공. 폰트를 불러올 때 이용자의 IP 주소 등이
               CDN 사업자에게 전달될 수 있으며, 쿠키 동의 여부와 관계없이
               불러옵니다.
@@ -186,10 +197,12 @@ export default function PrivacyPolicyPage() {
           <p>
             비필수(광고 등) 쿠키와 관련 스크립트는 이용자의 사전 동의가 있는
             경우에만 활성화되며, 동의 거부 시 광고 스크립트는 불러오지 않습니다.
-            동의는 서비스 내 &quot;쿠키 설정&quot; 배너 또는 푸터의 설정 버튼을
-            통해 언제든지 변경·철회할 수 있습니다. 브라우저 설정으로도 쿠키를
-            차단할 수 있으나 일부 기능이 제한될 수 있습니다. 광고 사업자가
-            설정하는 쿠키에는 해당 사업자의 정책이 적용됩니다.
+            방문 통계(Vercel Web Analytics)는 쿠키를 사용하지 않아 동의 여부와
+            관계없이 동작합니다. 동의는 서비스 내 &quot;쿠키 설정&quot; 배너
+            또는 푸터의 설정 버튼을 통해 언제든지 변경·철회할 수 있습니다.
+            브라우저 설정으로도 쿠키를 차단할 수 있으나 일부 기능이 제한될 수
+            있습니다. 광고 사업자가 설정하는 쿠키에는 해당 사업자의 정책이
+            적용됩니다.
           </p>
         </section>
         <section>

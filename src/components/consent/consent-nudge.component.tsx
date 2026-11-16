@@ -48,10 +48,11 @@ export function ConsentNudgeComponent({
 
       case 'ad-slot':
         return {
-          emoji: '🪧',
+          emoji: '🙏',
           title: '',
-          description: '광고 동의 시 이 영역에 스폰서 콘텐츠가 표시됩니다',
-          buttonText: '동의하고 보기',
+          description:
+            '광고 수익이 이 서비스를 무료로 유지하는 힘입니다. 동의해 주시면 큰 도움이 돼요',
+          buttonText: '동의하고 응원하기',
           bgClass: 'bg-muted/40 border border-border',
         };
 
