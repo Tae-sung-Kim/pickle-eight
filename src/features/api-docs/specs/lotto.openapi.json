@@ -1,0 +1,476 @@
+{
+  "x-feature": "lotto",
+  "tags": [{ "name": "lotto", "description": "로또 당첨번호와 통계" }],
+  "paths": {
+    "/api/lotto/draws": {
+      "get": {
+        "tags": ["lotto"],
+        "summary": "회차별 당첨번호 조회",
+        "operationId": "lottoGetDraws",
+        "description": "최신 회차 번호, 단일 회차, 회차 범위 중 하나를 조회한다.\n\n- 우선순위: `latest`에 값이 있으면 최우선이고, 다음이 `drwNo`, 다음이 `from`+`to`이다.\n- `from`과 `to`는 둘 다 있어야 하며 `to - from`은 최대 500이다.\n- `to`가 저장된 최신 회차보다 크면 최신 회차까지만 응답하고 `meta.partial`이 `true`가 된다.\n- 호출 제한: IP당 분당 60회. 이 수치는 코드 기준이며 서버 상황에 따라 달라질 수 있다.\n- 오류 응답 본문은 JSON(`{ \"error\": \"...\" }`)이다.",
+        "parameters": [
+          {
+            "name": "latest",
+            "in": "query",
+            "required": false,
+            "description": "값이 있으면(예: `1`) 최신 회차 번호만 돌려준다. 다른 파라미터보다 우선한다.",
+            "schema": { "type": "string", "example": "1" }
+          },
+          {
+            "name": "drwNo",
+            "in": "query",
+            "required": false,
+            "description": "회차 번호(1 이상의 정수). 0, 음수, 소수는 400이다.",
+            "schema": { "type": "integer", "minimum": 1, "example": 1100 }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "시작 회차(1 이상의 정수). `to`와 함께 써야 한다.",
+            "schema": { "type": "integer", "minimum": 1, "example": 1090 }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "끝 회차(`from` 이상의 정수). `from`과 함께 써야 하며 `to - from`은 500 이하여야 한다.",
+            "schema": { "type": "integer", "minimum": 1, "example": 1100 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "조회 성공. `meta.type`에 따라 `data` 형태가 다르다.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/LottoDrawsLatestResponse" },
+                    { "$ref": "#/components/schemas/LottoDrawsSingleResponse" },
+                    { "$ref": "#/components/schemas/LottoDrawsRangeResponse" }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "파라미터 오류. `Invalid drwNo`, `Invalid from/to`, `Range too large. Max 500`, `Provide drwNo or from/to or latest`(from과 to 중 하나만 있거나 아무것도 없을 때) 중 하나.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LottoJsonError" }
+              }
+            }
+          },
+          "404": {
+            "description": "해당 회차가 아직 저장되지 않았다(`drwNo` 조회에서만 발생).",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LottoJsonError" }
+              }
+            }
+          },
+          "429": {
+            "description": "호출 제한 초과(IP당 분당 60회). 60초 뒤에 다시 시도한다.",
+            "headers": {
+              "Retry-After": {
+                "description": "다시 시도하기까지 기다릴 초",
+                "schema": { "type": "string", "example": "60" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LottoJsonError" }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 오류.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LottoJsonError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/lotto/stats/hot-cold": {
+      "get": {
+        "tags": ["lotto"],
+        "summary": "번호별 핫/콜드 통계",
+        "operationId": "lottoGetHotColdStats",
+        "description": "저장된 전체 회차 기준으로 번호별 출현 횟수, 미출현 회차 수, 최근 출현 횟수를 돌려준다.\n\n- 저장된 회차가 없으면 200에 `ok: true`, `data: null`이다.\n- 호출 제한: 코드상 없음. 서버 상황에 따라 달라질 수 있다.\n- 500 오류 본문은 `{ \"ok\": false, \"error\": \"...\" }`이다.",
+        "responses": {
+          "200": {
+            "description": "조회 성공. 저장된 회차가 없으면 `data`가 `null`이다.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LottoHotColdResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 오류.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LottoHotColdError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/lotto/export": {
+      "get": {
+        "tags": ["lotto"],
+        "summary": "당첨번호 CSV 다운로드",
+        "operationId": "lottoExportDraws",
+        "description": "당첨번호를 CSV 첨부 파일로 내려받는다.\n\n- `from`과 `to`가 둘 다 있을 때만 범위가 적용된다. 하나만 있거나 둘 다 없으면 전체 회차를 내려받는다.\n- 대상이 3000회차를 넘으면 400이다(전체 회차가 3000을 넘는 경우 포함).\n- 호출 제한: IP당 분당 20회. 이 수치는 코드 기준이며 서버 상황에 따라 달라질 수 있다.\n- 오류 응답 본문은 JSON이 아니라 일반 텍스트(`text/plain`)이다.",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "시작 회차(1 이상의 정수). `to`와 함께 있을 때만 적용된다.",
+            "schema": { "type": "integer", "minimum": 1, "example": 1 }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "끝 회차(`from` 이상의 정수). `from`과 함께 있을 때만 적용된다. 최신 회차보다 크면 최신 회차까지만 내려준다.",
+            "schema": { "type": "integer", "minimum": 1, "example": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV 첨부 파일. 첫 줄은 헤더이고 이후 한 줄이 한 회차이다.",
+            "headers": {
+              "Content-Disposition": {
+                "description": "첨부 파일(attachment)로 내려간다. 예: `attachment; filename=\"lotto_draws_1_10.csv\"`",
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "text/csv": {
+                "schema": { "$ref": "#/components/schemas/LottoDrawsCsv" }
+              }
+            }
+          },
+          "400": {
+            "description": "`Invalid from/to` 또는 `Range too large. Max 3000`. 본문은 일반 텍스트이다.",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/LottoTextError" }
+              }
+            }
+          },
+          "404": {
+            "description": "저장된 회차가 없으면 `No data`, 지정 범위에 데이터가 없으면 `No data in range`. 본문은 일반 텍스트이다.",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/LottoTextError" }
+              }
+            }
+          },
+          "429": {
+            "description": "호출 제한 초과(IP당 분당 20회). 60초 뒤에 다시 시도한다.",
+            "headers": {
+              "Retry-After": {
+                "description": "다시 시도하기까지 기다릴 초",
+                "schema": { "type": "string", "example": "60" }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/LottoTextError" }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 오류. 본문은 일반 텍스트 오류 메시지이다.",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/LottoTextError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LottoJsonError": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": { "type": "string", "example": "Too Many Requests" }
+        }
+      },
+      "LottoHotColdError": {
+        "type": "object",
+        "required": ["ok", "error"],
+        "properties": {
+          "ok": { "type": "boolean", "enum": [false] },
+          "error": {
+            "type": "string",
+            "example": "internal/hot_cold_failed _Error"
+          }
+        }
+      },
+      "LottoTextError": {
+        "type": "string",
+        "example": "Invalid from/to"
+      },
+      "LottoDrawsCsv": {
+        "type": "string",
+        "description": "첫 줄 헤더: drawNumber,drawDate,no1,no2,no3,no4,no5,no6,bonus,firstWinCount,firstPrizeAmount,totalSalesAmount",
+        "example": "drawNumber,drawDate,no1,no2,no3,no4,no5,no6,bonus,firstWinCount,firstPrizeAmount,totalSalesAmount\n1,\"2002-12-07\",10,23,29,33,37,40,16,0,0,0"
+      },
+      "LottoDraw": {
+        "type": "object",
+        "required": [
+          "drawNumber",
+          "drawDate",
+          "numbers",
+          "bonusNumber",
+          "firstWinCount",
+          "firstPrizeAmount",
+          "secondWinCount",
+          "secondPrizeAmount",
+          "secondTotalAmount",
+          "thirdWinCount",
+          "thirdPrizeAmount",
+          "thirdTotalAmount",
+          "fourthWinCount",
+          "fourthPrizeAmount",
+          "fourthTotalAmount",
+          "fifthWinCount",
+          "fifthPrizeAmount",
+          "fifthTotalAmount",
+          "totalWinners",
+          "totalSalesAmount"
+        ],
+        "properties": {
+          "drawNumber": {
+            "type": "integer",
+            "description": "회차 번호",
+            "example": 1100
+          },
+          "drawDate": {
+            "type": "string",
+            "format": "date",
+            "description": "추첨일(YYYY-MM-DD)",
+            "example": "2023-12-23"
+          },
+          "numbers": {
+            "type": "array",
+            "description": "당첨 번호 6개(오름차순)",
+            "minItems": 6,
+            "maxItems": 6,
+            "items": { "type": "integer", "minimum": 1, "maximum": 45 },
+            "example": [3, 11, 19, 27, 33, 41]
+          },
+          "bonusNumber": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 45,
+            "description": "보너스 번호",
+            "example": 7
+          },
+          "firstWinCount": {
+            "type": "integer",
+            "description": "1등 당첨자 수"
+          },
+          "firstPrizeAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "1등 1인당 당첨금(KRW)"
+          },
+          "secondWinCount": {
+            "type": "integer",
+            "description": "2등 당첨자 수"
+          },
+          "secondPrizeAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "2등 1인당 당첨금(KRW)"
+          },
+          "secondTotalAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "2등 총 당첨금(KRW)"
+          },
+          "thirdWinCount": {
+            "type": "integer",
+            "description": "3등 당첨자 수"
+          },
+          "thirdPrizeAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "3등 1인당 당첨금(KRW)"
+          },
+          "thirdTotalAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "3등 총 당첨금(KRW)"
+          },
+          "fourthWinCount": {
+            "type": "integer",
+            "description": "4등 당첨자 수"
+          },
+          "fourthPrizeAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "4등 1인당 당첨금(KRW)"
+          },
+          "fourthTotalAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "4등 총 당첨금(KRW)"
+          },
+          "fifthWinCount": {
+            "type": "integer",
+            "description": "5등 당첨자 수"
+          },
+          "fifthPrizeAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "5등 1인당 당첨금(KRW)"
+          },
+          "fifthTotalAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "5등 총 당첨금(KRW)"
+          },
+          "totalWinners": { "type": "integer", "description": "총 당첨 인원" },
+          "totalSalesAmount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "총 판매 금액(KRW)"
+          }
+        }
+      },
+      "LottoDrawsLatestResponse": {
+        "type": "object",
+        "required": ["data", "meta"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["lastDrawNumber"],
+            "properties": {
+              "lastDrawNumber": {
+                "type": "integer",
+                "description": "저장된 최신 회차. 저장된 회차가 없으면 0",
+                "example": 1100
+              }
+            }
+          },
+          "meta": {
+            "type": "object",
+            "required": ["type"],
+            "properties": { "type": { "type": "string", "enum": ["latest"] } }
+          }
+        }
+      },
+      "LottoDrawsSingleResponse": {
+        "type": "object",
+        "required": ["data", "meta"],
+        "properties": {
+          "data": { "$ref": "#/components/schemas/LottoDraw" },
+          "meta": {
+            "type": "object",
+            "required": ["type"],
+            "properties": { "type": { "type": "string", "enum": ["single"] } }
+          }
+        }
+      },
+      "LottoDrawsRangeResponse": {
+        "type": "object",
+        "required": ["data", "meta"],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/LottoDraw" }
+          },
+          "meta": {
+            "type": "object",
+            "required": ["type", "count", "requested", "partial"],
+            "properties": {
+              "type": { "type": "string", "enum": ["range"] },
+              "count": {
+                "type": "integer",
+                "description": "실제로 돌려준 회차 수"
+              },
+              "requested": {
+                "type": "integer",
+                "description": "최신 회차로 보정한 요청 회차 수"
+              },
+              "partial": {
+                "type": "boolean",
+                "description": "돌려준 수가 요청 수보다 적으면 true"
+              }
+            }
+          }
+        }
+      },
+      "LottoNumberCountMap": {
+        "type": "object",
+        "description": "번호(1~45)를 키로 하는 정수 맵",
+        "additionalProperties": { "type": "integer" },
+        "example": { "1": 160, "2": 150, "45": 155 }
+      },
+      "LottoHotColdStats": {
+        "type": "object",
+        "required": [
+          "latest",
+          "frequency",
+          "overdue",
+          "recentWindow",
+          "recentFrequency"
+        ],
+        "properties": {
+          "latest": { "type": "integer", "description": "집계에 쓴 최신 회차" },
+          "frequency": { "$ref": "#/components/schemas/LottoNumberCountMap" },
+          "overdue": { "$ref": "#/components/schemas/LottoNumberCountMap" },
+          "recentWindow": {
+            "type": "integer",
+            "description": "최근 출현 횟수를 세는 구간(회차 수)",
+            "example": 50
+          },
+          "recentFrequency": {
+            "$ref": "#/components/schemas/LottoNumberCountMap"
+          }
+        }
+      },
+      "LottoHotColdResponse": {
+        "type": "object",
+        "required": ["ok", "data", "meta"],
+        "properties": {
+          "ok": { "type": "boolean", "enum": [true] },
+          "data": {
+            "nullable": true,
+            "description": "저장된 회차가 없으면 null",
+            "allOf": [{ "$ref": "#/components/schemas/LottoHotColdStats" }]
+          },
+          "meta": {
+            "type": "object",
+            "description": "저장된 회차가 없으면 `{ latest: 0 }`, 캐시를 쓰면 `{ cached: true, updatedAt }`, 새로 계산하면 `{ cached: false }`",
+            "properties": {
+              "latest": { "type": "integer" },
+              "cached": { "type": "boolean" },
+              "updatedAt": {
+                "type": "integer",
+                "format": "int64",
+                "description": "캐시 갱신 시각(Unix ms)"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
