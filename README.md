@@ -98,6 +98,7 @@ pnpm dev
 | `GET /api/lotto/export`         | CSV 내보내기 (`from`, `to` 선택, IP 기준 분당 제한) |
 | `GET /api/lotto/stats/hot-cold` | 핫/콜드 통계                                        |
 | `GET` / `POST /api/lotto/sync` | 크론 동기화 |
+| `GET /api-docs`, `GET /openapi.json` | Swagger UI와 OpenAPI 명세 (개발 환경 전용, 운영은 404). 명세 조각은 `src/features/api-docs/specs/*.openapi.json`에 추가 |
 
 ## 배포
 

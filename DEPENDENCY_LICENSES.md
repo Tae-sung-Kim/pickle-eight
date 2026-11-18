@@ -29,6 +29,7 @@ This document summarizes the primary licenses of first-level dependencies declar
 - react-dom — MIT
 - react-hook-form — MIT
 - sonner — MIT
+- swagger-ui-react — Apache-2.0
 - tailwind-merge — MIT
 - zod — MIT
 - zustand — MIT

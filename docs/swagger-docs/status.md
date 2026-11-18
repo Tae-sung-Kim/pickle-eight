@@ -2,7 +2,7 @@
 
 - 기능 이름: swagger-docs
 - 시작일: 2026-11-18
-- 현재 단계: 5 개발
+- 현재 단계: 7 검증 완료, 보고 대기
 
 ## 단계별 상태
 
@@ -13,13 +13,13 @@
 | 2 설계 | `design.md` | 생략 | 2026-11-18 | 소규모 흐름. 개발 담당이 설계 상세를 정한다 |
 | 3 UI/UX | `ui-ux-design.md` | 생략 | 2026-11-18 | Swagger UI 기본 화면 사용 |
 | 4 개발 준비 | `dev-tasks.md` | 생략 | 2026-11-18 | 소규모 흐름 |
-| 5 개발 | frontend-dev 단독 | 진행 | | |
-| 6 QA | `qa-report.md` | 대기 | | |
-| 7 검증 | | 대기 | | |
+| 5 개발 | frontend-dev 단독 | 완료 | | h1 중복 수정 포함 |
+| 6 QA | `qa-report.md` | 완료 | | 재실행 desktop·mobile 통과 |
+| 7 검증 | | 완료 | | typecheck, lint 통과 |
 
 ## 남은 일
 
-- 개발, QA, typecheck·lint 검증
+- 커밋(사용자 확인 후), Next.js 보안 업그레이드는 별도 worktree `chore/next-security-upgrade`에서 진행
 
 ## 결정 기록
 

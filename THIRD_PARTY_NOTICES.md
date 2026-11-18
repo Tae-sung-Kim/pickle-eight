@@ -24,6 +24,7 @@ This project depends on the following third-party software. Their licenses permi
 - tailwind-merge — MIT License — https://github.com/dcastil/tailwind-merge
 - html-to-image — MIT License — https://github.com/bubkoo/html-to-image
 - sonner — MIT License — https://github.com/emilkowalski/sonner
+- swagger-ui-react — Apache-2.0 — https://github.com/swagger-api/swagger-ui
 
 Dev dependencies (selection):
 
