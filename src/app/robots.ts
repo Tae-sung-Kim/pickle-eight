@@ -8,7 +8,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/lotto/sync', '/api/'],
+        // 화면 렌더링에 쓰는 조회 API(draws, stats)는 크롤러가 읽을 수 있어야 한다.
+        disallow: ['/api/lotto/sync', '/api/lotto/export', '/api/csp-report'],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
