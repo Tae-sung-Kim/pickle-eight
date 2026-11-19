@@ -638,7 +638,8 @@ test('AC-9: 메타·sitemap·JSON-LD 소스 파일은 HEAD와 diff가 없다', (
   const files = [
     'src/features/fortune/constants/fortune-seo.constant.ts',
     'src/features/fortune/constants/fortune-faq.constant.ts',
-    'src/app/sitemap.ts',
+    // sitemap.ts는 꿈 해몽 등 다른 기능이 경로를 더하므로 제외한다(dream design D3).
+    // 운세 경로 유지는 바로 위 'sitemap.xml에 운세 페이지가 그대로 있다'가 지킨다.
     'src/components/seo/json-ld.component.tsx',
   ];
   // 변경이 있으면 종료 코드 1로 예외가 난다

@@ -1,6 +1,7 @@
 import {
   BarChart2,
   Bookmark,
+  BookOpenText,
   CalendarSearch,
   CheckCircle2,
   Layers,
@@ -32,4 +33,5 @@ export const MENU_ICONS: Readonly<Record<string, LucideIcon>> = {
   PawPrint,
   Telescope,
   ScrollText,
+  BookOpenText,
 };

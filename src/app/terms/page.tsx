@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
-  const EFFECTIVE_DATE = '2026-11-05' as const;
+  const EFFECTIVE_DATE = '2026-11-19' as const;
   const fortuneBirthRange = `${FORTUNE_MIN_BIRTH.year}년부터 ${FORTUNE_MAX_BIRTH.year}년까지`;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
@@ -72,6 +72,15 @@ export default function TermsPage() {
           <p className="mt-2">
             또한 본 서비스는 오늘의 운세, 띠별 운세, 별자리 운세, 사주 등 운세
             기능을 오락과 참고 목적으로 제공합니다.
+          </p>
+          <p className="mt-2">
+            또한 본 서비스는 꿈 속 소재를 검색하고 민간에서 전해 온 풀이를 읽어
+            볼 수 있는 꿈 해몽 기능을 오락과 자기 성찰 목적으로 제공합니다.
+          </p>
+          <p className="mt-2">
+            또한 본 서비스는 점심 메뉴를 룰렛으로 무작위로 뽑아 보고 지도 검색
+            페이지로 이동할 수 있는 점심 메뉴 룰렛 기능을 오락 목적으로
+            제공합니다.
           </p>
         </section>
         <section>
@@ -160,7 +169,51 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">8. 광고 및 쿠키</h2>
+          <h2 className="font-medium text-foreground">8. 꿈 해몽 서비스</h2>
+          <p>
+            꿈 해몽 서비스는 오락과 자기 성찰을 목적으로 제공됩니다. 풀이는
+            민간에서 전해 온 해몽 관념을 바탕으로 이 서비스가 새로 작성한
+            문장이며, 과학적으로 입증된 해석이 아닙니다. 꿈의 내용이 현실의 일을
+            예측하거나 보장하지 않으며, 의학·법률·재정 등 전문적인 판단을 대신할
+            수 없습니다. 풀이를 따르는 판단과 선택은 이용자 본인의 몫이므로,
+            중요한 결정은 풀이에 의존하지 마시고 전문가와 상담하시기 바랍니다.
+          </p>
+          <p className="mt-2">
+            꿈이 자주 반복되어 잠이나 일상생활이 힘들거나 마음이 많이 힘들다면
+            혼자 견디지 마시고 수면 또는 정신건강 전문가나 서비스에 안내된 상담
+            기관에 이야기해 보시기 바랍니다. 본 서비스는 특정 해몽서나 사이트,
+            단체와 제휴·후원 관계가 없습니다. 꿈 해몽 서비스는 로또 등 복권
+            기능과 연결되어 있지 않으며, 꿈의 내용이 당첨이나 번호와 관련이
+            있다고 안내하지 않습니다. 검색칸에 입력한 글자는 서버로 전송되거나
+            저장되지 않으며, 자세한 내용은 개인정보처리방침을 따릅니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">
+            9. 점심 메뉴 룰렛 서비스
+          </h2>
+          <p>
+            점심 메뉴 룰렛 서비스는 오락을 목적으로 제공됩니다. 이용자가 고른
+            카테고리와 국물 조건 안에서 메뉴가 같은 확률로 무작위로 정해지며,
+            뽑힌 메뉴는 특정 메뉴나 음식점을 제안하거나 평가하는 것이 아닙니다.
+            메뉴 목록은 이 서비스가 직접 작성한 것이며 외부 데이터를 사용하지
+            않습니다. 결과는 금전, 상품, 포인트, 경품 등 어떤 보상과도 관련이
+            없습니다. 식사에 관한 판단과 선택은 이용자 본인의 몫입니다.
+          </p>
+          <p className="mt-2">
+            결과 화면의 지도 검색 링크(카카오맵, 네이버지도, 구글 지도)를 누르면
+            해당 사업자가 운영하는 외부 사이트가 새 탭에서 열리며, 이때 검색어로
+            뽑힌 메뉴 이름만 전달됩니다. 본 서비스는 해당 사업자(카카오, 네이버,
+            구글)와 제휴·후원 관계가 없습니다. 이동한 뒤에는 해당 사업자의
+            약관과 정책이 적용되며, 검색 결과, 음식점의 위치·영업 여부·메뉴·가격
+            등 정보의 정확성과 최신성은 해당 서비스를 기준으로 하고 본 서비스는
+            이를 약속하지 않습니다. 점심 메뉴 룰렛 서비스는 이용자의 위치 정보를
+            요청하지 않으며, 고른 조건과 뽑힌 결과를 서버로 전송하거나 저장하지
+            않습니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">10. 광고 및 쿠키</h2>
           <p>
             서비스에는 광고(예: 카카오 애드핏)가 게재될 수 있으며, 광고 이용은
             자발적이어야 합니다. 핵심 기능 접근을 광고 시청으로 강제하지
@@ -170,14 +223,14 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">9. 금지 행위</h2>
+          <h2 className="font-medium text-foreground">11. 금지 행위</h2>
           <p>
             다음 행위는 금지됩니다: 불법적 이용, 자동화된 과도한 요청/스크래핑,
             서비스 방해, 저작권/상표권 침해, 타인의 개인정보 침해 등.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">10. 지식재산권</h2>
+          <h2 className="font-medium text-foreground">12. 지식재산권</h2>
           <p>
             서비스 및 제공되는 콘텐츠의 권리는 각 권리자에게 귀속됩니다. 별도
             허락 없는 복제/배포/2차적 저작물 작성은 금지됩니다.
@@ -185,18 +238,21 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            11. 책임 제한 및 제3자 서비스
+            13. 책임 제한 및 제3자 서비스
           </h2>
           <p>
             본 서비스 이용으로 인한 손실(직접/간접/부수적 손해 포함)에 대해
             당사는 법이 허용하는 범위 내에서 책임을 부담하지 않으며, 모든 결정과
             책임은 이용자에게 있습니다. 호스팅(Vercel), 데이터베이스(Supabase),
             광고 네트워크 등 제3자 서비스의 장애·변경으로 인한 손해에 대해서도
-            법이 허용하는 범위 내에서 책임을 지지 않습니다.
+            법이 허용하는 범위 내에서 책임을 지지 않습니다. 점심 메뉴 룰렛
+            서비스에서 연결되는 지도 검색 페이지(카카오맵, 네이버지도, 구글
+            지도)의 내용, 검색 결과, 음식점 정보의 정확성, 해당 서비스의
+            장애·변경으로 인한 손해에 대해서도 같습니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">12. 면책 및 보상</h2>
+          <h2 className="font-medium text-foreground">14. 면책 및 보상</h2>
           <p>
             이용자가 약관 위반 또는 불법행위로 인해 제3자와의 분쟁·청구가 발생한
             경우, 이용자는 당사에 발생한 합리적 손해와 비용(변호사 비용 포함)을
@@ -206,7 +262,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            13. 서비스 변경 및 중단
+            15. 서비스 변경 및 중단
           </h2>
           <p>
             당사는 서비스의 전부 또는 일부를 변경·중단할 수 있습니다. 필요 시
@@ -214,7 +270,7 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">14. 약관 변경</h2>
+          <h2 className="font-medium text-foreground">16. 약관 변경</h2>
           <p>
             본 약관은 사전 고지 후 변경될 수 있습니다. 변경 후에도 서비스를 계속
             이용하면 변경 사항에 동의한 것으로 간주됩니다.
@@ -222,21 +278,21 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            15. 준거법 및 분쟁 해결
+            17. 준거법 및 분쟁 해결
           </h2>
           <p>
             본 약관은 대한민국 법률에 따릅니다. 분쟁은 관할 법원에서 해결합니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">16. 분리가능성</h2>
+          <h2 className="font-medium text-foreground">18. 분리가능성</h2>
           <p>
             본 약관의 일부 조항이 무효·집행 불능으로 판단되더라도, 나머지 조항의
             유효성에는 영향을 미치지 않습니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">17. 문의</h2>
+          <h2 className="font-medium text-foreground">19. 문의</h2>
           <p className="break-all">문의: contact.tskim@gmail.com</p>
           <p>
             텔레그램:{' '}

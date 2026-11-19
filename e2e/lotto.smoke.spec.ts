@@ -83,12 +83,13 @@ test.describe('번호 생성기', () => {
   });
 });
 
-test('PC 헤더에 준비 중 배지가 보인다', async ({ page }, testInfo) => {
+test('PC 헤더에 준비 중 배지가 없다(comingSoon 그룹 없음)', async ({
+  page,
+}, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'PC 헤더만 확인');
   await page.goto('/');
-  await expect(
-    page.locator('header').getByText('준비 중').first()
-  ).toBeVisible();
+  await expect(page.locator('header')).toBeVisible();
+  await expect(page.locator('header').getByText('준비 중')).toHaveCount(0);
 });
 
 // DB(Supabase)에 연결된 환경에서만 통과한다

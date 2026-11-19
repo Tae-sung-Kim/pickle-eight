@@ -218,7 +218,7 @@ export type DreamHubGroupType = Readonly<{
 ### 3.3 slug 규칙
 
 - 형식: `/^[a-z]+(-[a-z]+)*$/`. 숫자, 대문자, 밑줄, 한글 없음. 40자 이하.
-- 영어 일반 명사·동사구를 기본으로 쓴다. 예: `pig`, `snake`, `teeth-falling-out`, `being-chased`, `ancestor`. 알맞은 영어가 없으면 국어의 로마자 표기법으로 쓴다.
+- 영어 일반 명사·동사구를 기본으로 쓴다. 예: `pig`, `snake`, `teeth`, `being-chased`, `ancestor`. 알맞은 영어가 없으면 국어의 로마자 표기법으로 쓴다.
 - 모든 slug는 서로 달라야 한다. `dragon`, `lottery`, `lotto`, `taemong`, `suicide` 같은 제외 소재의 slug는 쓰지 않는다.
 - 공개 후 바꾸면 `next.config.ts`에 301 redirect가 필요하다(seo.md). 그래서 샘플 검수 때 slug도 같이 확정한다.
 

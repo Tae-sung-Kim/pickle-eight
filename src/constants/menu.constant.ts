@@ -4,6 +4,7 @@ export enum MENU_GROUP_NAME_ENUM {
   LOTTO = 'lotto',
   TAROT = 'tarot',
   FORTUNE = 'fortune',
+  DREAM = 'dream',
   LUNCH = 'lunch',
 }
 
@@ -131,18 +132,34 @@ export const MENU_LIST: MenuGroupType[] = [
     ],
   },
   {
+    group: MENU_GROUP_NAME_ENUM.DREAM,
+    label: '꿈 해몽',
+    href: `/${MENU_GROUP_NAME_ENUM.DREAM}`,
+    items: [
+      {
+        href: `/${MENU_GROUP_NAME_ENUM.DREAM}`,
+        label: '꿈 소재 찾기',
+        icon: 'BookOpenText',
+        colorClass: 'text-menu-dream',
+        description:
+          '꿈에 나온 소재를 찾아 민간 풀이와 생각해 볼 점을 읽는 사전.',
+        example: '예: 돼지, 치아처럼 떠오른 소재로 찾기',
+      },
+    ],
+  },
+  {
     group: MENU_GROUP_NAME_ENUM.LUNCH,
     label: '점심',
     href: `/${MENU_GROUP_NAME_ENUM.LUNCH}/today`,
-    comingSoon: true,
     items: [
       {
         href: `/${MENU_GROUP_NAME_ENUM.LUNCH}/today`,
         label: '오늘 뭐 먹지',
         icon: 'Utensils',
-        colorClass: 'text-orange-600',
-        description: '직장인 점심 메뉴를 조건에 맞게 추천하고 룰렛으로 결정.',
-        example: '예: 한식/중식, 가격대, 혼밥 조건으로 고르기',
+        colorClass: 'text-menu-lunch',
+        description:
+          '룰렛으로 오늘의 점심 메뉴를 무작위로 뽑고 지도에서 찾아보기.',
+        example: '예: 한식·분식만 골라 국물 메뉴로 룰렛 돌리기',
       },
     ],
   },

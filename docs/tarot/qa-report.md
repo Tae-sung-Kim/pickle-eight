@@ -233,3 +233,9 @@ SH-2는 로또 3개 파일(`lotto.util.ts`, `simulator/components/root.component
 4. 터치 영역은 링크·버튼의 박스 크기(높이·너비 44px 이상)만 본다. 인접 대상 간 간격은 보지 않는다.
 5. 탭 순서는 Chrome 기준이다(desktop Chrome, Pixel 7 에뮬레이션). 실제 모바일 스크린 리더(VoiceOver, TalkBack)의 읽기 순서는 확인하지 못했다.
 6. 새 테스트는 번호, 이름, 설명 구절을 앱 상수에서 가져오지 않고 기준 문서 값을 직접 적었다. 문구를 바꾸면 테스트 상수 `PHONES`, `RESULT_LINE`, `PANEL_BODY`도 같이 고친다.
+
+## AC-33(표시) 기준 변경 (2026-11-19)
+
+- 사유: `docs/tarot/status.md` 2026-11-05 결정(루트 `loading.tsx` 때문에 JS를 끄면 본문이 숨김 영역에 남는 기존 문제를 알려진 한계로 수용)에 맞춘다.
+- 변경: `e2e/tarot.spec.ts`의 `AC-33(표시)`를 `toBeVisible` 대신 `toBeAttached`로 낮추고, 제목은 `includeHidden: true`로 찾는다. 상담전화 109는 공용 `expectResultMainPhone`(표시 기준) 대신 문구 존재만 확인한다. 이유는 코드 주석에도 적었다.
+- 결과: 단독 실행(`-g "AC-33\(표시\)"`) 데스크톱·모바일 4건 통과. 위 "알려진 한계 1"은 그대로 유효하다(화면 가시성은 미검증).

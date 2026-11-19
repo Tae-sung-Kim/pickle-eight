@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const EFFECTIVE_DATE = '2026-11-16' as const;
+  const EFFECTIVE_DATE = '2026-11-19' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '개인정보처리방침', item: canonicalUrl('/privacy') },
@@ -95,6 +95,13 @@ export default function PrivacyPolicyPage() {
             운세 서비스에서 입력한 생년월일과 태어난 시각은 서버로 전송하거나
             저장하지 않으며, 이용자의 브라우저 메모리에서만 사용합니다. 페이지를
             벗어나거나 새로고침하면 사라집니다.
+          </p>
+          <p className="mt-2">
+            꿈 해몽 서비스에는 입력받는 개인정보가 없습니다. 소재를 찾기 위해
+            검색칸에 적은 글자는 이 기기의 화면 안에서만 사용하며, 서버로
+            전송하거나 저장하지 않고 방문 통계에도 포함하지 않습니다. 브라우저
+            저장소(localStorage, sessionStorage)에도 아무 값을 남기지 않습니다.
+            검색칸에는 개인적인 내용을 적지 않으시기 바랍니다.
           </p>
         </section>
         <section>
@@ -188,6 +195,16 @@ export default function PrivacyPolicyPage() {
           <p className="mt-2">
             각 사업자의 정책이 함께 적용되며, 이용자의 개인정보를 위 목적 외로
             제3자에게 판매하거나 제공하지 않습니다.
+          </p>
+          <p className="mt-2">
+            점심 메뉴 룰렛의 지도 검색 링크(카카오맵, 네이버지도, 구글 지도)는
+            처리위탁이 아니라 이용자가 직접 누르는 외부 사이트 연결입니다.
+            링크를 누르면 해당 사업자의 사이트가 새 탭에서 열리며, 이때 검색어로
+            뽑힌 메뉴 이름만 전달됩니다. 이동한 뒤에는 해당 사업자의
+            개인정보처리방침이 적용되고, 이용자의 IP 주소 등은 그 사업자가
+            처리할 수 있습니다. 점심 메뉴 룰렛은 위치 정보를 요청하지 않으며,
+            이용자가 고른 조건과 뽑힌 결과를 서버로 전송하거나 저장하지
+            않습니다.
           </p>
         </section>
         <section>

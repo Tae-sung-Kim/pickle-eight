@@ -1,4 +1,11 @@
-import { Circle, type LucideIcon, Moon, Star, Utensils } from 'lucide-react';
+import {
+  BookOpenText,
+  Circle,
+  type LucideIcon,
+  Moon,
+  Star,
+  Utensils,
+} from 'lucide-react';
 import type { MenuSectionKeyType } from '@/types/menu.type';
 import type { ThemeColorsType, ThemeVariantType } from '@/types/theme.type';
 
@@ -25,6 +32,7 @@ export const SECTION_ICONS: Record<MenuSectionKeyType, LucideIcon> = {
   lotto: Circle,
   tarot: Moon,
   fortune: Star,
+  dream: BookOpenText,
   lunch: Utensils,
 };
 
@@ -33,6 +41,7 @@ export const SECTION_ICON_COLOR: Record<MenuSectionKeyType, string> = {
   lotto: 'text-menu-lotto',
   tarot: 'text-menu-tarot',
   fortune: 'text-menu-fortune',
+  dream: 'text-menu-dream',
   lunch: 'text-menu-lunch',
 } as const;
 
@@ -40,6 +49,7 @@ export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
   lotto: 'bg-menu-lotto/10 text-menu-lotto border-menu-lotto/20',
   tarot: 'bg-menu-tarot/10 text-menu-tarot border-menu-tarot/20',
   fortune: 'bg-menu-fortune/10 text-foreground border-menu-fortune/40',
+  dream: 'bg-menu-dream/10 text-menu-dream border-menu-dream/20',
   lunch: 'bg-menu-lunch/10 text-menu-lunch border-menu-lunch/20',
 } as const;
 
@@ -47,5 +57,6 @@ export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
   lotto: 'bg-background',
   tarot: 'bg-background',
   fortune: 'bg-background',
+  dream: 'bg-background',
   lunch: 'bg-background',
 };
