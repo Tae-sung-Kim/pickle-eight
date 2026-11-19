@@ -1,11 +1,4 @@
-import {
-  Circle,
-  type LucideIcon,
-  MapPin,
-  Moon,
-  Star,
-  Utensils,
-} from 'lucide-react';
+import { Circle, type LucideIcon, Moon, Star, Utensils } from 'lucide-react';
 import type { MenuSectionKeyType } from '@/types/menu.type';
 import type { ThemeColorsType, ThemeVariantType } from '@/types/theme.type';
 
@@ -33,7 +26,6 @@ export const SECTION_ICONS: Record<MenuSectionKeyType, LucideIcon> = {
   tarot: Moon,
   fortune: Star,
   lunch: Utensils,
-  where: MapPin,
 };
 
 // 색 값은 globals.css의 --menu-* 토큰에서 온다
@@ -42,7 +34,6 @@ export const SECTION_ICON_COLOR: Record<MenuSectionKeyType, string> = {
   tarot: 'text-menu-tarot',
   fortune: 'text-menu-fortune',
   lunch: 'text-menu-lunch',
-  where: 'text-menu-where',
 } as const;
 
 export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
@@ -50,7 +41,6 @@ export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
   tarot: 'bg-menu-tarot/10 text-menu-tarot border-menu-tarot/20',
   fortune: 'bg-menu-fortune/10 text-foreground border-menu-fortune/40',
   lunch: 'bg-menu-lunch/10 text-menu-lunch border-menu-lunch/20',
-  where: 'bg-menu-where/10 text-menu-where border-menu-where/20',
 } as const;
 
 export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
@@ -58,5 +48,4 @@ export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
   tarot: 'bg-background',
   fortune: 'bg-background',
   lunch: 'bg-background',
-  where: 'bg-background',
 };

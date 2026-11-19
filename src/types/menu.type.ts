@@ -19,12 +19,7 @@ export type MenuGroupType = {
   items: readonly MenuItemType[];
 };
 
-export type MenuSectionKeyType =
-  | 'lotto'
-  | 'tarot'
-  | 'fortune'
-  | 'lunch'
-  | 'where';
+export type MenuSectionKeyType = 'lotto' | 'tarot' | 'fortune' | 'lunch';
 
 export type FeatureItemType = {
   section: MenuSectionKeyType;

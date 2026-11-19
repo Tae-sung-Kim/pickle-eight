@@ -5,7 +5,6 @@ export enum MENU_GROUP_NAME_ENUM {
   TAROT = 'tarot',
   FORTUNE = 'fortune',
   LUNCH = 'lunch',
-  WHERE = 'where',
 }
 
 export const MENU_LIST: MenuGroupType[] = [
@@ -144,22 +143,6 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-orange-600',
         description: '직장인 점심 메뉴를 조건에 맞게 추천하고 룰렛으로 결정.',
         example: '예: 한식/중식, 가격대, 혼밥 조건으로 고르기',
-      },
-    ],
-  },
-  {
-    group: MENU_GROUP_NAME_ENUM.WHERE,
-    label: '나들이',
-    href: `/${MENU_GROUP_NAME_ENUM.WHERE}/today`,
-    comingSoon: true,
-    items: [
-      {
-        href: `/${MENU_GROUP_NAME_ENUM.WHERE}/today`,
-        label: '오늘 어디가',
-        icon: 'MapPin',
-        colorClass: 'text-sky-600',
-        description: '공공데이터 기반으로 오늘 가볼 만한 곳을 추천.',
-        example: '예: 내 주변 축제, 공연, 전시, 나들이 장소 찾기',
       },
     ],
   },

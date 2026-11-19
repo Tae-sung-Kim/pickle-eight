@@ -67,7 +67,6 @@ pnpm dev
 
 - `lotto_draws`: 회차별 당첨 정보
 - `lotto_stats`: 핫/콜드 통계 캐시 (6시간 TTL)
-
 두 테이블 모두 RLS가 켜져 있고 공개 읽기만 허용합니다. 쓰기는 서버에서 service role로만 합니다.
 
 ## 로또 데이터 동기화
