@@ -2,10 +2,10 @@ import type { MenuGroupType } from '@/types/menu.type';
 
 export enum MENU_GROUP_NAME_ENUM {
   LOTTO = 'lotto',
+  LUNCH = 'lunch',
   TAROT = 'tarot',
   FORTUNE = 'fortune',
   DREAM = 'dream',
-  LUNCH = 'lunch',
 }
 
 export const MENU_LIST: MenuGroupType[] = [
@@ -64,6 +64,22 @@ export const MENU_LIST: MenuGroupType[] = [
         colorClass: 'text-primary',
         description: '다회 추첨으로 등수 분포 시뮬레이션.',
         example: '예: 5티켓 × 10,000회',
+      },
+    ],
+  },
+  {
+    group: MENU_GROUP_NAME_ENUM.LUNCH,
+    label: '점심',
+    href: `/${MENU_GROUP_NAME_ENUM.LUNCH}/today`,
+    items: [
+      {
+        href: `/${MENU_GROUP_NAME_ENUM.LUNCH}/today`,
+        label: '오늘 뭐 먹지',
+        icon: 'Utensils',
+        colorClass: 'text-menu-lunch',
+        description:
+          '룰렛으로 오늘의 점심 메뉴를 무작위로 뽑고 지도에서 찾아보기.',
+        example: '예: 한식·분식만 골라 국물 메뉴로 룰렛 돌리기',
       },
     ],
   },
@@ -144,22 +160,6 @@ export const MENU_LIST: MenuGroupType[] = [
         description:
           '꿈에 나온 소재를 찾아 민간 풀이와 생각해 볼 점을 읽는 사전.',
         example: '예: 돼지, 치아처럼 떠오른 소재로 찾기',
-      },
-    ],
-  },
-  {
-    group: MENU_GROUP_NAME_ENUM.LUNCH,
-    label: '점심',
-    href: `/${MENU_GROUP_NAME_ENUM.LUNCH}/today`,
-    items: [
-      {
-        href: `/${MENU_GROUP_NAME_ENUM.LUNCH}/today`,
-        label: '오늘 뭐 먹지',
-        icon: 'Utensils',
-        colorClass: 'text-menu-lunch',
-        description:
-          '룰렛으로 오늘의 점심 메뉴를 무작위로 뽑고 지도에서 찾아보기.',
-        example: '예: 한식·분식만 골라 국물 메뉴로 룰렛 돌리기',
       },
     ],
   },

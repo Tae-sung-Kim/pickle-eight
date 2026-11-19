@@ -21,10 +21,10 @@ export type MenuGroupType = {
 
 export type MenuSectionKeyType =
   | 'lotto'
+  | 'lunch'
   | 'tarot'
   | 'fortune'
-  | 'dream'
-  | 'lunch';
+  | 'dream';
 
 export type FeatureItemType = {
   section: MenuSectionKeyType;
