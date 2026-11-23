@@ -264,6 +264,7 @@ export function RouletteComponent({
 
       {/* 회전: 칸, 칸 글자, 당첨 칸 */}
       <motion.svg
+        key={signature}
         viewBox="0 0 400 400"
         className="pointer-events-none absolute inset-0 h-full w-full"
         focusable="false"

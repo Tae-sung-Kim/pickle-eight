@@ -85,6 +85,12 @@ export function LuckyDrawLadderRootComponent(): JSX.Element {
     setRandomOk(isLuckyDrawRandomAvailable());
   }, []);
 
+  // 텍스트나 공개 방식이 바뀌면 시작 실패 안내를 지운다
+  // biome-ignore lint/correctness/useExhaustiveDependencies: 입력 변경만 트리거
+  useEffect(() => {
+    setStartFailed(false);
+  }, [state.participantText, state.resultText, revealMode]);
+
   useEffect(() => {
     if (isRevealed && focusHeadingRef.current) {
       focusHeadingRef.current = false;
@@ -293,7 +299,7 @@ export function LuckyDrawLadderRootComponent(): JSX.Element {
           </button>
         </section>
 
-        {game && !startFailed ? (
+        {game ? (
           <section className="space-y-4 rounded-panel border border-border bg-card p-4 sm:p-6">
             <h2
               ref={headingRef}
