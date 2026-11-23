@@ -24,7 +24,9 @@
 - TanStack Query v5, Zustand, react-hook-form, zod
 - 데이터베이스: Supabase (Postgres)
 - 린트 / 포맷: Biome
-- E2E 테스트: Playwright (`pnpm e2e`)
+- E2E 테스트: Playwright (`pnpm e2e`, 모바일 smoke는 `pnpm e2e:mobile`)
+- 단위 테스트: Vitest (`pnpm test`, `unit/` 폴더)
+- 코드리뷰: 푸시 전에 `/code-review`를 직접 실행한다. 커밋·푸시 훅으로 강제하지 않는다.
 
 ## 시작하기
 

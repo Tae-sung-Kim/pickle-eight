@@ -50,7 +50,7 @@ src/
   - 클라이언트 데이터 접근(프론트): `features/<기능>/services/*.service.ts` (`http`로 자기 API 호출, localStorage). 예: `lotto.service.ts`, `lotto-user.service.ts`
   - `route.ts`에서 `supabaseAdmin`을 직접 쓰지 않는다. repository 함수를 부른다.
   - `src/app/`은 Next.js의 입구다. `page.tsx`(화면 입구)와 `api/**/route.ts`(API 입구) 모두 얇게 두고 features를 호출한다.
-- 기능에 속하지 않는 것: 라우트(`src/app/<기능>/`), API(`src/app/api/`), 전역 디자인 토큰(`globals.css`, `tokens.css`), DB 마이그레이션(`supabase/`), E2E 테스트(`e2e/`), 문서(`docs/`)
+- 기능에 속하지 않는 것: 라우트(`src/app/<기능>/`), API(`src/app/api/`), 전역 디자인 토큰(`globals.css`, `tokens.css`), DB 마이그레이션(`supabase/`), E2E 테스트(`e2e/`), 단위 테스트(`unit/<기능>/*.test.ts`), 문서(`docs/`)
 - 시크릿은 `.env.local`에 둔다. 새 환경변수는 `.env.example`에도 키만 추가한다.
 
 ## Next.js·React 규칙

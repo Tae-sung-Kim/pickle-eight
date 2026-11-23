@@ -47,6 +47,7 @@ This document summarizes the primary licenses of first-level dependencies declar
 - tailwindcss — MIT
 - tw-animate-css — MIT
 - typescript — Apache-2.0
+- vitest — MIT
 
 ## Notes and obligations
 

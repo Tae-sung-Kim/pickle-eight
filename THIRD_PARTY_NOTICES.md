@@ -32,6 +32,7 @@ Dev dependencies (selection):
 - PostCSS — MIT License
 - @types/\* — MIT License
 - Playwright (@playwright/test) — Apache-2.0
+- Vitest (vitest) — MIT License (development only)
 
 Fonts (loaded from CDN at runtime):
 

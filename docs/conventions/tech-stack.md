@@ -14,11 +14,12 @@
 - 상태: 서버 데이터 `@tanstack/react-query`, 전역 상태 `zustand` (`src/stores`)
 - 폼·검증: `react-hook-form` + `zod`
 - 린트·포맷: Biome (ESLint, Prettier 쓰지 않음)
-- 테스트: Playwright (`e2e/`)
+- 테스트: Playwright (`e2e/`, 화면 핵심 흐름), Vitest (`unit/<기능>/`, 계산·데이터·고지 원문)
 - 패키지 매니저: pnpm (npm, yarn 쓰지 않음)
 
 ## 명령어
 
 - 개발 서버: `pnpm dev`
 - 검증: `pnpm lint`, `pnpm typecheck`, `pnpm build`
-- E2E: `pnpm e2e` (모바일: `pnpm e2e:mobile`)
+- E2E: `pnpm e2e` (모바일 smoke: `pnpm e2e:mobile`)
+- 단위 테스트: `pnpm test`

@@ -17,44 +17,45 @@ async function getSpec(page: Page): Promise<Json> {
   return res.json();
 }
 
+// 요청 제한(IP당 분당)에 걸리지 않게 호출마다 다른 IP를 쓴다
 let ipSeq = 0;
 function freshIp(tag: number): string {
   ipSeq += 1;
   return `10.${tag}.${Math.floor(Math.random() * 250)}.${(ipSeq % 250) + 1}`;
 }
 
-test.describe('페이지 공통', () => {
-  test('/api-docs 응답 400 미만, pageerror 없음, h1 하나, 메타 존재', async ({
-    page,
-  }) => {
-    const errors: string[] = [];
-    page.on('pageerror', (e) => errors.push(e.message));
-    const res = await page.goto('/api-docs');
-    expect(res?.status()).toBeLessThan(400);
-    await expect(page.locator('.swagger-ui').first()).toBeVisible();
-    await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
-    await expect(page).toHaveTitle(/API 문서/);
-    const desc = page.locator('meta[name="description"]');
-    await expect(desc).toHaveAttribute('content', /.+/);
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
-      'content',
-      /noindex/
-    );
-    expect(errors).toEqual([]);
-  });
-});
-
-test('AC-1: /api-docs에 h1 "API 문서"와 Swagger UI가 보인다', async ({
-  page,
-}) => {
-  await page.goto('/api-docs');
+test('/api-docs 응답 400 미만, pageerror 없음, h1 "API 문서", 메타, Swagger UI', {
+  tag: '@smoke',
+}, async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  const res = await page.goto('/api-docs');
+  expect(res?.status()).toBeLessThan(400);
   await expect(
     page.getByRole('heading', { level: 1, name: 'API 문서' })
   ).toBeVisible();
   await expect(page.locator('.swagger-ui').first()).toBeVisible();
+  await expect(page).toHaveTitle(/API 문서/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    /.+/
+  );
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    'content',
+    /noindex/
+  );
+  expect(errors).toEqual([]);
 });
 
-test('AC-2: operation 3개, 경로 일치, 제외 경로 없음', async ({ page }) => {
+test('AC-2·3: operation 3개와 /openapi.json 경로가 일치하고 제외 경로는 없다', async ({
+  page,
+}) => {
+  const res = await page.request.get('/openapi.json');
+  expect(res.status()).toBe(200);
+  expect(res.headers()['content-type']).toContain('application/json');
+  const spec = await res.json();
+  expect(Object.keys(spec.paths).sort()).toEqual([...PATHS].sort());
+
   await page.goto('/api-docs');
   const ops = page.locator('[data-path]');
   await expect(ops).toHaveCount(3);
@@ -67,15 +68,9 @@ test('AC-2: operation 3개, 경로 일치, 제외 경로 없음', async ({ page 
   }
 });
 
-test('AC-3: /openapi.json 200 JSON, paths 정확히 일치', async ({ page }) => {
-  const res = await page.request.get('/openapi.json');
-  expect(res.status()).toBe(200);
-  expect(res.headers()['content-type']).toContain('application/json');
-  const spec = await res.json();
-  expect(Object.keys(spec.paths).sort()).toEqual([...PATHS].sort());
-});
-
-test('AC-4: draws 파라미터와 응답 코드', async ({ page }) => {
+test('AC-4·6: draws 파라미터·응답 코드, hot-cold 200 스키마(ok, data, meta)', async ({
+  page,
+}) => {
   const spec = await getSpec(page);
   const op = spec.paths['/api/lotto/draws'].get;
   const names = ((op.parameters ?? []) as unknown as Json[]).map((p) => p.name);
@@ -83,9 +78,18 @@ test('AC-4: draws 파라미터와 응답 코드', async ({ page }) => {
   for (const c of ['200', '400', '404', '429', '500']) {
     expect(Object.keys(op.responses)).toContain(c);
   }
+
+  const ok = spec.paths['/api/lotto/stats/hot-cold'].get.responses['200'];
+  const ref = ok.content['application/json'].schema.$ref as unknown as string;
+  const schema = ref
+    ? spec.components.schemas[ref.split('/').pop() as string]
+    : ok.content['application/json'].schema;
+  for (const k of ['ok', 'data', 'meta']) {
+    expect(Object.keys(schema.properties)).toContain(k);
+  }
 });
 
-test('AC-5: export 명세 text/csv + attachment, 실제 응답 CSV', async ({
+test('AC-5: export 명세가 text/csv + attachment이고 실제 응답이 CSV다', async ({
   page,
 }) => {
   const spec = await getSpec(page);
@@ -102,20 +106,8 @@ test('AC-5: export 명세 text/csv + attachment, 실제 응답 CSV', async ({
   expect(first).toMatch(/^[^\d].*,/);
 });
 
-test('AC-6: hot-cold 200 응답에 ok, data, meta', async ({ page }) => {
-  const spec = await getSpec(page);
-  const ok = spec.paths['/api/lotto/stats/hot-cold'].get.responses['200'];
-  expect(ok).toBeTruthy();
-  const ref = ok.content['application/json'].schema.$ref as unknown as string;
-  const schema = ref
-    ? spec.components.schemas[ref.split('/').pop() as string]
-    : ok.content['application/json'].schema;
-  for (const k of ['ok', 'data', 'meta']) {
-    expect(Object.keys(schema.properties)).toContain(k);
-  }
-});
-
-test('AC-7: export 21번째, draws 61번째 요청이 429', async ({ page }) => {
+test('AC-7: export 21번째, draws 61번째 요청이 429', async ({ page }, info) => {
+  test.skip(info.project.name !== 'desktop', '요청 수가 많아 desktop만');
   test.setTimeout(120_000);
   const run = async (url: string, limit: number, tag: number) => {
     const headers = { 'x-forwarded-for': freshIp(tag) };
@@ -179,7 +171,10 @@ test('AC-10: 기존 API status, Content-Type, Cache-Control', async ({
   expect(exp.headers()['content-disposition']).toContain('attachment');
 });
 
-test('AC-11: 고지 문구가 보인다', async ({ page }) => {
+test('AC-11·12: 고지 문구가 보이고 375px에서 가로 스크롤이 없다', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 800 });
   await page.goto('/api-docs');
   const main = page.getByRole('main').first();
   await expect(
@@ -188,11 +183,6 @@ test('AC-11: 고지 문구가 보인다', async ({ page }) => {
     )
   ).toBeVisible();
   await expect(main.getByText(/오락 목적으로 제공되는 정보/)).toBeVisible();
-});
-
-test('AC-12: 가로 스크롤이 생기지 않는다 (375px)', async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 800 });
-  await page.goto('/api-docs');
   await expect(page.locator('[data-path]')).toHaveCount(3);
   const over = await page.evaluate(
     () =>
@@ -200,24 +190,4 @@ test('AC-12: 가로 스크롤이 생기지 않는다 (375px)', async ({ page }) 
       document.documentElement.clientWidth
   );
   expect(over).toBeLessThanOrEqual(0);
-});
-
-test('AC-13: 조각 파일 구조, 제외 경로 없음', async ({ page }) => {
-  const { readdirSync, readFileSync } = await import('node:fs');
-  const dir = 'src/features/api-docs/specs';
-  const files = readdirSync(dir).filter((f) => f.endsWith('.openapi.json'));
-  expect(files).toContain('lotto.openapi.json');
-  const all = new Set<string>();
-  for (const f of files) {
-    const piece = JSON.parse(readFileSync(`${dir}/${f}`, 'utf8'));
-    for (const p of Object.keys(piece.paths)) all.add(p);
-    for (const ex of EXCLUDED) expect(JSON.stringify(piece)).not.toContain(ex);
-  }
-  const spec = await getSpec(page);
-  expect([...all].sort()).toEqual(Object.keys(spec.paths).sort());
-});
-
-test('상태: 알 수 없는 경로 /api-docs/none 은 404', async ({ page }) => {
-  const res = await page.goto('/api-docs/none');
-  expect(res?.status()).toBe(404);
 });

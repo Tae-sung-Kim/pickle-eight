@@ -22,6 +22,8 @@ export default defineConfig({
     {
       name: 'mobile',
       use: { ...devices['Pixel 7'], channel: 'chrome' },
+      // 모바일은 smoke(@smoke 태그)만 돌린다
+      grep: /@smoke/,
     },
   ],
   webServer: {

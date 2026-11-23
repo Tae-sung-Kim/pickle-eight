@@ -11,7 +11,7 @@ const SCOPES = {
   architect: DOCS,
   'ui-ux-designer': DOCS,
   'dev-lead': DOCS,
-  qa: ['e2e/', 'docs/'],
+  qa: ['e2e/', 'unit/', 'docs/'],
   'db-dev': ['supabase/', 'docs/'],
   'backend-dev': [
     'src/app/api/',
