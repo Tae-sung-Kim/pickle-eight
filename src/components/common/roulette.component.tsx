@@ -14,11 +14,24 @@ export type RoulettePropsType = Readonly<{
   /** 연출이 끝나면(동작 줄이기에서도) 반드시 한 번 부른다 */
   onSpinEnd?: (spinId: number) => void;
   className?: string;
+  /**
+   * 당첨 칸(면·테두리)과 바늘 색. 예: 'fill-menu-lotto/20 stroke-menu-lotto'
+   * 바늘은 이 중 fill- 클래스에서 투명도를 뺀 색을 쓴다. 비면 점심 색.
+   */
+  accentClassName?: string;
+  /** 회전 시간(초). 0.5~1.0만 허용, 그 외는 1.0 */
+  spinDurationSec?: number;
+  /** 바퀴 수. 1~5 정수만 허용, 그 외는 2 */
+  spinTurns?: number;
 }>;
 
 // 회전 연출 값 (U1)
 const SPIN_DURATION_SEC = 1.0;
 const SPIN_TURNS = 2;
+const MIN_DURATION_SEC = 0.5;
+const MAX_TURNS = 5;
+const DEFAULT_ACCENT = 'fill-menu-meal/20 stroke-menu-meal';
+const DEFAULT_NEEDLE = 'fill-menu-meal';
 const SPIN_EASE: [number, number, number, number] = [0.2, 0.7, 0.2, 1];
 
 // viewBox 기준 치수
@@ -55,7 +68,45 @@ function slicePath(index: number, count: number): string {
   return `M ${CENTER} ${CENTER} L ${x1} ${y1} A ${SLICE_RADIUS} ${SLICE_RADIUS} 0 ${large} 1 ${x2} ${y2} Z`;
 }
 
-function sliceFillClass(index: number, count: number): string {
+function resolveDuration(value: number | undefined): number {
+  return value !== undefined &&
+    Number.isFinite(value) &&
+    value >= MIN_DURATION_SEC &&
+    value <= SPIN_DURATION_SEC
+    ? value
+    : SPIN_DURATION_SEC;
+}
+
+function resolveTurns(value: number | undefined): number {
+  return value !== undefined &&
+    Number.isInteger(value) &&
+    value >= 1 &&
+    value <= MAX_TURNS
+    ? value
+    : SPIN_TURNS;
+}
+
+function resolveAccent(accent: string | undefined): {
+  slice: string;
+  needle: string;
+} {
+  const slice = accent?.trim();
+  if (!slice) return { slice: DEFAULT_ACCENT, needle: DEFAULT_NEEDLE };
+  const needle = slice
+    .split(/\s+/)
+    .filter((token) => token.startsWith('fill-'))
+    .map((token) => token.replace(/\/\d+$/, ''))
+    .join(' ');
+  return { slice, needle: needle || DEFAULT_NEEDLE };
+}
+
+function sliceFillClass(
+  index: number,
+  count: number,
+  color: string | undefined
+): string {
+  const custom = color?.trim();
+  if (custom) return custom;
   if (count > 1 && count % 2 === 1 && index === count - 1) {
     return 'fill-muted';
   }
@@ -66,11 +117,12 @@ function sliceFillClass(index: number, count: number): string {
 function computeFinalAngle(
   current: number,
   targetIndex: number,
-  count: number
+  count: number,
+  turns: number
 ): number {
   const center = (targetIndex + 0.5) * (360 / count);
   const delta = (((-center - current) % 360) + 360) % 360;
-  return current + SPIN_TURNS * 360 + delta;
+  return current + turns * 360 + delta;
 }
 
 type RotationType = Readonly<{ deg: number; duration: number }>;
@@ -81,7 +133,13 @@ export function RouletteComponent({
   spinId,
   onSpinEnd,
   className,
+  accentClassName,
+  spinDurationSec,
+  spinTurns,
 }: RoulettePropsType) {
+  const duration = resolveDuration(spinDurationSec);
+  const turns = resolveTurns(spinTurns);
+  const accent = resolveAccent(accentClassName);
   const reduced = useReducedMotion();
   const count = items.length;
   const signature = items.map((item) => item.key).join('|');
@@ -95,8 +153,22 @@ export function RouletteComponent({
   const angleRef = useRef(0);
   const pendingRef = useRef<number | null>(null);
   const prevSpinIdRef = useRef(spinId);
-  const latestRef = useRef({ targetIndex, count, reduced, onSpinEnd });
-  latestRef.current = { targetIndex, count, reduced, onSpinEnd };
+  const latestRef = useRef({
+    targetIndex,
+    count,
+    reduced,
+    onSpinEnd,
+    duration,
+    turns,
+  });
+  latestRef.current = {
+    targetIndex,
+    count,
+    reduced,
+    onSpinEnd,
+    duration,
+    turns,
+  };
 
   // 칸 구성이 바뀌면 각도 0, 당첨 칸 지움 (전환 없이 즉시)
   // biome-ignore lint/correctness/useExhaustiveDependencies: signature 변경만 트리거
@@ -115,10 +187,17 @@ export function RouletteComponent({
       targetIndex: target,
       count: n,
       reduced: noMotion,
+      duration: spinSec,
+      turns: spinTurnCount,
     } = latestRef.current;
     if (target === null || n === 0 || target < 0 || target >= n) return;
 
-    const finalDeg = computeFinalAngle(angleRef.current, target, n);
+    const finalDeg = computeFinalAngle(
+      angleRef.current,
+      target,
+      n,
+      spinTurnCount
+    );
     angleRef.current = finalDeg;
 
     if (noMotion) {
@@ -130,7 +209,7 @@ export function RouletteComponent({
     }
     pendingRef.current = spinId;
     setRevealedIndex(null);
-    setRotation({ deg: finalDeg, duration: SPIN_DURATION_SEC });
+    setRotation({ deg: finalDeg, duration: spinSec });
   }, [spinId]);
 
   function handleAnimationComplete() {
@@ -204,7 +283,10 @@ export function RouletteComponent({
             cy={CENTER}
             r={SLICE_RADIUS}
             strokeWidth={1}
-            className="fill-card stroke-border"
+            className={cn(
+              'stroke-border',
+              sliceFillClass(0, 1, items[0]?.colorClassName)
+            )}
           />
         )}
         {count > 1 &&
@@ -213,7 +295,10 @@ export function RouletteComponent({
               key={item.key}
               d={slicePath(i, count)}
               strokeWidth={1}
-              className={cn('stroke-border', sliceFillClass(i, count))}
+              className={cn(
+                'stroke-border',
+                sliceFillClass(i, count, item.colorClassName)
+              )}
             />
           ))}
 
@@ -249,14 +334,14 @@ export function RouletteComponent({
             cy={CENTER}
             r={SLICE_RADIUS}
             strokeWidth={3}
-            className="fill-menu-meal/20 stroke-menu-meal"
+            className={accent.slice}
           />
         )}
         {revealedIndex !== null && count > 1 && (
           <path
             d={slicePath(revealedIndex, count)}
             strokeWidth={3}
-            className="fill-menu-meal/20 stroke-menu-meal"
+            className={accent.slice}
           />
         )}
       </motion.svg>
@@ -273,7 +358,7 @@ export function RouletteComponent({
             points="400,184 400,216 348,200"
             strokeWidth={2}
             strokeLinejoin="round"
-            className="fill-menu-meal stroke-background"
+            className={cn(accent.needle, 'stroke-background')}
           />
         )}
         <g className={count === 0 ? 'opacity-60' : undefined}>
