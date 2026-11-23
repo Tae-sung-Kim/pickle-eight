@@ -4,6 +4,7 @@ import { MEAL_LIST } from '@/features/meal/constants/meal.constant';
 import { MEAL_CATEGORIES } from '@/features/meal/constants/meal-category.constant';
 import {
   MEAL_ALLOWED_CATEGORY_LABELS,
+  MEAL_ALLOWED_MENU_NAME_TERMS,
   MEAL_COPY_ALLOWED_SENTENCES,
   MEAL_FORBIDDEN_PATTERNS,
   MEAL_FORBIDDEN_TERMS,
@@ -48,6 +49,13 @@ function violations(label: string, text: string, allowLabel = false): string[] {
     if (new RegExp(re.source, re.flags.replace(/[gy]/g, '')).test(body))
       out.push(`${label}: ${re}`);
   }
+  return out;
+}
+
+/** 메뉴 이름 검사 전용: 허용 단어를 먼저 지운다 */
+function stripAllowedMenuTerms(name: string): string {
+  let out = name;
+  for (const t of MEAL_ALLOWED_MENU_NAME_TERMS) out = out.split(t).join('');
   return out;
 }
 
@@ -217,7 +225,7 @@ describe('AC-11·14·31: 금지어·FAQ', () => {
         );
       }
       for (const name of menuNames(meal)) {
-        found.push(...violations(`menu.${meal}`, name));
+        found.push(...violations(`menu.${meal}`, stripAllowedMenuTerms(name)));
       }
     }
     found.push(...violations('seo.title', MEAL_HUB_SEO.title));
@@ -235,6 +243,13 @@ describe('AC-11·14·31: 금지어·FAQ', () => {
     for (const w of ['오늘은 야식이 어울립니다', '술안주', '해장', '안주']) {
       expect(violations('t', w), w).not.toEqual([]);
     }
+    // "해장"은 메뉴 이름에서만 허용, 그 밖의 문구에서는 계속 금지
+    expect(MEAL_ALLOWED_MENU_NAME_TERMS).toEqual(['해장']);
+    expect(violations('t', '해장국')).not.toEqual([]);
+    expect(violations('m', stripAllowedMenuTerms('해장국'))).toEqual([]);
+    expect(violations('m', stripAllowedMenuTerms('숙취 해장국'))).not.toEqual(
+      []
+    );
     const bad = ['야식', '술', '안주', '해장'];
     const found: string[] = [];
     const scan = (where: string, text: string, allowLabel = false) => {
@@ -244,7 +259,8 @@ describe('AC-11·14·31: 금지어·FAQ', () => {
       for (const w of bad) if (body.includes(w)) found.push(`${where}: ${w}`);
     };
     for (const meal of MEALS) {
-      for (const n of menuNames(meal)) scan(`menu.${meal}`, n);
+      for (const n of menuNames(meal))
+        scan(`menu.${meal}`, stripAllowedMenuTerms(n));
       for (const l of luckAll(meal)) scan(`luck.${meal}`, l);
       for (const c of MEAL_CATEGORIES[meal])
         scan(`label.${meal}`, c.label, true);

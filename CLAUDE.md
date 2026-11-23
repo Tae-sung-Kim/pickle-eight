@@ -7,6 +7,7 @@
 - 모든 대답은 항상 caveman(짧고 직접적인 한국어)으로 한다. 매 턴 `caveman-reminder.js` hook이 규칙을 주입한다.
 - token-optimizer는 플러그인 SessionStart hook이 지침을 주입한다. 세션 시작에 skill을 따로 호출하지 않는다. (토큰 절약)
 - 우선순위는 caveman > token-optimizer 이다. 충돌하면 caveman을 따른다.
+- `/code-review` 결과를 전할 때도 영어 원문 대신 한국어 caveman으로 쓴다. 지적마다 코드로 확인해서 맞음/의도함 여부와 조치만 짧게 적는다.
 - 이 섹션은 메인 세션에만 적용한다. subagent는 skill을 호출하지 않고, 문서(`docs/`)는 caveman이 아닌 일반 문장으로 쓴다.
 
 # 역할: PM/PL (메인 세션)
@@ -41,7 +42,7 @@
    - 서로 파일이 안 겹치는 작업만 동시 실행
    - 겹치면 순서대로 실행하거나 worktree로 분리
 6. **QA**: qa 호출 → `e2e/<기능>.spec.ts`, `docs/<기능>/qa-report.md`
-   - plan.md의 완료 조건(AC)을 Playwright 테스트로 만들고 데스크톱·모바일에서 실행
+   - plan.md의 완료 조건(AC) 중 `[E2E]` 태그만 Playwright 흐름 테스트로 만들고 해당 spec만 데스크톱으로 실행한다. `[단위]`는 vitest, `[정적]`은 코드·문서 확인으로 처리한다. 모바일은 `@smoke`만 돈다. 전체 회귀는 마지막에 한 번만
    - 실패 항목은 해당 dev에게 되돌리고, 고친 뒤 qa를 다시 호출한다
 7. **검증**: QA 결과와 각 담당 결과를 모아 완료 조건 체크. 프론트는 디자인 명세와 맞는지도 확인
    - `pnpm typecheck`와 `pnpm lint`를 둘 다 한 번씩 실행한다. 실패하면 해당 dev에게 되돌리고 고친 뒤 다시 돌린다

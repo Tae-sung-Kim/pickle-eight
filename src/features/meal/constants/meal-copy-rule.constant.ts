@@ -92,6 +92,15 @@ export const MEAL_FORBIDDEN_TERMS: readonly string[] = [
  */
 export const MEAL_ALLOWED_CATEGORY_LABELS: readonly string[] = ['야식'];
 
+/**
+ * 메뉴 이름 검사에서만 허용하는 금지어 (검사 전용).
+ * '해장'은 효과를 말하는 문구에서는 금지지만, 해장국·뼈해장국처럼 실제 음식 이름은
+ * 감자탕 같은 기존 메뉴와 일관되게 허용한다(사용자 결정 2026-11-23).
+ * 메뉴 이름 검사는 이 값을 먼저 지운 뒤 금지어를 찾는다. 안내·FAQ·메타·운세 문구에는 쓰지 않는다.
+ * 숙취·안주·한잔·소주·맥주·음주와 '술' 패턴은 메뉴 이름에도 그대로 적용한다.
+ */
+export const MEAL_ALLOWED_MENU_NAME_TERMS: readonly string[] = ['해장'];
+
 /** 미래·결과를 확정하는 어미 패턴 */
 export const MEAL_FORBIDDEN_PATTERNS: readonly RegExp[] = [
   /게 됩니다/,

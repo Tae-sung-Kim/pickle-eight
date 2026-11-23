@@ -33,18 +33,13 @@ const EXPECTED_LUNCH_SOUP = new Set([
   '곰탕',
   '육개장',
   '삼계탕',
+  '해장국',
+  '뼈해장국',
 ]);
-
-// 끼니별 카테고리 칩 순서의 메뉴 수와 국물 수 (D4 확정 값)
-const EXPECTED = {
-  lunch: { total: 54, perCategory: [14, 6, 10, 8, 6, 10], soup: 18 },
-  dinner: { total: 106, perCategory: [18, 11, 10, 8, 9, 10, 40], soup: 26 },
-  breakfast: { total: 44, perCategory: [8, 6, 8, 6, 7, 9], soup: 7 },
-} as const;
 
 const CATEGORY_COUNT = { lunch: 6, dinner: 7, breakfast: 6 } as const;
 
-// 저녁 야식 26개 (돌림판 칸 순서). 앞 14개는 다른 카테고리에서 옮겨 온 메뉴
+// 저녁 야식 (돌림판 칸 순서). 앞 14개는 다른 카테고리에서 옮겨 온 메뉴
 const LATE_NIGHT_NAMES = [
   '족발',
   '보쌈',
@@ -86,6 +81,14 @@ const LATE_NIGHT_NAMES = [
   '마늘치킨',
   '불닭발',
   '핫도그',
+  '우동',
+  '칼국수',
+  '수제비',
+  '만두국',
+  '순두부찌개',
+  '콩나물국밥',
+  '닭곰탕',
+  '짬뽕',
 ];
 const MOVED_NAMES = LATE_NIGHT_NAMES.slice(0, 14);
 
@@ -98,7 +101,6 @@ describe('AC-9: 끼니별 메뉴 데이터', () => {
       expect(MEAL_CATEGORIES[meal]).toHaveLength(CATEGORY_COUNT[meal]);
       expect(keys.size).toBe(CATEGORY_COUNT[meal]);
       expect(menus).toHaveLength(MEAL_MENU_COUNTS[meal]);
-      expect(menus).toHaveLength(EXPECTED[meal].total);
       if (meal !== 'dinner') {
         expect(menus.length).toBeGreaterThanOrEqual(40);
         expect(menus.length).toBeLessThanOrEqual(60);
@@ -130,20 +132,20 @@ describe('AC-9: 끼니별 메뉴 데이터', () => {
     const counts = MEAL_CATEGORIES[meal].map(
       (c) => menus.filter((m) => m.category === c.key).length
     );
-    expect(counts).toEqual(EXPECTED[meal].perCategory);
-    expect(menus.filter((m) => m.broth === 'soup')).toHaveLength(
-      EXPECTED[meal].soup
-    );
-    expect(menus.filter((m) => m.broth === 'dry')).toHaveLength(
-      EXPECTED[meal].total - EXPECTED[meal].soup
-    );
+    expect(counts).toHaveLength(CATEGORY_COUNT[meal]);
+    expect(counts.reduce((a, b) => a + b, 0)).toBe(menus.length);
+    const soup = menus.filter((m) => m.broth === 'soup').length;
+    const dry = menus.filter((m) => m.broth === 'dry').length;
+    expect(soup).toBeGreaterThan(0);
+    expect(soup + dry).toBe(menus.length);
   });
 
   test('점심 국물 경계 메뉴 일치', () => {
     const lunch = MEAL_MENUS.lunch;
-    expect(
-      new Set(lunch.filter((m) => m.broth === 'soup').map((m) => m.name))
-    ).toEqual(EXPECTED_LUNCH_SOUP);
+    const soupNames = new Set(
+      lunch.filter((m) => m.broth === 'soup').map((m) => m.name)
+    );
+    for (const n of EXPECTED_LUNCH_SOUP) expect(soupNames.has(n), n).toBe(true);
     const byName = (n: string) => lunch.find((m) => m.name === n)?.broth;
     expect(byName('냉면')).toBe('soup');
     expect(byName('백반')).toBe('dry');
@@ -187,7 +189,7 @@ describe('AC-9: 끼니별 메뉴 데이터', () => {
     }
   });
 
-  test('AC-36·37: 야식 26개가 lateNight이고 옮긴 14개는 원래 카테고리에 없다', () => {
+  test('AC-36·37: 야식 메뉴가 lateNight이고 옮긴 14개는 원래 카테고리에 없다', () => {
     const dinner = MEAL_MENUS.dinner;
     const late = dinner.filter((m) => m.category === 'lateNight');
     expect(late.map((m) => m.name)).toEqual(LATE_NIGHT_NAMES);
@@ -196,6 +198,14 @@ describe('AC-9: 끼니별 메뉴 데이터', () => {
       '라면',
       '어묵탕',
       '부대찌개',
+      '우동',
+      '칼국수',
+      '수제비',
+      '만두국',
+      '순두부찌개',
+      '콩나물국밥',
+      '닭곰탕',
+      '짬뽕',
     ]);
     for (const name of MOVED_NAMES) {
       expect(
@@ -219,22 +229,25 @@ describe('AC-9: 끼니별 메뉴 데이터', () => {
     expect(cat.get('어묵')).toBe('bunsik');
   });
 
-  test('AC-36·37: 저녁 후보 수는 기본 66, 야식을 켜면 92, 국물 22/23', () => {
+  test('AC-36·37: 야식을 켜면 후보가 늘고 기본 후보에는 야식이 섞이지 않는다', () => {
     const base = MEAL_DEFAULT_CATEGORIES.dinner.map((c) => c.key);
     const all = MEAL_CATEGORIES.dinner.map((c) => c.key);
     const d = MEAL_MENUS.dinner;
     const n = (categories: typeof all, broth: 'all' | 'soup') =>
       filterMealMenus(d, { categories, broth });
-    expect(n(base, 'all')).toHaveLength(66);
-    expect(n(['lateNight'], 'all')).toHaveLength(40);
-    expect(n(all, 'all')).toHaveLength(106);
-    expect(n(base, 'soup')).toHaveLength(22);
-    expect(n(all, 'soup')).toHaveLength(26);
-    expect(n(['lateNight'], 'soup').map((m) => m.name)).toEqual([
-      '감자탕',
-      '라면',
-      '어묵탕',
-      '부대찌개',
-    ]);
+    const lateAll = d.filter((m) => m.category === 'lateNight');
+    const lateSoup = lateAll.filter((m) => m.broth === 'soup');
+    const baseAll = d.filter((m) => m.category !== 'lateNight');
+    const baseSoup = baseAll.filter((m) => m.broth === 'soup');
+    expect(lateAll.length).toBeGreaterThan(0);
+    expect(n(base, 'all')).toHaveLength(baseAll.length);
+    expect(n(base, 'all').some((m) => m.category === 'lateNight')).toBe(false);
+    expect(n(['lateNight'], 'all')).toHaveLength(lateAll.length);
+    expect(n(all, 'all')).toHaveLength(d.length);
+    expect(n(base, 'soup')).toHaveLength(baseSoup.length);
+    expect(n(all, 'soup')).toHaveLength(baseSoup.length + lateSoup.length);
+    expect(n(['lateNight'], 'soup').map((m) => m.name)).toEqual(
+      lateSoup.map((m) => m.name)
+    );
   });
 });

@@ -117,6 +117,7 @@ test('PC 헤더에 준비 중 배지가 없다', async ({ page }, testInfo) => {
   await page.goto('/');
   await expect(page.locator('header')).toBeVisible();
   await expect(page.locator('header').getByText('준비 중')).toHaveCount(0);
+  await expect(page.getByText('준비 중')).toHaveCount(0);
 });
 
 test('핫/콜드 분석: 범위 조회 결과 목록이 5개씩 보인다', async ({

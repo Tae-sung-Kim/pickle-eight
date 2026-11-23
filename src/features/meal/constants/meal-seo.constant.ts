@@ -6,7 +6,7 @@ export const MEAL_HUB_PATH = '/meal';
 
 export const MEAL_HUB_SEO = {
   heading: '오늘 뭐 먹지',
-  title: '오늘 뭐 먹지 - 점심·저녁·아침 메뉴 룰렛',
+  title: '오늘 뭐 먹지 - 점심·저녁·아침 메뉴 추천',
   description:
     '룰렛으로 오늘의 점심, 저녁, 아침 메뉴를 무작위로 골라 보는 오락 서비스입니다. 뽑힌 메뉴는 지도에서 바로 검색할 수 있습니다.',
   pathname: MEAL_HUB_PATH,
@@ -25,7 +25,7 @@ export const MEAL_HUB_SEO = {
     '아침 뭐 먹지',
     '메뉴 룰렛',
   ],
-  ogImageAlt: '오늘 뭐 먹지 메뉴 룰렛 안내 이미지',
+  ogImageAlt: '오늘 뭐 먹지 안내 이미지',
 } as const;
 
 /** BreadcrumbList: 홈 > 오늘 뭐 먹지 (그룹 전용 주소가 없어 같은 주소를 두 번 넣지 않는다) */

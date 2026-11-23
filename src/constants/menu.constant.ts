@@ -6,6 +6,7 @@ export enum MENU_GROUP_NAME_ENUM {
   TAROT = 'tarot',
   FORTUNE = 'fortune',
   DREAM = 'dream',
+  LUCKY_DRAW = 'lucky-draw',
 }
 
 export const MENU_LIST: MenuGroupType[] = [
@@ -69,7 +70,7 @@ export const MENU_LIST: MenuGroupType[] = [
   },
   {
     group: MENU_GROUP_NAME_ENUM.MEAL,
-    label: '메뉴 룰렛',
+    label: '뭐 먹지',
     href: `/${MENU_GROUP_NAME_ENUM.MEAL}`,
     items: [
       {
@@ -160,6 +161,37 @@ export const MENU_LIST: MenuGroupType[] = [
         description:
           '꿈에 나온 소재를 찾아 민간 풀이와 생각해 볼 점을 읽는 사전.',
         example: '예: 돼지, 치아처럼 떠오른 소재로 찾기',
+      },
+    ],
+  },
+  {
+    group: MENU_GROUP_NAME_ENUM.LUCKY_DRAW,
+    label: '운빨 뽑기',
+    href: `/${MENU_GROUP_NAME_ENUM.LUCKY_DRAW}`,
+    items: [
+      {
+        href: `/${MENU_GROUP_NAME_ENUM.LUCKY_DRAW}/ladder`,
+        label: '사다리 타기',
+        icon: 'Columns3',
+        colorClass: 'text-menu-lucky',
+        description: '이름과 결과를 짝지어 누가 무엇을 맡을지 정해요.',
+        example: '예: 4명이 청소 당번 정하기',
+      },
+      {
+        href: `/${MENU_GROUP_NAME_ENUM.LUCKY_DRAW}/roulette`,
+        label: '돌림판',
+        icon: 'LoaderPinwheel',
+        colorClass: 'text-menu-lucky',
+        description: '항목 중 하나를 돌림판으로 골라요.',
+        example: '예: 후보 여러 개 중 하나 고르기',
+      },
+      {
+        href: `/${MENU_GROUP_NAME_ENUM.LUCKY_DRAW}/lots`,
+        label: '제비뽑기',
+        icon: 'Shuffle',
+        colorClass: 'text-menu-lucky',
+        description: '뒷면 카드를 한 장씩 열어 항목을 하나씩 뽑아요.',
+        example: '예: 발표 주제 카드를 한 장씩 뽑기',
       },
     ],
   },

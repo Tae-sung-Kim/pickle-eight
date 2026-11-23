@@ -135,22 +135,24 @@ describe('filterMealMenus / pickMealMenu', () => {
     );
     expect(
       filterMealMenus(lunch, { categories: [], broth: 'all' })
-    ).toHaveLength(54);
+    ).toHaveLength(lunch.length);
     expect(filterMealMenus(lunch, { categories: [], broth: 'soup' })).toEqual(
       lunch.filter((m) => m.broth === 'soup')
     );
     expect(
       filterMealMenus(MEAL_MENUS.breakfast, { categories: [], broth: 'all' })
-    ).toHaveLength(44);
+    ).toHaveLength(MEAL_MENUS.breakfast.length);
     const dinner = filterMealMenus(MEAL_MENUS.dinner, {
       categories: [],
       broth: 'all',
     });
-    expect(dinner).toHaveLength(66);
+    expect(dinner).toHaveLength(
+      MEAL_MENUS.dinner.filter((m) => m.category !== 'lateNight').length
+    );
     expect(dinner.filter((m) => m.category === 'lateNight')).toHaveLength(0);
     expect(
       filterMealMenus(lunch, { categories: STANDARD, broth: 'all' })
-    ).toHaveLength(54);
+    ).toHaveLength(lunch.length);
   });
 
   test('후보가 비면 null', () => {

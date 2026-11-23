@@ -4,7 +4,7 @@ import type {
 } from '@/features/meal/types/meal.type';
 
 /**
- * 점심 메뉴 54개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
+ * 점심 메뉴 56개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
  * 국물 기준: 주 요리가 국물에 담겨 나오고 국물을 떠먹으면 soup, 그 밖은 dry.
  * mapQuery는 1차에 쓰지 않는다(이름으로 검색).
  */
@@ -29,6 +29,13 @@ export const MEAL_LUNCH_MENUS = [
   { id: 'gomtang', name: '곰탕', category: 'korean', broth: 'soup' },
   { id: 'yukgaejang', name: '육개장', category: 'korean', broth: 'soup' },
   { id: 'samgyetang', name: '삼계탕', category: 'korean', broth: 'soup' },
+  { id: 'haejangguk', name: '해장국', category: 'korean', broth: 'soup' },
+  {
+    id: 'ppyeo-haejangguk',
+    name: '뼈해장국',
+    category: 'korean',
+    broth: 'soup',
+  },
   // 중식
   { id: 'jjamppong', name: '짬뽕', category: 'chinese', broth: 'soup' },
   { id: 'malatang', name: '마라탕', category: 'chinese', broth: 'soup' },

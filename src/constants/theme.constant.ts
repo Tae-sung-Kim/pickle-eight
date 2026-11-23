@@ -1,6 +1,7 @@
 import {
   BookOpenText,
   Circle,
+  FerrisWheel,
   type LucideIcon,
   Moon,
   Star,
@@ -34,6 +35,7 @@ export const SECTION_ICONS: Record<MenuSectionKeyType, LucideIcon> = {
   fortune: Star,
   dream: BookOpenText,
   meal: Utensils,
+  'lucky-draw': FerrisWheel,
 };
 
 // 색 값은 globals.css의 --menu-* 토큰에서 온다
@@ -43,6 +45,7 @@ export const SECTION_ICON_COLOR: Record<MenuSectionKeyType, string> = {
   fortune: 'text-menu-fortune',
   dream: 'text-menu-dream',
   meal: 'text-menu-meal',
+  'lucky-draw': 'text-menu-lucky',
 } as const;
 
 export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
@@ -51,6 +54,7 @@ export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
   fortune: 'bg-menu-fortune/10 text-foreground border-menu-fortune/40',
   dream: 'bg-menu-dream/10 text-menu-dream border-menu-dream/20',
   meal: 'bg-menu-meal/10 text-menu-meal border-menu-meal/20',
+  'lucky-draw': 'bg-menu-lucky/10 text-menu-lucky border-menu-lucky/20',
 } as const;
 
 export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
@@ -59,4 +63,5 @@ export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
   fortune: 'bg-background',
   dream: 'bg-background',
   meal: 'bg-background',
+  'lucky-draw': 'bg-background',
 };

@@ -82,6 +82,11 @@ export default function TermsPage() {
             룰렛으로 무작위로 뽑아 보고 지도 검색 페이지로 이동할 수 있는 메뉴
             룰렛 기능을 오락 목적으로 제공합니다.
           </p>
+          <p className="mt-2">
+            또한 본 서비스는 사다리 타기, 돌림판, 제비뽑기(카드 한 장씩 열기)로
+            결과를 무작위로 정해 볼 수 있는 운빨 뽑기 기능을 오락 목적으로
+            제공합니다.
+          </p>
         </section>
         <section>
           <h2 className="font-medium text-foreground">
@@ -189,9 +194,9 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">9. 메뉴 룰렛 서비스</h2>
+          <h2 className="font-medium text-foreground">9. 뭐 먹지 서비스</h2>
           <p>
-            메뉴 룰렛 서비스는 오락을 목적으로 제공됩니다. 이용자가 고른
+            뭐 먹지 서비스는 오락을 목적으로 제공됩니다. 이용자가 고른
             끼니(점심, 저녁, 아침·브런치)와 카테고리, 국물 조건 안에서 메뉴가
             같은 확률로 무작위로 정해지며, 뽑힌 메뉴는 특정 메뉴나 음식점을
             제안하거나 평가하는 것이 아닙니다. 메뉴 목록은 끼니마다 이 서비스가
@@ -206,13 +211,37 @@ export default function TermsPage() {
             구글)와 제휴·후원 관계가 없습니다. 이동한 뒤에는 해당 사업자의
             약관과 정책이 적용되며, 검색 결과, 음식점의 위치·영업 여부·메뉴·가격
             등 정보의 정확성과 최신성은 해당 서비스를 기준으로 하고 본 서비스는
-            이를 약속하지 않습니다. 메뉴 룰렛 서비스는 이용자의 위치 정보를
+            이를 약속하지 않습니다. 뭐 먹지 서비스는 이용자의 위치 정보를
             요청하지 않으며, 고른 끼니와 조건, 뽑힌 결과를 서버로 전송하거나
             저장하지 않습니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">10. 광고 및 쿠키</h2>
+          <h2 className="font-medium text-foreground">10. 운빨 뽑기 서비스</h2>
+          <p>
+            운빨 뽑기 서비스는 오락을 목적으로 제공됩니다. 사다리 타기와
+            돌림판의 결과는 이용자가 시작 또는 돌리기를 누른 뒤 무작위로
+            정해지고, 제비뽑기의 카드 배치는 이용자가 섞기를 누른 뒤 무작위로
+            정해지며 카드를 열어야 항목이 표시됩니다. 결과는 추천이나 평가가
+            아니고 어떤 결과도 보장하지 않습니다.
+          </p>
+          <p className="mt-2">
+            결과는 금전, 상품, 포인트, 경품 등 어떤 보상과도 관련이 없으며, 본
+            서비스는 결과에 보상을 붙이는 기능을 제공하지 않습니다.
+          </p>
+          <p className="mt-2">
+            이용자가 입력한 이름과 항목은 서버로 전송하거나 저장하지 않고
+            이용자의 브라우저 메모리에서만 사용하며, 페이지를 새로고침하거나
+            닫으면 사라집니다. 연락처, 주소처럼 개인을 알아볼 수 있는 정보는
+            입력하지 마십시오.
+          </p>
+          <p className="mt-2">
+            운빨 뽑기 서비스는 다른 메뉴나 외부 사이트로 연결하는 링크를
+            제공하지 않습니다.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-medium text-foreground">11. 광고 및 쿠키</h2>
           <p>
             서비스에는 광고(예: 카카오 애드핏)가 게재될 수 있으며, 광고 이용은
             자발적이어야 합니다. 핵심 기능 접근을 광고 시청으로 강제하지
@@ -222,14 +251,14 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">11. 금지 행위</h2>
+          <h2 className="font-medium text-foreground">12. 금지 행위</h2>
           <p>
             다음 행위는 금지됩니다: 불법적 이용, 자동화된 과도한 요청/스크래핑,
             서비스 방해, 저작권/상표권 침해, 타인의 개인정보 침해 등.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">12. 지식재산권</h2>
+          <h2 className="font-medium text-foreground">13. 지식재산권</h2>
           <p>
             서비스 및 제공되는 콘텐츠의 권리는 각 권리자에게 귀속됩니다. 별도
             허락 없는 복제/배포/2차적 저작물 작성은 금지됩니다.
@@ -237,21 +266,21 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            13. 책임 제한 및 제3자 서비스
+            14. 책임 제한 및 제3자 서비스
           </h2>
           <p>
             본 서비스 이용으로 인한 손실(직접/간접/부수적 손해 포함)에 대해
             당사는 법이 허용하는 범위 내에서 책임을 부담하지 않으며, 모든 결정과
             책임은 이용자에게 있습니다. 호스팅(Vercel), 데이터베이스(Supabase),
             광고 네트워크 등 제3자 서비스의 장애·변경으로 인한 손해에 대해서도
-            법이 허용하는 범위 내에서 책임을 지지 않습니다. 메뉴 룰렛 서비스에서
+            법이 허용하는 범위 내에서 책임을 지지 않습니다. 뭐 먹지 서비스에서
             연결되는 지도 검색 페이지(카카오맵, 네이버지도, 구글 지도)의 내용,
             검색 결과, 음식점 정보의 정확성, 해당 서비스의 장애·변경으로 인한
             손해에 대해서도 같습니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">14. 면책 및 보상</h2>
+          <h2 className="font-medium text-foreground">15. 면책 및 보상</h2>
           <p>
             이용자가 약관 위반 또는 불법행위로 인해 제3자와의 분쟁·청구가 발생한
             경우, 이용자는 당사에 발생한 합리적 손해와 비용(변호사 비용 포함)을
@@ -261,7 +290,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            15. 서비스 변경 및 중단
+            16. 서비스 변경 및 중단
           </h2>
           <p>
             당사는 서비스의 전부 또는 일부를 변경·중단할 수 있습니다. 필요 시
@@ -269,7 +298,7 @@ export default function TermsPage() {
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">16. 약관 변경</h2>
+          <h2 className="font-medium text-foreground">17. 약관 변경</h2>
           <p>
             본 약관은 사전 고지 후 변경될 수 있습니다. 변경 후에도 서비스를 계속
             이용하면 변경 사항에 동의한 것으로 간주됩니다.
@@ -277,21 +306,21 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="font-medium text-foreground">
-            17. 준거법 및 분쟁 해결
+            18. 준거법 및 분쟁 해결
           </h2>
           <p>
             본 약관은 대한민국 법률에 따릅니다. 분쟁은 관할 법원에서 해결합니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">18. 분리가능성</h2>
+          <h2 className="font-medium text-foreground">19. 분리가능성</h2>
           <p>
             본 약관의 일부 조항이 무효·집행 불능으로 판단되더라도, 나머지 조항의
             유효성에는 영향을 미치지 않습니다.
           </p>
         </section>
         <section>
-          <h2 className="font-medium text-foreground">19. 문의</h2>
+          <h2 className="font-medium text-foreground">20. 문의</h2>
           <p className="break-all">문의: contact.tskim@gmail.com</p>
           <p>
             텔레그램:{' '}

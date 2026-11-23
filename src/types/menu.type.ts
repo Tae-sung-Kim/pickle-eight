@@ -24,7 +24,8 @@ export type MenuSectionKeyType =
   | 'meal'
   | 'tarot'
   | 'fortune'
-  | 'dream';
+  | 'dream'
+  | 'lucky-draw';
 
 export type FeatureItemType = {
   section: MenuSectionKeyType;

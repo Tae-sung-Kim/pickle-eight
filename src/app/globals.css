@@ -77,6 +77,7 @@
   --menu-tarot: #7a3358; /* 비트 */
   --menu-fortune: #8a6110; /* 강황 */
   --menu-dream: #2a6672; /* 염수 */
+  --menu-lucky: #4b4690; /* 가지 */
 }
 
 @theme inline {
@@ -107,6 +108,7 @@
   --color-menu-tarot: var(--menu-tarot);
   --color-menu-fortune: var(--menu-fortune);
   --color-menu-dream: var(--menu-dream);
+  --color-menu-lucky: var(--menu-lucky);
   --color-jar-foreground: var(--jar-foreground);
   --color-jar-muted: var(--jar-muted);
   --color-success: var(--success);

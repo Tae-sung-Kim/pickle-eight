@@ -15,7 +15,7 @@ export type RoulettePropsType = Readonly<{
   onSpinEnd?: (spinId: number) => void;
   className?: string;
   /**
-   * 당첨 칸(면·테두리)과 바늘 색. 예: 'fill-menu-lotto/20 stroke-menu-lotto'
+   * 당첨 칸(면·테두리)과 바늘 색. 예: 'fill-menu-lotto/20 stroke-menu-lotto', 'fill-menu-lucky/20 stroke-menu-lucky'
    * 바늘은 이 중 fill- 클래스에서 투명도를 뺀 색을 쓴다. 비면 점심 색.
    */
   accentClassName?: string;
@@ -23,6 +23,8 @@ export type RoulettePropsType = Readonly<{
   spinDurationSec?: number;
   /** 바퀴 수. 1~5 정수만 허용, 그 외는 2 */
   spinTurns?: number;
+  /** true인 동안 칸 글자, 강조 칸, 가운데 글자를 그리지 않고 칸 면을 모두 같은 색으로 칠한다. 기본 false */
+  isResultHidden?: boolean;
 }>;
 
 // 회전 연출 값 (U1)
@@ -32,6 +34,8 @@ const MIN_DURATION_SEC = 0.5;
 const MAX_TURNS = 5;
 const DEFAULT_ACCENT = 'fill-menu-meal/20 stroke-menu-meal';
 const DEFAULT_NEEDLE = 'fill-menu-meal';
+/** 결과 가리기 동안 모든 칸 면 색. 색 차이로 칸을 세지 못하게 한다 */
+const HIDDEN_FILL = 'fill-card';
 const SPIN_EASE: [number, number, number, number] = [0.2, 0.7, 0.2, 1];
 
 // viewBox 기준 치수
@@ -136,6 +140,7 @@ export function RouletteComponent({
   accentClassName,
   spinDurationSec,
   spinTurns,
+  isResultHidden = false,
 }: RoulettePropsType) {
   const duration = resolveDuration(spinDurationSec);
   const turns = resolveTurns(spinTurns);
@@ -221,13 +226,14 @@ export function RouletteComponent({
     latestRef.current.onSpinEnd?.(pending);
   }
 
-  const showLabels = count >= 1 && count <= SMALL_LABEL_MAX;
+  const showLabels = count >= 1 && count <= SMALL_LABEL_MAX && !isResultHidden;
   const fontSize = count <= LARGE_LABEL_MAX ? LARGE_FONT : SMALL_FONT;
   const labelWidth = LABEL_END_RADIUS - LABEL_START_RADIUS;
   const step = count > 0 ? 360 / count : 0;
 
+  const highlightIndex = isResultHidden ? null : revealedIndex;
   const revealedLabel =
-    revealedIndex !== null ? (items[revealedIndex]?.label ?? '') : '';
+    highlightIndex !== null ? (items[highlightIndex]?.label ?? '') : '';
   const capFont = Math.max(
     15,
     Math.min(16, 76 / Math.max(revealedLabel.length, 1))
@@ -285,7 +291,9 @@ export function RouletteComponent({
             strokeWidth={1}
             className={cn(
               'stroke-border',
-              sliceFillClass(0, 1, items[0]?.colorClassName)
+              isResultHidden
+                ? HIDDEN_FILL
+                : sliceFillClass(0, 1, items[0]?.colorClassName)
             )}
           />
         )}
@@ -297,7 +305,9 @@ export function RouletteComponent({
               strokeWidth={1}
               className={cn(
                 'stroke-border',
-                sliceFillClass(i, count, item.colorClassName)
+                isResultHidden
+                  ? HIDDEN_FILL
+                  : sliceFillClass(i, count, item.colorClassName)
               )}
             />
           ))}
@@ -328,7 +338,7 @@ export function RouletteComponent({
             );
           })}
 
-        {revealedIndex !== null && count === 1 && (
+        {highlightIndex !== null && count === 1 && (
           <circle
             cx={CENTER}
             cy={CENTER}
@@ -337,9 +347,9 @@ export function RouletteComponent({
             className={accent.slice}
           />
         )}
-        {revealedIndex !== null && count > 1 && (
+        {highlightIndex !== null && count > 1 && (
           <path
-            d={slicePath(revealedIndex, count)}
+            d={slicePath(highlightIndex, count)}
             strokeWidth={3}
             className={accent.slice}
           />

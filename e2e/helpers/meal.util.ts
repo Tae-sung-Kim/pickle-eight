@@ -145,7 +145,7 @@ const pressed = (page: Page, label: string, value: 'true' | 'false') =>
 const chipGroup = (page: Page) =>
   page.getByRole('group', { name: notice.MEAL_CATEGORY_GROUP_LABEL });
 
-/** AC-36, 37, 38: 저녁 칩 7개, 야식 꺼짐, 후보 66 -> 켜면 92, 점심으로 가면 야식 칩 없음 */
+/** AC-36, 37, 38: 저녁 칩 7개, 야식 꺼짐, 후보는 야식 뺀 기본 전체 -> 켜면 야식만, 점심으로 가면 야식 칩 없음 */
 export async function checkDinnerLateNight(page: Page): Promise<void> {
   const buttons = chipGroup(page).getByRole('button');
   await expect(buttons).toHaveCount(7);
@@ -153,10 +153,17 @@ export async function checkDinnerLateNight(page: Page): Promise<void> {
   for (const c of MEAL_DEFAULT_CATEGORIES.dinner)
     await pressed(page, c.label, 'true');
   await pressed(page, '야식', 'false');
-  await expect(main(page).getByText('후보 메뉴 66개')).toBeVisible();
+  const dinner = MEAL_MENUS.dinner;
+  const baseCount = dinner.filter((m) => m.category !== 'lateNight').length;
+  const lateCount = dinner.length - baseCount;
+  await expect(main(page).getByText(`후보 메뉴 ${baseCount}개`)).toBeVisible();
+  // 다른 카테고리에도 있는 이름은 이름만으로 야식 여부를 가릴 수 없어 뺀다
+  const baseNames = new Set(
+    dinner.filter((m) => m.category !== 'lateNight').map((m) => m.name)
+  );
   const late = new Set(
-    MEAL_MENUS.dinner
-      .filter((m) => m.category === 'lateNight')
+    dinner
+      .filter((m) => m.category === 'lateNight' && !baseNames.has(m.name))
       .map((m) => m.name)
   );
   for (let i = 0; i < 3; i++) {
@@ -173,7 +180,7 @@ export async function checkDinnerLateNight(page: Page): Promise<void> {
   }
   await chip(page, '야식').click();
   await pressed(page, '야식', 'true');
-  await expect(main(page).getByText('후보 메뉴 40개')).toBeVisible();
+  await expect(main(page).getByText(`후보 메뉴 ${lateCount}개`)).toBeVisible();
   for (const c of MEAL_DEFAULT_CATEGORIES.dinner)
     await pressed(page, c.label, 'false');
   // 다른 칩을 누르면 야식이 꺼지고 그 칩만 켜진다
@@ -201,10 +208,13 @@ export async function checkLateNightKeyboard(page: Page): Promise<void> {
   await pressed(page, '야식', 'true');
   await page.keyboard.press('Enter');
   await pressed(page, '야식', 'false');
-  // 야식을 끄면 칩이 모두 꺼지고, 후보는 야식 뺀 기본 전체(66개)다
+  // 야식을 끄면 칩이 모두 꺼지고, 후보는 야식 뺀 기본 전체다
   for (const c of MEAL_DEFAULT_CATEGORIES.dinner)
     await pressed(page, c.label, 'false');
-  await expect(main(page).getByText('후보 메뉴 66개')).toBeVisible();
+  const baseCount = MEAL_MENUS.dinner.filter(
+    (m) => m.category !== 'lateNight'
+  ).length;
+  await expect(main(page).getByText(`후보 메뉴 ${baseCount}개`)).toBeVisible();
 }
 
 /** AC-26, 40: 저녁 7칩(야식 켬) 320·390px 가로 스크롤 없음, 1280px 4열 2줄과 끼니별 칩 영역 높이 동일 */

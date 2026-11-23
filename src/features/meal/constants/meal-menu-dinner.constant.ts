@@ -4,10 +4,10 @@ import type {
 } from '@/features/meal/types/meal.type';
 
 /**
- * 저녁 메뉴 106개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
- * 카테고리별: 한식 18, 중식 11, 일식 10, 양식 8, 분식 9, 세계·기타 10, 야식 40.
+ * 저녁 메뉴 117개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
+ * 카테고리별: 한식 21, 중식 11, 일식 10, 양식 8, 분식 9, 세계·기타 10, 야식 48.
  * 야식은 맨 끝 묶음이며 단독 선택(다른 칩과 같이 켜지지 않음), 칩 기본 꺼짐이라
- * 기본 후보는 야식을 뺀 66개다. 야식 전용 14개는 다른 카테고리와 이름이 같을 수 있다.
+ * 기본 후보는 야식을 뺀 69개다. 야식 전용 22개는 다른 카테고리와 이름이 같을 수 있다.
  * 점심과 같은 메뉴는 id와 국물 값이 같다.
  * 국물 기준: 주 요리가 국물에 담겨 나오고 국물을 떠먹으면 soup, 그 밖은 dry.
  */
@@ -36,6 +36,14 @@ export const MEAL_DINNER_MENUS = [
   { id: 'kimchi-jjim', name: '김치찜', category: 'korean', broth: 'dry' },
   { id: 'saengseon-gui', name: '생선구이', category: 'korean', broth: 'dry' },
   { id: 'budae-jjigae', name: '부대찌개', category: 'korean', broth: 'soup' },
+  { id: 'haejangguk', name: '해장국', category: 'korean', broth: 'soup' },
+  {
+    id: 'ppyeo-haejangguk',
+    name: '뼈해장국',
+    category: 'korean',
+    broth: 'soup',
+  },
+  { id: 'bugeoguk', name: '북엇국', category: 'korean', broth: 'soup' },
   // 중식
   { id: 'tangsuyuk', name: '탕수육', category: 'chinese', broth: 'dry' },
   { id: 'kkanpunggi', name: '깐풍기', category: 'chinese', broth: 'dry' },
@@ -201,4 +209,43 @@ export const MEAL_DINNER_MENUS = [
   },
   { id: 'buldakbal', name: '불닭발', category: 'lateNight', broth: 'dry' },
   { id: 'hotdog', name: '핫도그', category: 'lateNight', broth: 'dry' },
+  // 야식 국물 추가(2026-11-23 사용자 요청)
+  { id: 'udon-late', name: '우동', category: 'lateNight', broth: 'soup' },
+  {
+    id: 'kalguksu-late',
+    name: '칼국수',
+    category: 'lateNight',
+    broth: 'soup',
+  },
+  { id: 'sujebi-late', name: '수제비', category: 'lateNight', broth: 'soup' },
+  {
+    id: 'mandu-guk-late',
+    name: '만두국',
+    category: 'lateNight',
+    broth: 'soup',
+  },
+  {
+    id: 'sundubu-jjigae-late',
+    name: '순두부찌개',
+    category: 'lateNight',
+    broth: 'soup',
+  },
+  {
+    id: 'kongnamul-gukbap-late',
+    name: '콩나물국밥',
+    category: 'lateNight',
+    broth: 'soup',
+  },
+  {
+    id: 'dak-gomtang-late',
+    name: '닭곰탕',
+    category: 'lateNight',
+    broth: 'soup',
+  },
+  {
+    id: 'jjamppong-late',
+    name: '짬뽕',
+    category: 'lateNight',
+    broth: 'soup',
+  },
 ] as const satisfies readonly MealMenuType<MealDinnerCategoryKeyType>[];

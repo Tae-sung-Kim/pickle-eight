@@ -172,8 +172,13 @@ test.describe('저장·권한·키보드', () => {
     await page.keyboard.press('Enter');
     const first = await readResult(page);
     await expectResultOf(page, 'dinner', first);
+    const baseNames = new Set(
+      MEAL_MENUS.dinner
+        .filter((m) => m.category !== 'lateNight')
+        .map((m) => m.name)
+    );
     const lateNames = MEAL_MENUS.dinner
-      .filter((m) => m.category === 'lateNight')
+      .filter((m) => m.category === 'lateNight' && !baseNames.has(m.name))
       .map((m) => m.name);
     expect(lateNames).not.toContain(first.name);
     await expect(spinButton(page)).toHaveText(RESPIN);
@@ -273,7 +278,7 @@ test.describe('주소·SEO', () => {
       page.locator('a[href="/lunch/today"], a[href="/lunch"]')
     ).toHaveCount(0);
     const link = page
-      .getByRole('link', { name: '메뉴 룰렛', exact: true })
+      .getByRole('link', { name: '뭐 먹지', exact: true })
       .first();
     await expect(link).toBeVisible();
     await link.click();
