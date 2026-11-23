@@ -34,9 +34,17 @@ const SMALL_LABEL_MAX = 28;
 const LARGE_FONT = 20;
 const SMALL_FONT = 15;
 
+/** SSR/CSR 부동소수점 끝자리 차이로 hydration이 어긋나지 않도록 소수 셋째 자리로 고정 */
+function fixed(value: number): number {
+  return Number(value.toFixed(3));
+}
+
 function polar(radius: number, deg: number): [number, number] {
   const rad = (deg * Math.PI) / 180;
-  return [CENTER + radius * Math.cos(rad), CENTER + radius * Math.sin(rad)];
+  return [
+    fixed(CENTER + radius * Math.cos(rad)),
+    fixed(CENTER + radius * Math.sin(rad)),
+  ];
 }
 
 function slicePath(index: number, count: number): string {
@@ -150,7 +158,7 @@ export function RouletteComponent({
   return (
     <div
       aria-hidden="true"
-      className={cn('relative aspect-square w-full', className)}
+      className={cn('relative aspect-square w-full overflow-hidden', className)}
     >
       {/* 고정: 테두리 */}
       <svg
@@ -222,7 +230,7 @@ export function RouletteComponent({
                 key={item.key}
                 x={flipped ? 2 * CENTER - x : x}
                 y={y}
-                transform={`rotate(${flipped ? mid + 180 : mid} ${CENTER} ${CENTER})`}
+                transform={`rotate(${fixed(flipped ? mid + 180 : mid)} ${CENTER} ${CENTER})`}
                 textAnchor={flipped ? 'start' : 'end'}
                 dominantBaseline="central"
                 fontSize={fontSize}
@@ -241,14 +249,14 @@ export function RouletteComponent({
             cy={CENTER}
             r={SLICE_RADIUS}
             strokeWidth={3}
-            className="fill-menu-lunch/20 stroke-menu-lunch"
+            className="fill-menu-meal/20 stroke-menu-meal"
           />
         )}
         {revealedIndex !== null && count > 1 && (
           <path
             d={slicePath(revealedIndex, count)}
             strokeWidth={3}
-            className="fill-menu-lunch/20 stroke-menu-lunch"
+            className="fill-menu-meal/20 stroke-menu-meal"
           />
         )}
       </motion.svg>
@@ -265,7 +273,7 @@ export function RouletteComponent({
             points="400,184 400,216 348,200"
             strokeWidth={2}
             strokeLinejoin="round"
-            className="fill-menu-lunch stroke-background"
+            className="fill-menu-meal stroke-background"
           />
         )}
         <g className={count === 0 ? 'opacity-60' : undefined}>

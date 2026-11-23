@@ -14,7 +14,7 @@ function isRecord(value: unknown): value is ApiDocsJsonObjectType {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-/** lunch-menu -> LunchMenu. 스키마 이름은 이 접두사로 시작해야 한다. */
+/** meal-menu -> MealMenu. 스키마 이름은 이 접두사로 시작해야 한다. */
 function toSchemaPrefix(feature: string): string {
   return feature
     .split('-')

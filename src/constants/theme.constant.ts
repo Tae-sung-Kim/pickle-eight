@@ -33,7 +33,7 @@ export const SECTION_ICONS: Record<MenuSectionKeyType, LucideIcon> = {
   tarot: Moon,
   fortune: Star,
   dream: BookOpenText,
-  lunch: Utensils,
+  meal: Utensils,
 };
 
 // 색 값은 globals.css의 --menu-* 토큰에서 온다
@@ -42,7 +42,7 @@ export const SECTION_ICON_COLOR: Record<MenuSectionKeyType, string> = {
   tarot: 'text-menu-tarot',
   fortune: 'text-menu-fortune',
   dream: 'text-menu-dream',
-  lunch: 'text-menu-lunch',
+  meal: 'text-menu-meal',
 } as const;
 
 export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
@@ -50,7 +50,7 @@ export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
   tarot: 'bg-menu-tarot/10 text-menu-tarot border-menu-tarot/20',
   fortune: 'bg-menu-fortune/10 text-foreground border-menu-fortune/40',
   dream: 'bg-menu-dream/10 text-menu-dream border-menu-dream/20',
-  lunch: 'bg-menu-lunch/10 text-menu-lunch border-menu-lunch/20',
+  meal: 'bg-menu-meal/10 text-menu-meal border-menu-meal/20',
 } as const;
 
 export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
@@ -58,5 +58,5 @@ export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
   tarot: 'bg-background',
   fortune: 'bg-background',
   dream: 'bg-background',
-  lunch: 'bg-background',
+  meal: 'bg-background',
 };

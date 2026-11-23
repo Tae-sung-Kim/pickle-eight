@@ -55,3 +55,6 @@ next-env.d.ts
 
 # 운세 달력 검증 결과(실행할 때마다 바뀜)
 scripts/fortune-calendar/verify-result.json
+
+# local test data
+docs/**/screenshots/

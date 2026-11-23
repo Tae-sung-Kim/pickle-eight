@@ -21,7 +21,7 @@ export type MenuGroupType = {
 
 export type MenuSectionKeyType =
   | 'lotto'
-  | 'lunch'
+  | 'meal'
   | 'tarot'
   | 'fortune'
   | 'dream';

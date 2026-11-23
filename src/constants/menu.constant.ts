@@ -2,7 +2,7 @@ import type { MenuGroupType } from '@/types/menu.type';
 
 export enum MENU_GROUP_NAME_ENUM {
   LOTTO = 'lotto',
-  LUNCH = 'lunch',
+  MEAL = 'meal',
   TAROT = 'tarot',
   FORTUNE = 'fortune',
   DREAM = 'dream',
@@ -68,17 +68,17 @@ export const MENU_LIST: MenuGroupType[] = [
     ],
   },
   {
-    group: MENU_GROUP_NAME_ENUM.LUNCH,
-    label: '점심',
-    href: `/${MENU_GROUP_NAME_ENUM.LUNCH}/today`,
+    group: MENU_GROUP_NAME_ENUM.MEAL,
+    label: '메뉴 룰렛',
+    href: `/${MENU_GROUP_NAME_ENUM.MEAL}`,
     items: [
       {
-        href: `/${MENU_GROUP_NAME_ENUM.LUNCH}/today`,
+        href: `/${MENU_GROUP_NAME_ENUM.MEAL}`,
         label: '오늘 뭐 먹지',
         icon: 'Utensils',
-        colorClass: 'text-menu-lunch',
+        colorClass: 'text-menu-meal',
         description:
-          '룰렛으로 오늘의 점심 메뉴를 무작위로 뽑고 지도에서 찾아보기.',
+          '룰렛으로 아침·점심·저녁 메뉴를 무작위로 뽑고 지도에서 찾아보기.',
         example: '예: 한식·분식만 골라 국물 메뉴로 룰렛 돌리기',
       },
     ],

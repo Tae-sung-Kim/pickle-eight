@@ -109,6 +109,13 @@ const nextConfig: NextConfig = {
         destination: '/lotto/generator',
         permanent: true,
       },
+      // permanent: true는 308을 내므로 검색 색인 이동은 301로 명시한다
+      // /lunch 와 그 아래 모든 옛 주소(/lunch/today 포함)
+      {
+        source: '/lunch/:path*',
+        destination: '/meal',
+        statusCode: 301,
+      },
     ];
   },
   async headers() {

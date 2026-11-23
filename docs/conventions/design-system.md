@@ -27,7 +27,7 @@
 | 메뉴 | 토큰 | 값 | 이름 |
 |---|---|---|---|
 | 로또 | `menu-lotto` | `var(--primary)` | 딜 |
-| 점심 | `menu-lunch` | `#a5481f` | 당근 |
+| 메뉴 룰렛 | `menu-meal` | `#a5481f` | 당근 |
 | 타로 | `menu-tarot` | `#7a3358` | 비트 |
 | 운세 | `menu-fortune` | `#8a6110` | 강황 |
 | 꿈 해몽 | `menu-dream` | `#2a6672` | 염수 |
