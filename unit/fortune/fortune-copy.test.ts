@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import * as crisisPhoneConstants from '@/constants/crisis-phone.constant';
 import { MENU_LIST } from '@/constants/menu.constant';
+import { FORTUNE_COMPATIBILITY_ROUTES } from '@/features/fortune/constants/fortune-compatibility-route.constant';
 import {
   FORTUNE_COPY_ALLOWED_SENTENCES,
   FORTUNE_FORBIDDEN_PATTERNS,
@@ -689,18 +690,20 @@ describe('AC-10, AC-58: "사주" 위치와 겹침 표현', () => {
     expect(FORTUNE_INTERNAL_PILLAR_TERMS).toEqual(['4기둥', '3기둥']);
   });
 
-  test('AC-58, AC-61, AC-88: 메뉴 운세 그룹은 네 기능 링크(사주는 마지막)이고 "사주"는 메뉴 label에만 있다', () => {
+  test('AC-58, AC-61, AC-88: 메뉴 운세 그룹은 다섯 기능 링크(사주는 마지막)이고 "사주"는 메뉴 label에만 있다', () => {
     expect(fortuneMenuGroup?.href).toBe(FORTUNE_ROUTES.hub);
     expect(fortuneMenuGroup?.items.map((i) => i.href)).toEqual([
       FORTUNE_ROUTES.today,
       FORTUNE_ROUTES.tti,
       FORTUNE_ROUTES.starSign,
+      FORTUNE_COMPATIBILITY_ROUTES.hub,
       FORTUNE_ROUTES.saju,
     ]);
     expect(fortuneMenuGroup?.items.map((i) => i.label)).toEqual([
       '오늘의 운세',
       '띠별 운세',
       '별자리 운세',
+      '궁합 테스트',
       '사주',
     ]);
     const sajuItem = fortuneMenuGroup?.items.find(
@@ -1295,6 +1298,7 @@ describe('SJ-QA2 허브 개정 (AC-88)', () => {
       FORTUNE_ROUTES.today,
       FORTUNE_ROUTES.tti,
       FORTUNE_ROUTES.starSign,
+      FORTUNE_COMPATIBILITY_ROUTES.hub,
       FORTUNE_ROUTES.saju,
     ]);
   });
@@ -1314,6 +1318,7 @@ describe('FORTUNE_ROUTES와 MENU_LIST', () => {
       FORTUNE_ROUTES.today,
       FORTUNE_ROUTES.tti,
       FORTUNE_ROUTES.starSign,
+      FORTUNE_COMPATIBILITY_ROUTES.hub,
       FORTUNE_ROUTES.saju,
     ]);
     expect(FORTUNE_ROUTES.today).toBe('/fortune/today');

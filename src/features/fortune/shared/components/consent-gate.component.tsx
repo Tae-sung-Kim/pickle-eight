@@ -1,13 +1,25 @@
 'use client';
 
 import { type JSX, type ReactNode, useEffect, useRef } from 'react';
+import {
+  FORTUNE_CONSENT_TEXTS,
+  FORTUNE_DECLINED_TEXTS,
+} from '@/features/fortune/constants/fortune-notice.constant';
 import { useFortuneConsent } from '@/features/fortune/hooks/use-fortune-consent.hook';
 import { FortuneConsentDeclinedComponent } from '@/features/fortune/shared/components/consent-declined.component';
 import { FortuneConsentFormComponent } from '@/features/fortune/shared/components/consent-form.component';
+import type {
+  FortuneConsentTextsType,
+  FortuneDeclinedTextsType,
+} from '@/features/fortune/types/fortune.type';
 
 export type FortuneConsentGateComponentPropsType = Readonly<{
   /** 기능 영역. granted일 때만 렌더링한다(그 전에는 입력칸·결과가 DOM에 없다) */
   children: ReactNode;
+  /** 동의 화면 문구 묶음. 생략하면 운세 문구. 스켈레톤 항목 수도 items 길이를 따른다 */
+  consentTexts?: FortuneConsentTextsType;
+  /** 이용 불가 화면 문구 묶음. 생략하면 운세 문구 */
+  declinedTexts?: FortuneDeclinedTextsType;
 }>;
 
 const PANEL_CLASS =
@@ -15,7 +27,9 @@ const PANEL_CLASS =
 const SKELETON_CLASS = 'animate-pulse bg-muted motion-reduce:animate-none';
 const LOADING_LABEL = '불러오는 중입니다';
 
-function ConsentSkeleton(): JSX.Element {
+function ConsentSkeleton({
+  itemCount,
+}: Readonly<{ itemCount: number }>): JSX.Element {
   return (
     <div
       role="status"
@@ -30,9 +44,13 @@ function ConsentSkeleton(): JSX.Element {
           <div className={`h-4 rounded-md ${SKELETON_CLASS}`} />
         </div>
         <div className="space-y-2">
-          <div className={`h-14 rounded-lg ${SKELETON_CLASS}`} />
-          <div className={`h-14 rounded-lg ${SKELETON_CLASS}`} />
-          <div className={`h-14 rounded-lg ${SKELETON_CLASS}`} />
+          {Array.from({ length: itemCount }, (_, index) => (
+            <div
+              // biome-ignore lint/suspicious/noArrayIndexKey: 개수만 쓰는 정적 자리 표시
+              key={index}
+              className={`h-14 rounded-lg ${SKELETON_CLASS}`}
+            />
+          ))}
         </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
           <div className={`h-11 w-40 rounded-lg ${SKELETON_CLASS}`} />
@@ -51,6 +69,8 @@ function ConsentSkeleton(): JSX.Element {
  */
 export function FortuneConsentGateComponent({
   children,
+  consentTexts = FORTUNE_CONSENT_TEXTS,
+  declinedTexts = FORTUNE_DECLINED_TEXTS,
 }: FortuneConsentGateComponentPropsType): JSX.Element {
   const { status, grant, decline, back } = useFortuneConsent();
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -67,7 +87,9 @@ export function FortuneConsentGateComponent({
     }
   }, [status]);
 
-  if (status === 'checking') return <ConsentSkeleton />;
+  if (status === 'checking') {
+    return <ConsentSkeleton itemCount={consentTexts.items.length} />;
+  }
 
   if (status === 'required') {
     return (
@@ -76,6 +98,7 @@ export function FortuneConsentGateComponent({
           onGrant={grant}
           onDecline={decline}
           titleRef={titleRef}
+          texts={consentTexts}
         />
       </div>
     );
@@ -84,7 +107,11 @@ export function FortuneConsentGateComponent({
   if (status === 'declined') {
     return (
       <div className={PANEL_CLASS}>
-        <FortuneConsentDeclinedComponent onBack={back} titleRef={titleRef} />
+        <FortuneConsentDeclinedComponent
+          onBack={back}
+          titleRef={titleRef}
+          texts={declinedTexts}
+        />
       </div>
     );
   }

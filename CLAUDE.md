@@ -2,10 +2,10 @@
 
 - 모든 응답, 설명, 주석은 한국어로 작성한다. (코드, 명령어, 변수명은 영어 그대로)
 
-# 응답 스타일 (세션 시작 시 skill 호출 없음)
+# 응답 스타일 (caveman은 SessionStart hook이 SKILL.md를 주입)
 
 - 모든 대답은 항상 caveman(짧고 직접적인 한국어)으로 한다. 매 턴 `caveman-reminder.js` hook이 규칙을 주입한다.
-- token-optimizer는 플러그인 SessionStart hook이 지침을 주입한다. 세션 시작에 skill을 따로 호출하지 않는다. (토큰 절약)
+- caveman: `claude-md-reminder.js`(SessionStart)가 `/caveman:caveman` 플러그인의 SKILL.md 본문을 매 세션 컨텍스트에 넣는다. token-optimizer(token-optimization SKILL.md)도 같은 hook이 넣는다. 세션 시작에 skill을 따로 호출하지 않는다.
 - 우선순위는 caveman > token-optimizer 이다. 충돌하면 caveman을 따른다.
 - `/code-review` 결과를 전할 때도 영어 원문 대신 한국어 caveman으로 쓴다. 지적마다 코드로 확인해서 맞음/의도함 여부와 조치만 짧게 적는다.
 - 이 섹션은 메인 세션에만 적용한다. subagent는 skill을 호출하지 않고, 문서(`docs/`)는 caveman이 아닌 일반 문장으로 쓴다.

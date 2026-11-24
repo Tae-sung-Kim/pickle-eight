@@ -1,3 +1,5 @@
+import { FORTUNE_COMPATIBILITY_MENU_TEXTS } from '@/features/fortune/constants/fortune-compatibility-menu.constant';
+import { FORTUNE_COMPATIBILITY_ROUTES } from '@/features/fortune/constants/fortune-compatibility-route.constant';
 import type { MenuGroupType } from '@/types/menu.type';
 
 export enum MENU_GROUP_NAME_ENUM {
@@ -39,6 +41,14 @@ export const MENU_LIST: MenuGroupType[] = [
         description:
           '12별자리의 오늘 운세와 경계일 시각까지 반영한 내 별자리 찾기.',
         example: '예: 3월 20일생이 태어난 시각으로 별자리 확인',
+      },
+      {
+        href: FORTUNE_COMPATIBILITY_ROUTES.hub,
+        label: FORTUNE_COMPATIBILITY_MENU_TEXTS.label,
+        icon: 'HeartHandshake',
+        colorClass: 'text-menu-fortune',
+        description: FORTUNE_COMPATIBILITY_MENU_TEXTS.description,
+        example: FORTUNE_COMPATIBILITY_MENU_TEXTS.example,
       },
       {
         href: `/${MENU_GROUP_NAME_ENUM.FORTUNE}/saju`,

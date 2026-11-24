@@ -4,6 +4,7 @@ import { AlertCircle, Info } from 'lucide-react';
 import { type JSX, type Ref, useId, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FORTUNE_CONSENT_TEXTS } from '@/features/fortune/constants/fortune-notice.constant';
+import type { FortuneConsentTextsType } from '@/features/fortune/types/fortune.type';
 import { cn } from '@/lib/utils';
 
 export type FortuneConsentFormComponentPropsType = Readonly<{
@@ -11,6 +12,8 @@ export type FortuneConsentFormComponentPropsType = Readonly<{
   onDecline: () => void;
   /** 화면 전환(돌아가기, 동의 다시 설정) 때 게이트가 제목으로 포커스를 옮기는 데 쓴다 */
   titleRef?: Ref<HTMLHeadingElement>;
+  /** 문구 묶음. 생략하면 운세 문구 */
+  texts?: FortuneConsentTextsType;
 }>;
 
 const BUTTON_CLASS =
@@ -24,12 +27,13 @@ export function FortuneConsentFormComponent({
   onGrant,
   onDecline,
   titleRef,
+  texts = FORTUNE_CONSENT_TEXTS,
 }: FortuneConsentFormComponentPropsType): JSX.Element {
   const titleId = useId();
   const noticeId = useId();
   const checkboxRefs = useRef<Array<HTMLInputElement | null>>([]);
   const [checkedList, setCheckedList] = useState<readonly boolean[]>(() =>
-    FORTUNE_CONSENT_TEXTS.items.map(() => false)
+    texts.items.map(() => false)
   );
   // 세 항목을 채우지 않고 "동의하고 시작"을 누른 적이 있는지(안내를 오류 모양으로 바꾼다)
   const [hasBlockedAttempt, setHasBlockedAttempt] = useState(false);
@@ -61,17 +65,15 @@ export function FortuneConsentFormComponent({
         tabIndex={-1}
         className="rounded-sm text-xl leading-tight font-semibold break-keep text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card sm:text-2xl"
       >
-        {FORTUNE_CONSENT_TEXTS.title}
+        {texts.title}
       </h2>
       <p className="text-sm leading-6 break-keep text-muted-foreground sm:text-base">
-        {FORTUNE_CONSENT_TEXTS.intro}
+        {texts.intro}
       </p>
 
       <fieldset className="min-w-0 space-y-2">
-        <legend className="sr-only">
-          {FORTUNE_CONSENT_TEXTS.fieldsetLegend}
-        </legend>
-        {FORTUNE_CONSENT_TEXTS.items.map((item, index) => (
+        <legend className="sr-only">{texts.fieldsetLegend}</legend>
+        {texts.items.map((item, index) => (
           <label
             key={item}
             className="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border border-border bg-background px-4 py-3 hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:focus-visible]:border-primary"
@@ -114,7 +116,7 @@ export function FortuneConsentFormComponent({
             ) : (
               <Info aria-hidden="true" className="mt-1 size-4 shrink-0" />
             )}
-            <span>{FORTUNE_CONSENT_TEXTS.blockedNotice}</span>
+            <span>{texts.blockedNotice}</span>
           </p>
         )}
       </div>
@@ -128,7 +130,7 @@ export function FortuneConsentFormComponent({
           onClick={handleGrantClick}
           className={cn(BUTTON_CLASS, !isAllChecked && 'opacity-60')}
         >
-          {FORTUNE_CONSENT_TEXTS.grantButton}
+          {texts.grantButton}
         </Button>
         <Button
           type="button"
@@ -136,12 +138,12 @@ export function FortuneConsentFormComponent({
           onClick={onDecline}
           className={BUTTON_CLASS}
         >
-          {FORTUNE_CONSENT_TEXTS.declineButton}
+          {texts.declineButton}
         </Button>
       </div>
 
       <p className="text-xs leading-5 break-keep text-muted-foreground">
-        {FORTUNE_CONSENT_TEXTS.storageNotice}
+        {texts.storageNotice}
       </p>
     </section>
   );

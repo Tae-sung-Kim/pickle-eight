@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { MENU_LIST } from '@/constants/menu.constant';
 import { getDreamTopicPaths } from '@/features/dream/utils/dream-topic.util';
+import { FORTUNE_COMPATIBILITY_ROUTES } from '@/features/fortune/constants/fortune-compatibility-route.constant';
 import { SITE_URL } from '@/lib/seo';
 
 const RECENT_DRAWS = 200 as const; // 최근 N개 회차 포함
@@ -21,6 +22,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const menuRoutes: string[] = MENU_LIST.filter((group) => !group.comingSoon)
     .flatMap((group) => [group.href, ...group.items.map((it) => it.href)])
     .filter((href): href is string => typeof href === 'string');
+
+  // 궁합 하위 페이지 (허브는 메뉴 항목으로 포함됨)
+  const compatibilityRoutes: string[] = [
+    FORTUNE_COMPATIBILITY_ROUTES.tti,
+    FORTUNE_COMPATIBILITY_ROUTES.starSign,
+  ];
 
   // 꿈 해몽 소재 상세 경로 (소재 데이터가 채워지면 자동으로 늘어난다)
   const dreamTopicRoutes: string[] = [...getDreamTopicPaths()];
@@ -58,6 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     new Set([
       ...staticRoutes,
       ...menuRoutes,
+      ...compatibilityRoutes,
       ...dreamTopicRoutes,
       ...dynamicLottoDraws,
     ])

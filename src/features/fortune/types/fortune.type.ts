@@ -132,6 +132,33 @@ export type FortuneConsentStatusType =
   | 'declined'
   | 'granted';
 
+/** 이용 동의 범위. 범위마다 저장 키와 문구 버전이 따로다. 생략하면 'fortune' */
+export type FortuneConsentScopeType = 'fortune' | 'compatibility';
+
+/** 이용 동의 화면 문구 묶음. 체크 항목 수는 items 길이를 따른다 */
+export type FortuneConsentTextsType = Readonly<{
+  title: string;
+  intro: string;
+  fieldsetLegend: string;
+  items: readonly string[];
+  storageNotice: string;
+  blockedNotice: string;
+  grantButton: string;
+  declineButton: string;
+}>;
+
+export type FortuneDeclinedTextsType = Readonly<{
+  title: string;
+  body: string;
+  backButton: string;
+}>;
+
+export type FortuneAgeBlockedTextsType = Readonly<{
+  title: string;
+  body: string;
+  homeLinkLabel: string;
+}>;
+
 /** sessionStorage 저장 형식. 이 세 필드 외에는 넣지 않는다 */
 export type FortuneConsentStoredType = Readonly<{
   v: 1;

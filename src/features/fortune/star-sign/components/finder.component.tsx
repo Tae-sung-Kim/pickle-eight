@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { FORTUNE_FINDER_BASIS_STAR_SIGN_NOTICE } from '@/features/fortune/constants/fortune-notice.constant';
 import { FORTUNE_STAR_SIGNS } from '@/features/fortune/constants/fortune-star-sign.constant';
+import { FORTUNE_STAR_SIGN_TIME_QUESTION_TEXTS } from '@/features/fortune/constants/fortune-time-question.constant';
 import { useBirthFlow } from '@/features/fortune/hooks/use-birth-flow.hook';
 import { FortuneAgeBlockedComponent } from '@/features/fortune/shared/components/age-blocked.component';
 import { FortuneBirthFormComponent } from '@/features/fortune/shared/components/birth-form.component';
@@ -36,11 +37,6 @@ import {
 const FINDER_TEXTS = {
   title: '내 별자리 찾기',
   submitLabel: '내 별자리 찾기',
-  /** 시각 질문(별자리) 앞 문장 */
-  timeQuestionIntro:
-    '이 날은 별자리가 바뀌는 날이라 태어난 시각에 따라 별자리가 달라집니다.',
-  /** {연도}년 {별자리} 시작 시각은 {M}월 {D}일 {HH:mm}(한국 시간)입니다. 조각으로 나눠 이어 쓴다 */
-  timeQuestionKst: '(한국 시간)',
   foundSuffix: '입니다.',
   candidateSuffix: '로 보기',
 } as const;
@@ -82,9 +78,9 @@ function buildTimeDescription(
       ? null
       : getSolarTermTime(solar.year, startTermIndex);
   if (!term) {
-    return FINDER_TEXTS.timeQuestionIntro;
+    return FORTUNE_STAR_SIGN_TIME_QUESTION_TEXTS.intro;
   }
-  return `${FINDER_TEXTS.timeQuestionIntro} ${solar.year}년 ${STAR_SIGN_NAMES[afterKey]} 시작 시각은 ${term.month}월 ${term.day}일 ${padTime(term.hour)}:${padTime(term.minute)}${FINDER_TEXTS.timeQuestionKst}입니다.`;
+  return `${FORTUNE_STAR_SIGN_TIME_QUESTION_TEXTS.intro} ${solar.year}년 ${STAR_SIGN_NAMES[afterKey]} 시작 시각은 ${term.month}월 ${term.day}일 ${padTime(term.hour)}:${padTime(term.minute)}${FORTUNE_STAR_SIGN_TIME_QUESTION_TEXTS.kst}입니다.`;
 }
 
 export type FortuneStarSignFinderComponentPropsType = Readonly<{

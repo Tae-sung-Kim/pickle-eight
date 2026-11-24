@@ -2,10 +2,13 @@ import Link from 'next/link';
 import { type JSX, type Ref, useId } from 'react';
 import { Button } from '@/components/ui/button';
 import { FORTUNE_AGE_BLOCKED_TEXTS } from '@/features/fortune/constants/fortune-notice.constant';
+import type { FortuneAgeBlockedTextsType } from '@/features/fortune/types/fortune.type';
 
 export type FortuneAgeBlockedComponentPropsType = Readonly<{
   /** 화면이 나타날 때 부모가 제목으로 포커스를 옮기는 데 쓴다(tabIndex -1) */
   titleRef?: Ref<HTMLHeadingElement>;
+  /** 문구 묶음. 생략하면 운세 문구 */
+  texts?: FortuneAgeBlockedTextsType;
 }>;
 
 // 홈 경로. 운세 라우트 상수가 아니라 사이트 홈이다
@@ -18,6 +21,7 @@ const HOME_HREF = '/';
  */
 export function FortuneAgeBlockedComponent({
   titleRef,
+  texts = FORTUNE_AGE_BLOCKED_TEXTS,
 }: FortuneAgeBlockedComponentPropsType): JSX.Element {
   const titleId = useId();
 
@@ -29,17 +33,17 @@ export function FortuneAgeBlockedComponent({
         tabIndex={-1}
         className="rounded-sm text-xl leading-tight font-semibold break-keep text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card sm:text-2xl"
       >
-        {FORTUNE_AGE_BLOCKED_TEXTS.title}
+        {texts.title}
       </h2>
       <p className="text-sm leading-6 break-keep text-foreground sm:text-base sm:leading-7">
-        {FORTUNE_AGE_BLOCKED_TEXTS.body}
+        {texts.body}
       </p>
       <Button
         asChild
         variant="outline"
         className="h-11 w-full scroll-mb-48 rounded-lg break-keep transition-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card sm:w-auto"
       >
-        <Link href={HOME_HREF}>{FORTUNE_AGE_BLOCKED_TEXTS.homeLinkLabel}</Link>
+        <Link href={HOME_HREF}>{texts.homeLinkLabel}</Link>
       </Button>
     </section>
   );

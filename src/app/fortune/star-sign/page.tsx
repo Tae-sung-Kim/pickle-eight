@@ -10,6 +10,7 @@ import {
   FORTUNE_STAR_SIGN_SEO,
 } from '@/features/fortune/constants/fortune-seo.constant';
 import { FortuneCalcBasisComponent } from '@/features/fortune/shared/components/calc-basis.component';
+import { FortuneCompatibilityLinkComponent } from '@/features/fortune/shared/components/compatibility-link.component';
 import { FortuneConsentResetComponent } from '@/features/fortune/shared/components/consent-reset.component';
 import { FortuneDetailNoticeComponent } from '@/features/fortune/shared/components/detail-notice.component';
 import { FortuneDisclaimerNoticeComponent } from '@/features/fortune/shared/components/disclaimer-notice.component';
@@ -74,6 +75,7 @@ export default function FortuneStarSignPage() {
         <div>
           <FortuneResultNoticeComponent />
           <FortuneTodayLinkComponent />
+          <FortuneCompatibilityLinkComponent target="star-sign" />
         </div>
         <FortuneStarSignGuideComponent />
         <FortuneCalcBasisComponent items={['star-sign', 'time-unknown']} />

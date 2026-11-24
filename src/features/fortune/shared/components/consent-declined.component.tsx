@@ -3,11 +3,14 @@
 import { type JSX, type Ref, useId } from 'react';
 import { Button } from '@/components/ui/button';
 import { FORTUNE_DECLINED_TEXTS } from '@/features/fortune/constants/fortune-notice.constant';
+import type { FortuneDeclinedTextsType } from '@/features/fortune/types/fortune.type';
 
 export type FortuneConsentDeclinedComponentPropsType = Readonly<{
   onBack: () => void;
   /** 화면 전환 때 게이트가 제목으로 포커스를 옮기는 데 쓴다 */
   titleRef?: Ref<HTMLHeadingElement>;
+  /** 문구 묶음. 생략하면 운세 문구 */
+  texts?: FortuneDeclinedTextsType;
 }>;
 
 /**
@@ -17,6 +20,7 @@ export type FortuneConsentDeclinedComponentPropsType = Readonly<{
 export function FortuneConsentDeclinedComponent({
   onBack,
   titleRef,
+  texts = FORTUNE_DECLINED_TEXTS,
 }: FortuneConsentDeclinedComponentPropsType): JSX.Element {
   const titleId = useId();
 
@@ -28,10 +32,10 @@ export function FortuneConsentDeclinedComponent({
         tabIndex={-1}
         className="rounded-sm text-xl leading-tight font-semibold break-keep text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card sm:text-2xl"
       >
-        {FORTUNE_DECLINED_TEXTS.title}
+        {texts.title}
       </h2>
       <p className="text-sm leading-6 break-keep text-foreground sm:text-base sm:leading-7">
-        {FORTUNE_DECLINED_TEXTS.body}
+        {texts.body}
       </p>
       <Button
         type="button"
@@ -39,7 +43,7 @@ export function FortuneConsentDeclinedComponent({
         onClick={onBack}
         className="h-11 w-full scroll-mb-48 rounded-lg break-keep transition-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card sm:w-auto"
       >
-        {FORTUNE_DECLINED_TEXTS.backButton}
+        {texts.backButton}
       </Button>
     </section>
   );

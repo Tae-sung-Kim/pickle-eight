@@ -34,6 +34,7 @@ const EXPECTED_ITEM_HREFS: Record<string, readonly string[]> = {
     '/fortune/today',
     '/fortune/tti',
     '/fortune/star-sign',
+    '/fortune/compatibility',
     '/fortune/saju',
   ],
   meal: ['/meal'],

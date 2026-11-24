@@ -13,7 +13,7 @@ export const HOME_GROUP_DESCRIPTIONS: Readonly<
   Record<MENU_GROUP_NAME_ENUM, string>
 > = {
   [MENU_GROUP_NAME_ENUM.FORTUNE]:
-    '생년월일로 보는 오늘의 운세, 띠별·별자리 운세',
+    '생년월일로 보는 오늘의 운세, 띠별·별자리 운세, 궁합',
   [MENU_GROUP_NAME_ENUM.MEAL]: '아침·점심·저녁 메뉴를 룰렛으로 골라 보기',
   [MENU_GROUP_NAME_ENUM.TAROT]: '카드 한 장 또는 세 장으로 보는 오늘의 흐름',
   [MENU_GROUP_NAME_ENUM.LUCKY_DRAW]:

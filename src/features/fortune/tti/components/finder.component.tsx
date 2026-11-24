@@ -4,6 +4,7 @@ import {
   FORTUNE_SEOLLAL_TEMPLATE,
   FORTUNE_SUPPORTED_RANGE_NOTICE,
 } from '@/features/fortune/constants/fortune-notice.constant';
+import { FORTUNE_TTI_TIME_QUESTION_TEXTS } from '@/features/fortune/constants/fortune-time-question.constant';
 import { FORTUNE_ZODIAC } from '@/features/fortune/constants/fortune-zodiac.constant';
 import { useBirthFlow } from '@/features/fortune/hooks/use-birth-flow.hook';
 import { FortuneAgeBlockedComponent } from '@/features/fortune/shared/components/age-blocked.component';
@@ -36,9 +37,6 @@ const TTI_FINDER_TEXTS = {
   foundPrefix: '입춘 시각을 기준으로',
   foundSuffix: '입니다.',
   candidateSuffix: '로 보기',
-  timeIntro: '이 날은 입춘이 드는 날이라 태어난 시각에 따라 띠가 달라집니다.',
-  // {연도}, {M}, {D}, {HH:mm}을 바꿔 쓴다
-  timeBoundaryTemplate: '{연도}년 입춘은 {M}월 {D}일 {HH:mm}(한국 시간)입니다.',
 } as const;
 
 /** 24절기 인덱스 2 = 입춘. fortune-tti.util의 LICHUN_TERM_INDEX와 같은 값이다(그쪽은 내보내지 않아 여기에 둔다) */
@@ -68,14 +66,14 @@ function padTwo(value: number): string {
 function buildTimeDescription(solar: FortuneYmdType): string {
   const lichun = getSolarTermTime(solar.year, LICHUN_TERM_INDEX);
   if (!lichun) {
-    return TTI_FINDER_TEXTS.timeIntro;
+    return FORTUNE_TTI_TIME_QUESTION_TEXTS.timeIntro;
   }
-  const boundary = TTI_FINDER_TEXTS.timeBoundaryTemplate
+  const boundary = FORTUNE_TTI_TIME_QUESTION_TEXTS.timeBoundaryTemplate
     .replace('{연도}', String(solar.year))
     .replace('{M}', String(lichun.month))
     .replace('{D}', String(lichun.day))
     .replace('{HH:mm}', `${padTwo(lichun.hour)}:${padTwo(lichun.minute)}`);
-  return `${TTI_FINDER_TEXTS.timeIntro} ${boundary}`;
+  return `${FORTUNE_TTI_TIME_QUESTION_TEXTS.timeIntro} ${boundary}`;
 }
 
 /** 설날 기준 띠. 음력 표 범위 밖이면 null(지원 범위 안에서는 오지 않는 방어 경로) */

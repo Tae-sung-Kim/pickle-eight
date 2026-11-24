@@ -14,7 +14,10 @@ import {
   readFortuneConsent,
   writeFortuneConsent,
 } from '@/features/fortune/services/fortune-consent-storage.service';
-import type { FortuneConsentStatusType } from '@/features/fortune/types/fortune.type';
+import type {
+  FortuneConsentScopeType,
+  FortuneConsentStatusType,
+} from '@/features/fortune/types/fortune.type';
 
 type FortuneConsentActionType =
   | Readonly<{ type: 'RESTORE'; isGranted: boolean }>
@@ -33,6 +36,8 @@ export type FortuneConsentContextType = Readonly<{
 
 export type FortuneConsentProviderPropsType = Readonly<{
   children: ReactNode;
+  /** 동의 범위. 직렬화 가능한 이름만 받는다. 생략하면 운세 */
+  scope?: FortuneConsentScopeType;
 }>;
 
 export const FortuneConsentContext =
@@ -65,18 +70,19 @@ function reducer(
  */
 export function FortuneConsentProvider({
   children,
+  scope = 'fortune',
 }: FortuneConsentProviderPropsType): JSX.Element {
   const [status, dispatch] = useReducer(reducer, 'checking');
 
   useEffect(() => {
-    dispatch({ type: 'RESTORE', isGranted: readFortuneConsent() });
-  }, []);
+    dispatch({ type: 'RESTORE', isGranted: readFortuneConsent(scope) });
+  }, [scope]);
 
   // 저장에 실패해도(시크릿 모드, 저장소 차단) granted로 간다. 다음 로드에서 다시 묻는다
   const grant = useCallback((): void => {
-    writeFortuneConsent();
+    writeFortuneConsent(new Date(), scope);
     dispatch({ type: 'GRANT' });
-  }, []);
+  }, [scope]);
 
   // 동의하지 않음은 저장하지 않는다
   const decline = useCallback((): void => {
@@ -88,9 +94,9 @@ export function FortuneConsentProvider({
   }, []);
 
   const reset = useCallback((): void => {
-    clearFortuneConsent();
+    clearFortuneConsent(scope);
     dispatch({ type: 'RESET' });
-  }, []);
+  }, [scope]);
 
   const value = useMemo<FortuneConsentContextType>(
     () => ({ status, grant, decline, back, reset }),
