@@ -4,6 +4,8 @@ import { MotionConfig } from 'framer-motion';
 import { CircleAlert } from 'lucide-react';
 import { type JSX, useEffect, useMemo, useRef, useState } from 'react';
 
+import { ShareCardHostComponent } from '@/components/share/share-card-host.component';
+import { SharePanelComponent } from '@/components/share/share-panel.component';
 import { cn } from '@/lib/utils';
 import { LUCKY_DRAW_LOTS_RULE } from '../../constants/lucky-draw-limit.constant';
 import { LUCKY_DRAW_ACCENT_BG_CLASS } from '../../constants/lucky-draw-theme.constant';
@@ -18,7 +20,9 @@ import {
 } from '../../utils/lucky-draw-lots.util';
 import { isLuckyDrawRandomAvailable } from '../../utils/lucky-draw-random.util';
 import { useLuckyDrawLots } from '../hooks/use-lucky-draw-lots.hook';
+import { useLuckyDrawLotsShare } from '../hooks/use-lucky-draw-lots-share.hook';
 import { LuckyDrawLotsCardGridComponent } from './card-grid.component';
+import { LuckyDrawLotsShareCardComponent } from './share-card.component';
 
 const PLACEHOLDER = 'A\nB\nC';
 const REASON_ID = 'lucky-draw-lots-reason';
@@ -71,6 +75,7 @@ export function LuckyDrawLotsComponent(): JSX.Element {
     () => new Map(openedCards.map((card) => [card.position, card.label])),
     [openedCards]
   );
+  const share = useLuckyDrawLotsShare(openedCards);
   const openedCount = openedCards.length;
   const remainingCount = cardCount === null ? 0 : cardCount - openedCount;
   const isAllOpened = cardCount !== null && remainingCount === 0;
@@ -223,6 +228,14 @@ export function LuckyDrawLotsComponent(): JSX.Element {
               openedLabels={openedLabels}
               onOpen={handleOpen}
             />
+            {share.card ? (
+              <>
+                <SharePanelComponent controller={share.controller} />
+                <ShareCardHostComponent ref={share.cardRef}>
+                  <LuckyDrawLotsShareCardComponent card={share.card} />
+                </ShareCardHostComponent>
+              </>
+            ) : null}
           </section>
         ) : null}
       </div>

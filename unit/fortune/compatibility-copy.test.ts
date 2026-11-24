@@ -15,6 +15,7 @@ import * as menuConstants from '@/features/fortune/constants/fortune-compatibili
 import * as noticeConstants from '@/features/fortune/constants/fortune-compatibility-notice.constant';
 import * as sameCopyConstants from '@/features/fortune/constants/fortune-compatibility-same-copy.constant';
 import * as seoConstants from '@/features/fortune/constants/fortune-compatibility-seo.constant';
+import * as shareConstants from '@/features/fortune/constants/fortune-compatibility-share.constant';
 import * as starSignConstants from '@/features/fortune/constants/fortune-compatibility-star-sign.constant';
 import * as ttiConstants from '@/features/fortune/constants/fortune-compatibility-tti.constant';
 import {
@@ -71,6 +72,7 @@ const ALL_TEXTS: NamedTextType[] = collectTexts([
   ['tti-names', ttiConstants],
   ['star-sign-names', starSignConstants],
   ['menu-list', MENU_COMPATIBILITY_ITEMS],
+  ['share', shareConstants],
 ]);
 
 /** 검색·공유에 노출되는 메타 문구 */

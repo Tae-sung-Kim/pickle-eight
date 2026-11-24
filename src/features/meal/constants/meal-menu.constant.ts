@@ -20,7 +20,7 @@ export const MEAL_MENUS: {
 
 /** 끼니별 메뉴 개수. 메뉴 목록을 바꾸면 이 값도 같이 바꾼다 */
 export const MEAL_MENU_COUNTS = {
-  lunch: 56,
-  dinner: 117,
-  breakfast: 44,
+  lunch: 90,
+  dinner: 150,
+  breakfast: 65,
 } as const;

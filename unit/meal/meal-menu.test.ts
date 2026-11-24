@@ -67,6 +67,15 @@ const LATE_NIGHT_NAMES = [
   '두부김치',
   '닭꼬치',
   '김치전',
+  '소떡소떡',
+  '치즈스틱',
+  '해물파전',
+  '곱창볶음',
+  '낙지볶음',
+  '김말이',
+  '해물찜',
+  '오코노미야키',
+  '양꼬치',
   '라면',
   '떡볶이',
   '라볶이',
@@ -101,10 +110,6 @@ describe('AC-9: 끼니별 메뉴 데이터', () => {
       expect(MEAL_CATEGORIES[meal]).toHaveLength(CATEGORY_COUNT[meal]);
       expect(keys.size).toBe(CATEGORY_COUNT[meal]);
       expect(menus).toHaveLength(MEAL_MENU_COUNTS[meal]);
-      if (meal !== 'dinner') {
-        expect(menus.length).toBeGreaterThanOrEqual(40);
-        expect(menus.length).toBeLessThanOrEqual(60);
-      }
       for (const key of keys) {
         const n = menus.filter((m) => m.category === key).length;
         expect(n, `${meal} ${key}`).toBeGreaterThanOrEqual(6);

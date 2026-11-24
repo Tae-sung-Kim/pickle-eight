@@ -11,6 +11,8 @@ import {
   useState,
 } from 'react';
 
+import { ShareCardHostComponent } from '@/components/share/share-card-host.component';
+import { SharePanelComponent } from '@/components/share/share-panel.component';
 import { cn } from '@/lib/utils';
 import {
   LUCKY_DRAW_LADDER_RULE,
@@ -20,6 +22,7 @@ import { LUCKY_DRAW_INPUT_NOTICE_TEXT } from '../../constants/lucky-draw-notice.
 import { LuckyDrawLinesInputComponent } from '../../shared/components/lines-input.component';
 import { LuckyDrawResultNoticeComponent } from '../../shared/components/result-notice.component';
 import { LuckyDrawRevealModeComponent } from '../../shared/components/reveal-mode.component';
+import { LuckyDrawShareOptionsComponent } from '../../shared/components/share-options.component';
 import { LuckyDrawStatusComponent } from '../../shared/components/status.component';
 import { LuckyDrawToolNavComponent } from '../../shared/components/tool-nav.component';
 import {
@@ -32,12 +35,14 @@ import {
 } from '../../utils/lucky-draw-ladder.util';
 import { isLuckyDrawRandomAvailable } from '../../utils/lucky-draw-random.util';
 import { useLuckyDrawLadder } from '../hooks/use-lucky-draw-ladder.hook';
+import { useLuckyDrawLadderShare } from '../hooks/use-lucky-draw-ladder-share.hook';
 import { LuckyDrawLadderBoardComponent } from './board.component';
 import { LuckyDrawLadderNamePickerComponent } from './name-picker.component';
 import {
   LuckyDrawLadderResultListComponent,
   type LuckyDrawLadderResultRowType,
 } from './result-list.component';
+import { LuckyDrawLadderShareCardComponent } from './share-card.component';
 
 const NOTICE_ID = 'lucky-ladder-notice';
 const BLOCK_ID = 'lucky-ladder-block';
@@ -180,6 +185,8 @@ export function LuckyDrawLadderRootComponent(): JSX.Element {
       });
     }
   }
+
+  const share = useLuckyDrawLadderShare(rows);
 
   let statusMessage = '';
   if (game && !tracing) {
@@ -373,6 +380,25 @@ export function LuckyDrawLadderRootComponent(): JSX.Element {
                 emptyText={emptyText}
               />
             </div>
+            {share.card ? (
+              <>
+                <SharePanelComponent
+                  controller={share.controller}
+                  previewAlt={share.previewAlt}
+                  previewTexts={share.previewTexts}
+                >
+                  <LuckyDrawShareOptionsComponent
+                    isMasked={share.options.isMasked}
+                    onMaskedChange={(isMasked) =>
+                      share.setOptions({ isMasked })
+                    }
+                  />
+                </SharePanelComponent>
+                <ShareCardHostComponent ref={share.cardRef}>
+                  <LuckyDrawLadderShareCardComponent card={share.card} />
+                </ShareCardHostComponent>
+              </>
+            ) : null}
           </section>
         ) : null}
 

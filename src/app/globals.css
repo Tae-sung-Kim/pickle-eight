@@ -78,6 +78,14 @@
   --menu-fortune: #8a6110; /* 강황 */
   --menu-dream: #2a6672; /* 염수 */
   --menu-lucky: #4b4690; /* 가지 */
+  /* 공유 카드 이미지 전용 고정 색. .dark에서 덮어쓰지 않는다 */
+  --share-card-bg: #eef0e6;
+  --share-card-fg: #1b3328;
+  --share-card-muted: #5a6a5f;
+  --share-card-border: #b9c3a8;
+  --share-card-accent-meal: #a5481f;
+  --share-card-accent-lucky: #4b4690;
+  --share-card-accent-fortune: #8a6110;
 }
 
 @theme inline {
@@ -109,6 +117,13 @@
   --color-menu-fortune: var(--menu-fortune);
   --color-menu-dream: var(--menu-dream);
   --color-menu-lucky: var(--menu-lucky);
+  --color-share-card-bg: var(--share-card-bg);
+  --color-share-card-fg: var(--share-card-fg);
+  --color-share-card-muted: var(--share-card-muted);
+  --color-share-card-border: var(--share-card-border);
+  --color-share-card-accent-meal: var(--share-card-accent-meal);
+  --color-share-card-accent-lucky: var(--share-card-accent-lucky);
+  --color-share-card-accent-fortune: var(--share-card-accent-fortune);
   --color-jar-foreground: var(--jar-foreground);
   --color-jar-muted: var(--jar-muted);
   --color-success: var(--success);

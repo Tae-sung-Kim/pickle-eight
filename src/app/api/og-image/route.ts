@@ -137,11 +137,7 @@ export async function GET(request: Request) {
             d: 'M12 2C6.48 2 2 5.58 2 10c0 2.53 1.61 4.78 4.07 6.18-.15.56-.54 2.02-.62 2.35-.1.41.15.81.56.91.24.06.48.01.67-.14.28-.21 1.79-1.3 2.52-1.83.73.1 1.48.16 2.27.16 5.52 0 10-3.58 10-8s-4.48-8-10-8z',
           })
         ),
-        React.createElement(
-          'span',
-          null,
-          `${process.env.NEXT_PUBLIC_SITE_NAME} · 로또 번호 생성 · 분석 · 채점`
-        ),
+        React.createElement('span', null, process.env.NEXT_PUBLIC_SITE_NAME),
         React.createElement(
           'span',
           { style: { color: brandColor, marginLeft: 8 } },

@@ -1,4 +1,4 @@
-import type { JSX } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { useId } from 'react';
 
 import {
@@ -21,6 +21,8 @@ export type MealRouletteResultComponentPropsType = Readonly<{
   luckLine: string;
   spinning: boolean;
   area: MealAreaInputResultType;
+  /** 지도 링크와 고지 사이에 들어가는 공유 영역 */
+  shareSlot?: ReactNode;
 }>;
 
 /**
@@ -34,6 +36,7 @@ export function MealRouletteResultComponent({
   luckLine,
   spinning,
   area,
+  shareSlot,
 }: MealRouletteResultComponentPropsType): JSX.Element {
   const titleId = useId();
 
@@ -73,6 +76,7 @@ export function MealRouletteResultComponent({
         </p>
       </div>
       <MealRouletteMapLinksComponent menu={menu} area={area} />
+      {shareSlot}
       <p className="border-t border-border pt-4 text-sm leading-6 text-muted-foreground">
         {MEAL_RESULT_NOTICE_TEXT}
       </p>

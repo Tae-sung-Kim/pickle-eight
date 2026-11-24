@@ -116,6 +116,14 @@ export default function PrivacyPolicyPage() {
             저장소(localStorage, sessionStorage)에도 아무 값을 남기지 않습니다.
             검색칸에는 개인적인 내용을 적지 않으시기 바랍니다.
           </p>
+          <p className="mt-2">
+            결과 공유 기능은 공유 이미지와 링크를 이용자의 브라우저에서 만들며,
+            결과나 입력값을 서버로 보내거나 저장하지 않습니다. 공유 이미지에는
+            생년월일, 질문, 상대방 정보, 동네 이름이 들어가지 않습니다. 사다리
+            타기와 돌림판 이미지에는 이용자가 입력한 이름이 들어갈 수 있으며,
+            공유 전에 미리 보고 가릴 수 있습니다. 이용자가 고른 앱으로 보낸
+            뒤에는 그 앱의 정책이 적용됩니다.
+          </p>
         </section>
         <section>
           <h2 className="font-medium text-foreground">

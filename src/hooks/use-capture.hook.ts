@@ -1,11 +1,20 @@
 import download from 'downloadjs';
 import { toBlob } from 'html-to-image';
 import { useCallback } from 'react';
+import { toast } from 'sonner';
+import { SHARE_TEXTS } from '@/constants/share.constant';
+import { classifyShareError } from '@/lib/share';
+
+export type CaptureResultType =
+  | 'shared'
+  | 'downloaded'
+  | 'cancelled'
+  | 'failed';
 
 /**
  * useCapture
  * @description 특정 DOM 요소를 이미지로 캡처하여 공유(Web Share API) 또는 다운로드합니다.
- * @returns handleCapture (ref, 옵션) => Promise<void>
+ * @returns handleCapture (ref, 옵션) => Promise<CaptureResultType>
  */
 export function useCapture() {
   /**
@@ -24,8 +33,8 @@ export function useCapture() {
         shareTitle?: string;
         shareText?: string;
       }
-    ) => {
-      if (!elementRef.current) return;
+    ): Promise<CaptureResultType> => {
+      if (!elementRef.current) return 'failed';
 
       try {
         // Use computed background from document (respects light/dark theme)
@@ -50,18 +59,27 @@ export function useCapture() {
         const file = new File([blob], fileName, { type: mime });
 
         if (navigator.share && navigator.canShare?.({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: options?.shareTitle || '공유 이미지',
-            text: options?.shareText || '',
-          });
-        } else {
-          // downloadjs supports Blob input
-          download(blob, fileName, mime);
+          try {
+            await navigator.share({
+              files: [file],
+              title: options?.shareTitle || '공유 이미지',
+              text: options?.shareText || '',
+            });
+            return 'shared';
+          } catch (shareErr) {
+            if (classifyShareError(shareErr) === 'abort') return 'cancelled';
+            // 사용자 활성화 만료 등 공유 실패: 같은 blob을 다운로드로 대체한다
+            download(blob, fileName, mime);
+            return 'downloaded';
+          }
         }
+        // downloadjs supports Blob input
+        download(blob, fileName, mime);
+        return 'downloaded';
       } catch (err) {
-        console.error('이미지 캡처/공유 실패:', err);
-        // alert('이미지 캡처 또는 공유 중 오류가 발생했습니다.');
+        if (classifyShareError(err) === 'abort') return 'cancelled';
+        toast.error(SHARE_TEXTS.legacyCaptureFailed);
+        return 'failed';
       }
     },
     []

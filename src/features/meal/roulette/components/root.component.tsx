@@ -3,18 +3,26 @@
 import type { JSX } from 'react';
 import { useEffect, useId, useRef } from 'react';
 
+import { ShareCardFrameComponent } from '@/components/share/share-card-frame.component';
+import { ShareCardHostComponent } from '@/components/share/share-card-host.component';
+import { SharePanelComponent } from '@/components/share/share-panel.component';
 import {
   getMealChangeAnnouncement,
   getMealResultAnnouncement,
 } from '@/features/meal/constants/meal-notice.constant';
+import { MEAL_SHARE_TARGET } from '@/features/meal/constants/meal-share.constant';
 import { MealRouletteAreaInputComponent } from '@/features/meal/roulette/components/area-input.component';
 import { MealRouletteFilterPanelComponent } from '@/features/meal/roulette/components/filter-panel.component';
 import { MealRouletteMealPickerComponent } from '@/features/meal/roulette/components/meal-picker.component';
 import { MealRouletteResultComponent } from '@/features/meal/roulette/components/result.component';
+import { MealRouletteShareCardComponent } from '@/features/meal/roulette/components/share-card.component';
 import { MealRouletteSpinPanelComponent } from '@/features/meal/roulette/components/spin-panel.component';
 import { MealRouletteStatusComponent } from '@/features/meal/roulette/components/status.component';
 import { useMealAreaInput } from '@/features/meal/roulette/hooks/use-meal-area-input.hook';
 import { useMealRoulette } from '@/features/meal/roulette/hooks/use-meal-roulette.hook';
+import { buildMealShareCard } from '@/features/meal/utils/meal-share.util';
+import { useShare } from '@/hooks/use-share.hook';
+import { toShareCardKey } from '@/lib/share';
 
 /**
  * MealRouletteComponent
@@ -43,6 +51,7 @@ export function MealRouletteComponent(): JSX.Element {
     area,
     handleChange: handleAreaChange,
     handleCompositionEnd: handleAreaCompositionEnd,
+    handleBlur: handleAreaBlur,
     clear: clearArea,
   } = useMealAreaInput();
 
@@ -84,6 +93,29 @@ export function MealRouletteComponent(): JSX.Element {
       ? getMealChangeAnnouncement(mealLabel)
       : '';
 
+  // 공유 카드는 결과가 확정(done)됐을 때만 만든다. 동네 이름은 넣지 않는다(AC-7)
+  const shareCard = buildMealShareCard(
+    resultMenu && state.spin.status === 'done'
+      ? { mealLabel, menuName: resultMenu.name }
+      : null
+  );
+  const { cardRef, controller } = useShare({
+    target: MEAL_SHARE_TARGET,
+    cardKey: shareCard ? toShareCardKey(shareCard.body) : null,
+    requiresPreview: false,
+  });
+  const previewAlt = shareCard
+    ? `${shareCard.frame.featureName} ${shareCard.body.mealLabel} ${shareCard.body.menuName}`
+    : undefined;
+  const previewTexts = shareCard
+    ? [
+        shareCard.frame.featureName,
+        shareCard.body.mealLabel,
+        shareCard.body.menuName,
+        shareCard.frame.notice,
+      ]
+    : undefined;
+
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -124,6 +156,7 @@ export function MealRouletteComponent(): JSX.Element {
             error={area.status === 'invalid' ? area.reason : null}
             onChange={handleAreaChange}
             onCompositionEnd={handleAreaCompositionEnd}
+            onBlur={handleAreaBlur}
             onClear={clearArea}
           />
         </div>
@@ -134,9 +167,25 @@ export function MealRouletteComponent(): JSX.Element {
           luckLine={luckLine}
           spinning={spinning}
           area={area}
+          shareSlot={
+            shareCard ? (
+              <SharePanelComponent
+                controller={controller}
+                previewAlt={previewAlt}
+                previewTexts={previewTexts}
+              />
+            ) : null
+          }
         />
       </div>
       <MealRouletteStatusComponent message={announcement} />
+      {shareCard ? (
+        <ShareCardHostComponent ref={cardRef}>
+          <ShareCardFrameComponent frame={shareCard.frame}>
+            <MealRouletteShareCardComponent {...shareCard.body} />
+          </ShareCardFrameComponent>
+        </ShareCardHostComponent>
+      ) : null}
     </div>
   );
 }

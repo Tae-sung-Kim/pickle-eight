@@ -14,6 +14,7 @@ import { MEAL_LUCK_LINES } from '@/features/meal/constants/meal-luck.constant';
 import { MEAL_MENUS } from '@/features/meal/constants/meal-menu.constant';
 import * as notice from '@/features/meal/constants/meal-notice.constant';
 import { MEAL_HUB_SEO } from '@/features/meal/constants/meal-seo.constant';
+import * as shareConst from '@/features/meal/constants/meal-share.constant';
 import type { MealKeyType } from '@/features/meal/types/meal.type';
 
 const MEALS: readonly MealKeyType[] = ['lunch', 'dinner', 'breakfast'];
@@ -81,6 +82,26 @@ function noticeStrings(): [string, string][] {
   }
   return out;
 }
+
+describe('AC-12: 공유 문구', () => {
+  const shareTexts: [string, string][] = [
+    ['MEAL_SHARE_FEATURE_NAME', shareConst.MEAL_SHARE_FEATURE_NAME],
+    ['MEAL_SHARE_NOTICE', shareConst.MEAL_SHARE_NOTICE],
+    ['MEAL_SHARE_TARGET.title', shareConst.MEAL_SHARE_TARGET.title],
+    ['MEAL_SHARE_TARGET.text', shareConst.MEAL_SHARE_TARGET.text],
+  ];
+
+  test.each(shareTexts)('%s 에 금지어 없음', (name, text) => {
+    expect(text.length).toBeGreaterThan(0);
+    expect(violations(name, text)).toEqual([]);
+  });
+
+  test('고지와 공유 본문은 해요체, 카카오 이름 없음', () => {
+    for (const [, text] of shareTexts) expect(text).not.toContain('카카오');
+    expect(shareConst.MEAL_SHARE_NOTICE).toMatch(/요\.$/);
+    expect(shareConst.MEAL_SHARE_TARGET.text).toMatch(/요\.$/);
+  });
+});
 
 describe('AC-12·13: 끼니별 운세 문구', () => {
   test('카테고리마다 4줄, 점심·아침 24줄, 저녁 28줄(전체 76줄), 끼니 안 중복 없음', () => {

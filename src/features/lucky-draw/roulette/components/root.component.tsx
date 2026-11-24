@@ -3,6 +3,8 @@
 import { CircleAlert } from 'lucide-react';
 import { type JSX, useEffect, useRef, useState } from 'react';
 
+import { ShareCardHostComponent } from '@/components/share/share-card-host.component';
+import { SharePanelComponent } from '@/components/share/share-panel.component';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import type { RouletteItemType } from '@/types/roulette.type';
@@ -12,6 +14,7 @@ import {
 } from '../../constants/lucky-draw-limit.constant';
 import { LuckyDrawLinesInputComponent } from '../../shared/components/lines-input.component';
 import { LuckyDrawRevealModeComponent } from '../../shared/components/reveal-mode.component';
+import { LuckyDrawShareOptionsComponent } from '../../shared/components/share-options.component';
 import { LuckyDrawStatusComponent } from '../../shared/components/status.component';
 import { LuckyDrawToolNavComponent } from '../../shared/components/tool-nav.component';
 import { parseLuckyDrawLines } from '../../utils/lucky-draw-input.util';
@@ -20,7 +23,9 @@ import {
   randomIntBelow,
 } from '../../utils/lucky-draw-random.util';
 import { useLuckyDrawRoulette } from '../hooks/use-lucky-draw-roulette.hook';
+import { useLuckyDrawRouletteShare } from '../hooks/use-lucky-draw-roulette-share.hook';
 import { LuckyDrawRouletteResultComponent } from './result.component';
+import { LuckyDrawRouletteShareCardComponent } from './share-card.component';
 import { LuckyDrawRouletteSpinPanelComponent } from './spin-panel.component';
 
 const PLACEHOLDER = 'A\nB\nC';
@@ -57,6 +62,12 @@ export function LuckyDrawRouletteComponent(): JSX.Element {
   }));
   const pickedLabel =
     entries.find((e) => e.id === spin.pickedId)?.label ?? null;
+  const share = useLuckyDrawRouletteShare({
+    spin,
+    isRevealed: state.isRevealed,
+    pickedLabel,
+    wheelEntries,
+  });
   const isResultHidden = state.revealMode === 'hidden' && !state.isRevealed;
   const isPendingReveal = spin.status === 'done' && !state.isRevealed;
 
@@ -209,6 +220,27 @@ export function LuckyDrawRouletteComponent(): JSX.Element {
             label={state.isRevealed ? pickedLabel : null}
             onReveal={handleReveal}
           />
+          {share.card ? (
+            <SharePanelComponent
+              controller={share.controller}
+              previewAlt={share.previewAlt}
+              previewTexts={share.previewTexts}
+            >
+              <LuckyDrawShareOptionsComponent
+                isMasked={share.options.isMasked}
+                onMaskedChange={(isMasked) =>
+                  share.setOptions((prev) => ({ ...prev, isMasked }))
+                }
+                shouldIncludeCandidates={share.options.shouldIncludeCandidates}
+                onIncludeCandidatesChange={(shouldIncludeCandidates) =>
+                  share.setOptions((prev) => ({
+                    ...prev,
+                    shouldIncludeCandidates,
+                  }))
+                }
+              />
+            </SharePanelComponent>
+          ) : null}
         </div>
       </div>
 
@@ -252,6 +284,12 @@ export function LuckyDrawRouletteComponent(): JSX.Element {
             ))}
           </ul>
         </section>
+      ) : null}
+
+      {share.card ? (
+        <ShareCardHostComponent ref={share.cardRef}>
+          <LuckyDrawRouletteShareCardComponent card={share.card} />
+        </ShareCardHostComponent>
       ) : null}
     </div>
   );

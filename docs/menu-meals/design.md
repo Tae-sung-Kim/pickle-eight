@@ -1,7 +1,7 @@
 # menu-meals 설계서
 
 입력: `docs/menu-meals/plan.md`(전체), `docs/research/menu-meals.md`(결론, 6장, 9장)
-참고: `docs/lunch/design.md`(기존 점심 설계), `src/features/lunch/` 현재 코드, `e2e/lunch.spec.ts`, `unit/lunch/`
+참고: `docs/archive/lunch/design.md`(기존 점심 설계), `src/features/lunch/` 현재 코드, `e2e/lunch.spec.ts`, `unit/lunch/`
 규칙 문서: `docs/conventions/tech-stack.md`, `code-style.md`, `data-storage.md`, `seo.md`
 작성일: 2026-11-23
 상태: 설계 초안. 사용자 승인 전. 코드는 고치지 않았다.
@@ -135,7 +135,7 @@ src/features/meal/                          # features/lunch/에서 이동
     hooks/
       use-meal-roulette.hook.ts             # use-lunch-today 이동 + SET_MEAL (6.3)
 
-docs/menu-meals/copy-log.md                 # 신규: 저녁·아침 메뉴, 운세, 고지, FAQ 작성·검수 이력 (docs/lunch/copy-log.md 형식)
+docs/menu-meals/copy-log.md                 # 신규: 저녁·아침 메뉴, 운세, 고지, FAQ 작성·검수 이력 (docs/archive/lunch/copy-log.md 형식)
 
 e2e/meal.spec.ts                            # e2e/lunch.spec.ts 이동 + 수정 (11장)
 unit/meal/meal-menu.test.ts                 # unit/lunch/lunch-menu.test.ts 이동 + 수정
@@ -147,7 +147,7 @@ unit/meal/meal-pick.test.ts                 # 신규: 카테고리 넘기기, �
 - 이름 규칙: root `MealRouletteComponent`, 하위 `MealRoulette<이름>Component`(예: `MealRouletteFilterPanelComponent`), 훅 `useMealRoulette`, 페이지 `MealPage`(default export), 상수 `MEAL_*`, 타입 `Meal*Type`.
 - `features/meal/`은 다른 기능을 import하지 않는다. 화면이 하나라 `shared/`, `services/`, `queries/`는 만들지 않는다.
 - `src/features/api-docs/utils/merge-openapi.util.ts`의 `lunch-menu` 언급은 예시 주석이라 고치지 않는다.
-- `docs/lunch/`는 과거 기록으로 두고 고치지 않는다.
+- `docs/archive/lunch/`는 과거 기록으로 두고 고치지 않는다.
 - 야식 카테고리는 새 파일을 만들지 않는다. 바뀌는 파일은 3.7.11 표에 있다. (야식 카테고리 반영)
 
 ## 3. 타입과 메뉴 데이터
@@ -986,7 +986,7 @@ export enum MENU_GROUP_NAME_ENUM {
   - 파일 경로: `src/features/lunch/constants/...` → `src/features/meal/constants/meal-notice.constant.ts`, `meal-copy-rule.constant.ts`.
   - 검사 위치: 지금 적힌 `e2e/lunch-copy.spec.ts`는 저장소에 없다. `unit/meal/meal-copy.test.ts`로 바로잡는다.
   - 새 줄: 끼니는 점심, 저녁, 아침·브런치 셋이다. 술안주·야식 끼니가 없다. 메뉴 이름, 문구, FAQ, 메타, 약관 문장에 음주 관련 단어가 없고 검사로 막는다. 저녁·아침 목록에서 안주 연상 메뉴를 뺀 기준(5.2 목록)을 적는다.
-  - 저작 이력: `docs/lunch/copy-log.md`에 `docs/menu-meals/copy-log.md`를 더한다.
+  - 저작 이력: `docs/archive/lunch/copy-log.md`에 `docs/menu-meals/copy-log.md`를 더한다.
   - 법률 검토 상태 (D12): "위험 수용"을 유지하고 결정일을 적는다. 새 위험 수용 항목: 저녁 메뉴의 음주 연상 판단, "해장" 표현 차단 기준, 아침 메뉴·문구의 식품 표시·광고 해당 여부, Google Maps Platform 약관 3.2.2가 검색 링크에 적용되는지, 약관 시행일 변경 방식.
   - 남은 출시 전 점검: 301 응답 확인, 사이트맵 옛 주소 제외 확인, AdFit 현재 운영정책 원문 확인.
 - 위 "새 줄"의 "저녁·아침 목록에서 안주 연상 메뉴를 뺀 기준"은 야식 카테고리 결정으로 바뀌었다. 저녁 야식 카테고리(기본 꺼짐), 안주 연상 메뉴 검사 범위(아침만), 새 위험 수용 항목은 3.7.9를 따른다. (야식 카테고리 반영)

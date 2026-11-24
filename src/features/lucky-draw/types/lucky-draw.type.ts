@@ -94,6 +94,50 @@ export type LuckyDrawSeoType = Readonly<{
   breadcrumbName: string;
 }>;
 
+/** 공유 카드 한 줄 (사다리, 제비뽑기) */
+export type LuckyDrawShareRowType = Readonly<{ left: string; right: string }>;
+
+/** 미리보기 옵션 */
+export type LuckyDrawLadderShareOptionsType = Readonly<{ isMasked: boolean }>;
+export type LuckyDrawRouletteShareOptionsType = Readonly<{
+  isMasked: boolean;
+  shouldIncludeCandidates: boolean;
+}>;
+
+/** 공유 카드 틀에 넘기는 값 (components/share의 ShareCardFrameType과 같은 모양) */
+export type LuckyDrawShareFrameType = Readonly<{
+  featureName: string;
+  pathname: string;
+  notice: string;
+  accent: 'lucky';
+}>;
+
+export type LuckyDrawLadderShareCardType = Readonly<{
+  frame: LuckyDrawShareFrameType;
+  body: Readonly<{
+    rows: readonly LuckyDrawShareRowType[];
+    hiddenCount: number;
+  }>;
+}>;
+
+export type LuckyDrawRouletteShareCardType = Readonly<{
+  frame: LuckyDrawShareFrameType;
+  body: Readonly<{
+    picked: string;
+    /** null이면 후보 영역이 없다 */
+    candidates: readonly string[] | null;
+    hiddenCount: number;
+  }>;
+}>;
+
+export type LuckyDrawLotsShareCardType = Readonly<{
+  frame: LuckyDrawShareFrameType;
+  body: Readonly<{
+    rows: readonly LuckyDrawShareRowType[];
+    hiddenCount: number;
+  }>;
+}>;
+
 export type LuckyDrawLadderBlockType =
   | 'too-few'
   | 'too-many'

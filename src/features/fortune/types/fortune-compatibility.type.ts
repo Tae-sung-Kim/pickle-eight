@@ -98,3 +98,16 @@ export type FortuneCompatibilityStarSignResultType = Readonly<{
   relation: FortuneCompatibilityStarSignRelationKeyType;
   grade: FortuneCompatibilityGradeKeyType;
 }>;
+
+/** 궁합 공유 종류. 공유 주소와 기능명을 고른다 */
+export type FortuneCompatibilityShareKindType = 'tti' | 'starSign';
+
+/** 궁합 공유 카드 입력. 생년월일, 관계 이름, 원소, 시각 후보는 받지 않는다(AC-7) */
+export type FortuneCompatibilityShareInputType = Readonly<{
+  kind: FortuneCompatibilityShareKindType;
+  firstName: string;
+  secondName: string;
+  gradeKey: FortuneCompatibilityGradeKeyType;
+  /** copy.summary[0] */
+  summary: string;
+}>;

@@ -292,6 +292,11 @@ export default function TermsPage() {
             검색 결과, 음식점 정보의 정확성, 해당 서비스의 장애·변경으로 인한
             손해에 대해서도 같습니다.
           </p>
+          <p className="mt-2">
+            공유 기능으로 보내는 이미지와 링크는 이용자가 직접 고른 앱으로
+            이용자가 보내는 것입니다. 다른 사람의 이름 등 정보가 들어간 이미지를
+            공유할 때는 그 사람의 동의를 먼저 받아 주시기 바랍니다.
+          </p>
         </section>
         <section>
           <h2 className="font-medium text-foreground">15. 면책 및 보상</h2>

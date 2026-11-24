@@ -2,12 +2,12 @@
 
 입력: `docs/menu-meals/plan.md`, `docs/menu-meals/design.md`(1장 확정 결정, 3.6, 5.3, 6.2~6.4, 7.3)
 참고 규칙: `docs/conventions/design-system.md`, `docs/conventions/code-style.md`("먼저 재사용할 기존 코드")
-기준 화면: `docs/lunch/ui-ux-design.md`(돌림판, 결과 카드, 고지, 소개, 지도 링크의 기존 명세), `src/features/lunch/today/components/`, `src/components/common/roulette.component.tsx`
+기준 화면: `docs/archive/lunch/ui-ux-design.md`(돌림판, 결과 카드, 고지, 소개, 지도 링크의 기존 명세), `src/features/lunch/today/components/`, `src/components/common/roulette.component.tsx`
 작성일: 2026-11-23
 작성: ui-ux-designer
 상태: 승인. 마지막 장의 U1~U4는 모두 추천안으로 확정했다(U1 A안 3칸 스위치, U2 빼는 안, U3 넣는 안, U4 A안 6칸 격자). 야식 카테고리 참조
 
-이 문서는 점심 명세(`docs/lunch/ui-ux-design.md`)를 이어받아 "끼니가 늘어서 달라지는 부분"만 정한다. 돌림판 비주얼, 결과 카드, 고지 상자, FAQ, 문구 톤은 점심 명세를 그대로 따른다. 이 문서에서 색 토큰 이름은 모두 `menu-meal`로 적는다(값은 `#a5481f` 그대로). 새 토큰, 새 폰트, 새 shadcn 컴포넌트, 새 아이콘은 없다. 메뉴 아이콘은 지금의 `Utensils` 그대로다.
+이 문서는 점심 명세(`docs/archive/lunch/ui-ux-design.md`)를 이어받아 "끼니가 늘어서 달라지는 부분"만 정한다. 돌림판 비주얼, 결과 카드, 고지 상자, FAQ, 문구 톤은 점심 명세를 그대로 따른다. 이 문서에서 색 토큰 이름은 모두 `menu-meal`로 적는다(값은 `#a5481f` 그대로). 새 토큰, 새 폰트, 새 shadcn 컴포넌트, 새 아이콘은 없다. 메뉴 아이콘은 지금의 `Utensils` 그대로다.
 
 ## 디자인 방향
 

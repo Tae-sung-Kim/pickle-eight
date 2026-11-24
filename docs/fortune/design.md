@@ -1023,7 +1023,7 @@ export type CrisisPhoneComponentPropsType = Readonly<{
 | 운세 결과 하단 | `src/features/fortune/shared/components/result-notice.component.tsx` | 처음부터 `CrisisPhoneComponent` 사용 | FE-6 |
 | 타로 브라우저 테스트 | `e2e/tarot.spec.ts` | 아래 "타로 테스트 영향" 표 | qa (T-QA) |
 | 타로 문구 테스트 | `e2e/tarot-copy.spec.ts` | 공용 `crisis-phone.constant`를 import해 검사 대상(OTHER_TEXTS)에 넣는다. 250행의 `where.includes('TAROT_CRISIS')`는 공용 상수 이름(`CRISIS_PHONES`, `CRISIS_RESULT_LINE`)도 잡도록 고친다. 그렇지 않으면 244~246행 번호 5개 검사와 설명 구절 검사가 D4 이동 뒤 실패한다 | qa (T-QA) |
-| 타로 문서 | `docs/tarot/plan.md`(AC-28 표시 방식 보충), `docs/tarot/ui-ux-design.md`(위기 안내 패널, 결과 하단 상담전화, 상담전화 문구 표 `href` 열, 색상 표 링크·109 버튼 행, 컴포넌트 상태 표, 접근성 절의 탭 순서·Label in Name·터치 영역, S5·S6; 대략 241~249, 264~288, 305~306, 358~362, 471, 480행), `docs/tarot/design.md`, `docs/tarot/qa-report.md`(변경 기록) | 기기별 표시 방식 반영. 이 설계서에서는 고치지 않는다 | DOC-3 (planner·ui-ux-designer) |
+| 타로 문서 | `docs/tarot/plan.md`(AC-28 표시 방식 보충), `docs/tarot/ui-ux-design.md`(위기 안내 패널, 결과 하단 상담전화, 상담전화 문구 표 `href` 열, 색상 표 링크·109 버튼 행, 컴포넌트 상태 표, 접근성 절의 탭 순서·Label in Name·터치 영역, S5·S6; 대략 241~249, 264~288, 305~306, 358~362, 471, 480행), `docs/tarot/design.md`, `docs/archive/tarot/qa-report.md`(변경 기록) | 기기별 표시 방식 반영. 이 설계서에서는 고치지 않는다 | DOC-3 (planner·ui-ux-designer) |
 | 운세 문서 | `docs/fortune/plan.md` AC-34·고지 17, `docs/fortune/ui-ux-design.md` S9 | 18.5 수정·추가 AC, UI-2(S9는 이 설계와 이미 맞음, 구현 방식 확정만 반영) | DOC-2, UI-2 |
 
 타로 테스트 영향 (`e2e/tarot.spec.ts`, desktop = Desktop Chrome = PC 상태, mobile = Pixel 7 = 터치 상태)
@@ -1475,7 +1475,7 @@ guard-files 범위: frontend-dev는 `src/app`(api 제외), `src/components`, `sr
 - 문서 (DOC, 개발 단계)
   1. DOC-1 (메인 세션) `README.md`(16.2), `COMPLIANCE.md`(1·2·7·11장, 2장은 AgeGate 오류 정정, 11장에 상담전화 표시 방식), `THIRD_PARTY_NOTICES.md`(15장), `.env.example`에 `DATA_GO_KR_API_KEY` 키 이름(이미 반영됐으면 확인만).
   2. DOC-2 (planner) `plan.md` 갱신: 18.1 동의 보관 AC 4건, 18.2 허브·링크 AC 수정 10건과 추가 AC-79~AC-83, 18.3 AgeGate 기재, 18.4 지원 연도 제한(결정 사항 10, 181·402행, AC-8·9, 사주 AC)과 추가 AC-84·85, 18.5 상담전화 표시(AC-34, 고지 17)와 추가 AC-86, 범위·기존 기능 충돌·검색 노출 절에 허브(`/fortune`)와 오늘의 운세 링크 추가, 열린 질문 1·2를 결정 완료로 정리(사용자 승인 범위 안).
-  3. DOC-3 (planner·ui-ux-designer) 타로 문서: `docs/tarot/plan.md` AC-28 보충, `docs/tarot/ui-ux-design.md` 상담전화 명세(8.4 영향 범위 표의 행), `docs/tarot/design.md`, `docs/tarot/qa-report.md` 변경 기록. (UI-2 이후)
+  3. DOC-3 (planner·ui-ux-designer) 타로 문서: `docs/tarot/plan.md` AC-28 보충, `docs/tarot/ui-ux-design.md` 상담전화 명세(8.4 영향 범위 표의 행), `docs/tarot/design.md`, `docs/archive/tarot/qa-report.md` 변경 기록. (UI-2 이후)
 - qa
   1. T-QA (FE-1과 같은 묶음, FE-1 직후): `e2e/tarot.spec.ts`를 8.4 "타로 테스트 영향" 표대로 프로젝트별로 고치고, `PHONES`·`CRISIS_PHONE_LINK`는 공용·타로 상수를 import(U-6 방안 A). `e2e/tarot-copy.spec.ts`가 공용 상담전화 상수를 검사 대상에 넣도록 고침. 첫 실행에서 두 프로젝트의 미디어 쿼리 값 확인을 qa-report에 기록.
   2. 운세 (FE-10, C-4 이후): `e2e/fortune.spec.ts`(AC-1~AC-86, 데스크톱·모바일, 동의 상태 헬퍼는 sessionStorage에 6.3 형식 값을 넣는다, AC-29·74·75·78은 18.1, 허브·링크는 18.2·17.2, 지원 범위는 18.4·17.2, 상담전화는 18.5·17.2 기준), `e2e/fortune-copy.spec.ts`(8.2, 8.3, 허브 포함), `e2e/fortune-calc.spec.ts`(17.1, 지원 범위·2029년 모의·만료 감시·공용 상담전화 포함).

@@ -15,6 +15,7 @@ export function useMealAreaInput(): Readonly<{
   area: MealAreaInputResultType;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleCompositionEnd: (event: CompositionEvent<HTMLInputElement>) => void;
+  handleBlur: () => void;
   clear: () => void;
 }> {
   const [inputValue, setInputValue] = useState('');
@@ -38,10 +39,22 @@ export function useMealAreaInput(): Readonly<{
     setCommittedValue(next);
   }
 
+  // compositionend가 오지 않는 입력기나 조합 중 링크 클릭 대비: blur 때 현재 입력값을 확정한다
+  function handleBlur() {
+    setCommittedValue(inputValue);
+  }
+
   function clear() {
     setInputValue('');
     setCommittedValue('');
   }
 
-  return { inputValue, area, handleChange, handleCompositionEnd, clear };
+  return {
+    inputValue,
+    area,
+    handleChange,
+    handleCompositionEnd,
+    handleBlur,
+    clear,
+  };
 }

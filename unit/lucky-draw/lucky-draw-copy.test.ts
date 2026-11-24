@@ -10,6 +10,11 @@ import { LUCKY_DRAW_FAQ } from '@/features/lucky-draw/constants/lucky-draw-faq.c
 import { LUCKY_DRAW_GUIDE } from '@/features/lucky-draw/constants/lucky-draw-guide.constant';
 import * as notice from '@/features/lucky-draw/constants/lucky-draw-notice.constant';
 import { LUCKY_DRAW_SEO } from '@/features/lucky-draw/constants/lucky-draw-seo.constant';
+import {
+  LUCKY_DRAW_SHARE_ROULETTE_RESULT_LABEL,
+  LUCKY_DRAW_SHARE_TEXTS,
+  luckyDrawLotsNumberTemplate,
+} from '@/features/lucky-draw/constants/lucky-draw-share.constant';
 
 const KEYS = ['hub', 'ladder', 'roulette', 'lots'] as const;
 
@@ -37,6 +42,19 @@ for (const k of KEYS) {
 for (const [name, v] of Object.entries(notice)) {
   if (typeof v === 'string') entries.push([`notice.${name}`, v]);
 }
+
+for (const k of ['ladder', 'roulette', 'lots'] as const) {
+  const t = LUCKY_DRAW_SHARE_TEXTS[k];
+  entries.push([`share.${k}.featureName`, t.featureName]);
+  entries.push([`share.${k}.title`, t.title]);
+  entries.push([`share.${k}.text`, t.text]);
+  entries.push([`share.${k}.notice`, t.notice]);
+}
+entries.push([
+  'share.rouletteResultLabel',
+  LUCKY_DRAW_SHARE_ROULETTE_RESULT_LABEL,
+]);
+entries.push(['share.lotsNumberTemplate', luckyDrawLotsNumberTemplate]);
 
 const STANDALONE_DON = /(?<![가-힣])돈(?:[이을를은는도과와의에]|(?![가-힣]))/;
 

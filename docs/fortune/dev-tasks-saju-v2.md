@@ -1,7 +1,7 @@
 # fortune 사주 2단계 개발 티켓
 
 입력: `docs/fortune/design-saju-v2.md`(승인 2026-11-09, SQ-1 안 B, SQ-2 안 A(±15, 기본 60~69), SQ-3 안 1, SQ-4 안 1, 1959년 입춘 UTC+9 기준 판단 수락 요청 중), `docs/fortune/ui-ux-design-saju-v2.md`(승인 UD-1 모션 없음, UD-2 `ScrollText`, UD-3 날짜 폼 + 아래 시간 단계)
-함께 보는 문서: `docs/fortune/plan.md`(AC-46~60, AC-87~91, 콘텐츠 제작 원칙 2단계), `docs/fortune/dev-tasks.md`(1단계 티켓 형식 참고, 2단계 절 개략. 이 문서로 대체, 원본은 고치지 않음), `docs/fortune/status.md`, `docs/fortune/design.md`(기존 설계, 보충 문서에 없는 내용만 따름), `docs/conventions/code-style.md`, `data-storage.md`, `seo.md`, `design-system.md`
+함께 보는 문서: `docs/fortune/plan.md`(AC-46~60, AC-87~91, 콘텐츠 제작 원칙 2단계), `docs/archive/fortune/dev-tasks.md`(1단계 티켓 형식 참고, 2단계 절 개략. 이 문서로 대체, 원본은 고치지 않음), `docs/fortune/status.md`, `docs/fortune/design.md`(기존 설계, 보충 문서에 없는 내용만 따름), `docs/conventions/code-style.md`, `data-storage.md`, `seo.md`, `design-system.md`
 작성일: 2026-11-09
 상태: 초안. 사용자 게이트 4건(SJ-04, SJ-G1~G3)과 착수 게이트(SJ-00) 확인 대기.
 

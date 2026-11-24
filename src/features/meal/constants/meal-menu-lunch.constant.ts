@@ -4,7 +4,7 @@ import type {
 } from '@/features/meal/types/meal.type';
 
 /**
- * 점심 메뉴 56개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
+ * 점심 메뉴 90개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
  * 국물 기준: 주 요리가 국물에 담겨 나오고 국물을 떠먹으면 soup, 그 밖은 dry.
  * mapQuery는 1차에 쓰지 않는다(이름으로 검색).
  */
@@ -36,6 +36,22 @@ export const MEAL_LUNCH_MENUS = [
     category: 'korean',
     broth: 'soup',
   },
+  { id: 'cheonggukjang', name: '청국장', category: 'korean', broth: 'soup' },
+  { id: 'gamjatang', name: '감자탕', category: 'korean', broth: 'soup' },
+  { id: 'hwangtae-guk', name: '황태국', category: 'korean', broth: 'soup' },
+  { id: 'jeyuk-deopbap', name: '제육덮밥', category: 'korean', broth: 'dry' },
+  {
+    id: 'kimchi-bokkeumbap',
+    name: '김치볶음밥',
+    category: 'korean',
+    broth: 'dry',
+  },
+  {
+    id: 'bibim-naengmyeon',
+    name: '비빔냉면',
+    category: 'korean',
+    broth: 'dry',
+  },
   // 중식
   { id: 'jjamppong', name: '짬뽕', category: 'chinese', broth: 'soup' },
   { id: 'malatang', name: '마라탕', category: 'chinese', broth: 'soup' },
@@ -43,6 +59,19 @@ export const MEAL_LUNCH_MENUS = [
   { id: 'jjajangmyeon', name: '짜장면', category: 'chinese', broth: 'dry' },
   { id: 'tangsuyuk', name: '탕수육', category: 'chinese', broth: 'dry' },
   { id: 'bokkeumbap', name: '볶음밥', category: 'chinese', broth: 'dry' },
+  { id: 'mapa-dubu', name: '마파두부', category: 'chinese', broth: 'dry' },
+  { id: 'japchae-bap', name: '잡채밥', category: 'chinese', broth: 'dry' },
+  { id: 'gan-jjajang', name: '간짜장', category: 'chinese', broth: 'dry' },
+  { id: 'gochu-japchae', name: '고추잡채', category: 'chinese', broth: 'dry' },
+  { id: 'palbochae', name: '팔보채', category: 'chinese', broth: 'dry' },
+  { id: 'kkansyo-saeu', name: '깐쇼새우', category: 'chinese', broth: 'dry' },
+  {
+    id: 'haemul-jjamppong',
+    name: '해물짬뽕',
+    category: 'chinese',
+    broth: 'soup',
+  },
+  { id: 'ulmyeon', name: '울면', category: 'chinese', broth: 'soup' },
   // 일식
   { id: 'ramen', name: '라멘', category: 'japanese', broth: 'soup' },
   { id: 'udon', name: '우동', category: 'japanese', broth: 'soup' },
@@ -54,6 +83,15 @@ export const MEAL_LUNCH_MENUS = [
   { id: 'karaage', name: '가라아게', category: 'japanese', broth: 'dry' },
   { id: 'tendon', name: '텐동', category: 'japanese', broth: 'dry' },
   { id: 'katsudon', name: '가츠동', category: 'japanese', broth: 'dry' },
+  {
+    id: 'salmon-donburi',
+    name: '연어덮밥',
+    category: 'japanese',
+    broth: 'dry',
+  },
+  { id: 'unagi-donburi', name: '장어덮밥', category: 'japanese', broth: 'dry' },
+  { id: 'oyakodon', name: '오야코동', category: 'japanese', broth: 'dry' },
+  { id: 'yakisoba', name: '야키소바', category: 'japanese', broth: 'dry' },
   // 양식
   { id: 'pasta', name: '파스타', category: 'western', broth: 'dry' },
   { id: 'steak', name: '스테이크', category: 'western', broth: 'dry' },
@@ -63,6 +101,22 @@ export const MEAL_LUNCH_MENUS = [
   { id: 'sandwich', name: '샌드위치', category: 'western', broth: 'dry' },
   { id: 'hamburger', name: '햄버거', category: 'western', broth: 'dry' },
   { id: 'gratin', name: '그라탕', category: 'western', broth: 'dry' },
+  { id: 'carbonara', name: '까르보나라', category: 'western', broth: 'dry' },
+  { id: 'aglio-olio', name: '알리오올리오', category: 'western', broth: 'dry' },
+  { id: 'lasagna', name: '라자냐', category: 'western', broth: 'dry' },
+  { id: 'panini', name: '파니니', category: 'western', broth: 'dry' },
+  {
+    id: 'hamburg-steak',
+    name: '함박스테이크',
+    category: 'western',
+    broth: 'dry',
+  },
+  {
+    id: 'caesar-salad',
+    name: '시저 샐러드',
+    category: 'western',
+    broth: 'dry',
+  },
   // 분식
   { id: 'eomuk', name: '어묵', category: 'bunsik', broth: 'soup' },
   { id: 'tteokbokki', name: '떡볶이', category: 'bunsik', broth: 'dry' },
@@ -70,6 +124,12 @@ export const MEAL_LUNCH_MENUS = [
   { id: 'rabokki', name: '라볶이', category: 'bunsik', broth: 'dry' },
   { id: 'jjolmyeon', name: '쫄면', category: 'bunsik', broth: 'dry' },
   { id: 'bibim-guksu', name: '비빔국수', category: 'bunsik', broth: 'dry' },
+  { id: 'janchi-guksu', name: '잔치국수', category: 'bunsik', broth: 'soup' },
+  { id: 'ramyeon', name: '라면', category: 'bunsik', broth: 'soup' },
+  { id: 'mandu', name: '만두', category: 'bunsik', broth: 'dry' },
+  { id: 'jumeokbap', name: '주먹밥', category: 'bunsik', broth: 'dry' },
+  { id: 'tuna-gimbap', name: '참치김밥', category: 'bunsik', broth: 'dry' },
+  { id: 'tteok-kkochi', name: '떡꼬치', category: 'bunsik', broth: 'dry' },
   // 세계·기타
   { id: 'pho', name: '쌀국수', category: 'world', broth: 'soup' },
   { id: 'shabu-shabu', name: '샤브샤브', category: 'world', broth: 'soup' },
@@ -81,4 +141,8 @@ export const MEAL_LUNCH_MENUS = [
   { id: 'banh-mi', name: '반미', category: 'world', broth: 'dry' },
   { id: 'nasi-goreng', name: '나시고렝', category: 'world', broth: 'dry' },
   { id: 'indian-curry', name: '인도 커리', category: 'world', broth: 'dry' },
+  { id: 'burrito', name: '부리토', category: 'world', broth: 'dry' },
+  { id: 'quesadilla', name: '퀘사디아', category: 'world', broth: 'dry' },
+  { id: 'green-curry', name: '그린커리', category: 'world', broth: 'dry' },
+  { id: 'hotpot', name: '훠궈', category: 'world', broth: 'soup' },
 ] as const satisfies readonly MealMenuType<MealStandardCategoryKeyType>[];

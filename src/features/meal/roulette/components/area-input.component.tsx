@@ -22,6 +22,7 @@ export type MealRouletteAreaInputComponentPropsType = Readonly<{
   error: MealAreaInputErrorType | null;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onCompositionEnd: (event: CompositionEvent<HTMLInputElement>) => void;
+  onBlur: () => void;
   onClear: () => void;
 }>;
 
@@ -34,6 +35,7 @@ export function MealRouletteAreaInputComponent({
   error,
   onChange,
   onCompositionEnd,
+  onBlur,
   onClear,
 }: MealRouletteAreaInputComponentPropsType): JSX.Element {
   const inputId = useId();
@@ -81,6 +83,7 @@ export function MealRouletteAreaInputComponent({
           aria-describedby={describedBy}
           onChange={onChange}
           onCompositionEnd={onCompositionEnd}
+          onBlur={onBlur}
           className="h-11 rounded-lg border-muted-foreground bg-card pr-11 md:text-base"
         />
         {value !== '' && (

@@ -27,7 +27,7 @@
 - 사이트 전체 `Permissions-Policy: geolocation=()`이 `next.config.ts` 131행에 있다.
 - `COMPLIANCE.md` Meal 항목(150~151행)은 "위치 권한을 요청하지 않는다"고 적고 있다. 이 기능을 넣으면 이 문장을 바꿔야 한다.
 - `src/app/privacy/page.tsx` 205행에 "뭐 먹지는 위치 정보를 요청하지 않으며"라는 문장이 있다. 기능을 넣으면 개인정보 처리방침을 함께 고쳐야 한다.
-- 과거 점심 기획 보관본(`docs/lunch/archive/design-b-restaurants.md`)은 `/lunch/today`에서만 위치를 열고 좌표를 소수 셋째 자리로 반올림하는 안을 적었다. 현행 점심 설계는 위치를 쓰지 않는 쪽으로 확정됐다(`docs/lunch/design.md` 20행). 이 보관본의 반올림 방식은 4장 참고 자료로만 쓴다.
+- 과거 점심 기획 보관본(`docs/archive/lunch/archive/design-b-restaurants.md`)은 `/lunch/today`에서만 위치를 열고 좌표를 소수 셋째 자리로 반올림하는 안을 적었다. 현행 점심 설계는 위치를 쓰지 않는 쪽으로 확정됐다(`docs/archive/lunch/design.md` 20행). 이 보관본의 반올림 방식은 4장 참고 자료로만 쓴다.
 - 기존 `docs/research/menu-meals.md` 5장은 지도 링크 기본 형식(카카오 `/link/search/검색어`, 구글 `api=1&query=`, 네이버 웹 검색 경로 확인 필요)을 이미 정리했다. 이 문서는 좌표 관련 항목만 보탠다.
 
 ---

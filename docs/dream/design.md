@@ -616,7 +616,7 @@ export function getDreamTopicPaths(): readonly string[];                    // s
 
 ## 19. 파일 충돌 위험
 
-- `src/constants/menu.constant.ts`, `src/types/menu.type.ts`, `src/constants/theme.constant.ts`, `src/constants/menu-icon.constant.ts`, `src/app/globals.css`: 작업 트리에 "어디 가" 삭제 변경이 스테이징되어 있고, 점심(lunch) 작업(`docs/lunch/`, `supabase/migrations/0003_restaurants.sql`)이 같은 파일을 고칠 수 있다. 스테이징된 변경을 먼저 커밋하고, 점심 작업과는 순서대로 진행하거나 worktree로 나눈다.
+- `src/constants/menu.constant.ts`, `src/types/menu.type.ts`, `src/constants/theme.constant.ts`, `src/constants/menu-icon.constant.ts`, `src/app/globals.css`: 작업 트리에 "어디 가" 삭제 변경이 스테이징되어 있고, 점심(lunch) 작업(`docs/archive/lunch/`, `supabase/migrations/0003_restaurants.sql`)이 같은 파일을 고칠 수 있다. 스테이징된 변경을 먼저 커밋하고, 점심 작업과는 순서대로 진행하거나 worktree로 나눈다.
 - `src/app/sitemap.ts`: 점심 작업과 겹칠 수 있다. `e2e/fortune-v2.spec.ts` AC-9가 이 파일의 변경을 실패로 본다(D3).
 - `src/app/privacy/page.tsx`, `src/app/terms/page.tsx`, `COMPLIANCE.md`: 점심 등 다른 기능도 항목을 더할 수 있다. 한 번에 한 담당만 고친다.
 - `src/features/tarot/constants/tarot-safety.constant.ts`, `src/features/tarot/utils/tarot-safety.util.ts`: D1 추천안에서만 고친다. 타로 담당 작업과 겹치지 않게 한다.
