@@ -28,7 +28,7 @@ export function FooterComponent() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               운을 데이터로, 재미로.
               <br />
-              로또 번호 생성과 분석을 한곳에서 즐겨보세요.
+              오늘의 운세, 메뉴 고르기, 타로, 뽑기까지 가볍게 즐겨보세요.
             </p>
           </div>
 

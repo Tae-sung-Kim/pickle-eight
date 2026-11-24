@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     },
   ],
   robots: 'index,follow',
-  category: '엔터테인먼트, 도구, 로또',
+  category: '엔터테인먼트, 도구',
 };
 
 export default function RootLayout({

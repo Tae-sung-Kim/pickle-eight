@@ -28,7 +28,7 @@ export function PcMenuComponent() {
           const groupKey = group as MenuSectionKeyType;
           const Icon = SECTION_ICONS[groupKey] || Sparkles;
           // 오른쪽 끝에 가까운 메뉴는 화면 밖으로 나가지 않게 오른쪽 기준으로 연다
-          const alignRight = index >= MENU_LIST.length - 2;
+          const alignRight = index >= MENU_LIST.length - 3;
 
           // 항목이 1개면 드롭다운 없이 바로 이동 (2개 이상이 되면 자동으로 드롭다운)
           if (items.length < 2) {

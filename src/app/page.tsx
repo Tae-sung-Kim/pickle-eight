@@ -3,25 +3,27 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ComingSoonBadgeComponent } from '@/components/common/coming-soon-badge.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
-import { MENU_LIST } from '@/constants/menu.constant';
-import { LatestResultBannerComponent } from '@/features/lotto/shared/components/latest-result-banner.component';
+import {
+  HOME_DESCRIPTION,
+  HOME_GROUP_DESCRIPTIONS,
+  HOME_HERO_DESCRIPTION,
+  HOME_TITLE,
+} from '@/constants/home.constant';
+import {
+  type MENU_GROUP_NAME_ENUM,
+  MENU_LIST,
+} from '@/constants/menu.constant';
 import {
   buildMetadata,
   canonicalUrl,
   generateOgImageUrl,
   jsonLdWebSite,
+  SITE_NAME,
 } from '@/lib/seo';
 
-const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME as string;
-const TITLE = `${SITE_NAME} - 로또 분석 · 번호 생성`;
-const HERO_DESCRIPTION =
-  '최신 당첨 번호를 확인하고, 번호를 만들고, 내 번호를 채점하세요. 운을 데이터로 가볍게 들여다보는 연구소입니다.';
-const DESCRIPTION =
-  '로또 번호 생성/분석, 당첨번호 확인 등 운빨 관련 도구를 무료로 사용하세요.';
-
 const baseMeta = buildMetadata({
-  title: TITLE,
-  description: DESCRIPTION,
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
   pathname: '/',
 });
 
@@ -29,13 +31,23 @@ export const metadata: Metadata = {
   ...baseMeta,
   openGraph: {
     ...baseMeta.openGraph,
-    images: [generateOgImageUrl(TITLE, DESCRIPTION, SITE_NAME)],
+    images: [generateOgImageUrl(HOME_TITLE, HOME_DESCRIPTION, SITE_NAME)],
   },
   twitter: {
     ...baseMeta.twitter,
-    images: [generateOgImageUrl(TITLE, DESCRIPTION, SITE_NAME)],
+    images: [generateOgImageUrl(HOME_TITLE, HOME_DESCRIPTION, SITE_NAME)],
   },
 };
+
+function isHomeGroup(group: string): group is MENU_GROUP_NAME_ENUM {
+  return group in HOME_GROUP_DESCRIPTIONS;
+}
+
+function describeGroup(group: string, labels: readonly string[]): string {
+  return isHomeGroup(group)
+    ? HOME_GROUP_DESCRIPTIONS[group]
+    : labels.join(', ');
+}
 
 export default function RootPage() {
   const groups = MENU_LIST.filter((g) => g.items.length > 0);
@@ -58,12 +70,8 @@ export default function RootPage() {
       <div className="max-w-4xl">
         <h1 className="text-4xl font-extrabold md:text-5xl">{SITE_NAME}</h1>
         <p className="mt-3 text-base leading-relaxed text-muted-foreground md:text-lg">
-          {HERO_DESCRIPTION}
+          {HOME_HERO_DESCRIPTION}
         </p>
-      </div>
-
-      <div className="mt-8">
-        <LatestResultBannerComponent />
       </div>
 
       {/* 메뉴가 추가되면 MENU_LIST 기준으로 자동 노출 */}
@@ -82,7 +90,10 @@ export default function RootPage() {
                     {g.comingSoon && <ComingSoonBadgeComponent />}
                   </span>
                   <span className="mt-0.5 block text-sm text-muted-foreground">
-                    {g.items.map((item) => item.label).join(', ')}
+                    {describeGroup(
+                      g.group,
+                      g.items.map((item) => item.label)
+                    )}
                   </span>
                 </span>
                 <ChevronRight
