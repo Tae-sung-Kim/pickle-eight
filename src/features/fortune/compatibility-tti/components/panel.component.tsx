@@ -114,12 +114,15 @@ export function FortuneCompatibilityTtiPanelComponent({
       ? state.person.step
       : null;
 
-  // 시각 질문·후보 선택이 끝나면(또는 연령 차단·결과가 되면) 입력해 둔 음력 값을 지운다
+  const isAskingMore = pendingStep === 'need-time' || pendingStep === 'choose';
+
+  // 시각 질문·후보 선택 중이 아니면(질문 없이 다음 사람으로 넘어감, 범위 밖 오류, 연령 차단, 결과)
+  // 입력해 둔 음력 값을 바로 지운다
   useEffect(() => {
-    if (pendingStep !== 'need-time' && pendingStep !== 'choose') {
+    if (!isAskingMore && lunarInput) {
       setLunarInput(null);
     }
-  }, [pendingStep]);
+  }, [isAskingMore, lunarInput]);
 
   useEffect(() => {
     if (step === 'age-blocked') {

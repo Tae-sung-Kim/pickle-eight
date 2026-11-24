@@ -317,7 +317,28 @@ describe('AC-11·14·31: 금지어·FAQ', () => {
     for (const w of ['카카오맵', '네이버지도', '구글 지도']) {
       expect(answer, w).toContain(w);
     }
-    expect(answer).toContain('뽑힌 메뉴 이름만 전달');
+    expect(answer).toContain('뽑힌 메뉴 이름과');
+    expect(answer).toContain('동네 이름');
+  });
+
+  test('AC-12: 금지어 목록에 위치 표현 5개가 들어 있다', () => {
+    for (const w of ['주변', '근처', '현재 위치', '내 위치', 'GPS']) {
+      expect(MEAL_FORBIDDEN_TERMS, w).toContain(w);
+    }
+  });
+
+  test('AC-12: 동네 입력 문구가 금지 표현 검사를 통과한다', () => {
+    const texts = [
+      notice.MEAL_AREA_INPUT_LABEL,
+      notice.MEAL_AREA_INPUT_PLACEHOLDER,
+      notice.MEAL_AREA_CLEAR_BUTTON_LABEL,
+      notice.MEAL_AREA_PREVIEW_LABEL,
+      notice.MEAL_AREA_RESULT_NOTICE_TEXT,
+      ...Object.values(notice.MEAL_AREA_ERROR_TEXT),
+      ...notice.MEAL_AREA_NOTICE_LINES,
+    ];
+    const found = texts.flatMap((t) => violations(t, t));
+    expect(found).toEqual([]);
   });
 
   test('FAQ 7개, 질문·답 중복 없음, 답끼리 같은 문장 없음, 보장 없음', () => {

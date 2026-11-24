@@ -83,4 +83,16 @@ export type MealMapLinkType = Readonly<{
   href: string;
 }>;
 
+/** 동네 이름 입력 검사 오류 이유 */
+export type MealAreaInputErrorType =
+  | 'invalid_char'
+  | 'too_long'
+  | 'too_many_digits';
+
+/** 동네 이름 입력 검사 결과. valid의 value는 정리된 문자열 */
+export type MealAreaInputResultType =
+  | Readonly<{ status: 'empty' }>
+  | Readonly<{ status: 'valid'; value: string }>
+  | Readonly<{ status: 'invalid'; reason: MealAreaInputErrorType }>;
+
 export type MealFaqItemType = Readonly<{ question: string; answer: string }>;

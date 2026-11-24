@@ -7,7 +7,10 @@ import {
   MEAL_RESULT_NOTICE_TEXT,
 } from '@/features/meal/constants/meal-notice.constant';
 import { MealRouletteMapLinksComponent } from '@/features/meal/roulette/components/map-links.component';
-import type { MealMenuType } from '@/features/meal/types/meal.type';
+import type {
+  MealAreaInputResultType,
+  MealMenuType,
+} from '@/features/meal/types/meal.type';
 
 export type MealRouletteResultComponentPropsType = Readonly<{
   /** 결과 메뉴. null이면 PC 자리 표시만 그린다 */
@@ -17,6 +20,7 @@ export type MealRouletteResultComponentPropsType = Readonly<{
   luckLabel: string;
   luckLine: string;
   spinning: boolean;
+  area: MealAreaInputResultType;
 }>;
 
 /**
@@ -29,6 +33,7 @@ export function MealRouletteResultComponent({
   luckLabel,
   luckLine,
   spinning,
+  area,
 }: MealRouletteResultComponentPropsType): JSX.Element {
   const titleId = useId();
 
@@ -67,7 +72,7 @@ export function MealRouletteResultComponent({
           {luckLine}
         </p>
       </div>
-      <MealRouletteMapLinksComponent menu={menu} />
+      <MealRouletteMapLinksComponent menu={menu} area={area} />
       <p className="border-t border-border pt-4 text-sm leading-6 text-muted-foreground">
         {MEAL_RESULT_NOTICE_TEXT}
       </p>

@@ -3,6 +3,7 @@ import { LoadingComponent } from '@/components/common/loading.component';
 import { FooterComponent } from '@/components/layout/footer.component';
 import { HeaderComponent } from '@/components/layout/header.component';
 import { Toaster } from '@/components/ui/sonner';
+import { HOME_DESCRIPTION, HOME_TITLE } from '@/constants/home.constant';
 import {
   buildKeywords,
   GLOBAL_KEYWORDS,
@@ -32,13 +33,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     template: `%s | ${SITE_NAME}`,
-    default: `${SITE_NAME} : 로또 번호 생성 · 분석 · 채점의 모든 것`,
+    default: HOME_TITLE,
   },
   icons: {
     icon: '/icon.svg',
   },
-  description:
-    '로또 번호 생성, 회차별 당첨 결과 조회, 번호 채점, 통계 분석, 시뮬레이터를 무료로 이용하세요.',
+  description: HOME_DESCRIPTION,
   keywords: buildKeywords(['운빨연구소', '운빨 로또'], GLOBAL_KEYWORDS),
   alternates: {
     canonical: SITE_URL,
@@ -46,10 +46,9 @@ export const metadata: Metadata = {
   openGraph: {
     title: {
       template: `%s | ${SITE_NAME}`,
-      default: `${SITE_NAME} : 로또 번호 생성 · 분석 · 채점의 모든 것`,
+      default: HOME_TITLE,
     },
-    description:
-      '로또 번호 생성, 회차별 당첨 결과 조회, 번호 채점, 통계 분석, 시뮬레이터를 무료로 이용하세요.',
+    description: HOME_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
     images: [
@@ -67,10 +66,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: {
       template: `%s | ${SITE_NAME}`,
-      default: `${SITE_NAME} : 로또 번호 생성 · 분석 · 채점의 모든 것`,
+      default: HOME_TITLE,
     },
-    description:
-      '로또 번호 생성, 회차별 당첨 결과 조회, 번호 채점, 통계 분석, 시뮬레이터를 무료로 이용하세요.',
+    description: HOME_DESCRIPTION,
     images: [`${SITE_URL}/og-image.svg`],
   },
   authors: [

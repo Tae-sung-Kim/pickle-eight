@@ -1,3 +1,5 @@
+import { MEAL_AREA_MAX_LENGTH } from '@/features/meal/constants/meal-area.constant';
+
 /**
  * 화면 문구(확정). ui-ux-design.md 7장 문구 표를 그대로 옮겼다.
  * "보장", "추천"이 들어간 고지 5문장은 meal-copy-rule의 허용 문장이다.
@@ -18,7 +20,7 @@ export const MEAL_NO_REWARD_NOTICE_TEXT =
 
 /** 외부 링크 안내 (지도 링크 바로 아래) */
 export const MEAL_EXTERNAL_LINK_NOTICE_TEXT =
-  '지도 검색 페이지는 카카오·네이버·구글이 각각 운영하는 외부 사이트이며 새 탭에서 열립니다. 이동 후에는 해당 사이트의 정책이 적용되고, 검색어로는 메뉴 이름만 전달됩니다. 검색 결과와 영업 정보는 해당 서비스 기준입니다.';
+  '지도 검색 페이지는 카카오·네이버·구글이 각각 운영하는 외부 사이트이며 새 탭에서 열립니다. 이동 후에는 해당 사이트의 정책이 적용되고, 검색어로는 뽑힌 메뉴 이름과 적은 경우 동네 이름만 전달됩니다. 검색 결과와 영업 정보는 해당 서비스 기준입니다.';
 
 /** 결과 하단 짧은 고지 (결과 카드 맨 아래) */
 export const MEAL_RESULT_NOTICE_TEXT =
@@ -79,6 +81,28 @@ export function getMealChangeAnnouncement(mealLabel: string): string {
 
 // --- 지도 ---
 export const MEAL_MAP_LINKS_TITLE = '지도에서 찾아보기';
+
+// --- 동네 입력 ---
+export const MEAL_AREA_INPUT_LABEL = '동네 이름 (선택)';
+export const MEAL_AREA_INPUT_PLACEHOLDER = '예: 강남역, 역삼동';
+export const MEAL_AREA_CLEAR_BUTTON_LABEL = '동네 이름 지우기';
+export const MEAL_AREA_ERROR_TEXT = {
+  invalidChar:
+    '한글, 영문, 숫자, 띄어쓰기, 가운뎃점(·), 하이픈(-)만 쓸 수 있습니다. 이 입력은 검색어에 넣지 않습니다.',
+  tooManyDigits:
+    '전화번호나 상세 번지처럼 보이는 숫자는 적을 수 없습니다. 이 입력은 검색어에 넣지 않습니다.',
+  tooLong: `동네 이름은 ${MEAL_AREA_MAX_LENGTH}자까지 적을 수 있습니다. 이 입력은 검색어에 넣지 않습니다.`,
+} as const;
+export const MEAL_AREA_NOTICE_LINES = [
+  '동네 이름은 적지 않아도 됩니다. 적으면 뽑힌 메뉴 이름과 함께 지도 검색어로 쓰입니다.',
+  '적은 내용은 이 화면에만 있고 서버로 보내거나 저장하지 않으며, 새로고침하면 사라집니다.',
+  '지도 링크를 누르면 검색어(동네 이름과 메뉴 이름)가 해당 지도 사이트로 전달되고, 그 뒤에는 그 사이트의 약관과 개인정보처리방침이 적용됩니다.',
+  '상세 주소, 건물 번호, 전화번호 같은 개인 정보는 적지 마세요.',
+  '위치 권한은 요청하지 않습니다. 지도 결과가 적은 동네 안의 가게인지는 확인하지 않으며, 결과는 지도 사이트가 정합니다.',
+] as const;
+export const MEAL_AREA_PREVIEW_LABEL = '지도 검색어';
+export const MEAL_AREA_RESULT_NOTICE_TEXT =
+  '적은 동네 이름은 저장하지 않으며, 지도 링크를 누를 때만 검색어로 해당 지도 사이트에 전달됩니다.';
 
 // --- noscript ---
 export const MEAL_NOSCRIPT_TEXT =

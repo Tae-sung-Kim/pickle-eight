@@ -1042,7 +1042,7 @@ QA는 `e2e/meal.spec.ts`와 `unit/meal/`만 돌리고 전체 회귀는 마지막
 - 시크릿·환경변수: 새로 없음. `NEXT_PUBLIC_` 노출 없음.
 - RLS: 해당 없음(DB 없음).
 - 입력 검증: 사용자 입력이 라디오, 칩, 버튼뿐이다. 값은 상수 키 집합 안에서만 오가며 reducer가 모르는 값은 무시한다. 자유 입력이 없다.
-- XSS: 화면 문구는 모두 상수이고 React가 이스케이프한다. JSON-LD는 기존 `JsonLdComponent`로 상수만 넣는다. 지도 링크는 고정 앞부분 + `encodeURIComponent(메뉴 이름)`(기존과 같음).
+- XSS: 화면 문구는 모두 상수이고 React가 이스케이프한다. JSON-LD는 기존 `JsonLdComponent`로 상수만 넣는다. 지도 링크는 고정 앞부분 + `encodeURIComponent(메뉴 이름)`(기존과 같음). 동네 이름을 적은 경우는 검사를 통과한 값이 `동네 + 한 칸 + 메뉴`로 붙는다(`docs/meal-location/design.md`, 2026-11-24).
 - 리다이렉트: 목적지가 고정값이라 오픈 리다이렉트가 없다.
 - API 남용·rate limit: API가 없어 해당 없음.
 - 브라우저 저장소: 쓰지 않는다. 민감정보가 없다.

@@ -37,6 +37,12 @@ export const MEAL_FORBIDDEN_TERMS: readonly string[] = [
   '별점',
   '후기',
   '근처에서 찾기',
+  // 위치 검색처럼 읽히는 표현, meal-location
+  '주변',
+  '근처',
+  '현재 위치',
+  '내 위치',
+  'GPS',
   // 가게 추천·순위·광고 추가
   '추천 식당',
   '추천 맛집',

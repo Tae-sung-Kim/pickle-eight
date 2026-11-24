@@ -7,11 +7,13 @@ import {
   getMealChangeAnnouncement,
   getMealResultAnnouncement,
 } from '@/features/meal/constants/meal-notice.constant';
+import { MealRouletteAreaInputComponent } from '@/features/meal/roulette/components/area-input.component';
 import { MealRouletteFilterPanelComponent } from '@/features/meal/roulette/components/filter-panel.component';
 import { MealRouletteMealPickerComponent } from '@/features/meal/roulette/components/meal-picker.component';
 import { MealRouletteResultComponent } from '@/features/meal/roulette/components/result.component';
 import { MealRouletteSpinPanelComponent } from '@/features/meal/roulette/components/spin-panel.component';
 import { MealRouletteStatusComponent } from '@/features/meal/roulette/components/status.component';
+import { useMealAreaInput } from '@/features/meal/roulette/hooks/use-meal-area-input.hook';
 import { useMealRoulette } from '@/features/meal/roulette/hooks/use-meal-roulette.hook';
 
 /**
@@ -36,6 +38,13 @@ export function MealRouletteComponent(): JSX.Element {
     spin,
     handleSpinEnd,
   } = useMealRoulette();
+  const {
+    inputValue,
+    area,
+    handleChange: handleAreaChange,
+    handleCompositionEnd: handleAreaCompositionEnd,
+    clear: clearArea,
+  } = useMealAreaInput();
 
   const emptyNoticeId = useId();
   const spinButtonRef = useRef<HTMLButtonElement>(null);
@@ -97,24 +106,34 @@ export function MealRouletteComponent(): JSX.Element {
         />
       </div>
       <div className="space-y-6 md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:items-start md:gap-8 md:space-y-0">
-        <MealRouletteSpinPanelComponent
-          items={rouletteItems}
-          targetIndex={targetIndex === -1 ? null : targetIndex}
-          spinId={state.spinSeq}
-          spinning={spinning}
-          disabled={candidates.length === 0}
-          buttonLabel={spinButtonLabel}
-          describedBy={emptyNoticeId}
-          buttonRef={spinButtonRef}
-          onSpin={spin}
-          onSpinEnd={handleSpinEnd}
-        />
+        <div className="min-w-0 space-y-6">
+          <MealRouletteSpinPanelComponent
+            items={rouletteItems}
+            targetIndex={targetIndex === -1 ? null : targetIndex}
+            spinId={state.spinSeq}
+            spinning={spinning}
+            disabled={candidates.length === 0}
+            buttonLabel={spinButtonLabel}
+            describedBy={emptyNoticeId}
+            buttonRef={spinButtonRef}
+            onSpin={spin}
+            onSpinEnd={handleSpinEnd}
+          />
+          <MealRouletteAreaInputComponent
+            value={inputValue}
+            error={area.status === 'invalid' ? area.reason : null}
+            onChange={handleAreaChange}
+            onCompositionEnd={handleAreaCompositionEnd}
+            onClear={clearArea}
+          />
+        </div>
         <MealRouletteResultComponent
           menu={resultMenu}
           categoryLabel={categoryLabel}
           luckLabel={luckLabel}
           luckLine={luckLine}
           spinning={spinning}
+          area={area}
         />
       </div>
       <MealRouletteStatusComponent message={announcement} />
