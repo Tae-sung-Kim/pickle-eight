@@ -16,3 +16,13 @@ export const AD_TOP_BANNER: AdBannerConfigType | null =
         height: 100,
       }
     : null;
+
+// 하단 배너 (320x100). 환경변수가 없으면 null
+export const AD_BOTTOM_BANNER: AdBannerConfigType | null =
+  !ADS_DISABLED && process.env.NEXT_PUBLIC_ADFIT_UNIT_ID_BOTTOM
+    ? {
+        unitId: process.env.NEXT_PUBLIC_ADFIT_UNIT_ID_BOTTOM,
+        width: 320,
+        height: 100,
+      }
+    : null;

@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { MENU_LIST } from '@/constants/menu.constant';
 import { getDreamTopicPaths } from '@/features/dream/utils/dream-topic.util';
 import { FORTUNE_COMPATIBILITY_ROUTES } from '@/features/fortune/constants/fortune-compatibility-route.constant';
+import { getNoSonDaysYearPaths } from '@/features/no-son-days/utils/no-son-days-seo.util';
 import { SITE_URL } from '@/lib/seo';
 
 const RECENT_DRAWS = 200 as const; // 최근 N개 회차 포함
@@ -31,6 +32,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 꿈 해몽 소재 상세 경로 (소재 데이터가 채워지면 자동으로 늘어난다)
   const dreamTopicRoutes: string[] = [...getDreamTopicPaths()];
+
+  // 손 없는 날 연도 경로 24개 (허브는 메뉴 항목으로 포함됨)
+  const noSonDaysYearRoutes: string[] = [...getNoSonDaysYearPaths()];
 
   // 동적: 로또 최신 회차 조회 후 최근 N개 생성
   const dynamicLottoDraws: string[] = [];
@@ -67,6 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...menuRoutes,
       ...compatibilityRoutes,
       ...dreamTopicRoutes,
+      ...noSonDaysYearRoutes,
       ...dynamicLottoDraws,
     ])
   );

@@ -2,6 +2,7 @@ import {
   BarChart2,
   Bookmark,
   BookOpenText,
+  CalendarDays,
   CalendarSearch,
   CheckCircle2,
   Columns3,
@@ -44,4 +45,5 @@ export const MENU_ICONS: Readonly<Record<string, LucideIcon>> = {
   LoaderPinwheel,
   Shuffle,
   FerrisWheel,
+  CalendarDays,
 };

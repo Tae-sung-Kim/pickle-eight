@@ -18,7 +18,7 @@ const SCOPES = {
     'src/lib/',
     'src/types/',
     /^src\/features\/[^/]+\/services\/[^/]+\.repository\.ts$/,
-    /^src\/features\/[^/]+\/(types|constants)\//,
+    /^src\/features\/[^/]+\/(types|constants|utils)\//,
     'scripts/fortune-calendar/',
     'docs/',
   ],

@@ -44,6 +44,7 @@ pnpm dev
 | `NEXT_PUBLIC_SITE_ENG_NAME`        | 사이트 영어 이름                                           |
 | `NEXT_PUBLIC_SITE_URL`             | 사이트 절대 URL                                            |
 | `NEXT_PUBLIC_ADFIT_UNIT_ID`        | 카카오 AdFit 상단 배너 유닛 ID (없으면 광고 미노출)        |
+| `NEXT_PUBLIC_ADFIT_UNIT_ID_BOTTOM` | 카카오 AdFit 하단 배너(320x100) 유닛 ID (없으면 하단 광고 미노출) |
 | `NEXT_PUBLIC_ADFIT_DISABLED`       | `true`면 광고 영역 전체 숨김 (로컬 개발용)                 |
 | `NEXT_PUBLIC_LOTTO_MIN_LOADING_MS` | 로딩 최소 표시 시간(ms)                                    |
 | `LOTTO_DELAY_MS`                   | 서버 응답 인위적 지연(ms)                                  |
@@ -85,7 +86,7 @@ pnpm dev
 
 운세 기능의 음력 변환과 절기(입춘, 중기) 판정은 런타임에 외부 API를 부르지 않고 미리 만들어 둔 표를 씁니다.
 
-- 표 위치: `src/features/fortune/constants/calendar/` (`lunar-table.constant.ts`, `solar-term-table.constant.ts`)
+- 표 위치: 음력 표 `src/constants/lunar-table.constant.ts`, 절기 표 `src/features/fortune/constants/calendar/solar-term-table.constant.ts`
 - 출처: 한국천문연구원(KASI) 공공데이터포털 특일 정보(24절기)와 음양력 정보
 - 지원 범위: 출생일 1920-01-01 ~ 2028-12-31. 절기 표는 1920~2028년, 음력 표는 1919~2049년입니다. 2029년 이후 출생은 후속 작업 F-1(기한 2028-12-01)에서 다룹니다.
 - 다시 만드는 방법: `.env`에 `DATA_GO_KR_API_KEY`를 넣고 `node --env-file=.env scripts/fortune-calendar/generate.mjs`로 표를 만든 뒤 `node --env-file=.env scripts/fortune-calendar/verify.mjs`로 대조합니다. 키는 저장소에 적지 않습니다.

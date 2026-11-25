@@ -2,6 +2,7 @@
 import { useEffect, useId } from 'react';
 import { ConsentNudgeComponent } from '@/components/consent/consent-nudge.component';
 import {
+  AD_BOTTOM_BANNER,
   AD_TOP_BANNER,
   ADS_DISABLED,
 } from '@/features/ad/constants/adfit.constant';
@@ -9,11 +10,13 @@ import { useConsentContext } from '@/providers/consent.provider';
 import { useLoadingStore } from '@/stores/loading.store';
 
 export type AdFitSlotProps = {
+  readonly unit?: 'top' | 'bottom';
   readonly fixed?: boolean;
   readonly topOffsetPx?: number; // when fixed, offset from top (e.g., header height)
 };
 
 export function AdFitSlotComponent({
+  unit = 'top',
   fixed = false,
   topOffsetPx = 0,
 }: AdFitSlotProps) {
@@ -21,7 +24,7 @@ export function AdFitSlotComponent({
   const { state } = useConsentContext();
   const key = useId();
 
-  const adConfig = AD_TOP_BANNER;
+  const adConfig = unit === 'bottom' ? AD_BOTTOM_BANNER : AD_TOP_BANNER;
 
   useEffect(() => {
     // Only proceed when consent is explicitly accepted
@@ -82,7 +85,7 @@ export function AdFitSlotComponent({
         /* noop */
       })
       .finally(() => hideLoading());
-  }, [state, showLoading, hideLoading]);
+  }, [state, adConfig, showLoading, hideLoading]);
 
   if (ADS_DISABLED) return null;
 
@@ -140,7 +143,7 @@ export function AdFitSlotComponent({
       {/* spacer to offset fixed bar height */}
       <div style={{ height: h ? `${h + 16}px` : undefined }} aria-hidden />
       <div
-        className="fixed left-0 right-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80"
+        className="fixed left-0 right-0 z-40 bg-background"
         style={{ top: `${topOffsetPx}px` }}
       >
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex justify-center">

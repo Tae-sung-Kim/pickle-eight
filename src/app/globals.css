@@ -78,6 +78,7 @@
   --menu-fortune: #8a6110; /* 강황 */
   --menu-dream: #2a6672; /* 염수 */
   --menu-lucky: #4b4690; /* 가지 */
+  --menu-no-son-days: #2e5593; /* 쪽 */
   /* 공유 카드 이미지 전용 고정 색. .dark에서 덮어쓰지 않는다 */
   --share-card-bg: #eef0e6;
   --share-card-fg: #1b3328;
@@ -117,6 +118,7 @@
   --color-menu-fortune: var(--menu-fortune);
   --color-menu-dream: var(--menu-dream);
   --color-menu-lucky: var(--menu-lucky);
+  --color-menu-no-son-days: var(--menu-no-son-days);
   --color-share-card-bg: var(--share-card-bg);
   --color-share-card-fg: var(--share-card-fg);
   --color-share-card-muted: var(--share-card-muted);

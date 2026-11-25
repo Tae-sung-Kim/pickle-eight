@@ -39,9 +39,9 @@ const calendarDir = path.resolve(
   scriptDir,
   '../../src/features/fortune/constants/calendar'
 );
-export const LUNAR_TABLE_PATH = path.join(
-  calendarDir,
-  'lunar-table.constant.ts'
+export const LUNAR_TABLE_PATH = path.resolve(
+  scriptDir,
+  '../../src/constants/lunar-table.constant.ts'
 );
 export const SOLAR_TERM_TABLE_PATH = path.join(
   calendarDir,

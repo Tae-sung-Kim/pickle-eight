@@ -5,6 +5,8 @@
 //   (옵션) --count=80  무작위 포함 총 표본 수(60 이상, 기본 80)
 //   (옵션) --seed=12345 무작위 시드(같은 값이면 같은 표본)
 //   (옵션) --offline   네트워크·키 없이 알려진 값 대조만 실행
+//   (옵션) --from=YYYY-MM-DD --to=YYYY-MM-DD  표본을 뽑는 양력 범위(기본 1920~2028)
+//   (옵션) --out=<경로>  결과 JSON 저장 경로(기본 verify-result.json)
 //
 // - 생성에 쓴 getSolCalInfo(음력->양력)와 다른 API인 getLunCalInfo(양력->음력)로
 //   양력 날짜를 다시 조회해, 표로 계산한 음력 날짜·윤달 여부와 비교한다.
@@ -12,7 +14,7 @@
 //   (lunWolgeon은 음력월 기준이라 절기 월주와 다를 수 있어 비교에 쓰지 않는다)
 // - .env 파일을 읽지 않고, 키 값을 출력·기록하지 않는다.
 
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -47,9 +49,15 @@ function parseArgs(argv) {
     count: DEFAULT_SAMPLE_COUNT,
     seed: Date.now() % 2147483647,
     offline: false,
+    from: null,
+    to: null,
+    out: null,
   };
   for (const arg of argv) {
     if (arg === '--offline') options.offline = true;
+    else if (arg.startsWith('--from=')) options.from = parseDateOption(arg, 7);
+    else if (arg.startsWith('--to=')) options.to = parseDateOption(arg, 5);
+    else if (arg.startsWith('--out=')) options.out = arg.slice(6).trim();
     else if (arg.startsWith('--count=')) options.count = Number(arg.slice(8));
     else if (arg.startsWith('--seed=')) options.seed = Number(arg.slice(7));
     else throw new Error(`알 수 없는 옵션: ${arg}`);
@@ -60,7 +68,40 @@ function parseArgs(argv) {
   if (!Number.isInteger(options.seed)) {
     throw new Error('--seed는 정수여야 합니다.');
   }
+  if (options.out !== null && options.out === '') {
+    throw new Error('--out에 경로를 지정하세요.');
+  }
+  if (options.from || options.to) {
+    options.from ??= { year: 1920, month: 1, day: 1 };
+    options.to ??= { year: 2028, month: 12, day: 31 };
+    options.from.jdn = toJdn(
+      options.from.year,
+      options.from.month,
+      options.from.day
+    );
+    options.to.jdn = toJdn(options.to.year, options.to.month, options.to.day);
+    if (options.from.jdn > options.to.jdn) {
+      throw new Error('--from은 --to보다 늦을 수 없습니다.');
+    }
+    if (options.from.year < 1920 || options.to.year > LUNAR_LAST_YEAR) {
+      throw new Error(
+        `범위는 1920-01-01 ~ ${LUNAR_LAST_YEAR}-12-31 안이어야 합니다.`
+      );
+    }
+  }
   return options;
+}
+
+function parseDateOption(arg, prefixLength) {
+  const name = arg.slice(0, prefixLength - 1);
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(arg.slice(prefixLength));
+  if (!match) throw new Error(`${name}는 YYYY-MM-DD 형식이어야 합니다.`);
+  const [year, month, day] = match.slice(1).map(Number);
+  const back = fromJdn(toJdn(year, month, day));
+  if (back.year !== year || back.month !== month || back.day !== day) {
+    throw new Error(`${name}: 존재하지 않는 날짜입니다.`);
+  }
+  return { year, month, day };
 }
 
 /** mulberry32 시드 난수 */
@@ -183,7 +224,52 @@ function runKnownValueChecks(lunarRows, solarTable) {
 // ---------------------------------------------------------------------------
 // 양력->음력 표본 대조 (getLunCalInfo)
 
-function pickSamples(lunarRows, count, seed) {
+function pickRangeSamples(lunarRows, count, seed, from, to) {
+  const random = createRandom(seed);
+  const seen = new Set();
+  const samples = [];
+  const add = (year, month, day, kind) => {
+    const key = `${year}-${month}-${day}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    samples.push({ year, month, day, kind });
+  };
+  const inRange = (y, m, d) => {
+    const jdn = toJdn(y, m, d);
+    return jdn >= from.jdn && jdn <= to.jdn;
+  };
+
+  for (const [y, m, d] of [
+    [2026, 1, 1],
+    [2026, 11, 8],
+    [2026, 12, 8],
+    [2049, 12, 31],
+  ]) {
+    if (inRange(y, m, d)) add(y, m, d, '고정');
+  }
+
+  // 범위 안 윤달이 있는 해마다 윤달 날짜 하나
+  for (const row of lunarRows) {
+    if (row.leapMonth === 0) continue;
+    const span = monthSpans(row).find((s) => s.isLeap);
+    const lo = Math.max(span.startJdn, from.jdn);
+    const hi = Math.min(span.startJdn + span.length - 1, to.jdn);
+    if (lo > hi) continue;
+    const solar = fromJdn(lo + Math.floor(random() * (hi - lo + 1)));
+    add(solar.year, solar.month, solar.day, '윤달');
+  }
+
+  const total = to.jdn - from.jdn + 1;
+  const target = Math.min(count, total);
+  while (samples.length < target) {
+    const solar = fromJdn(from.jdn + Math.floor(random() * total));
+    add(solar.year, solar.month, solar.day, '무작위');
+  }
+  return samples;
+}
+
+function pickSamples(lunarRows, count, seed, from, to) {
+  if (from && to) return pickRangeSamples(lunarRows, count, seed, from, to);
   const random = createRandom(seed);
   const seen = new Set();
   const samples = [];
@@ -270,7 +356,13 @@ async function fetchLunarOf(client, sample) {
 }
 
 async function runSampleChecks(client, lunarRows, options) {
-  const samples = pickSamples(lunarRows, options.count, options.seed);
+  const samples = pickSamples(
+    lunarRows,
+    options.count,
+    options.seed,
+    options.from,
+    options.to
+  );
   console.log(
     `\n[양력->음력 표본 대조 ${samples.length}건, 시드 ${options.seed}] getLunCalInfo(생성에 쓴 getSolCalInfo와 다른 API)`
   );
@@ -334,8 +426,12 @@ async function main() {
   const results = await runSampleChecks(client, lunarRows, options);
   const mismatches = results.filter((result) => !result.match);
 
+  const resultPath = options.out
+    ? path.resolve(process.cwd(), options.out)
+    : RESULT_PATH;
+  await mkdir(path.dirname(resultPath), { recursive: true });
   await writeFile(
-    RESULT_PATH,
+    resultPath,
     `${JSON.stringify(
       {
         verifiedAt: kstTodayText(),
@@ -347,6 +443,14 @@ async function main() {
           lunar: [LUNAR_FIRST_YEAR, LUNAR_LAST_YEAR],
           solarTerm: [SOLAR_TERM_FIRST_YEAR, SOLAR_TERM_LAST_YEAR],
         },
+        ...(options.from
+          ? {
+              range: {
+                from: ymdText(options.from),
+                to: ymdText(options.to),
+              },
+            }
+          : {}),
         seed: options.seed,
         sampleCount: results.length,
         matched: results.length - mismatches.length,
@@ -364,7 +468,7 @@ async function main() {
   console.log(
     `\n요약: 표본 ${results.length}건 중 일치 ${results.length - mismatches.length}건, 불일치 ${mismatches.length}건. 알려진 값 불일치 ${knownFailed}건. 호출 ${client.callCount}회.`
   );
-  console.log(`결과 저장: ${path.relative(process.cwd(), RESULT_PATH)}`);
+  console.log(`결과 저장: ${path.relative(process.cwd(), resultPath)}`);
   process.exit(mismatches.length === 0 && knownFailed === 0 ? 0 : 1);
 }
 

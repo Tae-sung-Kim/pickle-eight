@@ -1,5 +1,6 @@
 import {
   BookOpenText,
+  CalendarDays,
   Circle,
   FerrisWheel,
   type LucideIcon,
@@ -36,6 +37,7 @@ export const SECTION_ICONS: Record<MenuSectionKeyType, LucideIcon> = {
   dream: BookOpenText,
   meal: Utensils,
   'lucky-draw': FerrisWheel,
+  'no-son-days': CalendarDays,
 };
 
 // 색 값은 globals.css의 --menu-* 토큰에서 온다
@@ -46,6 +48,7 @@ export const SECTION_ICON_COLOR: Record<MenuSectionKeyType, string> = {
   dream: 'text-menu-dream',
   meal: 'text-menu-meal',
   'lucky-draw': 'text-menu-lucky',
+  'no-son-days': 'text-menu-no-son-days',
 } as const;
 
 export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
@@ -55,6 +58,8 @@ export const SECTION_BADGE_COLOR: Record<MenuSectionKeyType, string> = {
   dream: 'bg-menu-dream/10 text-menu-dream border-menu-dream/20',
   meal: 'bg-menu-meal/10 text-menu-meal border-menu-meal/20',
   'lucky-draw': 'bg-menu-lucky/10 text-menu-lucky border-menu-lucky/20',
+  'no-son-days':
+    'bg-menu-no-son-days/10 text-menu-no-son-days border-menu-no-son-days/20',
 } as const;
 
 export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
@@ -64,4 +69,5 @@ export const BACKGROUND_COLORS: Record<MenuSectionKeyType, string> = {
   dream: 'bg-background',
   meal: 'bg-background',
   'lucky-draw': 'bg-background',
+  'no-son-days': 'bg-background',
 };

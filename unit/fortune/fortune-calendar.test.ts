@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { FORTUNE_LUNAR_TABLE } from '@/features/fortune/constants/calendar/lunar-table.constant';
+import { LUNAR_TABLE as FORTUNE_LUNAR_TABLE } from '@/constants/lunar-table.constant';
 import { FORTUNE_SOLAR_TERM_TABLE } from '@/features/fortune/constants/calendar/solar-term-table.constant';
 import {
   FORTUNE_BIRTH_YEAR_MAX,

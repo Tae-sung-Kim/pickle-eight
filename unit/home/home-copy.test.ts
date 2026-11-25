@@ -26,6 +26,7 @@ const EXPECTED_GROUP_ORDER = [
   'tarot',
   'lucky-draw',
   'dream',
+  'no-son-days',
   'lotto',
 ] as const;
 
@@ -45,6 +46,7 @@ const EXPECTED_ITEM_HREFS: Record<string, readonly string[]> = {
     '/lucky-draw/lots',
   ],
   dream: ['/dream'],
+  'no-son-days': ['/no-son-days'],
   lotto: [
     '/lotto/generator',
     '/lotto/history',

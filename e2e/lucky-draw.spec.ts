@@ -162,7 +162,7 @@ test.describe('허브와 공통', () => {
     expect(text).toContain('카드를 열어야 항목이 표시됩니다');
     expect(text).not.toContain('결과 가리기');
     await expect(
-      page.getByRole('heading', { level: 2, name: /^11\. 광고 및 쿠키$/ })
+      page.getByRole('heading', { level: 2, name: /^12\. 광고 및 쿠키$/ })
     ).toBeVisible();
     await expect(page.getByText(/제비뽑기\(카드 한 장씩 열기\)/)).toBeVisible();
   });

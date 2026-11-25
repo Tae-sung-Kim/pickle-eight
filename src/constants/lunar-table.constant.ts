@@ -6,9 +6,9 @@
 // 범위: 음력 1919~2049년
 // 형식: newYear = 음력 1월 1일의 양력 MMDD, leapMonth = 윤달 번호(없으면 0), monthBits = 평달 1~12월은 bit0~bit11, 윤달은 bit12 (1이면 30일, 0이면 29일)
 
-import type { FortuneLunarYearType } from '@/features/fortune/types/fortune-calendar.type';
+import type { LunarYearType } from '@/types/calendar.type';
 
-export const FORTUNE_LUNAR_TABLE: readonly FortuneLunarYearType[] = [
+export const LUNAR_TABLE: readonly LunarYearType[] = [
   { year: 1919, newYear: 201, leapMonth: 7, monthBits: 3538 },
   { year: 1920, newYear: 220, leapMonth: 0, monthBits: 3474 },
   { year: 1921, newYear: 208, leapMonth: 0, monthBits: 3365 },

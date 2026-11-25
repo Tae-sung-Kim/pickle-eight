@@ -374,6 +374,7 @@ export function useShare({
     () => handleImageButton('download'),
     [handleImageButton]
   );
+
   const handleCopyImage = useCallback(
     () => handleImageButton('copy-image'),
     [handleImageButton]

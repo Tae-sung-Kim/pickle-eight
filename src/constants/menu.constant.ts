@@ -9,6 +9,7 @@ export enum MENU_GROUP_NAME_ENUM {
   FORTUNE = 'fortune',
   DREAM = 'dream',
   LUCKY_DRAW = 'lucky-draw',
+  NO_SON_DAYS = 'no-son-days',
 }
 
 export const MENU_LIST: MenuGroupType[] = [
@@ -144,6 +145,22 @@ export const MENU_LIST: MenuGroupType[] = [
         description:
           '꿈에 나온 소재를 찾아 민간 풀이와 생각해 볼 점을 읽는 사전.',
         example: '예: 돼지, 치아처럼 떠오른 소재로 찾기',
+      },
+    ],
+  },
+  {
+    group: MENU_GROUP_NAME_ENUM.NO_SON_DAYS,
+    label: '손 없는 날',
+    href: `/${MENU_GROUP_NAME_ENUM.NO_SON_DAYS}`,
+    items: [
+      {
+        href: `/${MENU_GROUP_NAME_ENUM.NO_SON_DAYS}`,
+        label: '손 없는 날 달력',
+        icon: 'CalendarDays',
+        colorClass: 'text-menu-no-son-days',
+        description:
+          '음력 9·10·19·20·29·30일에 해당하는 손 없는 날을 양력 달력으로 확인.',
+        example: '예: 이사 날짜를 고르기 전에 이번 달 손 없는 날 확인',
       },
     ],
   },

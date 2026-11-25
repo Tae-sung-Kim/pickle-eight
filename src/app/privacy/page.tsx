@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const EFFECTIVE_DATE = '2026-11-23' as const;
+  const EFFECTIVE_DATE = '2026-11-25' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '개인정보처리방침', item: canonicalUrl('/privacy') },
@@ -115,6 +115,12 @@ export default function PrivacyPolicyPage() {
             전송하거나 저장하지 않고 방문 통계에도 포함하지 않습니다. 브라우저
             저장소(localStorage, sessionStorage)에도 아무 값을 남기지 않습니다.
             검색칸에는 개인적인 내용을 적지 않으시기 바랍니다.
+          </p>
+          <p className="mt-2">
+            손 없는 날 달력에는 입력란이 없고 이용자에게서 받는 정보가 없습니다.
+            날짜 계산은 이용자의 브라우저와 서버에서 음력 표로만 하며, 어떤 값도
+            서버로 보내거나 브라우저 저장소(localStorage, sessionStorage,
+            쿠키)에 저장하지 않습니다.
           </p>
           <p className="mt-2">
             결과 공유 기능은 공유 이미지와 링크를 이용자의 브라우저에서 만들며,

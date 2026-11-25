@@ -1,4 +1,7 @@
 import type { FortuneYmdType } from '@/features/fortune/types/fortune.type';
+import { fromJulianDayNumber, toJulianDayNumber } from '@/lib/date';
+
+export { fromJulianDayNumber, toJulianDayNumber };
 
 const DATE_KEY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] as const;
@@ -28,37 +31,6 @@ export function isValidSolarDate(ymd: FortuneYmdType): boolean {
     return false;
   }
   return day <= getDaysInMonth(year, month);
-}
-
-/** 그레고리력 날짜 → 율리우스 일수(정오 기준 정수). 날짜 차이·일진 계산용 */
-export function toJulianDayNumber(ymd: FortuneYmdType): number {
-  const a = Math.floor((14 - ymd.month) / 12);
-  const y = ymd.year + 4800 - a;
-  const m = ymd.month + 12 * a - 3;
-  return (
-    ymd.day +
-    Math.floor((153 * m + 2) / 5) +
-    365 * y +
-    Math.floor(y / 4) -
-    Math.floor(y / 100) +
-    Math.floor(y / 400) -
-    32045
-  );
-}
-
-export function fromJulianDayNumber(jdn: number): FortuneYmdType {
-  const a = jdn + 32044;
-  const b = Math.floor((4 * a + 3) / 146097);
-  const c = a - Math.floor((146097 * b) / 4);
-  const d = Math.floor((4 * c + 3) / 1461);
-  const e = c - Math.floor((1461 * d) / 4);
-  const m = Math.floor((5 * e + 2) / 153);
-  const carry = Math.floor(m / 10);
-  return {
-    year: 100 * b + d - 4800 + carry,
-    month: m + 3 - 12 * carry,
-    day: e - Math.floor((153 * m + 2) / 5) + 1,
-  };
 }
 
 export function compareYmd(a: FortuneYmdType, b: FortuneYmdType): -1 | 0 | 1 {

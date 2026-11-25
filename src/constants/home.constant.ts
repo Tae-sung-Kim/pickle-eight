@@ -19,5 +19,7 @@ export const HOME_GROUP_DESCRIPTIONS: Readonly<
   [MENU_GROUP_NAME_ENUM.LUCKY_DRAW]:
     '사다리 타기, 돌림판, 제비뽑기로 순서와 당번 정하기',
   [MENU_GROUP_NAME_ENUM.DREAM]: '꿈에 나온 소재로 찾아보는 민간 풀이 사전',
+  [MENU_GROUP_NAME_ENUM.NO_SON_DAYS]:
+    '음력 끝자리 9·0일, 손 없는 날을 양력 달력으로 보기',
   [MENU_GROUP_NAME_ENUM.LOTTO]: '로또 번호 만들기, 회차별 당첨 결과, 번호 채점',
 };

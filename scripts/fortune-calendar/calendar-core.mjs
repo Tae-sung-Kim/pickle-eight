@@ -320,9 +320,9 @@ export function formatLunarTable(rows, generatedAt) {
     .join('\n');
   return `${header}
 
-import type { FortuneLunarYearType } from '@/features/fortune/types/fortune-calendar.type';
+import type { LunarYearType } from '@/types/calendar.type';
 
-export const FORTUNE_LUNAR_TABLE: readonly FortuneLunarYearType[] = [
+export const LUNAR_TABLE: readonly LunarYearType[] = [
 ${body}
 ];
 `;
