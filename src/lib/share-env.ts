@@ -1,7 +1,7 @@
 import type { ShareEnvType } from '@/types/share.type';
 
 const KAKAO_PATTERN = /KAKAOTALK/i;
-const MOBILE_PATTERN = /Android|iPhone|iPad|iPod|Mobile/i;
+const MOBILE_PATTERN = /Android|iPhone|iPod/i;
 const ANDROID_PATTERN = /Android/i;
 const IN_APP_PATTERN = /KAKAOTALK|NAVER\(inapp|Instagram|FBAN|FBAV|Line\//i;
 
@@ -39,11 +39,13 @@ export function readShareEnv(): ShareEnvType {
     return SHARE_ENV_FALLBACK;
   }
 
-  // 일부 안드로이드는 hover: none을 안 주므로 pointer: coarse나 모바일 UA면 모바일로 본다
+  // 일부 안드로이드는 hover: none을 안 주므로 hover: none 대신 폰 UA도 인정한다.
+  // pointer: coarse는 반드시 필요해서 터치 노트북·아이패드 데스크톱 UA는 제외된다
   const isCoarsePointer: boolean = safe(
     () =>
-      window.matchMedia('(pointer: coarse)').matches ||
-      MOBILE_PATTERN.test(navigator.userAgent),
+      window.matchMedia('(pointer: coarse)').matches &&
+      (window.matchMedia('(hover: none)').matches ||
+        MOBILE_PATTERN.test(navigator.userAgent)),
     false
   );
   const hasWebShare: boolean = safe(

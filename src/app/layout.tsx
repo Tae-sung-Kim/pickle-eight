@@ -115,6 +115,9 @@ export default function RootLayout({
                   {children}
                 </div>
               </main>
+              <div className="w-full flex justify-center px-4 pb-6 empty:hidden">
+                <AdFitSlotComponent unit="bottom" />
+              </div>
               <FooterComponent />
               <Toaster />
               <LoadingComponent />

@@ -42,6 +42,8 @@ function buildCsp(): string {
     'https://pagead2.googlesyndication.com',
     'https://*.daumcdn.net',
     'https://*.kakaocdn.net',
+    // AdFit 노출·노출 확인(viewable) 신호 이미지
+    'https://*.ds.kakao.com',
     'https://*.g.doubleclick.net',
     'https://securepubads.g.doubleclick.net',
     'https://s0.2mdn.net',

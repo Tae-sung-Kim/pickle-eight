@@ -95,9 +95,9 @@ test('AC-1, 2: 허브 구성과 달력 이동, 칸 표기, 공통 검사, 320px 
   await prevButton(page).click();
   await expect(monthHeading(page)).toHaveText('2026년 10월');
 
-  // 공통: 광고가 꺼져 있으면 감싸는 요소가 숨겨져 간격이 남지 않는다
+  // 공통: 광고가 꺼져 있으면 전역 하단 광고 감싸는 요소가 숨겨져 간격이 남지 않는다
   const wrappers = await page.evaluate(() =>
-    [...document.querySelectorAll('div.my-10')]
+    [...document.querySelectorAll('div.empty\\:hidden')]
       .filter((el) => el.children.length === 0)
       .map((el) => getComputedStyle(el).display)
   );
