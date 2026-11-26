@@ -5,6 +5,7 @@ import { FORTUNE_METHOD_A_STAR_SIGN_NOTICE } from '@/features/fortune/constants/
 import { FORTUNE_STAR_SIGNS } from '@/features/fortune/constants/fortune-star-sign.constant';
 import { FORTUNE_COMMON_POOL } from '@/features/fortune/constants/pools/common.constant';
 import { FORTUNE_STAR_SIGN_POOLS } from '@/features/fortune/constants/pools/star-sign-pools.constant';
+import { FortuneShareComponent } from '@/features/fortune/shared/components/fortune-share.component';
 import { FortuneLuckyComponent } from '@/features/fortune/shared/components/lucky.component';
 import {
   FortuneReadingComponent,
@@ -177,6 +178,12 @@ export function FortuneStarSignListComponent({
                   animationKey={selection.nonce}
                 />
                 <FortuneLuckyComponent lucky={reading.lucky} />
+                <FortuneShareComponent
+                  kind="starSign"
+                  name={sign.name}
+                  summary={reading.summary}
+                  lucky={reading.lucky}
+                />
               </div>
             ) : (
               <CollapsedItem name={sign.name} reading={reading} />

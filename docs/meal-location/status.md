@@ -10,8 +10,8 @@
 |---|---|---|---|---|
 | 0 리서치 | `docs/research/meal-location.md` | 승인 | 2026-11-24 | 좌표 방식 불가 확인. 사용자가 B안(동네 이름 텍스트) 선택 |
 | 1 기획 | `plan.md` | 승인 | 2026-11-24 | Q1~Q10 전부 권장안 |
-| 2 설계 | `design.md` | 승인 | 2026-11-24 | DQ1~DQ4 전부 권장안 |
-| 3 UI/UX | `ui-ux-design.md` | 승인 (2026-11-24, U-L1~L5·DQ4 전부 추천안) | | 입력란과 고지 배치 |
+| 2 설계 | `docs/archive/meal-location/design.md` | 승인 | 2026-11-24 | DQ1~DQ4 전부 권장안 |
+| 3 UI/UX | `docs/archive/meal-location/ui-ux-design.md` | 승인 (2026-11-24, U-L1~L5·DQ4 전부 추천안) | | 입력란과 고지 배치 |
 | 4 개발 준비 | `dev-tasks.md` | 완료 | | |
 | 5 개발 | FE-1~4, DOC-1·2 | 완료 | 2026-11-24 | |
 | 6 QA | `qa-report.md` | 통과 | 2026-11-24 | vitest 806, meal e2e 14 |
@@ -30,7 +30,7 @@
 - 2026-11-24: 사용자가 B안을 선택했다. 동네 이름을 직접 입력받아 "동네 + 메뉴" 검색어로 쓰고, 입력은 저장하지 않는다.
 - 2026-11-24: 기획 승인. Q1~Q10 모두 권장안으로 확정. 설계 단계 진행.
 - 2026-11-24: 기획 단계에서 "입력 없음"을 "메뉴 이름만"과 같은 동작으로 정했다. 기존 동작을 유지한다.
-- 2026-11-24: 개발·QA·검증 완료(vitest 806, meal e2e 14, typecheck, lint). COMPLIANCE.md, 방침, 약관, `docs/menu-meals/plan.md`·`design.md` 갱신 완료.
-- 2026-11-24: 사용자 결정으로 입력란 위치를 돌림판·다시 뽑기 버튼 아래, 지도 링크 위로 변경(항상 표시). `root.component.tsx`, `e2e/meal-location.spec.ts` 수정, `ui-ux-design.md` 맨 위에 변경 기록.
+- 2026-11-24: 개발·QA·검증 완료(vitest 806, meal e2e 14, typecheck, lint). COMPLIANCE.md, 방침, 약관, `docs/menu-meals/plan.md`·`docs/archive/meal-location/design.md` 갱신 완료.
+- 2026-11-24: 사용자 결정으로 입력란 위치를 돌림판·다시 뽑기 버튼 아래, 지도 링크 위로 변경(항상 표시). `root.component.tsx`, `e2e/meal-location.spec.ts` 수정, `docs/archive/meal-location/ui-ux-design.md` 맨 위에 변경 기록.
 - 배포 전 남은 일은 `docs/TODO.md` "출시 후 확인할 일" 8번.
 - 2026-11-24: /code-review 반영. 입력 규칙에 숫자 제한 추가(연속 숫자 5자 이상 또는 전체 숫자 7개 이상이면 `too_many_digits`로 거부, 전화번호·상세 번지 방지). plan AC-4, design 5.2의 허용 문자 규칙에 이 제한이 더해진 것으로 읽는다. 오류 문구는 `MEAL_AREA_ERROR_TEXT.tooManyDigits`.

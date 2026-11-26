@@ -8,6 +8,7 @@ import {
 import { FORTUNE_ZODIAC } from '@/features/fortune/constants/fortune-zodiac.constant';
 import { FORTUNE_COMMON_POOL } from '@/features/fortune/constants/pools/common.constant';
 import { FORTUNE_TTI_POOLS } from '@/features/fortune/constants/pools/tti-pools.constant';
+import { FortuneShareComponent } from '@/features/fortune/shared/components/fortune-share.component';
 import { FortuneLuckyComponent } from '@/features/fortune/shared/components/lucky.component';
 import {
   FortuneReadingComponent,
@@ -234,6 +235,12 @@ export function FortuneTtiListComponent({
                     animationKey={animationKey}
                   />
                   <FortuneLuckyComponent lucky={item.reading.lucky} />
+                  <FortuneShareComponent
+                    kind="tti"
+                    name={item.name}
+                    summary={item.reading.summary}
+                    lucky={item.reading.lucky}
+                  />
                 </li>
               );
             }

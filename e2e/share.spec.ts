@@ -403,7 +403,8 @@ test.describe('로또 생성기 회귀', () => {
     await page.getByRole('button', { name: '번호 뽑기' }).click();
     const share = page.getByRole('button', { name: '공유하기' });
     await expect(share).toBeVisible();
-    await expect(page.locator('[data-share-panel]')).toHaveCount(0);
+    // 2차 F-3: 로또 생성기도 공통 공유 패널을 쓴다
+    await expect(page.locator('[data-share-panel]')).toHaveCount(1);
 
     await share.click();
     await expect.poll(() => shareCalls(page).then((c) => c.length)).toBe(1);
@@ -411,17 +412,6 @@ test.describe('로또 생성기 회귀', () => {
     expect(call.files).toHaveLength(1);
     expect(call.files[0].type).toBe('image/png');
     expect(call.files[0].size).toBeGreaterThan(0);
-
-    await page.evaluate(() => {
-      Object.defineProperty(navigator, 'canShare', {
-        configurable: true,
-        value: undefined,
-      });
-    });
-    const downloadPromise = page.waitForEvent('download');
-    await share.click();
-    const png = await readPng(await downloadPromise);
-    expect(png.signature).toBe('PNG');
-    expect(png.size).toBeGreaterThan(0);
+    // 지원하지 않을 때 PNG 저장은 share-phase2.spec.ts AC-4(PC 모드)가 맡는다
   });
 });

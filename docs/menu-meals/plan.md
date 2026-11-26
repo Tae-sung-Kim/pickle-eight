@@ -2,7 +2,7 @@
 
 작성일: 2026-11-23
 상태: 기획 초안. 사용자 승인 전. 코드, 약관, 방침, COMPLIANCE.md는 고치지 않았다.
-보완: 2026-11-23 저녁 야식 카테고리 반영. `docs/menu-meals/design.md` 끝의 "plan.md 수정 필요" 표와 3.7절 기준으로 고쳤다. 고친 곳마다 "변경 이유"를 한 줄로 적었다.
+보완: 2026-11-23 저녁 야식 카테고리 반영. `docs/archive/menu-meals/design.md` 끝의 "plan.md 수정 필요" 표와 3.7절 기준으로 고쳤다. 고친 곳마다 "변경 이유"를 한 줄로 적었다.
 입력 문서:
 - `docs/TODO.md` 5번 항목(전체)
 - `docs/archive/lunch/plan.md`, `docs/archive/lunch/status.md`(공개 상태 기록), `docs/archive/lunch/legal-draft.md`
@@ -11,7 +11,7 @@
 - `src/features/lunch/` 현재 구조, `src/constants/menu.constant.ts`(71~85행 점심 그룹), `src/app/lunch/today/page.tsx`
 - `docs/conventions/seo.md`
 - `docs/_templates/plan.md`(틀)
-- `docs/menu-meals/design.md` 3.7절과 끝의 "plan.md 수정 필요" 표(야식 카테고리 반영)
+- `docs/archive/menu-meals/design.md` 3.7절과 끝의 "plan.md 수정 필요" 표(야식 카테고리 반영)
 
 ## 목표
 

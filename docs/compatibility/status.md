@@ -8,8 +8,8 @@
 |---|---|---|---|
 | 0 리서치 | `docs/research/compatibility.md` | 완료 | 2026-11-24 |
 | 1 기획 | `plan.md` | 완료 | 2026-11-24 ("권장대로", 13번은 A안) |
-| 2 설계 | `design.md` | 완료 | 2026-11-24 |
-| 3 UI/UX | `ui-ux-design.md` | 완료 | 2026-11-24 |
+| 2 설계 | `docs/archive/compatibility/design.md` | 완료 | 2026-11-24 |
+| 3 UI/UX | `docs/archive/compatibility/ui-ux-design.md` | 완료 | 2026-11-24 |
 | 4 개발 준비 | `dev-tasks.md` | 완료 | 2026-11-24 |
 | 5 개발 | FE-01~11, CP-1, CP-2 | 완료 | 2026-11-24 |
 | 6 QA | `qa-report.md` | 대기 | |

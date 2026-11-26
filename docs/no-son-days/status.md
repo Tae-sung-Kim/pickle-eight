@@ -10,8 +10,8 @@
 |---|---|---|---|---|
 | 0 리서치 | `docs/research/auspicious-days.md` | 완료 | 2026-11-25 (사용자: 손 없는 날만 넣기로 결정) | 황도·건제·생기복덕·생년월일은 2차 후보 |
 | 1 기획 | `docs/no-son-days/plan.md` | 승인 | 2026-11-25 (열린 질문 15개 "추천대로") | 메뉴 그룹은 설계 D-1에서 정함 |
-| 2 설계 | `docs/no-son-days/design.md` | 승인 | 2026-11-25 (D-1=B 새 그룹, D-2=음력 표 공용 이동, D-3=광고 추천안) | 새 그룹 `no-son-days`, 꿈 해몽 다음. 보강: `getNoSonInitialMonth`, U-10 |
-| 3 UI/UX | `docs/no-son-days/ui-ux-design.md` | 승인 | 2026-11-25 (열린 질문 6건 "추천대로") | 쪽 `#2e5593`, 전환 효과 없음, 연도 화면 목록 → 달력 |
+| 2 설계 | `docs/archive/no-son-days/design.md` | 승인 | 2026-11-25 (D-1=B 새 그룹, D-2=음력 표 공용 이동, D-3=광고 추천안) | 새 그룹 `no-son-days`, 꿈 해몽 다음. 보강: `getNoSonInitialMonth`, U-10 |
+| 3 UI/UX | `docs/archive/no-son-days/ui-ux-design.md` | 승인 | 2026-11-25 (열린 질문 6건 "추천대로") | 쪽 `#2e5593`, 전환 효과 없음, 연도 화면 목록 → 달력 |
 | 4 개발 준비 | `docs/archive/no-son-days/dev-tasks.md` | 완료 | 2026-11-25 | 문서 정리 규칙에 따라 archive로 이동 |
 | 5 개발 | 티켓 | 완료 | 2026-11-25 | BE-1~4b, FE-1~6 완료. USER-1(KASI 120건 일치) 완료 |
 | 6 QA | `docs/no-son-days/qa-report.md` | 통과 | 2026-11-25 | 단위(QA-1), E2E 8개(QA-2), 전체 회귀 E2E 101개(QA-3) 통과 |

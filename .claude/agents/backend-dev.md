@@ -2,6 +2,7 @@
 name: backend-dev
 description: 백엔드 개발 담당. design.md와 dev-tasks.md의 백엔드 티켓을 받아 API, 비즈니스 로직, 인증, 검증을 구현할 때 사용.
 tools: Read, Edit, Write, Bash, Grep, Glob
+skills: ponytail:ponytail
 model: sonnet
 effort: medium
 ---

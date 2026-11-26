@@ -43,6 +43,7 @@ import {
   FORTUNE_TTI_SEO,
   type FortunePageSeoType,
 } from '@/features/fortune/constants/fortune-seo.constant';
+import * as shareConstants from '@/features/fortune/constants/fortune-share.constant';
 import {
   FORTUNE_STAR_SIGN_GUIDE_RANGES,
   FORTUNE_STAR_SIGNS,
@@ -337,6 +338,7 @@ const MENU_TEXTS: NamedText[] = collect([
 const SHARED_TEXTS: NamedText[] = collect([
   ['상담전화 공용 상수', { ...crisisPhoneConstants }],
   ['행운 요소 대응표', FORTUNE_LUCKY_TABLE],
+  ['운세 공유 문구', { ...shareConstants }],
   ['12띠 이름', FORTUNE_ZODIAC],
   ['12별자리 이름', FORTUNE_STAR_SIGNS],
   ['12별자리 기간', FORTUNE_STAR_SIGN_GUIDE_RANGES],

@@ -3,7 +3,7 @@
 작성일: 2026-11-24
 대상: `/meal` 뽑기 결과의 지도 링크에 사용자 위치(좌표)를 실어 주변 검색으로 여는 옵션
 범위: 지도 3사 URL 좌표·반경 지원, 위치정보 법령과 개인정보 관점, Geolocation API와 브라우저 제약, 좌표 정밀도, 유사 서비스 UX. 코드는 건드리지 않았다.
-근거 문서: `docs/research/menu-meals.md`(지도 링크 기본 조사, 중복 조사하지 않음), `docs/menu-meals/design.md`(위치 요청 없음), `COMPLIANCE.md` Meal 항목, `src/app/privacy/page.tsx` 205행.
+근거 문서: `docs/research/menu-meals.md`(지도 링크 기본 조사, 중복 조사하지 않음), `docs/archive/menu-meals/design.md`(위치 요청 없음), `COMPLIANCE.md` Meal 항목, `src/app/privacy/page.tsx` 205행.
 
 이 문서는 법률 자문이 아니다. 공개 자료를 찾아 정리했다. 법률 판단이 필요한 항목은 "법률 확인 필요"로 표시했다.
 
@@ -23,7 +23,7 @@
 
 ## 2. 현재 상태와 전제
 
-- 지도 링크 3개(카카오맵, 네이버 지도, 구글 지도)는 메뉴 이름만 검색어로 쓴다. 위치 정보는 없다 (`src/features/meal/utils/meal-map-link.util.ts`, `docs/menu-meals/design.md` 1049행).
+- 지도 링크 3개(카카오맵, 네이버 지도, 구글 지도)는 메뉴 이름만 검색어로 쓴다. 위치 정보는 없다 (`src/features/meal/utils/meal-map-link.util.ts`, `docs/archive/menu-meals/design.md` 1049행).
 - 사이트 전체 `Permissions-Policy: geolocation=()`이 `next.config.ts` 131행에 있다.
 - `COMPLIANCE.md` Meal 항목(150~151행)은 "위치 권한을 요청하지 않는다"고 적고 있다. 이 기능을 넣으면 이 문장을 바꿔야 한다.
 - `src/app/privacy/page.tsx` 205행에 "뭐 먹지는 위치 정보를 요청하지 않으며"라는 문장이 있다. 기능을 넣으면 개인정보 처리방침을 함께 고쳐야 한다.
@@ -149,7 +149,7 @@
 - 헤더 허용 목록은 iframe 권한의 상한이다. 이 사이트는 iframe을 쓰지 않으므로 `self`로 충분하다 [추정].
 - 경로별 헤더를 나누는 방법: `next.config.ts`의 `headers()`는 경로 패턴(`source`)별로 헤더를 준다. 같은 키가 여러 항목에 걸릴 때 어느 값이 최종으로 가는지는 이 조사에서 Next.js 공식 근거를 찾지 못했다. 이전 점심 보관 설계는 "뒤 항목이 이긴다"고 적었으나 확인 필요. 설계 담당이 실제 응답 헤더를 검사해야 한다.
 - 다른 페이지는 `geolocation=()`을 유지해야 한다. 헤더 범위를 `/meal`로 좁히는 방식은 원칙상 가능하다. 실제 적용은 설계와 QA에서 확인 필요.
-- 한 번 열린 권한은 CSP에 영향이 없다. CSP는 바꾸지 않아도 된다 [추정, 지도 링크는 새 탭 이동이라 CSP 대상이 아님. `docs/menu-meals/design.md` 1049행과 같음].
+- 한 번 열린 권한은 CSP에 영향이 없다. CSP는 바꾸지 않아도 된다 [추정, 지도 링크는 새 탭 이동이라 CSP 대상이 아님. `docs/archive/menu-meals/design.md` 1049행과 같음].
 
 ---
 
@@ -195,7 +195,7 @@
 3. 처리 방식: 좌표는 이 화면의 메모리에만 있고 서버로 보내지 않으며 저장하지 않는다는 점
 4. 외부 전달: 링크를 누르면 좌표가 해당 지도 서비스(카카오, 네이버, 구글)의 URL로 전달된다는 점. 이 서비스가 아니라 그 지도 서비스의 약관과 개인정보 처리방침이 적용된다는 점
 5. 철회 방법: 브라우저 설정에서 위치 권한을 끌 수 있다는 점, 화면에서 다시 물어보지 않게 하는 방법(세션 단위 등)
-6. 이용 기록: 분석 도구에 좌표나 위치 관련 이벤트를 보내지 않는다는 점 (`docs/menu-meals/design.md` 기준과 같이)
+6. 이용 기록: 분석 도구에 좌표나 위치 관련 이벤트를 보내지 않는다는 점 (`docs/archive/menu-meals/design.md` 기준과 같이)
 
 ---
 

@@ -23,7 +23,7 @@ export type ShareTargetType = Readonly<{
   fileName: string;
 }>;
 
-export type ShareCardAccentType = 'meal' | 'lucky' | 'fortune';
+export type ShareCardAccentType = 'meal' | 'lucky' | 'fortune' | 'tarot';
 
 /** 카드 공통 틀에 들어가는 값 */
 export type ShareCardFrameType = Readonly<{

@@ -25,6 +25,7 @@ import { TarotExpertNoticeComponent } from '@/features/tarot/shared/components/e
 import { TarotQuestionInputComponent } from '@/features/tarot/shared/components/question-input.component';
 import { TarotReversedToggleComponent } from '@/features/tarot/shared/components/reversed-toggle.component';
 import { TarotCardComponent } from '@/features/tarot/shared/components/tarot-card.component';
+import { TarotShareComponent } from '@/features/tarot/shared/components/tarot-share.component';
 import { TarotTopicChipsComponent } from '@/features/tarot/shared/components/topic-chips.component';
 import type { TarotTopicSelectionType } from '@/features/tarot/types/tarot.type';
 import {
@@ -244,6 +245,16 @@ export function TarotDailyComponent(): JSX.Element {
               />
 
               {showExpertNotice ? <TarotExpertNoticeComponent /> : null}
+
+              {/* 새로 뽑고 뒤집기가 끝난 뒤에만, 복원 결과와 위기 신호 질문 결과에서는 숨김(렌더링 중 계산값) */}
+              {!state.isFlipping &&
+              state.source !== 'restored' &&
+              !state.drawnWithCrisis ? (
+                <TarotShareComponent
+                  count={1}
+                  inputs={[{ card, isReversed: state.drawn.isReversed }]}
+                />
+              ) : null}
 
               {state.isSaveFailed ? (
                 <p className="flex items-start gap-2 rounded-lg border border-border bg-card p-4 text-sm leading-6 text-foreground">

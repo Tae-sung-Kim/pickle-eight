@@ -4,7 +4,7 @@
 
 ## 작성 원칙
 
-- 외부 문장 미참조: 다른 사이트의 풀이, 메뉴 소개, 서비스 문구를 보지 않는다. `docs/menu-meals/design.md` 3~5장, `plan.md`, `ui-ux-design.md`만 근거로 쓴다.
+- 외부 문장 미참조: 다른 사이트의 풀이, 메뉴 소개, 서비스 문구를 보지 않는다. `docs/archive/menu-meals/design.md` 3~5장, `plan.md`, `ui-ux-design.md`만 근거로 쓴다.
 - 운세: 합니다체, 한 문장, 가벼운 가능성 표현("~일 수 있습니다", "~어떨까요"). 메뉴 이름, 국물, 맛, 건강, 영양, 효능을 말하지 않는다. 다른 끼니 이름(점심 문구의 "저녁", "아침" 등)을 넣지 않는다.
 - 금지 표현: `src/features/meal/constants/meal-copy-rule.constant.ts`(검사 전용). 음주 단어, 건강·영양 표현, `든든`, 해장 표현을 포함한다.
 - 메뉴 이름: 실제로 많이 쓰는 일반 음식 이름만. 술안주 연상 메뉴는 아침에 넣지 않는다(저녁은 야식 카테고리에 둔다)(`MEAL_ALCOHOL_ASSOCIATED_MENU_NAMES`).

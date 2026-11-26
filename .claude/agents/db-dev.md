@@ -2,6 +2,7 @@
 name: db-dev
 description: DB 개발 담당. design.md의 스키마를 받아 마이그레이션, 테이블, 인덱스, 시드 데이터를 작성할 때 사용.
 tools: Read, Edit, Write, Bash, Grep, Glob
+skills: ponytail:ponytail
 model: sonnet
 effort: low
 ---

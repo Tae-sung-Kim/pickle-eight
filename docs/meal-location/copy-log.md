@@ -1,6 +1,6 @@
 # 뭐 먹지 동네 이름 입력 문구 작성·검수 이력
 
-형식은 `docs/menu-meals/copy-log.md`를 따른다. 근거 문서는 `docs/meal-location/design.md` 7.6, 7.7과 `ui-ux-design.md` 상시 고지 문구 절이다. 외부 문장은 참조하지 않았다.
+형식은 `docs/menu-meals/copy-log.md`를 따른다. 근거 문서는 `docs/archive/meal-location/design.md` 7.6, 7.7과 `ui-ux-design.md` 상시 고지 문구 절이다. 외부 문장은 참조하지 않았다.
 
 ## 문구
 

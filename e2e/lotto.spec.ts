@@ -16,7 +16,9 @@ const LOTTO_PAGES = [
   '/lotto/simulator',
 ] as const;
 
-const gameRows = (page: Page) => page.getByText(/^\d+게임$/);
+// 화면 밖 공유 카드(aria-hidden)에도 "N게임"이 있어 제외한다
+const gameRows = (page: Page) =>
+  page.locator('span:text-matches("^\\\\d+게임$"):not([aria-hidden="true"] *)');
 
 async function openLotto(page: Page, path: string) {
   await page.goto(path);

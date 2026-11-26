@@ -16,6 +16,7 @@ const ACCENT_CLASS: Record<ShareCardAccentType, string> = {
   meal: 'bg-share-card-accent-meal',
   lucky: 'bg-share-card-accent-lucky',
   fortune: 'bg-share-card-accent-fortune',
+  tarot: 'bg-share-card-accent-tarot',
 };
 
 /**

@@ -23,11 +23,13 @@ const withText = (re: RegExp) =>
   FILES.filter((f) => re.test(f.text)).map((f) => f.rel);
 
 const CARD_FILES = FILES.filter((f) =>
-  /(^|\/)(compatibility-)?share-card\.component\.tsx$/.test(f.rel)
+  /(^|\/)(compatibility-|fortune-|tarot-)?share-card\.component\.tsx$/.test(
+    f.rel
+  )
 );
 
 describe('AC-10, 15: 공유 범위', () => {
-  it('공유 import는 1차 대상 기능에만 있다', () => {
+  it('공유 import는 1~2차 대상 기능에만 있다', () => {
     const users = withText(
       /@\/components\/share\/|@\/hooks\/use-share\.hook|@\/lib\/share(-capture|-env)?['"]/
     ).filter(
@@ -36,18 +38,18 @@ describe('AC-10, 15: 공유 범위', () => {
     expect(users.length).toBeGreaterThan(0);
     for (const p of users) {
       expect(p).toMatch(
-        /^src\/features\/(meal|lucky-draw|fortune)\/|^src\/hooks\/use-capture\.hook\.ts$/
+        /^src\/features\/(meal|lucky-draw|fortune|lotto\/generator)\/|^src\/features\/tarot\/shared\/components\/tarot-share\.component\.tsx$|^src\/features\/lotto\/(utils|constants)\/lotto-share\.|^src\/hooks\/use-capture\.hook\.ts$/
       );
     }
   });
 
-  it('사주, 꿈 해몽, 로또 생성기 밖에는 공유 import가 없다', () => {
+  it('사주, 꿈 해몽, 타로, 로또 생성기 외 로또 화면에는 공유 import가 없다', () => {
     const users = withText(
       /@\/components\/share\/|@\/hooks\/use-share\.hook|@\/lib\/share/
     );
     for (const p of users) {
       expect(p).not.toMatch(
-        /^src\/features\/(dream|tarot|lotto|lunch)\/|compatibility\/saju|fortune\/saju/
+        /^src\/features\/(dream|tarot\/(?!shared\/components\/tarot-share\.component\.tsx$)|lotto\/(?!generator\/|(utils|constants)\/lotto-share\.)|lunch)\/|compatibility\/saju|fortune\/saju/
       );
     }
   });
@@ -78,9 +80,19 @@ describe('AC-10, 15: 공유 범위', () => {
   });
 });
 
+describe('share-tarot AC-6: 타로 공유 버튼은 두 결과 화면에만 붙는다', () => {
+  it('TarotShareComponent 사용처는 /tarot/daily, /tarot/three-card 루트뿐', () => {
+    const users = withText(/<TarotShareComponent\b/).sort();
+    expect(users).toEqual([
+      'src/features/tarot/daily/components/root.component.tsx',
+      'src/features/tarot/three-card/components/root.component.tsx',
+    ]);
+  });
+});
+
 describe('AC-16: 카드 DOM에 상호작용 요소가 없다', () => {
-  it('카드 파일 5개를 찾는다', () => {
-    expect(CARD_FILES).toHaveLength(5);
+  it('카드 파일 8개를 찾는다', () => {
+    expect(CARD_FILES).toHaveLength(8);
   });
 
   it.each(CARD_FILES.map((f) => [f.rel, f.text] as const))(

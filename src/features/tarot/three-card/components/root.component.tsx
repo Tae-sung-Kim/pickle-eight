@@ -24,6 +24,7 @@ import { TarotExpertNoticeComponent } from '@/features/tarot/shared/components/e
 import { TarotQuestionInputComponent } from '@/features/tarot/shared/components/question-input.component';
 import { TarotReversedToggleComponent } from '@/features/tarot/shared/components/reversed-toggle.component';
 import { TarotCardComponent } from '@/features/tarot/shared/components/tarot-card.component';
+import { TarotShareComponent } from '@/features/tarot/shared/components/tarot-share.component';
 import { TarotTopicChipsComponent } from '@/features/tarot/shared/components/topic-chips.component';
 import { TarotThreeCardSpreadResultComponent } from '@/features/tarot/three-card/components/spread-result.component';
 import { TarotThreeCardStoryComponent } from '@/features/tarot/three-card/components/story.component';
@@ -281,6 +282,17 @@ export function TarotThreeCardComponent(): JSX.Element {
           />
           {story ? <TarotThreeCardStoryComponent story={story} /> : null}
           {showExpertNotice ? <TarotExpertNoticeComponent /> : null}
+          {/* 뒤집기가 끝난 뒤에만, 위기 신호 질문 결과에서는 숨김(렌더링 중 계산값) */}
+          {!isFlipping && !state.drawnWithCrisis ? (
+            <TarotShareComponent
+              count={3}
+              inputs={spreadEntries.map(({ card, isReversed, position }) => ({
+                card,
+                isReversed,
+                position,
+              }))}
+            />
+          ) : null}
           <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-4">
             <Button
               type="button"

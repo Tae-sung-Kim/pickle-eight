@@ -2,7 +2,7 @@
 
 입력: `docs/fortune/plan.md` (최종본, 승인 2026-11-05, AC-1~AC-78, "용어 사용 규칙: 사주"와 고지 3·4 갱신본), `docs/fortune/design.md` (확정본, 승인 2026-11-05, D11 허브·D12 오늘의 운세 링크·D14 지원 연도·D15 상담전화 기기별 표시 반영본)
 참고 규칙: `docs/conventions/design-system.md`, `docs/conventions/tech-stack.md`, `docs/conventions/code-style.md`("먼저 재사용할 기존 코드")
-선행 사례: `docs/tarot/ui-ux-design.md`(승인), `src/features/tarot/shared/components/`, `src/app/lotto/page.tsx`(로또 허브), `src/features/lotto/shared/components/age-gate-dialog.component.tsx`
+선행 사례: `docs/archive/tarot/ui-ux-design.md`(승인), `src/features/tarot/shared/components/`, `src/app/lotto/page.tsx`(로또 허브), `src/features/lotto/shared/components/age-gate-dialog.component.tsx`
 작성일: 2026-11-05
 상태: **확정**. 2026-11-05 사용자가 초안을 승인했다. 선택 항목은 S1 A, S2 A, S4 A, S5 A, S6 A, S7 A, S8 A, 모션 M1 넣음, M2 뺌으로 확정했다. 초안의 문구는 모두 "승인됨(2026-11-05)"이다. plan.md에서 바뀐 방식 A·B 안내와 "사주" 용어 규칙을 따라 고친 문구는 "plan 승인 문구 반영(2026-11-05)"로 표시했다. 허브(`/fortune`)와 띠·별자리 → 오늘의 운세 링크 문구(UI-1)는 U-1에서 승인 처리됐다(`status.md`). 상담전화는 사용자 결정(2026-11-05, 수정본)에 따라 터치 기기에서는 `tel:` 링크, 마우스·키보드 환경(PC)에서는 일반 텍스트로 보이고, 구현은 design.md D15·8.4 안 5로 확정됐다(S9, 아래 "상담전화 기기별 표시" 절). UI-2 갱신분은 U-12에서 확정됐다(2026-11-05, Q9 P-A, 윤달 체크 위치 L-A). UI-2 새 문구 초안(범위 오류 문장, 지원 범위 안내, 윤달 안내)만 C-3d·U-2에서 문구 검수와 함께 확정한다.
 

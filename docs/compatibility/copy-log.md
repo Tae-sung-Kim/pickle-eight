@@ -4,7 +4,7 @@
 
 ## 작성 원칙
 
-- 외부 문장 미참조: 다른 사이트의 궁합 풀이, 점수 설명, 궁합표를 보지 않는다. `docs/compatibility/design.md` D-4·5.4·8.2, `plan.md`, `ui-ux-design.md`, `docs/research/compatibility.md` 5장(규칙)·7.3·9.4·9.5만 근거로 쓴다.
+- 외부 문장 미참조: 다른 사이트의 궁합 풀이, 점수 설명, 궁합표를 보지 않는다. `docs/archive/compatibility/design.md` D-4·5.4·8.2, `plan.md`, `ui-ux-design.md`, `docs/research/compatibility.md` 5장(규칙)·7.3·9.4·9.5만 근거로 쓴다.
 - 묶음 하나: 요약 1~2문장 + 잘 맞는 점 2개 + 조율하면 좋은 점 2개. 합니다체, 가능성·행동 조언 표현("~한 편입니다", "~하면 좋습니다").
 - 두 사람은 "두 분", "서로"처럼 중립으로 부른다. 이름 자리표시를 쓰지 않는다. 점수·퍼센트·순위를 쓰지 않는다. "사주"를 쓰지 않는다.
 - 금지 표현: 기존 `fortune-copy-rule.constant.ts`(보장, 예측 등. 부정문도 금지)와 `fortune-compatibility-copy-rule.constant.ts`(결혼, 임신, 이별, 이혼, 바람 등. 부분 일치라 "바람직"도 금지).

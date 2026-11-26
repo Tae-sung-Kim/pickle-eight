@@ -21,8 +21,8 @@
 |---|---|---|---|---|
 | 0 리서치 | `docs/research/dream-interpretation.md` | 완료 | | 기획 입력으로 사용. 문서 안의 경로 표기(`docs/dream-interpretation/`)는 `docs/dream/`으로 바꿔 사용 |
 | 1 기획 | `plan.md` | 승인 | 2026-11-19 | 열린 질문 23건 모두 기본안으로 확정(아래 결정 기록) |
-| 2 설계 | `design.md` | 승인 | 2026-11-19 | D1(위기 표현 목록 공용화), D2(금지 표현 목록 구성), D3(fortune-v2 AC-9에서 sitemap.ts 제외) 모두 설계 추천안 채택 |
-| 3 UI/UX | `ui-ux-design.md` | 승인 | 2026-11-19 | Q1~Q6 모두 추천안 채택(아래 결정 기록) |
+| 2 설계 | `docs/archive/dream/design.md` | 승인 | 2026-11-19 | D1(위기 표현 목록 공용화), D2(금지 표현 목록 구성), D3(fortune-v2 AC-9에서 sitemap.ts 제외) 모두 설계 추천안 채택 |
+| 3 UI/UX | `docs/archive/dream/ui-ux-design.md` | 승인 | 2026-11-19 | Q1~Q6 모두 추천안 채택(아래 결정 기록) |
 | 4 개발 준비 | `dev-tasks.md` | 완료 | 2026-11-19 | 티켓 22개(DB 없음, backend 1, frontend 다수, qa 4, PM 2). 사용자 결정 7건은 dev-tasks 9장 참고 |
 | 5 개발 | 티켓 | 대기 | | 사용자 결정(문구 담당, 샘플 검수, 고지 문구 승인, 법적 문구 승인, 점심 순서) 후 시작. 샘플 10개 → 사용자 검수 → 나머지 110개 순서 |
 | 6 QA | `qa-report.md` | 대기 | | `e2e/dream-copy.spec.ts`, `e2e/dream.spec.ts`, `e2e/fortune-v2.spec.ts` AC-9 조정, 타로 회귀 |

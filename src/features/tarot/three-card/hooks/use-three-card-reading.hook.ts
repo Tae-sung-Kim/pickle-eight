@@ -10,7 +10,7 @@ import { hasTarotCrisisSignal } from '@/features/tarot/utils/tarot-safety.util';
 /**
  * 3장 타로 진행 상태 (design.md 12.3 확정).
  * 결과는 이 리듀서(메모리)에만 있고 어떤 저장소에도 쓰지 않는다(AC-25).
- * 질문은 이 상태에 넣지 않는다. 위기 감지 결과도 상태에 저장하지 않는다.
+ * 질문은 이 상태에 넣지 않는다. 위기 감지는 불리언(drawnWithCrisis) 하나만 메모리 상태에 두고 공유 버튼 숨김에만 쓴다.
  */
 export type TarotThreeCardReadingStateType =
   | Readonly<{ status: 'idle' }>
@@ -20,6 +20,8 @@ export type TarotThreeCardReadingStateType =
       drawn: readonly TarotDrawnCardType[];
       /** 뒤집기 연출 진행 중 */
       isFlipping: boolean;
+      /** 뽑는 순간의 위기 신호 여부. 공유 버튼 숨김에만 쓰는 불리언(질문 텍스트는 저장하지 않음) */
+      drawnWithCrisis: boolean;
     }>;
 
 export type TarotThreeCardReadingActionType =
@@ -46,10 +48,20 @@ function reducer(
       if (state.status !== 'idle') return state;
       return action.hasCrisis
         ? { status: 'crisis', drawn: action.drawn }
-        : { status: 'revealed', drawn: action.drawn, isFlipping: true };
+        : {
+            status: 'revealed',
+            drawn: action.drawn,
+            isFlipping: true,
+            drawnWithCrisis: false,
+          };
     case 'CONTINUE':
       if (state.status !== 'crisis') return state;
-      return { status: 'revealed', drawn: state.drawn, isFlipping: true };
+      return {
+        status: 'revealed',
+        drawn: state.drawn,
+        isFlipping: true,
+        drawnWithCrisis: true,
+      };
     case 'FLIP_DONE':
       if (state.status !== 'revealed' || !state.isFlipping) return state;
       return { ...state, isFlipping: false };

@@ -15,6 +15,7 @@ export const SHARE_CARD_SIZE = {
 export const SHARE_CARD_LIST_LIMITS = {
   ladderRows: 10,
   lotsRows: 12,
+  lottoGames: 6,
   rouletteCandidates: 14,
 } as const;
 

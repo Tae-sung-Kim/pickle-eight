@@ -38,6 +38,8 @@ export type TarotDailyReadingStateType =
       /** 뒤집기 연출 진행 중. restored는 항상 false */
       isFlipping: boolean;
       isSaveFailed: boolean;
+      /** 뽑는 순간의 위기 신호 여부. 공유 버튼 숨김에만 쓰는 불리언(질문 텍스트는 저장하지 않음) */
+      drawnWithCrisis: boolean;
     }>;
 
 type TarotDailyReadingActionType =
@@ -73,6 +75,7 @@ function reducer(
         source: 'restored',
         isFlipping: false,
         isSaveFailed: false,
+        drawnWithCrisis: false,
       };
     case 'EMPTY':
       return state.status === 'checking' ? { status: 'idle' } : state;
@@ -91,6 +94,7 @@ function reducer(
         source: 'drawn',
         isFlipping: true,
         isSaveFailed: action.isSaveFailed,
+        drawnWithCrisis: false,
       };
     case 'CONTINUE':
       if (state.status !== 'crisis') return state;
@@ -100,6 +104,7 @@ function reducer(
         source: 'drawn',
         isFlipping: true,
         isSaveFailed: state.isSaveFailed,
+        drawnWithCrisis: true,
       };
     case 'FLIP_DONE':
       if (state.status !== 'revealed' || !state.isFlipping) return state;

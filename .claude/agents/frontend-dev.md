@@ -2,6 +2,7 @@
 name: frontend-dev
 description: 프론트엔드 개발 담당. design.md, ui-ux-design.md, dev-tasks.md의 프론트 티켓을 받아 UI, 컴포넌트, 상태관리, 스타일을 디자인 명세대로 구현할 때 사용.
 tools: Read, Edit, Write, Bash, Grep, Glob
+skills: ponytail:ponytail
 model: sonnet
 effort: medium
 ---

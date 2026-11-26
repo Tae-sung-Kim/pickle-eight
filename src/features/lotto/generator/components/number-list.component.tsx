@@ -1,26 +1,27 @@
 'use client';
-import { Share2 } from 'lucide-react';
-import { useRef } from 'react';
-import { Button } from '@/components/ui/button';
+import { ShareCardFrameComponent } from '@/components/share/share-card-frame.component';
+import { ShareCardHostComponent } from '@/components/share/share-card-host.component';
+import { SharePanelComponent } from '@/components/share/share-panel.component';
+import { LOTTO_SHARE_TARGET } from '@/features/lotto/constants/lotto-share.constant';
+import { LottoGeneratorShareCardComponent } from '@/features/lotto/generator/components/share-card.component';
 import { LottoBallComponent } from '@/features/lotto/shared/components/ball.component';
 import { LottoSaveNumbersButtonComponent } from '@/features/lotto/shared/components/save-numbers-button.component';
 import type { LottoNumberListPropsType } from '@/features/lotto/types/lotto.type';
-import { useCapture } from '@/hooks/use-capture.hook';
+import { buildLottoShareCard } from '@/features/lotto/utils/lotto-share.util';
+import { useShare } from '@/hooks/use-share.hook';
 import { withUniqueKeys } from '@/lib/react-key';
+import { toShareCardKey } from '@/lib/share';
 
 export function LottoNumberListComponent({
   numbersList,
   title = '생성된 번호',
 }: LottoNumberListPropsType) {
-  const { onCapture } = useCapture();
-  const resultRef = useRef<HTMLDivElement>(null);
-
-  const handleShare = () => {
-    onCapture(resultRef as React.RefObject<HTMLElement>, {
-      fileName: 'result.png',
-      shareTitle: '로또 번호 추첨 결과',
-    });
-  };
+  const shareCard = buildLottoShareCard(numbersList);
+  const { cardRef, controller } = useShare({
+    target: LOTTO_SHARE_TARGET,
+    cardKey: shareCard ? toShareCardKey(shareCard.body) : null,
+    requiresPreview: false,
+  });
 
   if (numbersList.length === 0) {
     return (
@@ -36,13 +37,9 @@ export function LottoNumberListComponent({
         <h2 className="whitespace-nowrap text-base font-semibold">{title}</h2>
         <div className="flex items-center gap-1">
           <LottoSaveNumbersButtonComponent numbersList={numbersList} />
-          <Button type="button" variant="ghost" size="sm" onClick={handleShare}>
-            <Share2 className="h-4 w-4" />
-            공유하기
-          </Button>
         </div>
       </div>
-      <div ref={resultRef} className="grid grid-cols-1 gap-x-10 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-10 lg:grid-cols-2">
         {withUniqueKeys(numbersList, (n) => n.join('-')).map(
           ({ key, item: numbers, position: index }) => (
             <div
@@ -61,6 +58,25 @@ export function LottoNumberListComponent({
           )
         )}
       </div>
+      {shareCard ? (
+        <>
+          <div className="pt-4">
+            <SharePanelComponent
+              controller={controller}
+              previewAlt={`${shareCard.frame.featureName} ${shareCard.body.games.length}게임`}
+              previewTexts={[
+                shareCard.frame.featureName,
+                shareCard.frame.notice,
+              ]}
+            />
+          </div>
+          <ShareCardHostComponent ref={cardRef}>
+            <ShareCardFrameComponent frame={shareCard.frame}>
+              <LottoGeneratorShareCardComponent {...shareCard.body} />
+            </ShareCardFrameComponent>
+          </ShareCardHostComponent>
+        </>
+      ) : null}
     </section>
   );
 }

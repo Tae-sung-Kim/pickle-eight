@@ -1,6 +1,6 @@
 # 꿈 해몽 문구 작성·검수 이력
 
-이 문서는 꿈 소재 풀이 문구의 작성자, 작성일, 검수 상태를 기록한다. 형식은 `docs/tarot/copy-log.md`, `docs/fortune/copy-log.md`와 `docs/dream/design.md` 11장을 따른다. 작성 이력은 문구 데이터에 넣지 않고 이 문서에만 둔다. 소재 표의 헤더와 첫 열(slug)은 바꾸지 않는다.
+이 문서는 꿈 소재 풀이 문구의 작성자, 작성일, 검수 상태를 기록한다. 형식은 `docs/tarot/copy-log.md`, `docs/fortune/copy-log.md`와 `docs/archive/dream/design.md` 11장을 따른다. 작성 이력은 문구 데이터에 넣지 않고 이 문서에만 둔다. 소재 표의 헤더와 첫 열(slug)은 바꾸지 않는다.
 
 ## 작성 원칙
 

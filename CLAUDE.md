@@ -8,6 +8,7 @@
 - caveman: `claude-md-reminder.js`(SessionStart)가 `/caveman:caveman` 플러그인의 SKILL.md 본문을 매 세션 컨텍스트에 넣는다. token-optimizer(token-optimization SKILL.md)도 같은 hook이 넣는다. 세션 시작에 skill을 따로 호출하지 않는다.
 - 우선순위는 caveman > token-optimizer 이다. 충돌하면 caveman을 따른다.
 - `/code-review` 결과를 전할 때도 영어 원문 대신 한국어 caveman으로 쓴다. 지적마다 코드로 확인해서 맞음/의도함 여부와 조치만 짧게 적는다.
+- `/code-review` 요청이 오면, 새 화면·계산 로직·DB·API 변경이 있는 큰 변경에만 `ponytail:ponytail-review`도 같이 돌려서 군더더기(삭제·재사용·단순화)까지 본다. code-review는 버그 중심이고 ponytail-review는 불필요한 코드 중심이라 서로 보완한다. 두 결과는 한 목록으로 합치고 중복은 한 번만 적는다. 번호는 하나로 이어서 매긴다.
 - 이 섹션은 메인 세션에만 적용한다. subagent는 skill을 호출하지 않고, 문서(`docs/`)는 caveman이 아닌 일반 문장으로 쓴다.
 
 # 역할: PM/PL (메인 세션)
@@ -57,14 +58,14 @@ subagent는 skill을 못 부른다. PM이 호출하고 결과 중 필요한 부�
 | 도구 | 시점 | 쓰는 법 |
 |---|---|---|
 | `grilling` (사용자가 `/grill-me`로도 호출) | 1단계 전. 새 기능 요구사항이 모호하거나 사용자가 "grill"을 요청할 때 | PM이 호출해 결정 사항을 정리하고 planner 입력에 넣는다. planner의 열린 질문과 겹치면 이쪽을 우선한다 |
-| `ui-ux-pro-max` | 3단계 전. 새 화면이 있을 때 | PM이 호출해 참고 안(팔레트·폰트·UX 가이드)만 뽑아 ui-ux-designer에 넘긴다. `docs/conventions/design-system.md`와 다르면 conventions을 따른다 |
+| `ui-ux-pro-max` | 3단계 전. 새 화면이 있을 때 | PM이 호출해 참고 안(팔레트·폰트·UX 가이드)만 뽑아 ui-ux-designer에 넘긴다. `frontend-design`(agent가 직접 사용, 방향)과 보완 관계다: 참고 안은 근거 데이터이고 우선순위는 conventions > frontend-design > 참고 안이다. 참고 안은 agent 프롬프트에 직접 적어 넘긴다. `docs/conventions/design-system.md`와 다르면 conventions을 따른다 |
 | `archify` | 2단계 승인 후. 새 화면 흐름, DB, API 변경이 있을 때 | `design.md`를 바탕으로 `docs/<기능>/diagram.html`을 만들어 사용자에게 보여준다. 승인 단계를 늘리지 않는다 |
 | `archify-pr` | 사용자가 PR 설명을 요청할 때만 | commit·push·PR은 사용자가 직접 한다. 먼저 제안하지 않는다 |
 | `ponytail:ponytail-review` | 7단계. 새 화면, 계산 로직, DB·API 변경이 있는 기능 | 결과는 한국어 caveman으로, 지적마다 코드로 확인해 맞음/의도함과 조치만 적는다 |
 | `ponytail:ponytail-audit` | 사용자가 요청할 때만 | 전체 repo 진단이라 비싸다. 먼저 제안하지 않는다 |
 
 - `/grill-me`로 시작한 세션: 사용자가 "확정"하기 전에는 코드·문서·agent 호출을 하지 않는다. 확정하면 기능 개발일 때 정리된 결정을 planner 입력으로 넘겨 1단계부터 흐름을 진행한다(리서치가 필요하면 0단계부터). 기능 개발이 아니면 확정된 내용대로 바로 처리한다. 기능 이름은 영문 소문자 하이픈으로 정해 사용자에게 확인한다.
-- ponytail 상시 모드(SessionStart hook)는 메인 세션 응답에만 적용된다. 우선순위는 caveman > ponytail 이다.
+- ponytail은 코딩 방식이라 개발 agent(`frontend-dev`, `backend-dev`, `db-dev`)가 frontmatter `skills: ponytail:ponytail`로 직접 쓴다. 메인 세션은 SessionStart hook으로 적용된다. caveman(말투)과 역할이 다르며 서로 부딪히지 않는다. 말투는 caveman, 코드는 ponytail이다. 문서(`docs/`)와 agent 산출물은 caveman이 아니다.
 
 ## 규칙
 
@@ -98,7 +99,7 @@ subagent는 skill을 못 부른다. PM이 호출하고 결과 중 필요한 부�
 agent는 필요할 때 아래 문서를 직접 읽는다. 내용을 CLAUDE.md에 복사하지 않는다.
 
 - [README.md](README.md): 환경변수 목록, API 목록, Supabase 테이블, 로또 데이터 동기화(cron)
-- [COMPLIANCE.md](COMPLIANCE.md): 로또 기능 준수 사항. 운세·타로 등 새 기능의 법적 고지도 이 문서 형식을 참고한다.
+- [COMPLIANCE.md](COMPLIANCE.md): 로또 기능 준수 사항. 운세·타로 등 새 기능의 법적 고지도 이 문서 형식을 참고한다. 약 32KB(11장)라 통째로 읽지 않는다. `grep -n "^## " COMPLIANCE.md`로 장 위치를 찾고 필요한 장만 줄 범위로 읽는다. 같은 장은 세션당 한 번만 읽는다. agent에게 넘길 때도 장 번호만 적는다.
 - [DEPENDENCY_LICENSES.md](DEPENDENCY_LICENSES.md), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md): 새 라이브러리·폰트·이미지를 추가하면 같이 갱신한다.
 - 새 환경변수, API, 테이블을 추가하면 README.md의 해당 표도 갱신한다.
 

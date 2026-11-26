@@ -87,6 +87,8 @@
   --share-card-accent-meal: #a5481f;
   --share-card-accent-lucky: #4b4690;
   --share-card-accent-fortune: #8a6110;
+  --share-card-accent-tarot: #7a3358;
+  --share-card-paper: #f7f8f1;
 }
 
 @theme inline {
@@ -126,6 +128,7 @@
   --color-share-card-accent-meal: var(--share-card-accent-meal);
   --color-share-card-accent-lucky: var(--share-card-accent-lucky);
   --color-share-card-accent-fortune: var(--share-card-accent-fortune);
+  --color-share-card-accent-tarot: var(--share-card-accent-tarot);
   --color-jar-foreground: var(--jar-foreground);
   --color-jar-muted: var(--jar-muted);
   --color-success: var(--success);

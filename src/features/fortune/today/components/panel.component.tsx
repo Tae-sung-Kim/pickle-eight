@@ -10,6 +10,7 @@ import { useBirthFlow } from '@/features/fortune/hooks/use-birth-flow.hook';
 import { useKoreaDateKey } from '@/features/fortune/hooks/use-korea-date-key.hook';
 import { FortuneAgeBlockedComponent } from '@/features/fortune/shared/components/age-blocked.component';
 import { FortuneBirthFormComponent } from '@/features/fortune/shared/components/birth-form.component';
+import { FortuneShareComponent } from '@/features/fortune/shared/components/fortune-share.component';
 import { FortuneLuckyComponent } from '@/features/fortune/shared/components/lucky.component';
 import { FortuneLunarConfirmComponent } from '@/features/fortune/shared/components/lunar-confirm.component';
 import { FortuneReadingComponent } from '@/features/fortune/shared/components/reading.component';
@@ -249,6 +250,11 @@ export function FortuneTodayPanelComponent({
             animationKey={submitted?.count ?? null}
           />
           <FortuneLuckyComponent lucky={reading.lucky} />
+          <FortuneShareComponent
+            kind="today"
+            summary={reading.summary}
+            lucky={reading.lucky}
+          />
           <div className="md:flex md:flex-wrap md:items-center md:gap-x-6">
             <p
               id={otherBasisId}
