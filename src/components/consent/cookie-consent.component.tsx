@@ -15,8 +15,8 @@ export function CookieConsentComponent() {
         <div className="flex flex-col items-stretch gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between md:gap-4">
           <p className="flex-1 text-xs sm:text-sm leading-6 text-muted-foreground">
             🙏 광고 수익으로 이 서비스를 무료로 운영하고 있어요. 광고에 동의해
-            주시면 큰 힘이 됩니다. 거부해도 모든 기능은 그대로 쓸 수 있고,
-            광고용 쿠키는 쓰지 않아요.{' '}
+            주시면 큰 힘이 됩니다. 광고에 동의하면 광고 사업자가 쿠키를 쓸 수
+            있어요. 거부해도 모든 기능은 그대로 쓸 수 있어요.{' '}
             <Link
               href="/privacy#cookies-consent"
               className="font-medium text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
@@ -50,7 +50,7 @@ export function CookieConsentComponent() {
               onClick={onClose}
               variant="ghost"
               size="icon"
-              aria-label="닫기"
+              aria-label="선택 없이 닫기 (광고는 불러오지 않음)"
               className="h-8 w-8 text-muted-foreground hover:text-foreground"
             >
               <span aria-hidden>×</span>

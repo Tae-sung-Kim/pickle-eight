@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
-  const EFFECTIVE_DATE = '2026-11-25' as const;
+  const EFFECTIVE_DATE = '2026-11-26' as const;
   const fortuneBirthRange = `${FORTUNE_MIN_BIRTH.year}년부터 ${FORTUNE_MAX_BIRTH.year}년까지`;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
@@ -107,9 +107,9 @@ export default function TermsPage() {
             로또 회차/당첨 결과 데이터는 동행복권 등 공개된 출처의 정보를
             기반으로 서버 측 스케줄 잡(크론)을 통해 주기적으로 수집·검증한 뒤
             내부 데이터베이스(Supabase)에 저장됩니다. 클라이언트는 외부 제공처에
-            직접 요청하지 않고 내부 API를 통해서만 조회합니다. 수집은 각 출처의
-            이용약관과 호출 제한을 준수하는 범위에서 이루어지며, 과도한 트래픽을
-            피하기 위해 주기적 동기화와 내부 캐시/DB를 사용합니다.
+            직접 요청하지 않고 내부 API를 통해서만 조회합니다. 공개된 결과
+            데이터를 합리적인 호출 빈도로 수집하며, 과도한 트래픽을 피하기 위해
+            주기적 동기화와 내부 캐시/DB를 사용합니다.
           </p>
           <p className="mt-2">
             데이터는 변경/지연/오류가 있을 수 있으며, 정확성·적시성·완전성은
@@ -208,12 +208,12 @@ export default function TermsPage() {
           <h2 className="font-medium text-foreground">9. 뭐 먹지 서비스</h2>
           <p>
             뭐 먹지 서비스는 오락을 목적으로 제공됩니다. 이용자가 고른
-            끼니(점심, 저녁, 아침·브런치)와 카테고리, 국물 조건 안에서 메뉴가
-            같은 확률로 무작위로 정해지며, 뽑힌 메뉴는 특정 메뉴나 음식점을
-            제안하거나 평가하는 것이 아닙니다. 메뉴 목록은 끼니마다 이 서비스가
-            직접 작성한 것이며 외부 데이터를 사용하지 않습니다. 결과는 금전,
-            상품, 포인트, 경품 등 어떤 보상과도 관련이 없습니다. 식사에 관한
-            판단과 선택은 이용자 본인의 몫입니다.
+            끼니(점심, 저녁, 아침·브런치)와 카테고리, 국물 조건 안에서 직전에
+            뽑힌 메뉴를 제외한 나머지 메뉴가 같은 확률로 무작위로 정해지며, 뽑힌
+            메뉴는 특정 메뉴나 음식점을 제안하거나 평가하는 것이 아닙니다. 메뉴
+            목록은 끼니마다 이 서비스가 직접 작성한 것이며 외부 데이터를
+            사용하지 않습니다. 결과는 금전, 상품, 포인트, 경품 등 어떤 보상과도
+            관련이 없습니다. 식사에 관한 판단과 선택은 이용자 본인의 몫입니다.
           </p>
           <p className="mt-2">
             결과 화면의 지도 검색 링크(카카오맵, 네이버지도, 구글 지도)를 누르면
@@ -274,11 +274,20 @@ export default function TermsPage() {
         <section>
           <h2 className="font-medium text-foreground">12. 광고 및 쿠키</h2>
           <p>
-            서비스에는 광고(예: 카카오 애드핏)가 게재될 수 있으며, 광고 이용은
+            서비스에는 광고(카카오 애드핏)가 게재될 수 있으며, 광고 이용은
             자발적이어야 합니다. 핵심 기능 접근을 광고 시청으로 강제하지
             않습니다. 광고 등 비필수 기능은 이용자의 동의가 있는 경우에만
             실행되며, 자세한 내용은 개인정보처리방침을 따릅니다. 광고에 포함된
-            제3자의 쿠키/정책이 적용될 수 있습니다.
+            제3자의 쿠키/정책이 적용될 수 있으며, 카카오의 정책은{' '}
+            <a
+              href="https://www.kakao.com/policy/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline underline-offset-4"
+            >
+              카카오 개인정보처리방침
+            </a>
+            에서 확인할 수 있습니다.
           </p>
         </section>
         <section>
@@ -302,7 +311,8 @@ export default function TermsPage() {
           <p>
             본 서비스 이용으로 인한 손실(직접/간접/부수적 손해 포함)에 대해
             당사는 법이 허용하는 범위 내에서 책임을 부담하지 않으며, 모든 결정과
-            책임은 이용자에게 있습니다. 호스팅(Vercel), 데이터베이스(Supabase),
+            책임은 이용자에게 있습니다. 다만 운영자의 고의 또는 중대한 과실로
+            인한 손해는 예외로 합니다. 호스팅(Vercel), 데이터베이스(Supabase),
             광고 네트워크 등 제3자 서비스의 장애·변경으로 인한 손해에 대해서도
             법이 허용하는 범위 내에서 책임을 지지 않습니다. 뭐 먹지 서비스에서
             연결되는 지도 검색 페이지(카카오맵, 네이버지도, 구글 지도)의 내용,
@@ -336,8 +346,10 @@ export default function TermsPage() {
         <section>
           <h2 className="font-medium text-foreground">18. 약관 변경</h2>
           <p>
-            본 약관은 사전 고지 후 변경될 수 있습니다. 변경 후에도 서비스를 계속
-            이용하면 변경 사항에 동의한 것으로 간주됩니다.
+            본 약관은 변경될 수 있으며, 변경 내용은 이 문서 상단의 시행일과 함께
+            공지합니다. 이용자에게 불리하거나 중요한 변경은 시행 30일 전부터
+            공지합니다. 변경 후에도 서비스를 계속 이용하면 변경 사항에 동의한
+            것으로 간주됩니다.
           </p>
         </section>
         <section>
@@ -345,7 +357,8 @@ export default function TermsPage() {
             19. 준거법 및 분쟁 해결
           </h2>
           <p>
-            본 약관은 대한민국 법률에 따릅니다. 분쟁은 관할 법원에서 해결합니다.
+            본 약관은 대한민국 법률에 따릅니다. 분쟁은 민사소송법에 따른 관할
+            법원에서 해결합니다.
           </p>
         </section>
         <section>
@@ -370,11 +383,6 @@ export default function TermsPage() {
             </a>
           </p>
         </section>
-
-        <p className="text-xs">
-          [알림] 본 문서는 일반 정보 제공이며 법률 자문이 아닙니다. 사업 특성에
-          맞춰 법률 검토를 권장합니다.
-        </p>
       </div>
     </div>
   );

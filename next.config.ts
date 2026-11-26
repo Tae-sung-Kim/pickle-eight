@@ -66,7 +66,8 @@ function buildCsp(): string {
   if (!isProd) {
     // Dev-only allowances
     scriptSrc.push("'unsafe-eval'", vercelLive);
-    scriptSrcElem.push(vercelLive);
+    // 개발 모드 <Analytics/>가 debug 스크립트를 여기서 불러온다 (운영은 same-origin)
+    scriptSrcElem.push(vercelLive, 'https://va.vercel-scripts.com');
     frameSrc.push(vercelLive);
     connectSrc.push(vercelLive);
     // Allow Pusher (used by vercel.live dev overlay) in development only

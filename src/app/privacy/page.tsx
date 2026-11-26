@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const EFFECTIVE_DATE = '2026-11-25' as const;
+  const EFFECTIVE_DATE = '2026-11-26' as const;
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
     { name: '개인정보처리방침', item: canonicalUrl('/privacy') },
@@ -67,15 +67,25 @@ export default function PrivacyPolicyPage() {
             </li>
             <li>
               오류·보안 보고: 브라우저가 전송하는 보안 정책(CSP) 위반 보고. 서버
-              로그에만 기록됩니다.
+              로그에 기록되며 보관 기간은 호스팅 사업자(Vercel) 정책을 따릅니다.
             </li>
             <li>
               방문 통계: 페이지 조회, 유입 경로, 브라우저·기기 정보 등 집계
-              정보. 쿠키를 사용하지 않습니다.
+              정보. 쿠키를 사용하지 않는 방식으로 집계합니다(Vercel Web
+              Analytics).
             </li>
             <li>
-              광고 정보: 광고에 동의한 경우에 한해 광고 사업자가 광고 식별자,
-              쿠키, 리퍼러 등을 수집할 수 있습니다.
+              광고 정보: 광고에 동의한 경우에 한해 광고 사업자(카카오 애드핏)가
+              광고 식별자, 쿠키, 리퍼러 등을 수집할 수 있습니다. 자세한 내용은{' '}
+              <a
+                href="https://www.kakao.com/policy/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline underline-offset-4"
+              >
+                카카오 개인정보처리방침
+              </a>
+              을 확인하세요.
             </li>
           </ul>
           <p className="mt-2">
@@ -130,15 +140,20 @@ export default function PrivacyPolicyPage() {
             공유 전에 미리 보고 가릴 수 있습니다. 이용자가 고른 앱으로 보낸
             뒤에는 그 앱의 정책이 적용됩니다.
           </p>
+          <p className="mt-2">
+            운빨 뽑기에서 이용자가 입력한 이름과 항목은 서버로 전송하거나
+            저장하지 않고 이용자의 브라우저 메모리에서만 사용하며, 페이지를
+            새로고침하거나 닫으면 사라집니다.
+          </p>
         </section>
         <section>
           <h2 className="font-medium text-foreground">
             2. 브라우저 저장소 사용
           </h2>
           <p>
-            본 서비스는 쿠키를 직접 설정하지 않으며, 아래 항목을 이용자의
-            브라우저 저장소에 보관합니다. 이 정보는 서버로 전송되지 않고
-            이용자의 기기에만 남습니다.
+            본 서비스가 직접 설정하는 쿠키는 없으며(광고 사업자 쿠키는 7. 참고),
+            아래 항목을 이용자의 브라우저 저장소에 보관합니다. 이 정보는 서버로
+            전송되지 않고 이용자의 기기에만 남습니다.
           </p>
           <ul className="mt-2 list-disc pl-5">
             <li>쿠키 동의 선택 상태 (localStorage)</li>
@@ -193,6 +208,10 @@ export default function PrivacyPolicyPage() {
             파일은 복구할 수 없는 방법으로 삭제합니다. 브라우저 저장소의 정보는
             이용자의 기기에 있으므로 이용자가 직접 삭제할 수 있습니다.
           </p>
+          <p className="mt-2">
+            서버 접속 로그의 구체적인 보관 기간은 호스팅 사업자(Vercel)의 정책을
+            따릅니다.
+          </p>
         </section>
         <section>
           <h2 className="font-medium text-foreground">
@@ -201,22 +220,22 @@ export default function PrivacyPolicyPage() {
           <p>서비스 운영을 위해 다음 외부 서비스를 이용합니다.</p>
           <ul className="mt-2 list-disc pl-5">
             <li>
-              Vercel: 웹 호스팅 및 서버 접속 로그 처리. 국외(미국 등)에서 처리될
-              수 있습니다.
+              Vercel: 웹 호스팅 및 서버 접속 로그 처리. 국외(미국)에서
+              처리됩니다.
             </li>
             <li>
               Supabase: 데이터베이스. 공개된 로또 당첨 결과와 통계 데이터만
-              저장하며 이용자 개인정보는 저장하지 않습니다. 국외에서 처리될 수
-              있습니다.
+              저장하며 이용자 개인정보는 저장하지 않습니다. 국외(미국)에서
+              처리됩니다.
             </li>
             <li>
               카카오 애드핏: 광고 게재. 쿠키 동의 시에만 광고 스크립트를
               불러옵니다.
             </li>
             <li>
-              Vercel Web Analytics: 방문 통계. 쿠키를 사용하지 않고 페이지 조회
-              수 등 집계 정보를 처리하며, 쿠키 동의 여부와 관계없이 동작합니다.
-              국외에서 처리될 수 있습니다.
+              Vercel Web Analytics: 방문 통계. 쿠키를 사용하지 않는 방식으로
+              페이지 조회수 등 집계 정보를 처리하며, 쿠키 동의 여부와 관계없이
+              동작합니다. 국외에서 처리될 수 있습니다.
             </li>
             <li>
               jsDelivr(CDN): 웹폰트 제공. 폰트를 불러올 때 이용자의 IP 주소 등이
@@ -228,6 +247,31 @@ export default function PrivacyPolicyPage() {
             각 사업자의 정책이 함께 적용되며, 이용자의 개인정보를 위 목적 외로
             제3자에게 판매하거나 제공하지 않습니다.
           </p>
+          <p className="mt-2 font-medium text-foreground">
+            개인정보의 국외 이전
+          </p>
+          <ul className="mt-1 list-disc pl-5">
+            <li>이전받는 자: Vercel Inc. (웹 호스팅, 방문 통계)</li>
+            <li>이전받는 자: Supabase Inc. (데이터베이스)</li>
+            <li>
+              이전 국가: 미국 (Vercel 서버: 미국 동부 워싱턴 D.C., Supabase
+              서버: 미국 서부)
+            </li>
+            <li>
+              이전 항목: 접속 정보(IP 주소, 브라우저·기기 정보, 접속 시각), 방문
+              통계 집계 정보. Supabase에는 이용자 개인정보를 저장하지 않습니다.
+            </li>
+            <li>
+              이전 시기 및 방법: 서비스를 이용할 때 네트워크를 통해 전송됩니다.
+            </li>
+            <li>
+              이용 목적: 웹 호스팅, 접속 로그 처리, 방문 통계, 데이터 저장
+            </li>
+            <li>
+              보유 기간: 해당 사업자의 정책에 따르며, 이용 목적이 달성되면
+              파기됩니다.
+            </li>
+          </ul>
           <p className="mt-2">
             뭐 먹지의 지도 검색 링크(카카오맵, 네이버지도, 구글 지도)는
             처리위탁이 아니라 이용자가 직접 누르는 외부 사이트 연결입니다.
@@ -248,12 +292,15 @@ export default function PrivacyPolicyPage() {
           <p>
             비필수(광고 등) 쿠키와 관련 스크립트는 이용자의 사전 동의가 있는
             경우에만 활성화되며, 동의 거부 시 광고 스크립트는 불러오지 않습니다.
-            방문 통계(Vercel Web Analytics)는 쿠키를 사용하지 않아 동의 여부와
-            관계없이 동작합니다. 동의는 서비스 내 &quot;쿠키 설정&quot; 배너
-            또는 푸터의 설정 버튼을 통해 언제든지 변경·철회할 수 있습니다.
-            브라우저 설정으로도 쿠키를 차단할 수 있으나 일부 기능이 제한될 수
-            있습니다. 광고 사업자가 설정하는 쿠키에는 해당 사업자의 정책이
-            적용됩니다.
+            배너의 닫기(×) 버튼은 선택 없이 배너만 닫는 것으로, 동의하지 않은
+            상태와 같이 광고 스크립트를 불러오지 않으며 다음 방문 때 배너가 다시
+            표시됩니다. 방문 통계(Vercel Web Analytics)는 쿠키를 사용하지 않아
+            동의 여부와 관계없이 동작합니다. 동의는 서비스 내 &quot;쿠키
+            설정&quot; 배너 또는 푸터의 설정 버튼을 통해 언제든지 변경·철회할 수
+            있습니다. 브라우저 설정으로도 쿠키를 차단할 수 있으나 일부 기능이
+            제한될 수 있습니다. 본 서비스가 직접 설정하는 쿠키는 없으며, 광고에
+            동의하면 광고 사업자가 쿠키를 설정할 수 있고 이 쿠키에는 해당
+            사업자의 정책이 적용됩니다.
           </p>
         </section>
         <section>
@@ -301,8 +348,10 @@ export default function PrivacyPolicyPage() {
           <h2 className="font-medium text-foreground">
             11. 개인정보 보호책임자 및 문의
           </h2>
-          <p>개인정보 보호책임자: 서비스 운영자</p>
-          <p className="break-all">문의: contact.tskim@gmail.com</p>
+          <p className="break-all">
+            개인정보 보호책임자: 운빨연구소 운영자 (연락처:
+            contact.tskim@gmail.com)
+          </p>
           <p>
             텔레그램:{' '}
             <a
@@ -318,14 +367,11 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="font-medium text-foreground">12. 방침 변경</h2>
           <p>
-            본 방침은 서비스 개선 또는 법령 변경에 따라 갱신될 수 있으며, 중요
-            변경 시 공지합니다.
+            본 방침은 서비스 개선 또는 법령 변경에 따라 갱신될 수 있으며, 변경
+            내용은 이 문서 상단의 시행일과 함께 공지합니다. 이용자에게
+            불리하거나 중요한 변경은 시행 30일 전부터 공지합니다.
           </p>
         </section>
-        <p className="text-xs">
-          [알림] 본 문서는 일반 정보 제공이며 법률 자문이 아닙니다.
-          서비스/비즈니스에 맞춘 법률 검토를 권장합니다.
-        </p>
       </div>
     </div>
   );

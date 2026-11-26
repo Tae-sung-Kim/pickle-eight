@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { MobileMenuComponent } from '@/components/layout/mobile-menu.component';
 import { PcMenuComponent } from '@/components/layout/pc-menu.component';
@@ -9,14 +10,16 @@ export function HeaderComponent() {
       <div className="flex h-16 items-center px-4 sm:px-6">
         <div className="flex-1 min-w-0">
           <Link href="/" className="flex items-center gap-2.5 w-fit">
-            <span
-              className="lotto-ball bg-jar"
-              data-size="sm"
+            <Image
+              src="/icon.svg"
+              alt=""
               aria-hidden="true"
-            >
-              8
-            </span>
-            <span className="text-lg font-extrabold tracking-tight whitespace-nowrap truncate max-w-[110px] sm:max-w-[180px] max-[560px]:hidden">
+              width={36}
+              height={36}
+              unoptimized
+              className="size-9 shrink-0"
+            />
+            <span className="text-lg font-extrabold tracking-tight whitespace-nowrap truncate max-w-[110px] sm:max-w-[180px]">
               {process.env.NEXT_PUBLIC_SITE_NAME}
             </span>
           </Link>

@@ -35,9 +35,6 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
     default: HOME_TITLE,
   },
-  icons: {
-    icon: '/icon.svg',
-  },
   description: HOME_DESCRIPTION,
   keywords: buildKeywords(['운빨연구소', '운빨 로또'], GLOBAL_KEYWORDS),
   alternates: {

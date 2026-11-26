@@ -30,8 +30,9 @@ export function ConsentNudgeComponent({
       case 'value':
         return {
           emoji: '💡',
-          title: '광고 동의로 모든 기능을 계속 무료로',
-          description: '광고 수익으로 서버·유지 비용을 충당하고 있어요',
+          title: '광고 동의로 서비스를 계속 무료로',
+          description:
+            '광고 수익으로 서버·유지 비용을 충당하고 있어요. 동의하지 않아도 기능은 그대로 쓸 수 있어요',
           buttonText: '광고에 동의',
           bgClass: 'bg-secondary border border-border',
         };
@@ -40,8 +41,7 @@ export function ConsentNudgeComponent({
         return {
           emoji: '📊',
           title: '운영 투명성',
-          description:
-            '월 서버비 약 5만 원 · 이용자 1,000+ — 광고 동의가 큰 힘이 됩니다',
+          description: '광고 동의가 서비스 운영에 큰 힘이 됩니다',
           buttonText: '광고 동의로 지원',
           bgClass: 'bg-secondary border border-border',
         };

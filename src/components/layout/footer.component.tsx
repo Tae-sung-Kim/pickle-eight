@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ConsentNudgeComponent } from '@/components/consent/consent-nudge.component';
 import { CookieSettingsButtonComponent } from '@/components/consent/cookie-settings-button.component';
@@ -14,13 +15,15 @@ export function FooterComponent() {
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between mb-10">
           <div className="space-y-4 md:max-w-sm">
             <Link href="/" className="flex items-center gap-2.5 w-fit">
-              <span
-                className="lotto-ball bg-jar"
-                data-size="sm"
+              <Image
+                src="/icon.svg"
+                alt=""
                 aria-hidden="true"
-              >
-                8
-              </span>
+                width={36}
+                height={36}
+                unoptimized
+                className="size-9 shrink-0"
+              />
               <span className="text-lg font-extrabold tracking-tight">
                 {process.env.NEXT_PUBLIC_SITE_NAME}
               </span>
@@ -28,7 +31,8 @@ export function FooterComponent() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               운을 데이터로, 재미로.
               <br />
-              오늘의 운세, 메뉴 고르기, 타로, 뽑기까지 가볍게 즐겨보세요.
+              운세, 궁합, 타로, 꿈 해몽, 로또, 메뉴 고르기, 뽑기까지 가볍게
+              즐겨보세요.
             </p>
           </div>
 
