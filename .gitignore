@@ -58,3 +58,8 @@ scripts/fortune-calendar/verify-result.json
 
 # local test data
 docs/**/screenshots/
+
+# 로컬 설치 스킬 (필요하면 다시 설치)
+.claude/skills/
+.agents/
+skills-lock.json

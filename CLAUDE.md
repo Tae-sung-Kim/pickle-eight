@@ -50,6 +50,22 @@
    - 새 페이지의 메타데이터, JSON-LD, sitemap 등록 확인
 8. **보고**: 사용자에게 결과 요약
 
+## 스킬·플러그인 사용 시점 (메인 세션만)
+
+subagent는 skill을 못 부른다. PM이 호출하고 결과 중 필요한 부분만 agent에게 넘긴다. 문구·상수만 바꾸는 소규모 변경에서는 쓰지 않는다. 설치 방법은 [docs/dev-skills.md](docs/dev-skills.md).
+
+| 도구 | 시점 | 쓰는 법 |
+|---|---|---|
+| `grilling` (사용자가 `/grill-me`로도 호출) | 1단계 전. 새 기능 요구사항이 모호하거나 사용자가 "grill"을 요청할 때 | PM이 호출해 결정 사항을 정리하고 planner 입력에 넣는다. planner의 열린 질문과 겹치면 이쪽을 우선한다 |
+| `ui-ux-pro-max` | 3단계 전. 새 화면이 있을 때 | PM이 호출해 참고 안(팔레트·폰트·UX 가이드)만 뽑아 ui-ux-designer에 넘긴다. `docs/conventions/design-system.md`와 다르면 conventions을 따른다 |
+| `archify` | 2단계 승인 후. 새 화면 흐름, DB, API 변경이 있을 때 | `design.md`를 바탕으로 `docs/<기능>/diagram.html`을 만들어 사용자에게 보여준다. 승인 단계를 늘리지 않는다 |
+| `archify-pr` | 사용자가 PR 설명을 요청할 때만 | commit·push·PR은 사용자가 직접 한다. 먼저 제안하지 않는다 |
+| `ponytail:ponytail-review` | 7단계. 새 화면, 계산 로직, DB·API 변경이 있는 기능 | 결과는 한국어 caveman으로, 지적마다 코드로 확인해 맞음/의도함과 조치만 적는다 |
+| `ponytail:ponytail-audit` | 사용자가 요청할 때만 | 전체 repo 진단이라 비싸다. 먼저 제안하지 않는다 |
+
+- `/grill-me`로 시작한 세션: 사용자가 "확정"하기 전에는 코드·문서·agent 호출을 하지 않는다. 확정하면 기능 개발일 때 정리된 결정을 planner 입력으로 넘겨 1단계부터 흐름을 진행한다(리서치가 필요하면 0단계부터). 기능 개발이 아니면 확정된 내용대로 바로 처리한다. 기능 이름은 영문 소문자 하이픈으로 정해 사용자에게 확인한다.
+- ponytail 상시 모드(SessionStart hook)는 메인 세션 응답에만 적용된다. 우선순위는 caveman > ponytail 이다.
+
 ## 규칙
 
 - 기능 문서는 `docs/<기능>/`에 둔다. 기능 이름은 영문 소문자 하이픈(예: `tarot`, `lunch-menu`).

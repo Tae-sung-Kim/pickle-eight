@@ -13,4 +13,6 @@ CLAUDE.md의 "역할: PM/PL (메인 세션)" 흐름대로 PM 역할로 진행해
 - 관련 기존 코드나 문서(예: `src/features/<기능>/`, `src/app/<기능>/`)가 있으면 planner에게 먼저 알려줘.
 - 산출물은 `docs/<기능>/`에 저장해. 기능 이름은 영문 소문자 하이픈(예: `tarot`, `lunch-menu`)으로 정하고 처음에 사용자에게 확인해.
 - 시작할 때 `docs/<기능>/status.md`가 있으면 읽고 마지막 단계부터 이어서 진행해.
+- 스킬·플러그인(grilling, ui-ux-pro-max, archify, ponytail-review)은 CLAUDE.md "스킬·플러그인 사용 시점" 표의 시점에만 PM이 호출해.
+- 이미 `/grill-me`로 결정을 확정한 세션이면 그 결정을 planner 입력으로 넘기고 `grilling`은 다시 부르지 않아.
 - 요구사항이 비어 있으면 무엇을 만들지 먼저 물어봐.
