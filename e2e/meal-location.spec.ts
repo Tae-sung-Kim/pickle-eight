@@ -8,7 +8,11 @@ import {
   MEAL_AREA_PREVIEW_LABEL,
   MEAL_AREA_RESULT_NOTICE_TEXT,
 } from '@/features/meal/constants/meal-notice.constant';
-import { recordRequests, storageSnapshot } from './helpers/common.util';
+import {
+  recordRequests,
+  storageSnapshot,
+  waitForHydration,
+} from './helpers/common.util';
 import {
   countGeolocation,
   horizontalOverflow,
@@ -141,6 +145,7 @@ test.describe('뭐 먹지 동네 이름 입력', () => {
 
     // AC-3: 새로고침하면 입력이 비어 있다
     await page.reload();
+    await waitForHydration(page);
     await expect(areaInput(page)).toBeVisible();
     await expect(areaInput(page)).toHaveValue('');
     expect(await countGeolocation(page)).toBe(0);

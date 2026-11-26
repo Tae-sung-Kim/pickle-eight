@@ -104,7 +104,11 @@ test.describe('추천과 끼니', () => {
     page,
   }) => {
     await openPage(page);
-    for (const c of MEAL_CATEGORIES.lunch.filter((c) => c.key !== 'western')) {
+    // 점심·저녁 모든 카테고리에 국물 메뉴가 생겨, 국물 없는 카테고리가 있는 아침으로 확인한다
+    await pickMeal(page, 'breakfast');
+    for (const c of MEAL_CATEGORIES.breakfast.filter(
+      (c) => c.key !== 'bread'
+    )) {
       await chip(page, c.label).click();
     }
     await page

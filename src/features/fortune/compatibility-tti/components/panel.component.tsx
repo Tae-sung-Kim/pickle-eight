@@ -23,6 +23,7 @@ import {
   FortuneCompatibilityResultComponent,
   type FortuneCompatibilityResultSwapType,
 } from '@/features/fortune/shared/components/compatibility-result.component';
+import { FortuneCompatibilityShareComponent } from '@/features/fortune/shared/components/compatibility-share.component';
 import type {
   FortuneBirthInputType,
   FortuneTtiKeyType,
@@ -178,25 +179,36 @@ export function FortuneCompatibilityTtiPanelComponent({
     }
 
     return (
-      <FortuneCompatibilityResultComponent
-        first={{ name: TTI_NAME_BY_KEY[first.key] }}
-        second={{ name: TTI_NAME_BY_KEY[second.key] }}
-        relationName={FORTUNE_COMPATIBILITY_TTI_RELATION_NAMES[result.relation]}
-        grade={result.grade}
-        copy={copy}
-        swaps={swaps}
-        earlyYear={
-          first.isEarlyYear || second.isEarlyYear
-            ? {
-                text: FORTUNE_CALC_BASIS_TTI,
-                linkLabel: FORTUNE_COMPATIBILITY_LABELS.ttiFortune,
-                href: FORTUNE_ROUTES.tti,
-              }
-            : null
-        }
-        onSwap={swapCandidate}
-        onReset={handleReset}
-      />
+      <div className="space-y-4">
+        <FortuneCompatibilityResultComponent
+          first={{ name: TTI_NAME_BY_KEY[first.key] }}
+          second={{ name: TTI_NAME_BY_KEY[second.key] }}
+          relationName={
+            FORTUNE_COMPATIBILITY_TTI_RELATION_NAMES[result.relation]
+          }
+          grade={result.grade}
+          copy={copy}
+          swaps={swaps}
+          earlyYear={
+            first.isEarlyYear || second.isEarlyYear
+              ? {
+                  text: FORTUNE_CALC_BASIS_TTI,
+                  linkLabel: FORTUNE_COMPATIBILITY_LABELS.ttiFortune,
+                  href: FORTUNE_ROUTES.tti,
+                }
+              : null
+          }
+          onSwap={swapCandidate}
+          onReset={handleReset}
+        />
+        <FortuneCompatibilityShareComponent
+          kind="tti"
+          firstName={TTI_NAME_BY_KEY[first.key]}
+          secondName={TTI_NAME_BY_KEY[second.key]}
+          gradeKey={result.grade}
+          summary={copy.summary[0]}
+        />
+      </div>
     );
   }
 

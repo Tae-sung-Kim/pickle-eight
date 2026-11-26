@@ -4,7 +4,7 @@ import type {
 } from '@/features/meal/types/meal.type';
 
 /**
- * 점심 메뉴 90개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
+ * 점심 메뉴 120개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
  * 국물 기준: 주 요리가 국물에 담겨 나오고 국물을 떠먹으면 soup, 그 밖은 dry.
  * mapQuery는 1차에 쓰지 않는다(이름으로 검색).
  */
@@ -72,6 +72,22 @@ export const MEAL_LUNCH_MENUS = [
     broth: 'soup',
   },
   { id: 'ulmyeon', name: '울면', category: 'chinese', broth: 'soup' },
+  { id: 'kkabarou', name: '꿔바로우', category: 'chinese', broth: 'dry' },
+  { id: 'yusanseul', name: '유산슬', category: 'chinese', broth: 'dry' },
+  {
+    id: 'haemul-bokkeumbap',
+    name: '해물볶음밥',
+    category: 'chinese',
+    broth: 'dry',
+  },
+  { id: 'yangjangpi', name: '양장피', category: 'chinese', broth: 'dry' },
+  { id: 'jjajang-bap', name: '짜장밥', category: 'chinese', broth: 'dry' },
+  {
+    id: 'jaengban-jjajang',
+    name: '쟁반짜장',
+    category: 'chinese',
+    broth: 'dry',
+  },
   // 일식
   { id: 'ramen', name: '라멘', category: 'japanese', broth: 'soup' },
   { id: 'udon', name: '우동', category: 'japanese', broth: 'soup' },
@@ -92,6 +108,12 @@ export const MEAL_LUNCH_MENUS = [
   { id: 'unagi-donburi', name: '장어덮밥', category: 'japanese', broth: 'dry' },
   { id: 'oyakodon', name: '오야코동', category: 'japanese', broth: 'dry' },
   { id: 'yakisoba', name: '야키소바', category: 'japanese', broth: 'dry' },
+  { id: 'hire-katsu', name: '히레카츠', category: 'japanese', broth: 'dry' },
+  { id: 'gyu-katsu', name: '규카츠', category: 'japanese', broth: 'dry' },
+  { id: 'salmon-chobap', name: '연어초밥', category: 'japanese', broth: 'dry' },
+  { id: 'chirashi-don', name: '치라시동', category: 'japanese', broth: 'dry' },
+  { id: 'sashimi', name: '사시미', category: 'japanese', broth: 'dry' },
+  { id: 'miso-ramen', name: '미소라멘', category: 'japanese', broth: 'soup' },
   // 양식
   { id: 'pasta', name: '파스타', category: 'western', broth: 'dry' },
   { id: 'steak', name: '스테이크', category: 'western', broth: 'dry' },
@@ -117,6 +139,27 @@ export const MEAL_LUNCH_MENUS = [
     category: 'western',
     broth: 'dry',
   },
+  { id: 'rose-pasta', name: '로제파스타', category: 'western', broth: 'dry' },
+  {
+    id: 'vongole-pasta',
+    name: '봉골레파스타',
+    category: 'western',
+    broth: 'dry',
+  },
+  {
+    id: 'cream-risotto',
+    name: '크림리조또',
+    category: 'western',
+    broth: 'dry',
+  },
+  { id: 'cheese-burger', name: '치즈버거', category: 'western', broth: 'dry' },
+  {
+    id: 'chicken-salad',
+    name: '치킨 샐러드',
+    category: 'western',
+    broth: 'dry',
+  },
+  { id: 'beef-stew', name: '비프스튜', category: 'western', broth: 'soup' },
   // 분식
   { id: 'eomuk', name: '어묵', category: 'bunsik', broth: 'soup' },
   { id: 'tteokbokki', name: '떡볶이', category: 'bunsik', broth: 'dry' },
@@ -130,6 +173,23 @@ export const MEAL_LUNCH_MENUS = [
   { id: 'jumeokbap', name: '주먹밥', category: 'bunsik', broth: 'dry' },
   { id: 'tuna-gimbap', name: '참치김밥', category: 'bunsik', broth: 'dry' },
   { id: 'tteok-kkochi', name: '떡꼬치', category: 'bunsik', broth: 'dry' },
+  { id: 'cheese-gimbap', name: '치즈김밥', category: 'bunsik', broth: 'dry' },
+  {
+    id: 'rose-tteokbokki',
+    name: '로제떡볶이',
+    category: 'bunsik',
+    broth: 'dry',
+  },
+  { id: 'yachae-gimbap', name: '야채김밥', category: 'bunsik', broth: 'dry' },
+  { id: 'hotteok', name: '호떡', category: 'bunsik', broth: 'dry' },
+  { id: 'gyeran-ppang', name: '계란빵', category: 'bunsik', broth: 'dry' },
+  {
+    id: 'gukmul-tteokbokki',
+    name: '국물떡볶이',
+    category: 'bunsik',
+    broth: 'soup',
+  },
+  { id: 'kongguksu', name: '콩국수', category: 'bunsik', broth: 'soup' },
   // 세계·기타
   { id: 'pho', name: '쌀국수', category: 'world', broth: 'soup' },
   { id: 'shabu-shabu', name: '샤브샤브', category: 'world', broth: 'soup' },
@@ -145,4 +205,9 @@ export const MEAL_LUNCH_MENUS = [
   { id: 'quesadilla', name: '퀘사디아', category: 'world', broth: 'dry' },
   { id: 'green-curry', name: '그린커리', category: 'world', broth: 'dry' },
   { id: 'hotpot', name: '훠궈', category: 'world', broth: 'soup' },
+  { id: 'gyros', name: '기로스', category: 'world', broth: 'dry' },
+  { id: 'biryani', name: '비리야니', category: 'world', broth: 'dry' },
+  { id: 'khao-pad', name: '카오팟', category: 'world', broth: 'dry' },
+  { id: 'paella', name: '파에야', category: 'world', broth: 'dry' },
+  { id: 'falafel', name: '팔라펠', category: 'world', broth: 'dry' },
 ] as const satisfies readonly MealMenuType<MealStandardCategoryKeyType>[];

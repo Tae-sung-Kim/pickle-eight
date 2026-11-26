@@ -90,6 +90,15 @@ describe('share-tarot AC-6: 타로 공유 버튼은 두 결과 화면에만 붙�
   });
 });
 
+describe('share-compatibility AC-4: 궁합 공유 블록은 두 궁합 패널에만 붙는다', () => {
+  it('FortuneCompatibilityShareComponent 사용처', () => {
+    expect(withText(/<FortuneCompatibilityShareComponent\b/).sort()).toEqual([
+      'src/features/fortune/compatibility-star-sign/components/panel.component.tsx',
+      'src/features/fortune/compatibility-tti/components/panel.component.tsx',
+    ]);
+  });
+});
+
 describe('AC-16: 카드 DOM에 상호작용 요소가 없다', () => {
   it('카드 파일 8개를 찾는다', () => {
     expect(CARD_FILES).toHaveLength(8);

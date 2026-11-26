@@ -4,7 +4,7 @@ import type {
 } from '@/features/meal/types/meal.type';
 
 /**
- * 아침·브런치 메뉴 65개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
+ * 아침·브런치 메뉴 80개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
  * 국물 기준: 주 요리가 국물에 담겨 나오고 국물을 떠먹으면 soup, 그 밖은 dry.
  * 죽은 dry, 수프는 soup으로 둔다.
  */
@@ -47,6 +47,8 @@ export const MEAL_BREAKFAST_MENUS = [
   },
   { id: 'kimchi-jjigae', name: '김치찌개', category: 'korean', broth: 'soup' },
   { id: 'godeungeo-gui', name: '고등어구이', category: 'korean', broth: 'dry' },
+  { id: 'bugeoguk', name: '북엇국', category: 'korean', broth: 'soup' },
+  { id: 'tteokguk', name: '떡국', category: 'korean', broth: 'soup' },
   // 죽·수프
   { id: 'jeonbok-juk', name: '전복죽', category: 'porridge', broth: 'dry' },
   { id: 'hobak-juk', name: '호박죽', category: 'porridge', broth: 'dry' },
@@ -62,6 +64,20 @@ export const MEAL_BREAKFAST_MENUS = [
   { id: 'dak-juk', name: '닭죽', category: 'porridge', broth: 'dry' },
   { id: 'sogogi-juk', name: '소고기죽', category: 'porridge', broth: 'dry' },
   { id: 'corn-soup', name: '옥수수수프', category: 'porridge', broth: 'soup' },
+  { id: 'beoseot-juk', name: '버섯죽', category: 'porridge', broth: 'dry' },
+  { id: 'huin-juk', name: '흰죽', category: 'porridge', broth: 'dry' },
+  {
+    id: 'broccoli-soup',
+    name: '브로콜리수프',
+    category: 'porridge',
+    broth: 'soup',
+  },
+  {
+    id: 'tomato-soup',
+    name: '토마토수프',
+    category: 'porridge',
+    broth: 'soup',
+  },
   // 빵·토스트
   { id: 'toast', name: '토스트', category: 'bread', broth: 'dry' },
   { id: 'french-toast', name: '프렌치토스트', category: 'bread', broth: 'dry' },
@@ -79,6 +95,8 @@ export const MEAL_BREAKFAST_MENUS = [
   { id: 'danpat-ppang', name: '단팥빵', category: 'bread', broth: 'dry' },
   { id: 'baguette', name: '바게트', category: 'bread', broth: 'dry' },
   { id: 'muffin', name: '머핀', category: 'bread', broth: 'dry' },
+  { id: 'sikppang', name: '식빵', category: 'bread', broth: 'dry' },
+  { id: 'cream-ppang', name: '크림빵', category: 'bread', broth: 'dry' },
   // 샌드위치
   {
     id: 'ham-cheese-sandwich',
@@ -119,6 +137,30 @@ export const MEAL_BREAKFAST_MENUS = [
     category: 'sandwich',
     broth: 'dry',
   },
+  {
+    id: 'salmon-sandwich',
+    name: '연어 샌드위치',
+    category: 'sandwich',
+    broth: 'dry',
+  },
+  {
+    id: 'shrimp-sandwich',
+    name: '쉬림프 샌드위치',
+    category: 'sandwich',
+    broth: 'dry',
+  },
+  {
+    id: 'bulgogi-sandwich',
+    name: '불고기 샌드위치',
+    category: 'sandwich',
+    broth: 'dry',
+  },
+  {
+    id: 'yachae-sandwich',
+    name: '야채 샌드위치',
+    category: 'sandwich',
+    broth: 'dry',
+  },
   // 브런치 요리
   { id: 'omelette', name: '오믈렛', category: 'brunch', broth: 'dry' },
   {
@@ -146,6 +188,18 @@ export const MEAL_BREAKFAST_MENUS = [
   { id: 'salmon-salad', name: '연어 샐러드', category: 'brunch', broth: 'dry' },
   { id: 'caesar-salad', name: '시저 샐러드', category: 'brunch', broth: 'dry' },
   { id: 'croffle', name: '크로플', category: 'brunch', broth: 'dry' },
+  {
+    id: 'avocado-salad',
+    name: '아보카도 샐러드',
+    category: 'brunch',
+    broth: 'dry',
+  },
+  {
+    id: 'cheese-omelette',
+    name: '치즈 오믈렛',
+    category: 'brunch',
+    broth: 'dry',
+  },
   // 간편식
   { id: 'gimbap', name: '김밥', category: 'quick', broth: 'dry' },
   { id: 'jumeokbap', name: '주먹밥', category: 'quick', broth: 'dry' },
@@ -160,4 +214,10 @@ export const MEAL_BREAKFAST_MENUS = [
   { id: 'granola', name: '그래놀라', category: 'quick', broth: 'dry' },
   { id: 'tuna-gimbap', name: '참치김밥', category: 'quick', broth: 'dry' },
   { id: 'fruit-dosirak', name: '과일도시락', category: 'quick', broth: 'dry' },
+  {
+    id: 'salad-dosirak',
+    name: '샐러드 도시락',
+    category: 'quick',
+    broth: 'dry',
+  },
 ] as const satisfies readonly MealMenuType<MealBreakfastCategoryKeyType>[];

@@ -145,6 +145,47 @@ describe('AC-9: 끼니별 메뉴 데이터', () => {
     expect(soup + dry).toBe(menus.length);
   });
 
+  const EXPECTED_BY_CATEGORY = {
+    lunch: {
+      korean: 22,
+      chinese: 20,
+      japanese: 20,
+      western: 20,
+      bunsik: 19,
+      world: 19,
+    },
+    dinner: {
+      korean: 21,
+      chinese: 20,
+      japanese: 21,
+      western: 21,
+      bunsik: 20,
+      world: 20,
+      lateNight: 57,
+    },
+    breakfast: {
+      korean: 14,
+      porridge: 13,
+      bread: 13,
+      sandwich: 13,
+      brunch: 13,
+      quick: 14,
+    },
+  } as const;
+
+  test.each(MEALS)('AC-2: %s 카테고리별 개수가 목표 값과 같다', (meal) => {
+    const actual: Record<string, number> = {};
+    for (const m of MEAL_MENUS[meal])
+      actual[m.category] = (actual[m.category] ?? 0) + 1;
+    expect(actual).toEqual(EXPECTED_BY_CATEGORY[meal]);
+  });
+
+  test('AC-5: 저녁 기본 후보는 야식을 뺀 123개', () => {
+    expect(
+      MEAL_MENUS.dinner.filter((m) => m.category !== 'lateNight')
+    ).toHaveLength(123);
+  });
+
   test('점심 국물 경계 메뉴 일치', () => {
     const lunch = MEAL_MENUS.lunch;
     const soupNames = new Set(

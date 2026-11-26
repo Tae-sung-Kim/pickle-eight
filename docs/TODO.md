@@ -11,6 +11,8 @@
 | 궁합 테스트 | `/fortune/compatibility*` | `docs/compatibility/` | 7번 |
 | 공유 기능 1차 | `/meal`, `/lucky-draw/*`, `/fortune/compatibility/*` | `docs/share/` | 9번 |
 | 손 없는 날 달력 | `/no-son-days`, `/no-son-days/2026`~`2049` | `docs/no-son-days/` | 10번 |
+| 공유 기능 후속(궁합 연결) | `/fortune/compatibility/tti`, `/fortune/compatibility/star-sign` | `docs/share-compatibility/` | 13번 |
+| 뭐 먹지 메뉴 추가 2차 | `/meal` | `docs/menu-add-2/` | 14번 |
 | 공유 기능 3차(타로) | `/tarot/daily`, `/tarot/three-card` | `docs/share-tarot/` | 12번 |
 | 공유 기능 2차 | `/fortune/today`, `/fortune/tti`, `/fortune/star-sign`, `/lotto/generator` | `docs/share-phase2/` | 11번 |
 
@@ -26,8 +28,8 @@
 
 우선순위(2026-11-24 사용자 지정): 궁합 테스트 → 공유 기능 → 나머지. 다국어는 맨 뒤.
 
-1. 공유 기능 후속: 타로 공유는 2026-11-26에 개발했다(`docs/share-tarot/`). 궁합 공유 연결: 1차의 `fortune-compatibility-share.util.ts`, `compatibility-share-card.component.tsx`가 화면에 붙어 있지 않다(2026-11-26 확인). 연결하거나 지운다. 제외 유지: 사주, 꿈 해몽, 로또 기록·채점·분석·시뮬레이터.
-2. 손 없는 날 달력 2차 후보: 황도·건제12신·생기복덕·생년월일 기능, 공휴일, 길일(이사·결혼·개업) 달력. 이름 궁합은 보류.
+1. 공유 기능 후속: 타로 공유는 2026-11-26에 개발했다(`docs/share-tarot/`). 궁합 공유 연결은 2026-11-26에 끝났다(`docs/share-compatibility/`). 제외 유지: 사주, 꿈 해몽, 로또 기록·채점·분석·시뮬레이터.
+2. 손 없는 날 달력 2차 후보(큰 작업이다. 후보 4종이 성격이 달라 전체 흐름을 거치므로 가장 작은 것부터 하나씩 쪼개서 진행한다. 건제12신은 출처마다 기준이 달라 기준 결정이 먼저이고, 생기복덕·생년월일은 입력이 생겨 개인정보 부담이 커지며, 공휴일은 특일 API 키와 출처 표기가 필요하다. `docs/research/auspicious-days.md` 참고): 황도·건제12신·생기복덕·생년월일 기능, 공휴일, 길일(이사·결혼·개업) 달력. 이름 궁합은 보류.
 3. 로또 QR 코드: 입력 없이 사진으로 바로 접속할 수 있게 한다.
 4. 뭐먹지 메뉴를 더 늘리려면 새 기획이 필요하다. 2026-11-24에 점심 90, 저녁 150, 아침 65개로 늘렸다(`docs/menu-add/plan.md`). 그 밖에 이 사이트에 맞는 메뉴를 계속 추가한다.
 5. 홈 재구성 후속(`docs/home-reposition/`):
@@ -127,11 +129,19 @@
    - 법률·정책은 위험 수용(2026-11-26): 띠·별자리 이름(생년월일 파생값), 로또 카드 사행성 고지 문구.
    - 새 주소가 없어 sitemap 재수집은 필요 없다.
 12. 타로 공유(`/tarot/daily`, `/tarot/three-card`) 배포 직전 작업 (`docs/share-tarot/qa-report.md`):
-   - 그림 닮음 판정(사용자): `docs/share-tarot/art-samples/` 10장(바보, 마법사, 여사제, 운명의 수레바퀴, 죽음, 탑, 에이스 4종)을 보고 기존 덱과 닮았는지 정한다. 닮은 카드는 코드로 직접 그린 SVG로 다시 그리는 별도 작업으로 한다(웨이트 계열 구도 금지, 외부·AI 이미지 금지).
+   - 그림 닮음 판정(사용자, 2026-11-26): 샘플 10장을 보고 문제없다고 확인함. 재제작 불필요.
    - 실기기 확인(9번 목록과 같은 기기): 카드 그림이 이미지에서 깨지지 않는지, 3장 카드 요약 말줄임(156개 중 5개가 2줄을 넘음)이 괜찮은지.
    - 타로 고지 한 줄("오락과 자기 성찰을 위한 참고 결과입니다. 미래를 예측하지 않습니다.")과 공유 문구는 초안이다.
    - 복원된 오늘의 카드와 위기 신호로 뽑은 결과는 공유 버튼을 숨긴다(질문이 없어 판정 불가, 2026-11-26 승인).
    - `ui-ux-design.md` 137행에 옛 3장 요약 기준(57자 넘으면 line-clamp-3)이 남아 있다. 구현은 line-clamp-2다.
+13. 궁합 공유(`/fortune/compatibility/tti`, `/fortune/compatibility/star-sign`) 배포 직전 작업 (`docs/share-compatibility/qa-report.md`):
+   - 실기기 확인(9번 목록과 같은 기기). 카드에 상대방 띠·별자리 이름이 실린다. 입력 안내는 외부 공유를 말하지 않는다(위험 수용 2026-11-24 유지, 필요하면 공유 직전 안내 한 줄 추가).
+   - 320px 가로 스크롤은 궁합 화면에서 따로 확인하지 못했다.
+14. 뭐 먹지 메뉴 추가 2차(`/meal`) 배포 직전 작업 (`docs/menu-add-2/qa-report.md`):
+   - 새 메뉴 이름 150개 검수(`docs/menu-meals/copy-log.md` "초안, 검수 대기"): 사용자 검토 → PM 검수.
+   - 점심 120칸 돌림판 스크린샷(`docs/menu-add-2/screenshots/`)을 눈으로 확인한다. 돌림판 칸 라벨은 28칸을 넘으면 그리지 않는 구조라 90칸 때와 같을 가능성이 크다.
+   - 지도 검색 링크에 쓰는 새 메뉴 이름의 상표성(브랜드명 제외, 일반 명칭만).
+   - `waitForHydration`이 reload 뒤에 빠진 e2e: `compatibility.spec.ts`(305, 415행), `lucky-draw.spec.ts`(741행), `tarot.spec.ts`(176행). 간헐 실패가 나오면 같은 한 줄을 붙인다.
 10. 손 없는 날 달력(`/no-son-days`, `/no-son-days/2026`~`2049`) 배포 직전 작업 (`docs/no-son-days/status.md`). 약관 11장과 방침 1장 문단이 추가됐고 기존 약관 11~20장은 12~21장이 됐다:
     - AdFit 점술·운세 심사 기준을 확인한다.
     - 네이버 검색광고 키워드 도구로 "손없는날", "손없는날 달력", "2027 손없는날" 검색량을 조회하고 연도 화면 title을 조정한다.

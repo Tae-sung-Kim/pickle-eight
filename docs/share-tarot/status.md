@@ -11,7 +11,7 @@
 | 4. 개발 준비 | dev-lead | 생략 (소규모, plan.md와 ui-ux-design.md로 직접 위임) | - |
 | 5. 개발 | frontend-dev | 완료 | - |
 | 6. QA | qa | 통과 (vitest 947, desktop e2e 112, typecheck, lint) | `e2e/share-tarot.spec.ts`, `docs/share-tarot/qa-report.md` (예정) |
-| 7. 검증 | PM | 완료 (ponytail-review 1건 수정: 위기 신호 상태 저장). 사용자 몫: 그림 닮음 판정, 실기기 | - |
+| 7. 검증 | PM | 완료 (ponytail-review 1건 수정: 위기 신호 상태 저장). 그림 닮음 판정 완료(문제없음, 2026-11-26). 사용자 몫: 실기기 | - |
 
 ## 결정 기록 (2026-11-26)
 

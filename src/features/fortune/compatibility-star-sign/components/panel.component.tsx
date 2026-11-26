@@ -21,6 +21,7 @@ import { useKoreaDateKey } from '@/features/fortune/hooks/use-korea-date-key.hoo
 import { FortuneAgeBlockedComponent } from '@/features/fortune/shared/components/age-blocked.component';
 import { FortuneCompatibilityPersonStepComponent } from '@/features/fortune/shared/components/compatibility-person-step.component';
 import { FortuneCompatibilityResultComponent } from '@/features/fortune/shared/components/compatibility-result.component';
+import { FortuneCompatibilityShareComponent } from '@/features/fortune/shared/components/compatibility-share.component';
 import type {
   FortuneBirthInputType,
   FortuneStarSignKeyType,
@@ -184,30 +185,39 @@ export function FortuneCompatibilityStarSignPanelComponent({
       }));
 
     return (
-      <FortuneCompatibilityResultComponent
-        first={{
-          name: STAR_SIGN_NAMES[first.key],
-          detail:
-            FORTUNE_COMPATIBILITY_ELEMENT_NAMES[
-              FORTUNE_COMPATIBILITY_STAR_SIGN_ELEMENTS[first.key]
-            ],
-        }}
-        second={{
-          name: STAR_SIGN_NAMES[second.key],
-          detail:
-            FORTUNE_COMPATIBILITY_ELEMENT_NAMES[
-              FORTUNE_COMPATIBILITY_STAR_SIGN_ELEMENTS[second.key]
-            ],
-        }}
-        relationName={
-          FORTUNE_COMPATIBILITY_ELEMENT_RELATION_NAMES[elementRelation]
-        }
-        grade={pair.grade}
-        copy={copy}
-        swaps={swaps}
-        onSwap={swapCandidate}
-        onReset={handleReset}
-      />
+      <div className="space-y-4">
+        <FortuneCompatibilityResultComponent
+          first={{
+            name: STAR_SIGN_NAMES[first.key],
+            detail:
+              FORTUNE_COMPATIBILITY_ELEMENT_NAMES[
+                FORTUNE_COMPATIBILITY_STAR_SIGN_ELEMENTS[first.key]
+              ],
+          }}
+          second={{
+            name: STAR_SIGN_NAMES[second.key],
+            detail:
+              FORTUNE_COMPATIBILITY_ELEMENT_NAMES[
+                FORTUNE_COMPATIBILITY_STAR_SIGN_ELEMENTS[second.key]
+              ],
+          }}
+          relationName={
+            FORTUNE_COMPATIBILITY_ELEMENT_RELATION_NAMES[elementRelation]
+          }
+          grade={pair.grade}
+          copy={copy}
+          swaps={swaps}
+          onSwap={swapCandidate}
+          onReset={handleReset}
+        />
+        <FortuneCompatibilityShareComponent
+          kind="starSign"
+          firstName={STAR_SIGN_NAMES[first.key]}
+          secondName={STAR_SIGN_NAMES[second.key]}
+          gradeKey={pair.grade}
+          summary={copy.summary[0]}
+        />
+      </div>
     );
   }
 

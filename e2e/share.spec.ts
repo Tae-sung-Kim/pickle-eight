@@ -6,6 +6,13 @@ import {
   type Page,
   test,
 } from '@playwright/test';
+import { FORTUNE_COMPATIBILITY_GRADE_NAMES } from '@/features/fortune/constants/fortune-compatibility-grade.constant';
+import { FORTUNE_COMPATIBILITY_CONSENT_TEXTS } from '@/features/fortune/constants/fortune-compatibility-notice.constant';
+import { FORTUNE_COMPATIBILITY_ROUTES } from '@/features/fortune/constants/fortune-compatibility-route.constant';
+import { FORTUNE_COMPATIBILITY_SHARE_NOTICE } from '@/features/fortune/constants/fortune-compatibility-share.constant';
+import { FORTUNE_STAR_SIGNS } from '@/features/fortune/constants/fortune-star-sign.constant';
+import { resolveFortuneCompatibilityStarSign } from '@/features/fortune/utils/fortune-compatibility.util';
+import { getSolarTermTime } from '@/features/fortune/utils/fortune-solar-term.util';
 import {
   declineCookies,
   passLottoAgeGate,
@@ -413,5 +420,111 @@ test.describe('로또 생성기 회귀', () => {
     expect(call.files[0].type).toBe('image/png');
     expect(call.files[0].size).toBeGreaterThan(0);
     // 지원하지 않을 때 PNG 저장은 share-phase2.spec.ts AC-4(PC 모드)가 맡는다
+  });
+});
+
+type BirthType = Readonly<{ year: number; month: number; day: number }>;
+
+async function openCompatibility(page: Page, path: string) {
+  await page.clock.setFixedTime(new Date('2026-11-05T09:00:00+09:00'));
+  await page.goto(path);
+  await declineCookies(page);
+  for (const item of FORTUNE_COMPATIBILITY_CONSENT_TEXTS.items) {
+    await page.getByRole('checkbox', { name: item, exact: true }).check();
+  }
+  await page
+    .getByRole('button', {
+      name: FORTUNE_COMPATIBILITY_CONSENT_TEXTS.grantButton,
+      exact: true,
+    })
+    .click();
+}
+
+async function submitBirth(page: Page, submit: string, birth: BirthType) {
+  await page.getByRole('radio', { name: '양력', exact: true }).check({
+    force: true,
+  });
+  await page.getByLabel('연도', { exact: true }).fill(String(birth.year));
+  await page.getByLabel('월', { exact: true }).fill(String(birth.month));
+  await page.getByLabel('일', { exact: true }).fill(String(birth.day));
+  await page.getByRole('button', { name: submit, exact: true }).click();
+}
+
+const cardHost = (page: Page) => page.locator('[data-share-card-host]');
+
+test.describe('궁합 공유 PC 흐름', () => {
+  test('AC-1: 띠 궁합은 결과 전에 공유 버튼이 없고, 결과 뒤 이미지 저장이 PNG를 내려받으며 카드에 생년월일이 없다', async ({
+    page,
+  }) => {
+    const errors = watchPageErrors(page);
+    await openCompatibility(page, FORTUNE_COMPATIBILITY_ROUTES.tti);
+    await expect(panel(page)).toHaveCount(0);
+    await submitBirth(page, '다음 사람 입력', {
+      year: 1990,
+      month: 5,
+      day: 15,
+    });
+    await expect(panel(page)).toHaveCount(0);
+    await submitBirth(page, '궁합 보기', { year: 1991, month: 5, day: 15 });
+
+    await expect(panel(page)).toHaveAttribute('data-share-mode', 'desktop');
+    await waitReady(page);
+    await expect(cardHost(page)).toContainText('말띠');
+    await expect(cardHost(page)).toContainText('양띠');
+    await expect(cardHost(page)).toContainText(
+      FORTUNE_COMPATIBILITY_SHARE_NOTICE
+    );
+    await expect(cardHost(page)).not.toContainText(/1990|1991/);
+
+    const downloadPromise = page.waitForEvent('download');
+    await shareBtn(page, '이미지 저장').click();
+    const png = await readPng(await downloadPromise);
+    expect(png.size).toBeGreaterThan(0);
+    expect(png.signature).toBe('PNG');
+    expect(errors.pageErrors).toEqual([]);
+  });
+
+  test('AC-2: 별자리 궁합은 이미지 저장이 PNG를 내려받고, 다른 후보로 바꾸면 카드가 현재 후보로 바뀐다', async ({
+    page,
+  }) => {
+    const errors = watchPageErrors(page);
+    const name = Object.fromEntries(
+      FORTUNE_STAR_SIGNS.map((s) => [s.key, s.name])
+    );
+    const term = getSolarTermTime(1990, 7);
+    if (!term) throw new Error('절기 표 없음');
+    await openCompatibility(page, FORTUNE_COMPATIBILITY_ROUTES.starSign);
+    await submitBirth(page, '다음 사람 입력', {
+      year: 1990,
+      month: term.month,
+      day: term.day,
+    });
+    await page.getByRole('button', { name: '시각 모름', exact: true }).click();
+    await page
+      .getByRole('button', { name: `${name.taurus}로 보기`, exact: true })
+      .click();
+    await submitBirth(page, '궁합 보기', { year: 1991, month: 3, day: 1 });
+
+    await waitReady(page);
+    const grade = (first: 'taurus' | 'aries') =>
+      FORTUNE_COMPATIBILITY_GRADE_NAMES[
+        resolveFortuneCompatibilityStarSign(first, 'pisces').grade
+      ];
+    await expect(cardHost(page)).toContainText(name.taurus);
+    await expect(cardHost(page)).toContainText(grade('taurus'));
+
+    await page
+      .getByRole('button', { name: '다른 후보로 보기', exact: true })
+      .click();
+    await expect(cardHost(page)).toContainText(name.aries);
+    await expect(cardHost(page)).not.toContainText(name.taurus);
+    await waitReady(page);
+
+    const downloadPromise = page.waitForEvent('download');
+    await shareBtn(page, '이미지 저장').click();
+    const png = await readPng(await downloadPromise);
+    expect(png.size).toBeGreaterThan(0);
+    expect(png.signature).toBe('PNG');
+    expect(errors.pageErrors).toEqual([]);
   });
 });

@@ -4,7 +4,7 @@ import type { FortuneCompatibilityShareBodyType } from '@/features/fortune/utils
 /** 이름 글자 수(코드 포인트) 4자 이상이면 40px, 아니면 44px */
 const NAME_LONG_LENGTH = 4;
 /** 요약이 이 글자 수를 넘으면 20px로 줄인다 */
-const SUMMARY_LONG_LENGTH = 90;
+export const SUMMARY_LONG_LENGTH = 90;
 
 /**
  * FortuneCompatibilityShareCardComponent
