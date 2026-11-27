@@ -146,20 +146,16 @@ export function AdFitSlotComponent({
 
   if (!fixed) return AdInner;
 
-  // Fixed top bar + spacer to preserve layout
-  const h = Number(adConfig.height) || 0;
+  // position: fixed 광고는 삼성 인터넷에서 스크롤 중 사라진 뒤 복구되지 않아 sticky로 둔다.
+  // sticky는 부모 높이 안에서만 붙으므로 부모는 body여야 한다(layout.tsx에서 래퍼 없이 둔다).
   return (
-    <>
-      {/* spacer to offset fixed bar height */}
-      <div style={{ height: h ? `${h + 16}px` : undefined }} aria-hidden />
-      <div
-        className="fixed left-0 right-0 z-40 bg-background"
-        style={{ top: `${topOffsetPx}px` }}
-      >
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex justify-center">
-          {AdInner}
-        </div>
+    <div
+      className="sticky z-40 bg-background"
+      style={{ top: `${topOffsetPx}px` }}
+    >
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex justify-center">
+        {AdInner}
       </div>
-    </>
+    </div>
   );
 }
