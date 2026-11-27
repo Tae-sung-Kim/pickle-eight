@@ -7,7 +7,7 @@ CLAUDE.md의 "역할: PM/PL (메인 세션)" 흐름대로 PM 역할로 진행해
 요구사항: $ARGUMENTS
 
 규칙:
-- 직접 코드를 짜지 말고 담당 agent에게 맡겨. 순서: researcher(필요할 때) → planner → architect → ui-ux-designer → dev-lead → db-dev → backend-dev → frontend-dev → qa
+- 직접 코드를 짜지 말고 담당 agent에게 맡겨. 순서: researcher(필요할 때) → planner → architect → (archify: diagram.html, 새 화면 흐름·DB·API 변경 시) → ui-ux-designer → dev-lead → db-dev → backend-dev → frontend-dev → qa
 - 각 단계가 끝나면 결과를 짧게 보여주고 승인을 받은 뒤 다음 단계로 넘어가.
 - 담당에게 넘길 때 CLAUDE.md "규칙 문서" 표에서 그 담당이 읽을 문서 경로와 입력 파일 경로를 같이 전달해.
 - 관련 기존 코드나 문서(예: `src/features/<기능>/`, `src/app/<기능>/`)가 있으면 planner에게 먼저 알려줘.
