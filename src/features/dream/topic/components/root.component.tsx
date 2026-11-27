@@ -1,7 +1,6 @@
 import type { JSX } from 'react';
-
+import { FaqComponent } from '@/components/common/faq.component';
 import { DreamBasisNoticeComponent } from '@/features/dream/shared/components/basis-notice.component';
-import { DreamFaqComponent } from '@/features/dream/shared/components/faq.component';
 import { DreamTopicReadingComponent } from '@/features/dream/topic/components/reading.component';
 import { DreamTopicRelatedComponent } from '@/features/dream/topic/components/related.component';
 import { DreamTopicSoothingComponent } from '@/features/dream/topic/components/soothing.component';
@@ -28,7 +27,7 @@ export function DreamTopicComponent({
       <DreamTopicTtiLinkComponent topic={topic} />
       <DreamBasisNoticeComponent showHubLink />
       <DreamTopicRelatedComponent topics={relatedTopics} />
-      <DreamFaqComponent items={topic.faq} />
+      <FaqComponent items={topic.faq} />
     </div>
   );
 }

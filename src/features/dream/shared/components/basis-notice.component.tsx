@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { JSX } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import {
   DREAM_BASIS_LINK_LABEL,
   DREAM_BASIS_TEXT,
@@ -8,9 +9,14 @@ import {
 } from '@/features/dream/constants/dream-notice.constant';
 import { DREAM_HUB_PATH } from '@/features/dream/constants/dream-route.constant';
 
+const TEXT_CLASS =
+  'max-w-[68ch] text-sm leading-7 break-keep text-foreground sm:text-base';
+
 export type DreamBasisNoticeComponentPropsType = Readonly<{
   /** true면 문단 끝에 "다른 소재 찾기" 링크를 붙인다(상세 화면) */
   showHubLink?: boolean;
+  /** true면 제목만 보이고 본문은 접는다(허브) */
+  collapsed?: boolean;
 }>;
 
 /**
@@ -19,13 +25,22 @@ export type DreamBasisNoticeComponentPropsType = Readonly<{
  */
 export function DreamBasisNoticeComponent({
   showHubLink = false,
+  collapsed = false,
 }: DreamBasisNoticeComponentPropsType): JSX.Element {
+  if (collapsed) {
+    return (
+      <CollapsibleComponent heading={DREAM_BASIS_TITLE} level={2}>
+        <p className={TEXT_CLASS}>{DREAM_BASIS_TEXT}</p>
+      </CollapsibleComponent>
+    );
+  }
+
   return (
     <section className="space-y-2">
       <h2 className="text-lg leading-tight font-semibold break-keep text-foreground">
         {DREAM_BASIS_TITLE}
       </h2>
-      <p className="max-w-[68ch] text-sm leading-7 break-keep text-foreground sm:text-base">
+      <p className={TEXT_CLASS}>
         {DREAM_BASIS_TEXT}
         {showHubLink ? (
           <>

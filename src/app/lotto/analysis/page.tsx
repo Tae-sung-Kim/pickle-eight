@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -9,6 +10,7 @@ import {
   generateOgImageUrl,
   getOgTag,
   jsonLdBreadcrumb,
+  jsonLdFaq,
   jsonLdWebSite,
 } from '@/lib/seo';
 
@@ -66,6 +68,18 @@ export const metadata: Metadata = {
   },
 };
 
+const FAQ_ITEMS = [
+  {
+    question: '분석 지표가 당첨을 보장하나요?',
+    answer:
+      '아니요. 빈도·패턴 등 통계는 참고용이며 특정 당첨을 보장하지 않습니다.',
+  },
+  {
+    question: '분석 데이터는 어디에서 오나요?',
+    answer: '서버 크론으로 동기화된 DB 저장 데이터를 바탕으로 계산합니다.',
+  },
+] as const;
+
 export default function LottoAnalysisPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
@@ -77,32 +91,7 @@ export default function LottoAnalysisPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
-      <JsonLdComponent
-        data={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: [
-              {
-                '@type': 'Question',
-                name: '분석 지표가 당첨을 보장하나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '아니요. 빈도·패턴 등 통계는 참고용이며 특정 당첨을 보장하지 않습니다.',
-                },
-              },
-              {
-                '@type': 'Question',
-                name: '분석 데이터는 어디에서 오나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '서버 크론으로 동기화된 DB 저장 데이터를 바탕으로 계산합니다.',
-                },
-              },
-            ],
-          },
-        ]}
-      />
+      <JsonLdComponent data={[jsonLdFaq(FAQ_ITEMS)]} />
       {/* <></> */}
 
       <div className="mx-auto max-w-5xl p-8">
@@ -112,6 +101,9 @@ export default function LottoAnalysisPage() {
           description="회차 범위를 선택해 빈도·패턴·구간 통계를 확인하세요. 통계는 참고용이며 당첨을 보장하지 않습니다."
         />
         <LottoAnalysisComponent />
+        <div className="mt-10">
+          <FaqComponent items={FAQ_ITEMS} />
+        </div>
       </div>
     </ContentWrapperComponent>
   );

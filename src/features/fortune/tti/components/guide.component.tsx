@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { FORTUNE_TTI_GUIDE } from '@/features/fortune/constants/fortune-guide.constant';
 import {
   FORTUNE_MAX_BIRTH,
@@ -56,10 +57,11 @@ export function FortuneTtiGuideComponent(): JSX.Element {
   return (
     <section className="space-y-6">
       {FORTUNE_TTI_GUIDE.map((section) => (
-        <div key={section.heading} className="space-y-2">
-          <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
-            {section.heading}
-          </h2>
+        <CollapsibleComponent
+          key={section.heading}
+          heading={section.heading}
+          level={2}
+        >
           {section.paragraphs.map((paragraph) => (
             <p
               key={paragraph}
@@ -68,12 +70,9 @@ export function FortuneTtiGuideComponent(): JSX.Element {
               {paragraph}
             </p>
           ))}
-        </div>
+        </CollapsibleComponent>
       ))}
-      <div className="space-y-2">
-        <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
-          {TABLE_TITLE}
-        </h2>
+      <CollapsibleComponent heading={TABLE_TITLE} level={2}>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[32rem] border-collapse text-left text-sm leading-6 text-foreground">
             <caption className="sr-only">{TABLE_TITLE}</caption>
@@ -108,7 +107,7 @@ export function FortuneTtiGuideComponent(): JSX.Element {
             </tbody>
           </table>
         </div>
-      </div>
+      </CollapsibleComponent>
     </section>
   );
 }

@@ -1,16 +1,11 @@
 import type { MealFaqItemType } from '@/features/meal/types/meal.type';
 
 /**
- * FAQ 7개. 화면과 JSON-LD가 같은 배열을 쓴다.
+ * FAQ 5개. 화면과 JSON-LD가 같은 배열을 쓴다.
  * 답에는 "보장"을 쓰지 않는다(상시 고지 문장만 예외).
  * 테스트는 인덱스가 아니라 질문 문장으로 찾는다.
  */
 export const MEAL_FAQ: readonly MealFaqItemType[] = [
-  {
-    question: '오늘 뭐 먹지는 어떤 서비스인가요?',
-    answer:
-      '점심, 저녁, 아침·브런치 메뉴가 고민될 때 돌림판을 돌려 오늘의 메뉴를 하나 뽑아 보는 오락용 서비스입니다. 로그인이나 입력 없이 이용하실 수 있습니다.',
-  },
   {
     question: '어떤 끼니를 고를 수 있나요?',
     answer:
@@ -20,11 +15,6 @@ export const MEAL_FAQ: readonly MealFaqItemType[] = [
     question: '메뉴는 어떻게 뽑나요?',
     answer:
       '고른 끼니와 카테고리, 국물 조건에 맞는 메뉴 가운데 무작위로 하나가 정해집니다. 후보가 둘 이상이면 직전에 뽑힌 메뉴를 제외한 나머지가 같은 확률입니다.',
-  },
-  {
-    question: '뽑힌 메뉴는 추천인가요?',
-    answer:
-      '아닙니다. 결과는 무작위로 정해지며 특정 메뉴나 식당을 추천하거나 평가하지 않습니다. 룰렛 결과는 어떤 보상과도 무관한 오락입니다.',
   },
   {
     question: '지도 링크를 누르면 어디로 이동하나요?',

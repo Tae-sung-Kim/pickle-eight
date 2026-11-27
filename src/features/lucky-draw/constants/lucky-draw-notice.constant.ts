@@ -22,4 +22,3 @@ export const LUCKY_DRAW_HUB_ROLE_COMPARE =
   '이름과 결과를 짝지을 때는 사다리 타기, 하나만 고를 때는 돌림판, 항목을 한 장씩 뽑을 때는 제비뽑기를 쓰세요.';
 
 export const LUCKY_DRAW_GUIDE_TITLE = '이렇게 이용합니다';
-export const LUCKY_DRAW_FAQ_TITLE = '자주 묻는 질문';

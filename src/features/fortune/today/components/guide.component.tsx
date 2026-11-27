@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { FORTUNE_TODAY_GUIDE } from '@/features/fortune/constants/fortune-guide.constant';
 
 /**
@@ -13,10 +14,11 @@ export function FortuneTodayGuideComponent(): JSX.Element | null {
   return (
     <section className="space-y-6">
       {FORTUNE_TODAY_GUIDE.map((section) => (
-        <div key={section.heading} className="space-y-2">
-          <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
-            {section.heading}
-          </h2>
+        <CollapsibleComponent
+          key={section.heading}
+          heading={section.heading}
+          level={2}
+        >
           {section.paragraphs.map((paragraph) => (
             <p
               key={paragraph}
@@ -25,7 +27,7 @@ export function FortuneTodayGuideComponent(): JSX.Element | null {
               {paragraph}
             </p>
           ))}
-        </div>
+        </CollapsibleComponent>
       ))}
     </section>
   );

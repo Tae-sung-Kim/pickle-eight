@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -18,7 +19,6 @@ import { DreamBasisNoticeComponent } from '@/features/dream/shared/components/ba
 import { DreamBreadcrumbComponent } from '@/features/dream/shared/components/breadcrumb.component';
 import { DreamCrisisPhonesComponent } from '@/features/dream/shared/components/crisis-phones.component';
 import { DreamDisclaimerNoticeComponent } from '@/features/dream/shared/components/disclaimer-notice.component';
-import { DreamFaqComponent } from '@/features/dream/shared/components/faq.component';
 import {
   buildDreamHubGroups,
   buildDreamSearchItems,
@@ -77,9 +77,9 @@ export default function DreamHubPage() {
         <DreamHubComponent groups={groups} />
 
         <div className="space-y-10 border-t border-border pt-10">
-          <DreamBasisNoticeComponent />
+          <DreamBasisNoticeComponent collapsed />
           <DreamHubDetailNoticeComponent />
-          <DreamFaqComponent items={DREAM_HUB_FAQ} />
+          <FaqComponent items={DREAM_HUB_FAQ} />
           <DreamCrisisPhonesComponent />
         </div>
       </div>

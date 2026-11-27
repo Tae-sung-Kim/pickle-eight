@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -15,7 +16,6 @@ import {
 } from '@/features/fortune/hub/components/root.component';
 import { FortuneDetailNoticeComponent } from '@/features/fortune/shared/components/detail-notice.component';
 import { FortuneDisclaimerNoticeComponent } from '@/features/fortune/shared/components/disclaimer-notice.component';
-import { FortuneFaqComponent } from '@/features/fortune/shared/components/faq.component';
 import { FortuneResultNoticeComponent } from '@/features/fortune/shared/components/result-notice.component';
 import {
   buildMetadata,
@@ -76,7 +76,7 @@ export default function FortuneHubPage() {
         </div>
 
         <FortuneHubComponent />
-        <FortuneFaqComponent items={FORTUNE_HUB_FAQ} />
+        <FaqComponent items={FORTUNE_HUB_FAQ} />
         <FortuneResultNoticeComponent />
         <FortuneDetailNoticeComponent />
       </div>

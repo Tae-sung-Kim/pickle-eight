@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
+import { LUCKY_DRAW_FAQ } from '@/features/lucky-draw/constants/lucky-draw-faq.constant';
 import {
   LUCKY_DRAW_LOTS_SEO,
   LUCKY_DRAW_METADATA_CATEGORY,
 } from '@/features/lucky-draw/constants/lucky-draw-seo.constant';
 import { LuckyDrawLotsComponent } from '@/features/lucky-draw/lots/components/root.component';
 import { LuckyDrawDisclaimerNoticeComponent } from '@/features/lucky-draw/shared/components/disclaimer-notice.component';
-import { LuckyDrawFaqComponent } from '@/features/lucky-draw/shared/components/faq.component';
 import { LuckyDrawGuideComponent } from '@/features/lucky-draw/shared/components/guide.component';
 import { LuckyDrawNoscriptNoticeComponent } from '@/features/lucky-draw/shared/components/noscript-notice.component';
 import { LuckyDrawResultNoticeComponent } from '@/features/lucky-draw/shared/components/result-notice.component';
@@ -55,7 +56,7 @@ export default function LuckyDrawLotsPage() {
 
         <div className="space-y-10 border-t border-border pt-10">
           <LuckyDrawGuideComponent page="lots" />
-          <LuckyDrawFaqComponent page="lots" />
+          <FaqComponent items={LUCKY_DRAW_FAQ.lots} muted />
         </div>
       </div>
     </ContentWrapperComponent>

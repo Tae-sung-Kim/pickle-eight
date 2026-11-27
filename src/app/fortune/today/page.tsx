@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -13,7 +14,6 @@ import { FortuneCalcBasisComponent } from '@/features/fortune/shared/components/
 import { FortuneConsentResetComponent } from '@/features/fortune/shared/components/consent-reset.component';
 import { FortuneDetailNoticeComponent } from '@/features/fortune/shared/components/detail-notice.component';
 import { FortuneDisclaimerNoticeComponent } from '@/features/fortune/shared/components/disclaimer-notice.component';
-import { FortuneFaqComponent } from '@/features/fortune/shared/components/faq.component';
 import { FortuneInputNoticeComponent } from '@/features/fortune/shared/components/input-notice.component';
 import { FortuneNoscriptNoticeComponent } from '@/features/fortune/shared/components/noscript-notice.component';
 import { FortuneResultNoticeComponent } from '@/features/fortune/shared/components/result-notice.component';
@@ -73,7 +73,7 @@ export default function FortuneTodayPage() {
         <FortuneResultNoticeComponent />
         <FortuneTodayGuideComponent />
         <FortuneCalcBasisComponent items={[]} />
-        <FortuneFaqComponent items={FORTUNE_TODAY_FAQ} />
+        <FaqComponent items={FORTUNE_TODAY_FAQ} />
         <FortuneDetailNoticeComponent />
         <FortuneConsentResetComponent />
       </div>

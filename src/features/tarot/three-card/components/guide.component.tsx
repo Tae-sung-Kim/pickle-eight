@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { TAROT_SPREAD_POSITIONS } from '@/features/tarot/constants/tarot-spread.constant';
 import { TarotCardBackComponent } from '@/features/tarot/shared/components/card-back.component';
 
@@ -15,25 +16,24 @@ const GUIDE_PARAGRAPHS: readonly string[] = [
 
 /**
  * TarotThreeCardGuideComponent
- * - 스프레드 위치 설명과 뒷면 3장 배치도(과거·현재·미래). 서버 컴포넌트.
+ * - 읽는 법(접힘), 스프레드 위치 설명과 뒷면 3장 배치도(과거·현재·미래). 서버 컴포넌트.
  * - 위치 이름은 TAROT_SPREAD_POSITIONS를 그대로 쓴다.
  */
 export function TarotThreeCardGuideComponent(): JSX.Element {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
-        {GUIDE_TITLE}
-      </h2>
-      <div className="space-y-3">
-        {GUIDE_PARAGRAPHS.map((paragraph) => (
-          <p
-            key={paragraph}
-            className="max-w-[68ch] text-sm leading-7 text-foreground sm:text-base"
-          >
-            {paragraph}
-          </p>
-        ))}
-      </div>
+      <CollapsibleComponent heading={GUIDE_TITLE} level={2}>
+        <div className="space-y-3">
+          {GUIDE_PARAGRAPHS.map((paragraph) => (
+            <p
+              key={paragraph}
+              className="max-w-[68ch] text-sm leading-7 text-foreground sm:text-base"
+            >
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      </CollapsibleComponent>
       <ol className="flex items-start gap-3">
         {TAROT_SPREAD_POSITIONS.map((position) => (
           <li key={position.key} className="flex flex-col items-center gap-2">

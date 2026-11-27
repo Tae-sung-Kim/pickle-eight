@@ -58,17 +58,11 @@ export const DREAM_CRISIS_OTHER_PHONES_TITLE = '다른 상담전화';
 export const DREAM_BASIS_LINK_LABEL = '다른 소재 찾기';
 
 export const DREAM_DETAIL_NOTICE_TITLE = '상세 안내';
-/** 허브 상세 안내 6항. 2번 문장은 "예측", "보장"이 들어간 허용 예외 문장이다 */
+/** 허브 상세 안내 2항. 1번 문장은 "예측", "보장"이 들어간 허용 예외 문장이다 */
 export const DREAM_DETAIL_NOTICE_ITEMS = [
-  '이 서비스의 꿈 해몽은 오락과 자기 성찰을 위한 읽을거리입니다.',
   '꿈의 내용이 현실의 일을 예측하거나 보장하지 않습니다.',
   '건강, 수면, 정신건강, 법률, 재정과 관련된 고민은 전문가와 상담하시기 바랍니다.',
-  '풀이를 근거로 중요한 결정을 내리지 않으시기 바랍니다. 풀이를 따르는 판단과 선택은 이용자 본인의 몫입니다.',
-  '풀이는 민간에서 전해 온 해몽 관념을 바탕으로 이 서비스가 새로 작성한 문장이며, 과학적으로 입증된 해석이 아닙니다.',
-  '특정 해몽서나 사이트와 제휴 관계가 없습니다.',
 ] as const;
-
-export const DREAM_FAQ_TITLE = '자주 묻는 질문';
 
 export const DREAM_SECTION_TITLES = {
   folk: '민간 풀이',

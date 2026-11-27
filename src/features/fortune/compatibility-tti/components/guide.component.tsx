@@ -1,4 +1,6 @@
 import type { JSX } from 'react';
+
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { FORTUNE_COMPATIBILITY_GRADES } from '@/features/fortune/constants/fortune-compatibility-grade.constant';
 import {
   FORTUNE_COMPATIBILITY_GRADE_RULE_HEADING,
@@ -32,8 +34,6 @@ const RELATION_ORDER = [
   'other',
 ] as const;
 
-const H2_CLASS =
-  'text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl';
 const PARAGRAPH_CLASS =
   'max-w-[68ch] text-sm leading-7 text-foreground sm:text-base';
 
@@ -57,6 +57,13 @@ function listCombos(
   );
 }
 
+// 등급 규칙 첫 문장은 접힌 제목 줄 note, 나머지 원문은 본문에 그대로 둔다
+const [GRADE_RULE_FIRST, ...GRADE_RULE_OTHERS] =
+  FORTUNE_COMPATIBILITY_TTI_GRADE_RULE_PARAGRAPHS;
+const [GRADE_RULE_NOTE, ...GRADE_RULE_REST_PARTS] =
+  GRADE_RULE_FIRST.split(/(?<=\.) /);
+const GRADE_RULE_REST = GRADE_RULE_REST_PARTS.join(' ');
+
 const GRADE_ROWS = FORTUNE_COMPATIBILITY_GRADES.map((grade) => ({
   key: grade.key,
   name: grade.name,
@@ -76,48 +83,64 @@ const GRADE_ROWS = FORTUNE_COMPATIBILITY_GRADES.map((grade) => ({
 export function FortuneCompatibilityTtiGuideComponent(): JSX.Element {
   return (
     <section className="space-y-6">
-      {[
-        ...FORTUNE_COMPATIBILITY_TTI_INTRO,
-        ...FORTUNE_COMPATIBILITY_TTI_GUIDE,
-      ].map((section) => (
-        <div key={section.heading} className="space-y-2">
-          <h2 className={H2_CLASS}>{section.heading}</h2>
+      {FORTUNE_COMPATIBILITY_TTI_INTRO.map((section) => (
+        <CollapsibleComponent
+          key={section.heading}
+          heading={section.heading}
+          level={2}
+        >
           {section.paragraphs.map((paragraph) => (
             <p key={paragraph} className={PARAGRAPH_CLASS}>
               {paragraph}
             </p>
           ))}
-        </div>
+        </CollapsibleComponent>
       ))}
 
-      <div className="space-y-4">
-        {RELATION_ORDER.map((relation) => {
-          const guide = FORTUNE_COMPATIBILITY_TTI_RELATION_GUIDE[relation];
-          const combos = listCombos(relation);
-          return (
-            <div key={relation} className="space-y-1">
-              <h3 className="text-lg leading-snug font-semibold break-keep text-foreground">
-                {guide.heading}
-              </h3>
-              <p className={PARAGRAPH_CLASS}>{guide.paragraph}</p>
-              {combos.length > 0 ? (
-                <p className="max-w-[68ch] text-sm leading-7 text-muted-foreground">
-                  {combos.map((combo, index) => (
-                    <span key={combo}>
-                      <span className="whitespace-nowrap">{combo}</span>
-                      {index < combos.length - 1 ? ', ' : ''}
-                    </span>
-                  ))}
-                </p>
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
+      {FORTUNE_COMPATIBILITY_TTI_GUIDE.map((section) => (
+        <CollapsibleComponent
+          key={section.heading}
+          heading={section.heading}
+          level={2}
+        >
+          {section.paragraphs.map((paragraph) => (
+            <p key={paragraph} className={PARAGRAPH_CLASS}>
+              {paragraph}
+            </p>
+          ))}
+          <div className="space-y-4">
+            {RELATION_ORDER.map((relation) => {
+              const guide = FORTUNE_COMPATIBILITY_TTI_RELATION_GUIDE[relation];
+              const combos = listCombos(relation);
+              return (
+                <div key={relation} className="space-y-1">
+                  <h3 className="text-lg leading-snug font-semibold break-keep text-foreground">
+                    {guide.heading}
+                  </h3>
+                  <p className={PARAGRAPH_CLASS}>{guide.paragraph}</p>
+                  {combos.length > 0 ? (
+                    <p className="max-w-[68ch] text-sm leading-7 text-muted-foreground">
+                      {combos.map((combo, index) => (
+                        <span key={combo}>
+                          <span className="whitespace-nowrap">{combo}</span>
+                          {index < combos.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                    </p>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        </CollapsibleComponent>
+      ))}
 
-      <div className="space-y-2">
-        <h2 className={H2_CLASS}>{FORTUNE_COMPATIBILITY_GRADE_RULE_HEADING}</h2>
-        {FORTUNE_COMPATIBILITY_TTI_GRADE_RULE_PARAGRAPHS.map((paragraph) => (
+      <CollapsibleComponent
+        heading={FORTUNE_COMPATIBILITY_GRADE_RULE_HEADING}
+        level={2}
+        note={GRADE_RULE_NOTE}
+      >
+        {[GRADE_RULE_REST, ...GRADE_RULE_OTHERS].map((paragraph) => (
           <p key={paragraph} className={PARAGRAPH_CLASS}>
             {paragraph}
           </p>
@@ -150,7 +173,7 @@ export function FortuneCompatibilityTtiGuideComponent(): JSX.Element {
             ))}
           </tbody>
         </table>
-      </div>
+      </CollapsibleComponent>
     </section>
   );
 }

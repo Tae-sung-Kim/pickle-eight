@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -9,6 +10,7 @@ import {
   generateOgImageUrl,
   getOgTag,
   jsonLdBreadcrumb,
+  jsonLdFaq,
   jsonLdWebSite,
 } from '@/lib/seo';
 
@@ -74,6 +76,19 @@ export const metadata: Metadata = {
   },
 };
 
+const FAQ_ITEMS = [
+  {
+    question: '시뮬레이션 결과가 실제 당첨 확률과 같나요?',
+    answer:
+      '아니요. 난수 기반 반복 실험의 분포를 보여주는 참고용 지표이며 특정 당첨을 보장하지 않습니다.',
+  },
+  {
+    question: '어떤 난수 방식을 사용하나요?',
+    answer:
+      '플랫폼 표준의 CSPRNG 계열 원칙을 따르는 무작위 추출을 사용합니다. 구현에 따라 성능/방식이 다를 수 있습니다.',
+  },
+] as const;
+
 export default function LottoSimulatorPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
@@ -86,32 +101,7 @@ export default function LottoSimulatorPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
-      <JsonLdComponent
-        data={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: [
-              {
-                '@type': 'Question',
-                name: '시뮬레이션 결과가 실제 당첨 확률과 같나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '아니요. 난수 기반 반복 실험의 분포를 보여주는 참고용 지표이며 특정 당첨을 보장하지 않습니다.',
-                },
-              },
-              {
-                '@type': 'Question',
-                name: '어떤 난수 방식을 사용하나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '플랫폼 표준의 CSPRNG 계열 원칙을 따르는 무작위 추출을 사용합니다. 구현에 따라 성능/방식이 다를 수 있습니다.',
-                },
-              },
-            ],
-          },
-        ]}
-      />
+      <JsonLdComponent data={[jsonLdFaq(FAQ_ITEMS)]} />
       <div className="mx-auto max-w-5xl p-8">
         <TitleWrapperComponent
           type={MENU_GROUP_NAME_ENUM.LOTTO}
@@ -119,6 +109,9 @@ export default function LottoSimulatorPage() {
           description="티켓 수와 반복 횟수를 설정해 시뮬레이션을 실행하세요. 결과 분포는 참고용이며 당첨을 보장하지 않습니다."
         />
         <LottoSimulatorComponent />
+        <div className="mt-10">
+          <FaqComponent items={FAQ_ITEMS} />
+        </div>
       </div>
     </ContentWrapperComponent>
   );

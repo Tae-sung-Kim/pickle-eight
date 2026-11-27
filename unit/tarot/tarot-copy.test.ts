@@ -529,12 +529,14 @@ describe('tarot-v2 문구: 검색·가이드·FAQ·메뉴', () => {
     const three = TAROT_THREE_CARD_FAQ.map((f) => f.question);
     for (const q of [
       '1장과 3장은 무엇이 다릅니까?',
-      '분야를 고르면 해석이 달라집니까?',
       '질문을 적으면 해석에 반영됩니까?',
     ]) {
       expect(daily, '1장 FAQ').toContain(q);
       expect(three, '3장 FAQ').toContain(q);
     }
+    // 2단계 D-7, D-9: 분야 FAQ 삭제
+    expect(daily).not.toContain('분야를 고르면 해석이 달라집니까?');
+    expect(three).not.toContain('분야를 고르면 해석이 달라집니까?');
     expect(three).toContain('3장은 왜 다시 뽑을 수 있습니까?');
     expect(daily.some((q) => q.includes('왜 다시 뽑을 수 없습니까?'))).toBe(
       true

@@ -161,27 +161,29 @@ export function MealRouletteComponent(): JSX.Element {
             onClear={clearArea}
           />
         </div>
-        <MealRouletteResultComponent
-          menu={resultMenu}
-          categoryLabel={categoryLabel}
-          luckLabel={luckLabel}
-          luckLine={luckLine}
-          spinning={spinning}
-          area={area}
-          shareSlot={
-            shareCard ? (
-              <SharePanelComponent
-                controller={controller}
-                previewAlt={previewAlt}
-                previewTexts={previewTexts}
-              />
-            ) : null
-          }
-        />
+        <div className="min-w-0 space-y-6">
+          <MealRouletteResultComponent
+            menu={resultMenu}
+            categoryLabel={categoryLabel}
+            luckLabel={luckLabel}
+            luckLine={luckLine}
+            spinning={spinning}
+            area={area}
+            shareSlot={
+              shareCard ? (
+                <SharePanelComponent
+                  controller={controller}
+                  previewAlt={previewAlt}
+                  previewTexts={previewTexts}
+                />
+              ) : null
+            }
+          />
+          {resultMenu && !spinning ? (
+            <ResultNextLinksComponent from="/meal" />
+          ) : null}
+        </div>
       </div>
-      {resultMenu && !spinning ? (
-        <ResultNextLinksComponent from="/meal" />
-      ) : null}
       <MealRouletteStatusComponent message={announcement} />
       {shareCard ? (
         <ShareCardHostComponent ref={cardRef}>

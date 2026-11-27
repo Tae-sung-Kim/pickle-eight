@@ -107,5 +107,3 @@ export const MEAL_AREA_RESULT_NOTICE_TEXT =
 // --- noscript ---
 export const MEAL_NOSCRIPT_TEXT =
   '끼니 선택과 돌림판은 JavaScript가 켜져 있어야 동작합니다. 브라우저 설정에서 JavaScript를 켜 주시기 바랍니다. 소개와 자주 묻는 질문은 그대로 읽으실 수 있습니다.';
-
-export const MEAL_FAQ_TITLE = '자주 묻는 질문';

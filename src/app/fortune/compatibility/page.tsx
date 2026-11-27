@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -11,7 +12,6 @@ import { FORTUNE_COMPATIBILITY_HUB_SEO } from '@/features/fortune/constants/fort
 import { FORTUNE_BREADCRUMB_GROUP } from '@/features/fortune/constants/fortune-seo.constant';
 import { FortuneCompatibilityDisclaimerComponent } from '@/features/fortune/shared/components/compatibility-disclaimer.component';
 import { FortuneDetailNoticeComponent } from '@/features/fortune/shared/components/detail-notice.component';
-import { FortuneFaqComponent } from '@/features/fortune/shared/components/faq.component';
 import {
   buildMetadata,
   canonicalUrl,
@@ -64,7 +64,7 @@ export default function FortuneCompatibilityHubPage() {
         </div>
 
         <FortuneCompatibilityHubComponent />
-        <FortuneFaqComponent items={FORTUNE_COMPATIBILITY_HUB_FAQ} />
+        <FaqComponent items={FORTUNE_COMPATIBILITY_HUB_FAQ} />
         <FortuneDetailNoticeComponent />
       </div>
     </ContentWrapperComponent>

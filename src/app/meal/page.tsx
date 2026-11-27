@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -11,7 +12,6 @@ import {
   MEAL_HUB_SEO,
 } from '@/features/meal/constants/meal-seo.constant';
 import { MealRouletteDisclaimerNoticeComponent } from '@/features/meal/roulette/components/disclaimer-notice.component';
-import { MealRouletteFaqComponent } from '@/features/meal/roulette/components/faq.component';
 import { MealRouletteIntroComponent } from '@/features/meal/roulette/components/intro.component';
 import { MealRouletteNoscriptNoticeComponent } from '@/features/meal/roulette/components/noscript-notice.component';
 import { MealRouletteRandomNoticeComponent } from '@/features/meal/roulette/components/random-notice.component';
@@ -66,7 +66,7 @@ export default function MealPage() {
         <div className="space-y-10 border-t border-border pt-10">
           <MealRouletteIntroComponent />
           <MealRouletteRandomNoticeComponent />
-          <MealRouletteFaqComponent />
+          <FaqComponent items={MEAL_FAQ} />
         </div>
       </div>
     </ContentWrapperComponent>

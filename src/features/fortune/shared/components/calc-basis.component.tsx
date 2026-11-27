@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import {
   FORTUNE_CALC_BASIS_STAR_SIGN,
   FORTUNE_CALC_BASIS_TTI,
@@ -51,6 +52,8 @@ const ITEM_TEXTS: Record<FortuneCalcBasisItemKeyType, string> = {
 export type FortuneCalcBasisComponentPropsType = {
   /** 이 페이지에 보일 항목. 배열 순서대로 그린다 */
   items: readonly FortuneCalcBasisItemKeyType[];
+  /** true면 제목만 보이고 목록은 접는다(사주 전용) */
+  collapsible?: boolean;
 };
 
 /**
@@ -60,18 +63,31 @@ export type FortuneCalcBasisComponentPropsType = {
  */
 export function FortuneCalcBasisComponent({
   items,
+  collapsible = false,
 }: FortuneCalcBasisComponentPropsType): JSX.Element {
+  const list = (
+    <ul className="max-w-[68ch] list-disc space-y-1 pl-5 text-sm leading-7 text-foreground">
+      {items.map((key) => (
+        <li key={key}>{ITEM_TEXTS[key]}</li>
+      ))}
+      <li>{FORTUNE_SUPPORTED_RANGE_NOTICE}</li>
+    </ul>
+  );
+
+  if (collapsible) {
+    return (
+      <CollapsibleComponent heading={FORTUNE_CALC_BASIS_TITLE} level={2}>
+        {list}
+      </CollapsibleComponent>
+    );
+  }
+
   return (
     <section className="space-y-3">
       <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
         {FORTUNE_CALC_BASIS_TITLE}
       </h2>
-      <ul className="max-w-[68ch] list-disc space-y-1 pl-5 text-sm leading-7 text-foreground">
-        {items.map((key) => (
-          <li key={key}>{ITEM_TEXTS[key]}</li>
-        ))}
-        <li>{FORTUNE_SUPPORTED_RANGE_NOTICE}</li>
-      </ul>
+      {list}
     </section>
   );
 }

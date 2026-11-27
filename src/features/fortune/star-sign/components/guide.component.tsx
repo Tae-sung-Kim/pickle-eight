@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { FORTUNE_STAR_SIGN_GUIDE } from '@/features/fortune/constants/fortune-guide.constant';
 import {
   FORTUNE_STAR_SIGN_GUIDE_RANGES,
@@ -20,10 +21,11 @@ export function FortuneStarSignGuideComponent(): JSX.Element {
   return (
     <section className="space-y-6">
       {FORTUNE_STAR_SIGN_GUIDE.map((section) => (
-        <div key={section.heading} className="space-y-2">
-          <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
-            {section.heading}
-          </h2>
+        <CollapsibleComponent
+          key={section.heading}
+          heading={section.heading}
+          level={2}
+        >
           {section.paragraphs.map((paragraph) => (
             <p
               key={paragraph}
@@ -32,15 +34,9 @@ export function FortuneStarSignGuideComponent(): JSX.Element {
               {paragraph}
             </p>
           ))}
-        </div>
+        </CollapsibleComponent>
       ))}
-      <div className="space-y-2">
-        <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
-          {TABLE_TITLE}
-        </h2>
-        <p className="max-w-[68ch] text-sm leading-7 text-foreground sm:text-base">
-          {RANGE_NOTE}
-        </p>
+      <CollapsibleComponent heading={TABLE_TITLE} level={2} note={RANGE_NOTE}>
         <div className="overflow-x-auto">
           <table className="w-full max-w-md border-collapse text-left text-sm leading-6 text-foreground">
             <caption className="sr-only">{TABLE_TITLE}</caption>
@@ -71,7 +67,7 @@ export function FortuneStarSignGuideComponent(): JSX.Element {
             </tbody>
           </table>
         </div>
-      </div>
+      </CollapsibleComponent>
     </section>
   );
 }

@@ -175,7 +175,7 @@ QA 메모: 화면 문구를 인용한 AC는 문구 일치가 아니라 의미 �
 
 검색 노출 (아래 "검색 노출" 항목 참고)
 - AC-32: `/tarot/daily`, `/tarot/three-card` 페이지에 `robots` noindex가 없고, title, description, canonical, OG가 있다.
-- AC-33: JS를 끈 상태의 HTML에도 설명 콘텐츠(사용법, 정/역방향 설명, FAQ, 면책)가 보인다.
+- AC-33: JS를 끈 상태의 HTML에도 설명 콘텐츠(사용법, 정/역방향 설명, FAQ, 면책)가 있다. 접힌 FAQ도 서버 HTML에 있으면 충족한다(text-slim 승인 2026-11-27).
 - AC-34: 각 페이지에 `h1`이 하나뿐이다.
 - AC-35: `/sitemap.xml`에 두 페이지 URL이 포함된다. 메뉴에서 타로가 "준비 중"으로 표시되지 않는다.
 - AC-36: 데스크톱과 모바일 화면에서 모두 뽑기 → 결과 확인까지 끊김 없이 된다.

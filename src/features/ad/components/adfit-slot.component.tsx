@@ -10,13 +10,13 @@ import { useConsentContext } from '@/providers/consent.provider';
 
 export type AdFitSlotProps = {
   readonly unit?: 'top' | 'bottom';
-  readonly fixed?: boolean;
-  readonly topOffsetPx?: number; // when fixed, offset from top (e.g., header height)
+  readonly sticky?: boolean;
+  readonly topOffsetPx?: number; // when sticky, offset from top (e.g., header height)
 };
 
 export function AdFitSlotComponent({
   unit = 'top',
-  fixed = false,
+  sticky = false,
   topOffsetPx = 0,
 }: AdFitSlotProps) {
   const { state } = useConsentContext();
@@ -129,7 +129,7 @@ export function AdFitSlotComponent({
     </section>
   );
 
-  if (!fixed) return AdInner;
+  if (!sticky) return AdInner;
 
   // position: fixed 광고는 삼성 인터넷에서 스크롤 중 사라진 뒤 복구되지 않아 sticky로 둔다.
   // sticky는 부모 높이 안에서만 붙으므로 부모는 body여야 한다(layout.tsx에서 래퍼 없이 둔다).

@@ -14,7 +14,6 @@ export default function LottoLayout({
     <>
       <PageHeaderComponent
         title="로또 분석실"
-        description="역대 당첨 번호 분석부터 번호 생성, 가상 시뮬레이션까지 로또의 모든 것을 만나보세요."
         breadcrumbs={[{ label: '로또 분석실' }]}
       />
       <AgeGateProvider>

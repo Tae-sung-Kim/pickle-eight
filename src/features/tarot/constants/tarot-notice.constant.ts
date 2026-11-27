@@ -97,9 +97,6 @@ export const TAROT_REDRAW_BUTTON_LABEL = '다시 뽑기';
 // 3장 타로 결과 묶음 제목 (sr-only h2)
 export const TAROT_THREE_CARD_RESULT_TITLE = '세 장의 결과';
 
-// FAQ 섹션 제목 (h2)
-export const TAROT_FAQ_TITLE = '자주 묻는 질문';
-
 // 카드 접근성 이름
 export const TAROT_CARD_BACK_LABEL = '타로 카드 뒷면';
 

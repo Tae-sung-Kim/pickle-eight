@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -11,7 +12,6 @@ import {
 } from '@/features/tarot/constants/tarot-seo.constant';
 import { TarotDetailNoticeComponent } from '@/features/tarot/shared/components/detail-notice.component';
 import { TarotDisclaimerNoticeComponent } from '@/features/tarot/shared/components/disclaimer-notice.component';
-import { TarotFaqComponent } from '@/features/tarot/shared/components/faq.component';
 import { TarotNoscriptNoticeComponent } from '@/features/tarot/shared/components/noscript-notice.component';
 import { TarotResultNoticeComponent } from '@/features/tarot/shared/components/result-notice.component';
 import { TarotThreeCardGuideComponent } from '@/features/tarot/three-card/components/guide.component';
@@ -68,7 +68,7 @@ export default function TarotThreeCardPage() {
         <TarotThreeCardComponent />
         <TarotResultNoticeComponent />
         <TarotThreeCardGuideComponent />
-        <TarotFaqComponent items={TAROT_THREE_CARD_FAQ} />
+        <FaqComponent items={TAROT_THREE_CARD_FAQ} />
         <TarotDetailNoticeComponent />
       </div>
     </ContentWrapperComponent>

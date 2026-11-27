@@ -2,6 +2,7 @@ import { CircleAlert, X } from 'lucide-react';
 import type { ChangeEvent, CompositionEvent, JSX } from 'react';
 import { useId, useRef } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,6 +15,9 @@ import {
   MEAL_AREA_NOTICE_LINES,
 } from '@/features/meal/constants/meal-notice.constant';
 import type { MealAreaInputErrorType } from '@/features/meal/types/meal.type';
+
+// 비전송 안내(1번)만 보이고 나머지는 접는다
+const FOLDED_NOTICE_LINES = MEAL_AREA_NOTICE_LINES.filter((_, i) => i !== 1);
 
 export type MealRouletteAreaInputComponentPropsType = Readonly<{
   /** 입력란 표시값 (조합 중 글자 포함) */
@@ -114,10 +118,17 @@ export function MealRouletteAreaInputComponent({
         id={noticeId}
         className="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-muted-foreground sm:max-w-2xl"
       >
-        {MEAL_AREA_NOTICE_LINES.map((line) => (
-          <li key={line}>{line}</li>
-        ))}
+        <li>{MEAL_AREA_NOTICE_LINES[1]}</li>
       </ul>
+      <div className="mt-2 sm:max-w-2xl">
+        <CollapsibleComponent heading="동네 입력 안내 더 보기">
+          <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-muted-foreground">
+            {FOLDED_NOTICE_LINES.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        </CollapsibleComponent>
+      </div>
     </div>
   );
 }

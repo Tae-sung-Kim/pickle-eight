@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -10,6 +11,7 @@ import {
   generateOgImageUrl,
   getOgTag,
   jsonLdBreadcrumb,
+  jsonLdFaq,
   jsonLdWebSite,
 } from '@/lib/seo';
 
@@ -41,6 +43,19 @@ export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl(PATHNAME) },
 };
 
+const FAQ_ITEMS = [
+  {
+    question: '조건/가중치가 당첨을 보장하나요?',
+    answer:
+      '아니요. 조건과 가중치는 선호 조합을 만드는 도구이며 특정 당첨을 보장하지 않습니다.',
+  },
+  {
+    question: '생성기는 어떤 데이터를 참고하나요?',
+    answer:
+      '기본 생성은 데이터를 쓰지 않고 무작위로 뽑습니다. 고급 옵션의 가중치를 켜면 서버에 동기화된 로또 당첨 기록을 참고합니다.',
+  },
+] as const;
+
 export default function LottoGeneratorPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
@@ -50,32 +65,7 @@ export default function LottoGeneratorPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
-      <JsonLdComponent
-        data={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: [
-              {
-                '@type': 'Question',
-                name: '조건/가중치가 당첨을 보장하나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '아니요. 조건과 가중치는 선호 조합을 만드는 도구이며 특정 당첨을 보장하지 않습니다.',
-                },
-              },
-              {
-                '@type': 'Question',
-                name: '생성기는 어떤 데이터를 참고하나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '기본 생성은 데이터를 쓰지 않고 무작위로 뽑습니다. 고급 옵션의 가중치를 켜면 서버에 동기화된 로또 당첨 기록을 참고합니다.',
-                },
-              },
-            ],
-          },
-        ]}
-      />
+      <JsonLdComponent data={[jsonLdFaq(FAQ_ITEMS)]} />
       <div className="mx-auto max-w-5xl p-8">
         <TitleWrapperComponent
           type={MENU_GROUP_NAME_ENUM.LOTTO}
@@ -83,6 +73,9 @@ export default function LottoGeneratorPage() {
           description="무작위로 번호를 뽑거나 고급 옵션으로 조건을 정해 생성하세요. 참고용 조합이며 당첨을 보장하지 않습니다."
         />
         <LottoGeneratorComponent />
+        <div className="mt-10">
+          <FaqComponent items={FAQ_ITEMS} />
+        </div>
       </div>
     </ContentWrapperComponent>
   );

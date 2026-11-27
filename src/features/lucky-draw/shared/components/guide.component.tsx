@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { LUCKY_DRAW_GUIDE } from '../../constants/lucky-draw-guide.constant';
 import { LUCKY_DRAW_GUIDE_TITLE } from '../../constants/lucky-draw-notice.constant';
 import type { LuckyDrawPageKeyType } from '../../types/lucky-draw.type';
@@ -15,13 +16,7 @@ export function LuckyDrawGuideComponent({
 }: LuckyDrawGuidePropsType): JSX.Element {
   const guide = LUCKY_DRAW_GUIDE[page];
   return (
-    <section aria-labelledby="lucky-draw-guide-title" className="space-y-4">
-      <h2
-        id="lucky-draw-guide-title"
-        className="break-keep text-xl font-semibold leading-8 sm:text-2xl"
-      >
-        {LUCKY_DRAW_GUIDE_TITLE}
-      </h2>
+    <CollapsibleComponent heading={LUCKY_DRAW_GUIDE_TITLE} level={2}>
       <ol className="max-w-prose list-decimal space-y-1 pl-5 text-sm leading-7 text-foreground">
         {guide.steps.map((step) => (
           <li key={step}>{step}</li>
@@ -30,6 +25,6 @@ export function LuckyDrawGuideComponent({
       <p className="max-w-prose text-sm leading-7 text-muted-foreground">
         {guide.paragraph}
       </p>
-    </section>
+    </CollapsibleComponent>
   );
 }

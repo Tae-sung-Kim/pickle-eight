@@ -115,6 +115,11 @@ function goToCalcBasis(event: MouseEvent<HTMLAnchorElement>): void {
     return;
   }
   event.preventDefault();
+  // 접힌 계산 기준을 먼저 연다
+  const details = target.querySelector('details');
+  if (details) {
+    details.open = true;
+  }
   const isReduced = window.matchMedia(REDUCED_MOTION_QUERY).matches;
   target.scrollIntoView({
     block: 'start',

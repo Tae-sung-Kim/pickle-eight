@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -14,7 +15,6 @@ import { TarotDailyComponent } from '@/features/tarot/daily/components/root.comp
 import { TarotDailyStorageNoticeComponent } from '@/features/tarot/daily/components/storage-notice.component';
 import { TarotDetailNoticeComponent } from '@/features/tarot/shared/components/detail-notice.component';
 import { TarotDisclaimerNoticeComponent } from '@/features/tarot/shared/components/disclaimer-notice.component';
-import { TarotFaqComponent } from '@/features/tarot/shared/components/faq.component';
 import { TarotNoscriptNoticeComponent } from '@/features/tarot/shared/components/noscript-notice.component';
 import { TarotResultNoticeComponent } from '@/features/tarot/shared/components/result-notice.component';
 import {
@@ -69,7 +69,7 @@ export default function TarotDailyPage() {
         <TarotDailyComponent />
         <TarotResultNoticeComponent />
         <TarotDailyGuideComponent />
-        <TarotFaqComponent items={TAROT_DAILY_FAQ} />
+        <FaqComponent items={TAROT_DAILY_FAQ} />
         <TarotDetailNoticeComponent />
       </div>
     </ContentWrapperComponent>

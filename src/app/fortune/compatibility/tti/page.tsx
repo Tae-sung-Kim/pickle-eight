@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -20,7 +21,6 @@ import { FortuneCompatibilityInputNoticeComponent } from '@/features/fortune/sha
 import { FortuneCompatibilityResultNoticeComponent } from '@/features/fortune/shared/components/compatibility-result-notice.component';
 import { FortuneConsentResetComponent } from '@/features/fortune/shared/components/consent-reset.component';
 import { FortuneDetailNoticeComponent } from '@/features/fortune/shared/components/detail-notice.component';
-import { FortuneFaqComponent } from '@/features/fortune/shared/components/faq.component';
 import { FortuneNoscriptNoticeComponent } from '@/features/fortune/shared/components/noscript-notice.component';
 import {
   buildMetadata,
@@ -86,7 +86,7 @@ export default function FortuneCompatibilityTtiPage() {
         </div>
         <FortuneCompatibilityTtiGuideComponent />
         <FortuneCalcBasisComponent items={['tti', 'time-unknown']} />
-        <FortuneFaqComponent items={FORTUNE_COMPATIBILITY_TTI_FAQ} />
+        <FaqComponent items={FORTUNE_COMPATIBILITY_TTI_FAQ} />
         <FortuneDetailNoticeComponent />
         <FortuneConsentResetComponent />
       </div>

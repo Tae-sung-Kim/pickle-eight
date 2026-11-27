@@ -71,6 +71,39 @@ test('번호 생성: 기본 5게임, 최대 20게임, 당첨 비보장 고지', 
   await expect(gameRows(page)).toHaveCount(20);
 });
 
+test('text-slim 3단계: 하단 고지 필수 문구 유지, 삭제 문구 없음, 헤더 설명 없음', async ({
+  page,
+}) => {
+  await openLotto(page, '/lotto/history');
+  const footer = page.locator('footer').filter({ hasText: '비공식 서비스' });
+  await expect(footer).toBeVisible();
+  for (const text of [
+    '비공식 서비스',
+    '로또 관련 모든 기능의 결과는 참고용이며 당첨을 보장하지 않습니다.',
+    '로또 관련 기능은 만 19세 이상에게만 제공됩니다.',
+    '정확성·적시성·완전성을 보증하지 않습니다',
+    '투자·재정·법률 자문이 아니며',
+    '이용에 따른 책임은 이용자에게 있습니다',
+  ]) {
+    await expect(footer.getByText(text), text).toBeVisible();
+  }
+  await expect(footer.locator('li')).toHaveCount(4);
+  for (const gone of ['스케줄 잡(크론)', '책임 있는 이용을 권장합니다']) {
+    await expect(footer.getByText(gone), gone).toHaveCount(0);
+  }
+
+  // 경고 알림은 그대로
+  await expect(
+    page.getByText('최신 정보는 공식 채널에서 확인하세요')
+  ).toBeVisible();
+  await expect(page.getByText('책임 있는 이용을 권장합니다')).toBeVisible();
+
+  await expect(
+    page.getByRole('heading', { name: '로또 분석실' })
+  ).toBeVisible();
+  await expect(page.getByText('로또의 모든 것을 만나보세요')).toHaveCount(0);
+});
+
 test('고급 옵션을 켜면 조건이 보이고 생성된다', async ({ page }) => {
   await openLotto(page, '/lotto/generator');
   await expect(page.getByText('합계 최소')).toHaveCount(0);
@@ -182,4 +215,51 @@ test('SEO: 서버 HTML의 메타, h1, JSON-LD, sitemap', async ({ request }) => 
     const xml = await (await request.get('/sitemap.xml')).text();
     expect(xml).toContain('/lotto');
   });
+});
+
+test('4단계: 로또 FAQ는 성인 확인 뒤 접힌 채 보이고 JSON-LD와 같으며 고지 위에 있다', async ({
+  page,
+}) => {
+  await page.goto('/lotto/generator');
+  await expect(
+    page.getByRole('heading', { name: '자주 묻는 질문' })
+  ).toHaveCount(0);
+  await passLottoAgeGate(page);
+  await declineCookies(page);
+  await waitForHydration(page);
+
+  const items = page
+    .locator('details')
+    .filter({ has: page.locator('summary h3') });
+  const first = items.first();
+  await expect(
+    page.getByRole('heading', { name: '자주 묻는 질문' })
+  ).toBeVisible();
+  await expect(first).toBeVisible();
+  await expect(first).toHaveJSProperty('open', false);
+  await first.locator('summary').click();
+  await expect(first).toHaveJSProperty('open', true);
+
+  const screen = await items.evaluateAll((els) =>
+    els.map((el) => [
+      el.querySelector('summary h3')?.textContent ?? '',
+      el.querySelector('p:not(summary p)')?.textContent ?? '',
+    ])
+  );
+  const raw = await page
+    .locator('script[type="application/ld+json"]')
+    .allTextContents();
+  const faq = raw
+    .flatMap((t) => [JSON.parse(t)].flat())
+    .find((n: { '@type'?: string }) => n['@type'] === 'FAQPage') as {
+    mainEntity: { name: string; acceptedAnswer: { text: string } }[];
+  };
+  expect(screen).toEqual(
+    faq.mainEntity.map((q) => [q.name, q.acceptedAnswer.text])
+  );
+
+  const faqBox = await first.boundingBox();
+  const footerBox = await footerNotice(page).boundingBox();
+  expect(faqBox && footerBox && faqBox.y < footerBox.y).toBe(true);
+  await expect(footerNotice(page)).toBeVisible();
 });

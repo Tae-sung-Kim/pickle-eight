@@ -1262,14 +1262,11 @@ describe('SJ-QA2 허브 개정 (AC-88)', () => {
     expect(hits, hits.join('\n')).toEqual([]);
   });
 
-  test('AC-88: 허브 FAQ는 7쌍이고 7번째(안 A)가 사주와 다른 운세의 차이를 묻는다', () => {
-    expect(FORTUNE_HUB_FAQ).toHaveLength(7);
-    expect(FORTUNE_HUB_FAQ[6].question).toBe(
+  test('AC-88: 허브 FAQ는 6쌍이고 사주 차이 FAQ는 삭제됐다 (2단계 D-5)', () => {
+    expect(FORTUNE_HUB_FAQ).toHaveLength(6);
+    expect(FORTUNE_HUB_FAQ.map((f) => f.question)).not.toContain(
       '사주는 다른 운세와 무엇이 다른가요?'
     );
-    expect(
-      FORTUNE_HUB_FAQ[6].answer.startsWith(noticeConstants.FORTUNE_SAJU_GLOSS)
-    ).toBe(true);
     for (const item of FORTUNE_HUB_FAQ) {
       expect(item.question.trim()).toMatch(/\?$/);
     }

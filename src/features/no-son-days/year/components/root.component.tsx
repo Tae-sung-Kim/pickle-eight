@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { NO_SON_DAYS_HUB_PATH } from '@/features/no-son-days/constants/no-son-days-route.constant';
 import { NO_SON_DAYS_VIEW } from '@/features/no-son-days/constants/no-son-days-view.constant';
 import { NoSonDaysBottomNoticeComponent } from '@/features/no-son-days/shared/components/bottom-notice.component';
@@ -20,13 +21,15 @@ export function NoSonDaysYearComponent({ year }: NoSonDaysYearPropsType) {
       <NoSonDaysYearMonthListComponent year={year} />
 
       <section className="mx-auto mt-10 w-full max-w-5xl">
-        <h2 className="mb-3 text-xl font-bold leading-snug">
-          {NO_SON_DAYS_VIEW.year.calendarHeading}
-        </h2>
-        <NoSonDaysCalendarComponent
-          initialMonth={{ year: year.year, month: 1 }}
-          headingLevel="h3"
-        />
+        <CollapsibleComponent
+          heading={NO_SON_DAYS_VIEW.year.calendarHeading}
+          level={2}
+        >
+          <NoSonDaysCalendarComponent
+            initialMonth={{ year: year.year, month: 1 }}
+            headingLevel="h3"
+          />
+        </CollapsibleComponent>
       </section>
 
       <NoSonDaysYearLinksComponent currentYear={year.year} />

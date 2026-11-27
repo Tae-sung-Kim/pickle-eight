@@ -104,7 +104,7 @@ export default function RootLayout({
           <ConsentProvider>
             <MotionProvider>
               <HeaderComponent />
-              <AdFitSlotComponent fixed topOffsetPx={64} />
+              <AdFitSlotComponent sticky topOffsetPx={64} />
               <main className="flex-1 py-8">
                 <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
                   {children}

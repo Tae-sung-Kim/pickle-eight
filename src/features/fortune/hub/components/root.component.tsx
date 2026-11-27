@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { MenuListComponent } from '@/components/common/menu-list.component';
 import { MENU_GROUP_NAME_ENUM, MENU_LIST } from '@/constants/menu.constant';
 import { FORTUNE_HUB_GUIDE } from '@/features/fortune/constants/fortune-guide.constant';
@@ -8,6 +9,9 @@ import { FORTUNE_HUB_GUIDE } from '@/features/fortune/constants/fortune-guide.co
 const FORTUNE_HUB_LIST_TITLE = '운세 고르기';
 const FORTUNE_HUB_EMPTY_TEXT =
   '지금 볼 수 있는 운세가 없습니다. 메뉴에서 다른 기능을 이용해 주시기 바랍니다.';
+const FORTUNE_HUB_MORE_TITLE = '운세 종류 자세히 보기';
+const PARAGRAPH_CLASS =
+  'max-w-[68ch] text-sm leading-7 text-foreground sm:text-base';
 const LIST_HEADING_ID = 'fortune-hub-list-heading';
 
 /** 허브 목록의 원본. 운세 그룹 items를 그대로 쓴다(없으면 빈 배열) */
@@ -16,7 +20,7 @@ export const getFortuneHubItems = () =>
 
 /**
  * FortuneHubComponent
- * - 운세 허브 본문(서버 컴포넌트): 운세 고르기 목록 + 허브 설명(세 가지 운세의 차이).
+ * - 운세 허브 본문(서버 컴포넌트): 운세 고르기 목록 + 허브 설명(첫 문단만 보이고 나머지는 접힘).
  * - 동의 게이트, 입력칸, 문구 풀을 쓰지 않는다. 동의 상태를 만들거나 지우지 않는다(AC-83).
  */
 export function FortuneHubComponent(): JSX.Element {
@@ -46,14 +50,14 @@ export function FortuneHubComponent(): JSX.Element {
             <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
               {section.heading}
             </h2>
-            {section.paragraphs.map((paragraph) => (
-              <p
-                key={paragraph}
-                className="max-w-[68ch] text-sm leading-7 text-foreground sm:text-base"
-              >
-                {paragraph}
-              </p>
-            ))}
+            <p className={PARAGRAPH_CLASS}>{section.paragraphs[0]}</p>
+            <CollapsibleComponent heading={FORTUNE_HUB_MORE_TITLE}>
+              {section.paragraphs.slice(1).map((paragraph) => (
+                <p key={paragraph} className={PARAGRAPH_CLASS}>
+                  {paragraph}
+                </p>
+              ))}
+            </CollapsibleComponent>
           </div>
         ))}
       </section>

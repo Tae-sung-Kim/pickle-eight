@@ -7,7 +7,7 @@ import {
 
 /**
  * DreamHubDetailNoticeComponent
- * - 허브 상세 안내 6항. 상자 없는 글. 서버 컴포넌트.
+ * - 허브 상세 안내 2항. 상자 없는 글. 서버 컴포넌트.
  */
 export function DreamHubDetailNoticeComponent(): JSX.Element {
   return (

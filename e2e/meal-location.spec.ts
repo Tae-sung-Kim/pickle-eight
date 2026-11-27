@@ -83,8 +83,18 @@ test.describe('뭐 먹지 동네 이름 입력', () => {
     await expect(previewLabel(page)).toHaveCount(0);
     await expect(resultNotice(page)).toHaveCount(0);
     await expectQueries(page, menuQueries(first.name));
-    // 고지 5줄은 항상 보인다
-    for (const line of MEAL_AREA_NOTICE_LINES) {
+    // 입력칸 비전송 한 줄(1번)은 항상 보이고, 나머지 4줄은 접혀 HTML에만 있다(text-slim 2단계 F-6)
+    await expect(
+      main(page).getByText(MEAL_AREA_NOTICE_LINES[1], { exact: true })
+    ).toBeVisible();
+    const folded = MEAL_AREA_NOTICE_LINES.filter((_, i) => i !== 1);
+    for (const line of folded) {
+      await expect(main(page).getByText(line, { exact: true })).toBeHidden();
+    }
+    await main(page)
+      .getByRole('heading', { name: '동네 입력 안내 더 보기' })
+      .click();
+    for (const line of folded) {
       await expect(main(page).getByText(line, { exact: true })).toBeVisible();
     }
 
@@ -220,7 +230,7 @@ test.describe('뭐 먹지 동네 이름 입력', () => {
     expect(reached, '돌리기 뒤 Tab으로 입력란에 닿는다').toBe(true);
     await input.fill(AREA);
     await expect(
-      main(page).getByText(MEAL_AREA_NOTICE_LINES[0], { exact: true })
+      main(page).getByText(MEAL_AREA_NOTICE_LINES[1], { exact: true })
     ).toBeVisible();
     await expect(previewLabel(page)).toBeVisible();
 

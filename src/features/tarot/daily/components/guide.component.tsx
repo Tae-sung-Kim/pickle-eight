@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 
+import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { TarotCardFaceComponent } from '@/features/tarot/shared/components/card-face.component';
 import { getTarotCardById } from '@/features/tarot/utils/tarot-card.util';
 
@@ -28,10 +29,7 @@ export function TarotDailyGuideComponent(): JSX.Element {
   const exampleCard = getTarotCardById(EXAMPLE_CARD_ID);
 
   return (
-    <section className="space-y-4">
-      <h2 className="text-xl leading-tight font-semibold break-keep text-foreground sm:text-2xl">
-        {GUIDE_TITLE}
-      </h2>
+    <CollapsibleComponent heading={GUIDE_TITLE} level={2}>
       <div className="space-y-3">
         {GUIDE_PARAGRAPHS.map((paragraph) => (
           <p
@@ -58,6 +56,6 @@ export function TarotDailyGuideComponent(): JSX.Element {
           ))}
         </div>
       ) : null}
-    </section>
+    </CollapsibleComponent>
   );
 }

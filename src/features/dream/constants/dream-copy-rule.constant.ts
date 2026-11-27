@@ -176,5 +176,5 @@ export const DREAM_BOAST_PATTERNS: readonly RegExp[] = [
  */
 export const DREAM_COPY_ALLOWED_SENTENCES: readonly string[] = [
   DREAM_DISCLAIMER_TEXT,
-  DREAM_DETAIL_NOTICE_ITEMS[1],
+  DREAM_DETAIL_NOTICE_ITEMS[0],
 ];

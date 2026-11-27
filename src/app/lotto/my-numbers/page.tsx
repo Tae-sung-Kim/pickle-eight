@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { FaqComponent } from '@/components/common/faq.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -10,6 +11,7 @@ import {
   generateOgImageUrl,
   getOgTag,
   jsonLdBreadcrumb,
+  jsonLdFaq,
   jsonLdWebSite,
 } from '@/lib/seo';
 
@@ -48,6 +50,19 @@ export const metadata: Metadata = {
   },
 };
 
+const FAQ_ITEMS = [
+  {
+    question: '저장한 번호는 어디에 보관되나요?',
+    answer:
+      '저장한 번호는 서버로 전송되지 않고 사용 중인 브라우저(localStorage)에만 보관됩니다. 브라우저 데이터를 삭제하거나 다른 기기에서 접속하면 볼 수 없습니다.',
+  },
+  {
+    question: '자동 당첨 체크는 어떻게 동작하나요?',
+    answer:
+      '번호를 저장하면 저장한 날 기준으로 아직 추첨 전인 이번 주 회차(토요일 판매 마감 20:00 이후에는 다음 회차)부터 적용됩니다. 그 회차 이후에 추첨된 당첨 번호와 비교해 회차별 등수를 보여주며, 저장 이전 회차와는 비교하지 않습니다. 당첨 데이터는 Supabase(lotto_draws)에 동기화된 값을 내부 API로 조회합니다. 모든 기능은 참고용이며 당첨을 보장하지 않습니다.',
+  },
+] as const;
+
 export default function LottoMyNumbersPage() {
   const crumbs = jsonLdBreadcrumb([
     { name: 'Home', item: canonicalUrl('/') },
@@ -57,32 +72,7 @@ export default function LottoMyNumbersPage() {
   return (
     <ContentWrapperComponent type={MENU_GROUP_NAME_ENUM.LOTTO}>
       <JsonLdComponent data={[jsonLdWebSite(), crumbs]} />
-      <JsonLdComponent
-        data={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: [
-              {
-                '@type': 'Question',
-                name: '저장한 번호는 어디에 보관되나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '저장한 번호는 서버로 전송되지 않고 사용 중인 브라우저(localStorage)에만 보관됩니다. 브라우저 데이터를 삭제하거나 다른 기기에서 접속하면 볼 수 없습니다.',
-                },
-              },
-              {
-                '@type': 'Question',
-                name: '자동 당첨 체크는 어떻게 동작하나요?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: '번호를 저장하면 저장한 날 기준으로 아직 추첨 전인 이번 주 회차(토요일 판매 마감 20:00 이후에는 다음 회차)부터 적용됩니다. 그 회차 이후에 추첨된 당첨 번호와 비교해 회차별 등수를 보여주며, 저장 이전 회차와는 비교하지 않습니다. 당첨 데이터는 Supabase(lotto_draws)에 동기화된 값을 내부 API로 조회합니다. 모든 기능은 참고용이며 당첨을 보장하지 않습니다.',
-                },
-              },
-            ],
-          },
-        ]}
-      />
+      <JsonLdComponent data={[jsonLdFaq(FAQ_ITEMS)]} />
 
       <div className="mx-auto max-w-5xl p-8">
         <TitleWrapperComponent
@@ -92,6 +82,9 @@ export default function LottoMyNumbersPage() {
         />
 
         <MyNumbersComponent />
+        <div className="mt-10">
+          <FaqComponent items={FAQ_ITEMS} />
+        </div>
       </div>
     </ContentWrapperComponent>
   );
