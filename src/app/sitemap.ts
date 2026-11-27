@@ -5,16 +5,8 @@ import { FORTUNE_COMPATIBILITY_ROUTES } from '@/features/fortune/constants/fortu
 import { getNoSonDaysYearPaths } from '@/features/no-son-days/utils/no-son-days-seo.util';
 import { SITE_URL } from '@/lib/seo';
 
-const RECENT_DRAWS = 200 as const; // 최근 N개 회차 포함
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = SITE_URL;
-  const isLocalHost = /localhost|127\.0\.0\.1/i.test(siteUrl);
-  // Skip when explicitly requested, when running outside Vercel (local build), or when SITE_URL is localhost
-  const skipDynamicFetch: boolean =
-    process.env.SITEMAP_SKIP_FETCH === '1' ||
-    !process.env.VERCEL ||
-    isLocalHost;
 
   // 정적 필수 페이지
   const staticRoutes: string[] = ['/', '/privacy', '/terms'];
@@ -36,34 +28,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 손 없는 날 연도 경로 24개 (허브는 메뉴 항목으로 포함됨)
   const noSonDaysYearRoutes: string[] = [...getNoSonDaysYearPaths()];
 
-  // 동적: 로또 최신 회차 조회 후 최근 N개 생성
-  const dynamicLottoDraws: string[] = [];
-  if (!skipDynamicFetch) {
-    try {
-      const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), 3000);
-      const res = await fetch(`${siteUrl}/api/lotto/draws?latest=1`, {
-        // sitemap은 서버 실행 → 캐시 길게
-        next: { revalidate: 60 * 60 },
-        signal: controller.signal,
-      });
-      clearTimeout(id);
-      if (res.ok) {
-        const json = (await res.json()) as {
-          data?: { lastDrawNumber?: number };
-        };
-        const last: number | undefined = json.data?.lastDrawNumber;
-        if (typeof last === 'number' && last > 0) {
-          const from = Math.max(1, last - RECENT_DRAWS + 1);
-          for (let n = from; n <= last; n += 1)
-            dynamicLottoDraws.push(`/lotto/${n}`);
-        }
-      }
-    } catch {
-      // 네트워크 실패 시 동적 회차는 생략 (정적/메뉴 경로만 포함)
-    }
-  }
-
   // 경로 중복 제거
   const allRoutes = Array.from(
     new Set([
@@ -72,12 +36,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...compatibilityRoutes,
       ...dreamTopicRoutes,
       ...noSonDaysYearRoutes,
-      ...dynamicLottoDraws,
     ])
   );
 
   const priorityByRoute = (route: string): number => {
-    if (route.startsWith('/lotto')) return 0.8;
+    // 핵심 키워드 페이지를 앞세운다. 로또 회차(/lotto/N)는 얇은 페이지라 sitemap에서 뺐다.
+    if (
+      route === '/' ||
+      /^\/(fortune|tarot|meal|lucky-draw|dream|no-son-days)/.test(route)
+    )
+      return 0.9;
     return 0.6;
   };
 
