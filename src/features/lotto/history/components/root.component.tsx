@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import { LOTTO_MAX_HISTORY_RANGE } from '@/features/lotto/constants/lotto.constant';
 import {
   useLatestLottoDrawQuery,
@@ -90,6 +91,9 @@ export function LottoHistoryComponent() {
         )}
 
         <LottoHistoryResultComponent data={data ?? []} />
+        {data && data.length > 0 && (
+          <ResultNextLinksComponent from="/lotto/history" />
+        )}
       </div>
     </div>
   );

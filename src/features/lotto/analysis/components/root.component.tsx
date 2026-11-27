@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import {
   useLatestLottoDrawQuery,
   useLottoDrawsQuery,
@@ -139,6 +140,8 @@ export function LottoAnalysisComponent() {
             </p>
             <LottoAnalysisHotColdTrackerComponent />
           </section>
+
+          {stats && <ResultNextLinksComponent from="/lotto/analysis" />}
         </>
       )}
     </>

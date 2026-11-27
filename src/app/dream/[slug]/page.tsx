@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { ContentWrapperComponent } from '@/components/common/content-wrapper.component';
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import { TitleWrapperComponent } from '@/components/common/title-wrapper.component';
 import { JsonLdComponent } from '@/components/seo/json-ld.component';
 import { MENU_GROUP_NAME_ENUM } from '@/constants/menu.constant';
@@ -103,6 +104,7 @@ export default async function DreamTopicPage({
         </div>
 
         <DreamTopicComponent topic={topic} relatedTopics={relatedTopics} />
+        <ResultNextLinksComponent from="/dream/[slug]" />
         <DreamBottomNoticeComponent />
         <DreamCrisisPhonesComponent />
         <DreamTopicBackLinkComponent />

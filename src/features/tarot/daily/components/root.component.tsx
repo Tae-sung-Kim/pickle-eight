@@ -3,6 +3,7 @@
 import { CalendarCheck, HardDrive } from 'lucide-react';
 import { type JSX, useEffect, useRef, useState } from 'react';
 
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import {
   TAROT_DAILY_RESTORED_NOTICE,
   TAROT_DAILY_STORAGE_FAILED_NOTICE,
@@ -266,6 +267,8 @@ export function TarotDailyComponent(): JSX.Element {
                   <span>{TAROT_DAILY_STORAGE_FAILED_NOTICE}</span>
                 </p>
               ) : null}
+
+              <ResultNextLinksComponent from="/tarot/daily" />
             </>
           ) : null}
         </div>

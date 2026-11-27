@@ -7,10 +7,6 @@ import {
   ADS_DISABLED,
 } from '@/features/ad/constants/adfit.constant';
 import { useConsentContext } from '@/providers/consent.provider';
-import { useLoadingStore } from '@/stores/loading.store';
-
-// 슬롯이 여러 개여도 마지막 로드가 끝날 때만 로딩 표시를 끈다
-let pendingAdLoads = 0;
 
 export type AdFitSlotProps = {
   readonly unit?: 'top' | 'bottom';
@@ -23,7 +19,6 @@ export function AdFitSlotComponent({
   fixed = false,
   topOffsetPx = 0,
 }: AdFitSlotProps) {
-  const { showLoading, hideLoading } = useLoadingStore();
   const { state } = useConsentContext();
   const key = useId();
 
@@ -32,9 +27,6 @@ export function AdFitSlotComponent({
   useEffect(() => {
     // Only proceed when consent is explicitly accepted
     if (state !== 'accepted' || !adConfig) return;
-
-    pendingAdLoads += 1;
-    showLoading();
 
     const src = 'https://t1.daumcdn.net/kas/static/ba.min.js';
 
@@ -64,7 +56,7 @@ export function AdFitSlotComponent({
           ensureQueue();
           resolve();
         };
-        // 광고 차단 등으로 로드가 실패해도 로딩 표시가 남지 않게 한다
+        // 광고 차단 등으로 로드가 실패해도 넘어간다
         s.onerror = () => resolve();
         document.body.appendChild(s);
       });
@@ -89,15 +81,8 @@ export function AdFitSlotComponent({
       })
       .catch(() => {
         /* noop */
-      })
-      .finally(() => {
-        pendingAdLoads -= 1;
-        if (pendingAdLoads <= 0) {
-          pendingAdLoads = 0;
-          hideLoading();
-        }
       });
-  }, [state, adConfig, showLoading, hideLoading]);
+  }, [state, adConfig]);
 
   // 광고 단위가 없으면 동의 여부와 상관없이 아무것도 그리지 않는다
   if (ADS_DISABLED || !adConfig) return null;

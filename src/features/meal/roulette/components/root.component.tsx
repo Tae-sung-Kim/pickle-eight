@@ -3,6 +3,7 @@
 import type { JSX } from 'react';
 import { useEffect, useId, useRef } from 'react';
 
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import { ShareCardFrameComponent } from '@/components/share/share-card-frame.component';
 import { ShareCardHostComponent } from '@/components/share/share-card-host.component';
 import { SharePanelComponent } from '@/components/share/share-panel.component';
@@ -178,6 +179,9 @@ export function MealRouletteComponent(): JSX.Element {
           }
         />
       </div>
+      {resultMenu && !spinning ? (
+        <ResultNextLinksComponent from="/meal" />
+      ) : null}
       <MealRouletteStatusComponent message={announcement} />
       {shareCard ? (
         <ShareCardHostComponent ref={cardRef}>

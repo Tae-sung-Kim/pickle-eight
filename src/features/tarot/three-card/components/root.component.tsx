@@ -2,6 +2,7 @@
 
 import { type JSX, useEffect, useId, useRef, useState } from 'react';
 
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import { Button } from '@/components/ui/button';
 import {
   TAROT_ANNOUNCE_TEMPLATES,
@@ -312,6 +313,7 @@ export function TarotThreeCardComponent(): JSX.Element {
               {TAROT_REDRAW_RESULT_NOTICE}
             </p>
           </div>
+          <ResultNextLinksComponent from="/tarot/three-card" />
         </div>
       ) : null}
     </div>

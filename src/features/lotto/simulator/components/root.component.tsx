@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import { LOTTO_MAX_CUSTOM_TICKETS } from '@/features/lotto/constants/lotto.constant';
 import { ClientCsvButtonComponent } from '@/features/lotto/shared/components/client-csv-button.component';
 import type { LottoLankType } from '@/features/lotto/types/lotto.type';
@@ -254,6 +255,7 @@ export function LottoSimulatorComponent() {
               baseLabel="표본 티켓 CSV"
             />
           </div>
+          <ResultNextLinksComponent from="/lotto/simulator" />
         </div>
       )}
     </>

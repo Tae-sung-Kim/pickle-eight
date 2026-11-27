@@ -110,7 +110,7 @@ export default function RootLayout({
                   {children}
                 </div>
               </main>
-              <div className="w-full flex justify-center px-4 pb-6 empty:hidden">
+              <div className="mx-auto w-full max-w-7xl flex justify-center px-4 sm:px-6 lg:px-8 pb-6 empty:hidden">
                 <AdFitSlotComponent unit="bottom" />
               </div>
               <FooterComponent />

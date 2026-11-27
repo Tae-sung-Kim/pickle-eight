@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -365,6 +366,7 @@ export function LottoCheckComponent() {
               <LottoSaveNumbersButtonComponent numbersList={result.tickets} />
             </div>
           )}
+          {result?.draw && <ResultNextLinksComponent from="/lotto/check" />}
         </div>
       )}
     </div>

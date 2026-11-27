@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -215,6 +216,10 @@ export function LottoGeneratorComponent() {
             baseLabel="생성 결과 CSV"
           />
         </div>
+      )}
+
+      {numbersList.length > 0 && (
+        <ResultNextLinksComponent from="/lotto/generator" />
       )}
     </div>
   );

@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import {
   FORTUNE_DST_NOTICE,
   FORTUNE_METHOD_B_NOTICE,
@@ -498,6 +499,7 @@ export function FortuneSajuPanelComponent({
             />
             <FortuneLuckyComponent lucky={reading.lucky} />
           </div>
+          <ResultNextLinksComponent from="/fortune/saju" />
         </div>
       ) : null}
     </div>
