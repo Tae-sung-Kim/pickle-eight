@@ -1,7 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
-import { useEffect, useId, useRef } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
 import { ResultNextLinksComponent } from '@/components/common/result-next-links.component';
 import { ShareCardFrameComponent } from '@/components/share/share-card-frame.component';
@@ -14,13 +14,16 @@ import {
 import { MEAL_SHARE_TARGET } from '@/features/meal/constants/meal-share.constant';
 import { MealRouletteAreaInputComponent } from '@/features/meal/roulette/components/area-input.component';
 import { MealRouletteFilterPanelComponent } from '@/features/meal/roulette/components/filter-panel.component';
+import { MealRouletteMapLinksComponent } from '@/features/meal/roulette/components/map-links.component';
 import { MealRouletteMealPickerComponent } from '@/features/meal/roulette/components/meal-picker.component';
 import { MealRouletteResultComponent } from '@/features/meal/roulette/components/result.component';
 import { MealRouletteShareCardComponent } from '@/features/meal/roulette/components/share-card.component';
 import { MealRouletteSpinPanelComponent } from '@/features/meal/roulette/components/spin-panel.component';
 import { MealRouletteStatusComponent } from '@/features/meal/roulette/components/status.component';
+import { MealRouletteWeatherPanelComponent } from '@/features/meal/roulette/components/weather-panel.component';
 import { useMealAreaInput } from '@/features/meal/roulette/hooks/use-meal-area-input.hook';
 import { useMealRoulette } from '@/features/meal/roulette/hooks/use-meal-roulette.hook';
+import { useMealWeather } from '@/features/meal/roulette/hooks/use-meal-weather.hook';
 import { buildMealShareCard } from '@/features/meal/utils/meal-share.util';
 import { useShare } from '@/hooks/use-share.hook';
 import { toShareCardKey } from '@/lib/share';
@@ -55,10 +58,21 @@ export function MealRouletteComponent(): JSX.Element {
     handleBlur: handleAreaBlur,
     clear: clearArea,
   } = useMealAreaInput();
+  const weather = useMealWeather();
 
   const emptyNoticeId = useId();
   const spinButtonRef = useRef<HTMLButtonElement>(null);
   const focusSpinButtonRef = useRef(false);
+  const resolvingRef = useRef(false);
+  const mountedRef = useRef(true);
+  const [isResolving, setIsResolving] = useState(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   const spinning = state.spin.status === 'spinning';
   const rouletteItems = candidates.map((menu) => ({
@@ -78,6 +92,22 @@ export function MealRouletteComponent(): JSX.Element {
       spinButtonRef.current?.focus();
     }
   }, [canSpin]);
+
+  // 날씨 조회 중이면 최대 3초 기다렸다가 뽑는다. 대기 중 재클릭·언마운트는 무시
+  async function handleSpin() {
+    if (resolvingRef.current) {
+      return;
+    }
+    resolvingRef.current = true;
+    setIsResolving(true);
+    const snapshot = await weather.resolveSnapshot();
+    resolvingRef.current = false;
+    if (!mountedRef.current) {
+      return;
+    }
+    setIsResolving(false);
+    spin(snapshot);
+  }
 
   function handleClearBroth() {
     focusSpinButtonRef.current = true;
@@ -122,8 +152,13 @@ export function MealRouletteComponent(): JSX.Element {
       <div className="space-y-4">
         <MealRouletteMealPickerComponent
           meal={state.meal}
-          locked={spinning}
-          onChangeMeal={setMeal}
+          locked={spinning || isResolving}
+          // locked는 렌더 뒤에야 켜져서, 같은 틱 클릭은 ref로 먼저 막는다
+          onChangeMeal={(meal) => {
+            if (!resolvingRef.current) {
+              setMeal(meal);
+            }
+          }}
         />
         <MealRouletteFilterPanelComponent
           categoryOptions={categoryOptions}
@@ -131,58 +166,73 @@ export function MealRouletteComponent(): JSX.Element {
           broth={state.filter.broth}
           candidateCount={candidates.length}
           showClearBroth={showClearBroth}
-          locked={spinning}
+          locked={spinning || isResolving}
           emptyNoticeId={emptyNoticeId}
           onToggleCategory={toggleCategory}
           onChangeBroth={setBroth}
           onClearBroth={handleClearBroth}
         />
+        <MealRouletteWeatherPanelComponent
+          regionKey={weather.regionKey}
+          isEnabled={weather.isEnabled}
+          onChangeRegion={weather.setRegionKey}
+          onChangeEnabled={weather.setIsEnabled}
+          renderAreaInput={(noticeId) => (
+            <MealRouletteAreaInputComponent
+              value={inputValue}
+              error={area.status === 'invalid' ? area.reason : null}
+              onChange={handleAreaChange}
+              onCompositionEnd={handleAreaCompositionEnd}
+              onBlur={handleAreaBlur}
+              onClear={clearArea}
+              noticeId={noticeId}
+            />
+          )}
+        />
       </div>
-      <div className="space-y-6 md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:items-start md:gap-8 md:space-y-0">
-        <div className="min-w-0 space-y-6">
+      <div className="space-y-6 md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:grid-rows-[auto_auto] md:items-start md:gap-x-8 md:gap-y-6 md:space-y-0">
+        <div className="min-w-0 md:col-start-1 md:row-start-1">
           <MealRouletteSpinPanelComponent
             items={rouletteItems}
             targetIndex={targetIndex === -1 ? null : targetIndex}
             spinId={state.spinSeq}
-            spinning={spinning}
+            spinning={spinning || isResolving}
             disabled={candidates.length === 0}
             buttonLabel={spinButtonLabel}
             describedBy={emptyNoticeId}
             buttonRef={spinButtonRef}
-            onSpin={spin}
+            onSpin={handleSpin}
             onSpinEnd={handleSpinEnd}
           />
-          <MealRouletteAreaInputComponent
-            value={inputValue}
-            error={area.status === 'invalid' ? area.reason : null}
-            onChange={handleAreaChange}
-            onCompositionEnd={handleAreaCompositionEnd}
-            onBlur={handleAreaBlur}
-            onClear={clearArea}
-          />
         </div>
-        <div className="min-w-0 space-y-6">
+        {/* 결과+공유를 한 칸으로 묶는다. DOM 순서 = 모바일 순서(다음 링크는 맨 끝, 데스크톱은 오른쪽 열 2행) */}
+        <div className="flex min-w-0 flex-col gap-6 md:col-start-2 md:row-start-1">
           <MealRouletteResultComponent
             menu={resultMenu}
             categoryLabel={categoryLabel}
             luckLabel={luckLabel}
             luckLine={luckLine}
             spinning={spinning}
-            area={area}
-            shareSlot={
-              shareCard ? (
-                <SharePanelComponent
-                  controller={controller}
-                  previewAlt={previewAlt}
-                  previewTexts={previewTexts}
-                />
-              ) : null
-            }
+            weather={state.spin.status === 'done' ? state.spin.weather : null}
           />
-          {resultMenu && !spinning ? (
-            <ResultNextLinksComponent from="/meal" />
+          {resultMenu && shareCard ? (
+            <SharePanelComponent
+              controller={controller}
+              previewAlt={previewAlt}
+              previewTexts={previewTexts}
+            />
           ) : null}
         </div>
+        {resultMenu ? (
+          <div className="min-w-0 md:col-start-1 md:row-start-2">
+            <MealRouletteMapLinksComponent menu={resultMenu} area={area} />
+          </div>
+        ) : null}
+        {resultMenu && !spinning ? (
+          <div className="min-w-0 md:col-start-2 md:row-start-2">
+            <ResultNextLinksComponent from="/meal" />
+          </div>
+        ) : null}
       </div>
       <MealRouletteStatusComponent message={announcement} />
       {shareCard ? (

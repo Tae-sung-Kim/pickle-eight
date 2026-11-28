@@ -362,10 +362,10 @@ describe('AC-11·14·31: 금지어·FAQ', () => {
     expect(found).toEqual([]);
   });
 
-  test('FAQ 5개(D-15·D-14 삭제), 질문·답 중복 없음, 답끼리 같은 문장 없음, 보장 없음', () => {
-    expect(MEAL_FAQ).toHaveLength(5);
-    expect(new Set(MEAL_FAQ.map((f) => f.question)).size).toBe(5);
-    expect(new Set(MEAL_FAQ.map((f) => f.answer)).size).toBe(5);
+  test('FAQ 6개(날씨 반영 추가), 질문·답 중복 없음, 답끼리 같은 문장 없음, 보장 없음', () => {
+    expect(MEAL_FAQ).toHaveLength(6);
+    expect(new Set(MEAL_FAQ.map((f) => f.question)).size).toBe(6);
+    expect(new Set(MEAL_FAQ.map((f) => f.answer)).size).toBe(6);
     expect(MEAL_FAQ.map((f) => f.question)).not.toContain(
       '뽑힌 메뉴는 추천인가요?'
     );

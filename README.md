@@ -52,7 +52,7 @@ pnpm dev
 | `SUPABASE_URL`                     | Supabase 프로젝트 URL (서버 전용)                          |
 | `SUPABASE_SERVICE_ROLE_KEY`        | Supabase service role 키 (서버 전용, 클라이언트 노출 금지) |
 | `CRON_SECRET`                      | `/api/lotto/sync` 인증 비밀값                              |
-| `DATA_GO_KR_API_KEY`               | 운세 달력 표 생성 스크립트 전용(개발 시점, 런타임 미사용, `NEXT_PUBLIC_` 아님) |
+| `DATA_GO_KR_API_KEY`               | 운세 달력 표 생성 스크립트(개발 시점)와 뭐 먹지 날씨 조회(`/api/meal/weather`)에서 서버 런타임으로 사용. 서버 전용, `NEXT_PUBLIC_` 아님 |
 
 ### 스크립트
 
@@ -96,6 +96,7 @@ pnpm dev
 
 | 경로                            | 설명                                                |
 | ------------------------------- | --------------------------------------------------- |
+| `GET /api/meal/weather`         | 뭐 먹지 날씨 분류 (`region` 필수, 기상청 단기예보, 서버 메모리 1시간 캐시, IP 기준 분당 30회, 응답은 `condition`과 `forecastDate`만) |
 | `GET /api/lotto/draws`          | `latest=1` 또는 `drwNo=` 또는 `from=&to=`           |
 | `GET /api/lotto/export`         | CSV 내보내기 (`from`, `to` 선택, IP 기준 분당 제한) |
 | `GET /api/lotto/stats/hot-cold` | 핫/콜드 통계                                        |

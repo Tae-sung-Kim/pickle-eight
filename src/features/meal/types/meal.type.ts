@@ -1,4 +1,9 @@
+import type { MEAL_WEATHER_REGIONS } from '@/features/meal/constants/meal-weather-region.constant';
+
 export type MealKeyType = 'lunch' | 'dinner' | 'breakfast';
+
+export type MealWeatherRegionKeyType =
+  (typeof MEAL_WEATHER_REGIONS)[number]['key'];
 
 export type MealType = Readonly<{
   key: MealKeyType;
@@ -96,3 +101,38 @@ export type MealAreaInputResultType =
   | Readonly<{ status: 'invalid'; reason: MealAreaInputErrorType }>;
 
 export type MealFaqItemType = Readonly<{ question: string; answer: string }>;
+
+/** 태그가 붙는 날씨 4종 */
+export type MealWeatherTagType = 'snow' | 'rain' | 'hot' | 'cold';
+/** 분류 결과. normal은 태그 없음 */
+export type MealWeatherConditionType = MealWeatherTagType | 'normal';
+
+/** 분류 입력. 기상청 응답을 변환한 값 */
+export type MealWeatherObservationType = Readonly<{
+  precipitationCodes: readonly number[]; // PTY 값들
+  hasSnowfall: boolean; // SNO > 0
+  maxCelsius: number | null; // TMX (실황 대체 시 T1H)
+  minCelsius: number | null; // TMN (실황 대체 시 T1H)
+}>;
+
+/** GET /api/meal/weather 200 응답 */
+export type MealWeatherResponseType = Readonly<{
+  condition: MealWeatherConditionType;
+  forecastDate: string; // 'YYYY-MM-DD', 한국 시간 기준 대상 날짜. 지금은 화면에서 쓰지 않는다
+  minCelsius: number | null; // 오늘 TMN 반올림 정수. 단기예보 없으면 null
+  maxCelsius: number | null; // 오늘 TMX 반올림 정수. 단기예보 없으면 null
+  currentCelsius: number | null; // 실황 T1H 반올림 정수. 실황 없으면 null
+}>;
+
+/** 뽑기 시점의 날씨 상태. 회전 상태에 함께 저장한다 */
+export type MealWeatherSnapshotType =
+  | Readonly<{ status: 'off' }> // 지역 미선택 또는 스위치 꺼짐
+  | Readonly<{ status: 'unavailable' }> // 지역 선택 + 켜짐, 그러나 조회 중·실패
+  | Readonly<{
+      status: 'ready';
+      condition: MealWeatherConditionType;
+      forecastDate: string;
+      minCelsius: number | null;
+      maxCelsius: number | null;
+      currentCelsius: number | null;
+    }>;

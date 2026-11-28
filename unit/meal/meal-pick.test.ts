@@ -175,6 +175,59 @@ describe('filterMealMenus / pickMealMenu', () => {
   });
 });
 
+describe('pickMealMenu 가중치', () => {
+  const m = (id: string) => ({ id }) as MealMenuType;
+  const [a, b, c] = [m('a'), m('b'), m('c')];
+  const w = (menu: MealMenuType) => (menu.id === 'a' ? 3 : 1);
+  const run = (r: number, prev: string | null, list: MealMenuType[]) => {
+    const calls: number[] = [];
+    const picked = pickMealMenu(
+      list,
+      prev,
+      (n) => {
+        calls.push(n);
+        return r;
+      },
+      w
+    );
+    return { picked, calls };
+  };
+
+  test('weightOf 생략: randomInt(pool.length), pool[r]', () => {
+    const calls: number[] = [];
+    const picked = pickMealMenu([a, b, c], null, (n) => {
+      calls.push(n);
+      return 2;
+    });
+    expect(calls).toEqual([3]);
+    expect(picked).toBe(c);
+  });
+
+  test('가중치 [3,1,1]: r 0~2 첫째, 3 둘째, 4 셋째, 인자 5', () => {
+    for (const r of [0, 1, 2]) {
+      expect(run(r, null, [a, b, c]).picked).toBe(a);
+    }
+    expect(run(3, null, [a, b, c]).picked).toBe(b);
+    const last = run(4, null, [a, b, c]);
+    expect(last.picked).toBe(c);
+    expect(last.calls).toEqual([5]);
+  });
+
+  test('직전 메뉴 제외가 먼저: 가중치 3인 직전 메뉴를 빼면 total 감소', () => {
+    const { picked, calls } = run(0, 'a', [a, b, c]);
+    expect(calls).toEqual([2]);
+    expect(picked).toBe(b);
+  });
+
+  test('경계: 후보 1개는 직전과 같아도 반환, 비면 null', () => {
+    expect(run(0, 'a', [a]).picked).toBe(a);
+    expect(run(0, 'a', [a]).calls).toEqual([3]);
+    const empty = run(0, null, []);
+    expect(empty.picked).toBeNull();
+    expect(empty.calls).toEqual([]);
+  });
+});
+
 describe('toggleMealCategory', () => {
   test('야식을 켜면 야식만 남는다', () => {
     expect(

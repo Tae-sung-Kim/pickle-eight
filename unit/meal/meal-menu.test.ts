@@ -163,8 +163,9 @@ describe('AC-9: 끼니별 메뉴 데이터', () => {
       world: 20,
       lateNight: 57,
     },
+    // 아침 보충(승인): 칼국수·김치전 추가로 korean 16
     breakfast: {
-      korean: 14,
+      korean: 16,
       porridge: 13,
       bread: 13,
       sandwich: 13,

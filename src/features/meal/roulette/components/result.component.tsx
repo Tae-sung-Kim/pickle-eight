@@ -1,4 +1,4 @@
-import type { JSX, ReactNode } from 'react';
+import type { JSX } from 'react';
 import { useId } from 'react';
 
 import {
@@ -6,10 +6,10 @@ import {
   MEAL_PLACEHOLDER_SPINNING_TEXT,
   MEAL_RESULT_NOTICE_TEXT,
 } from '@/features/meal/constants/meal-notice.constant';
-import { MealRouletteMapLinksComponent } from '@/features/meal/roulette/components/map-links.component';
+import { MealRouletteWeatherNoteComponent } from '@/features/meal/roulette/components/weather-note.component';
 import type {
-  MealAreaInputResultType,
   MealMenuType,
+  MealWeatherSnapshotType,
 } from '@/features/meal/types/meal.type';
 
 export type MealRouletteResultComponentPropsType = Readonly<{
@@ -20,9 +20,8 @@ export type MealRouletteResultComponentPropsType = Readonly<{
   luckLabel: string;
   luckLine: string;
   spinning: boolean;
-  area: MealAreaInputResultType;
-  /** 지도 링크와 고지 사이에 들어가는 공유 영역 */
-  shareSlot?: ReactNode;
+  /** 뽑은 순간의 날씨. done일 때만 값, 그 밖은 null */
+  weather: MealWeatherSnapshotType | null;
 }>;
 
 /**
@@ -35,8 +34,7 @@ export function MealRouletteResultComponent({
   luckLabel,
   luckLine,
   spinning,
-  area,
-  shareSlot,
+  weather,
 }: MealRouletteResultComponentPropsType): JSX.Element {
   const titleId = useId();
 
@@ -44,7 +42,7 @@ export function MealRouletteResultComponent({
     return (
       <div
         aria-hidden="true"
-        className="hidden min-h-40 items-center justify-center rounded-panel border border-dashed border-border px-6 text-center text-sm text-muted-foreground md:flex"
+        className="hidden h-full min-h-40 items-center justify-center rounded-panel border border-dashed border-border px-6 text-center text-sm text-muted-foreground md:flex"
       >
         {spinning ? MEAL_PLACEHOLDER_SPINNING_TEXT : MEAL_PLACEHOLDER_IDLE_TEXT}
       </div>
@@ -75,8 +73,7 @@ export function MealRouletteResultComponent({
           {luckLine}
         </p>
       </div>
-      <MealRouletteMapLinksComponent menu={menu} area={area} />
-      {shareSlot}
+      {weather ? <MealRouletteWeatherNoteComponent weather={weather} /> : null}
       <p className="border-t border-border pt-4 text-sm leading-6 text-muted-foreground">
         {MEAL_RESULT_NOTICE_TEXT}
       </p>

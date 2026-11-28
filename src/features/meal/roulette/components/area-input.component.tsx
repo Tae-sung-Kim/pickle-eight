@@ -2,7 +2,6 @@ import { CircleAlert, X } from 'lucide-react';
 import type { ChangeEvent, CompositionEvent, JSX } from 'react';
 import { useId, useRef } from 'react';
 
-import { CollapsibleComponent } from '@/components/common/collapsible.component';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,12 +11,8 @@ import {
   MEAL_AREA_ERROR_TEXT,
   MEAL_AREA_INPUT_LABEL,
   MEAL_AREA_INPUT_PLACEHOLDER,
-  MEAL_AREA_NOTICE_LINES,
 } from '@/features/meal/constants/meal-notice.constant';
 import type { MealAreaInputErrorType } from '@/features/meal/types/meal.type';
-
-// 비전송 안내(1번)만 보이고 나머지는 접는다
-const FOLDED_NOTICE_LINES = MEAL_AREA_NOTICE_LINES.filter((_, i) => i !== 1);
 
 export type MealRouletteAreaInputComponentPropsType = Readonly<{
   /** 입력란 표시값 (조합 중 글자 포함) */
@@ -28,6 +23,8 @@ export type MealRouletteAreaInputComponentPropsType = Readonly<{
   onCompositionEnd: (event: CompositionEvent<HTMLInputElement>) => void;
   onBlur: () => void;
   onClear: () => void;
+  /** 내 지역 공통 안내 문단 id (aria-describedby) */
+  noticeId: string;
 }>;
 
 /**
@@ -41,10 +38,10 @@ export function MealRouletteAreaInputComponent({
   onCompositionEnd,
   onBlur,
   onClear,
+  noticeId,
 }: MealRouletteAreaInputComponentPropsType): JSX.Element {
   const inputId = useId();
   const errorId = useId();
-  const noticeId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const errorText =
@@ -70,7 +67,7 @@ export function MealRouletteAreaInputComponent({
       >
         {MEAL_AREA_INPUT_LABEL}
       </Label>
-      <div className="relative sm:max-w-sm">
+      <div className="relative">
         <Input
           ref={inputRef}
           id={inputId}
@@ -113,21 +110,6 @@ export function MealRouletteAreaInputComponent({
             <span>{errorText}</span>
           </p>
         )}
-      </div>
-      <ul
-        id={noticeId}
-        className="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-muted-foreground sm:max-w-2xl"
-      >
-        <li>{MEAL_AREA_NOTICE_LINES[1]}</li>
-      </ul>
-      <div className="mt-2 sm:max-w-2xl">
-        <CollapsibleComponent heading="동네 입력 안내 더 보기">
-          <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-muted-foreground">
-            {FOLDED_NOTICE_LINES.map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ul>
-        </CollapsibleComponent>
       </div>
     </div>
   );

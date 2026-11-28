@@ -83,6 +83,15 @@ export const MEAL_FORBIDDEN_TERMS: readonly string[] = [
   '숙취',
   '야식',
   '음주',
+  // 날씨 문구 (meal-weather plan)
+  '날씨에 딱',
+  '보양',
+  '몸에 좋',
+  '건강에 좋',
+  '폭염',
+  '한파',
+  '특보',
+  '정확한 날씨',
   // 건강·식사 상태 표현
   '든든',
   '건강한',

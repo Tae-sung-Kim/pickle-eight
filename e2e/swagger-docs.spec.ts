@@ -4,6 +4,7 @@ const PATHS = [
   '/api/lotto/draws',
   '/api/lotto/stats/hot-cold',
   '/api/lotto/export',
+  '/api/meal/weather',
 ] as const;
 const EXCLUDED = ['/api/lotto/sync', '/api/csp-report', '/api/og-image'];
 
@@ -47,7 +48,7 @@ test('/api-docs 응답 400 미만, pageerror 없음, h1 "API 문서", 메타, Sw
   expect(errors).toEqual([]);
 });
 
-test('AC-2·3: operation 3개와 /openapi.json 경로가 일치하고 제외 경로는 없다', async ({
+test('AC-2·3: operation 4개와 /openapi.json 경로가 일치하고 제외 경로는 없다', async ({
   page,
 }) => {
   const res = await page.request.get('/openapi.json');
@@ -58,7 +59,7 @@ test('AC-2·3: operation 3개와 /openapi.json 경로가 일치하고 제외 경
 
   await page.goto('/api-docs');
   const ops = page.locator('[data-path]');
-  await expect(ops).toHaveCount(3);
+  await expect(ops).toHaveCount(PATHS.length);
   const paths = await ops.evaluateAll((els) =>
     els.map((e) => e.getAttribute('data-path'))
   );
@@ -183,7 +184,7 @@ test('AC-11·12: 고지 문구가 보이고 375px에서 가로 스크롤이 없�
     )
   ).toBeVisible();
   await expect(main.getByText(/오락 목적으로 제공되는 정보/)).toBeVisible();
-  await expect(page.locator('[data-path]')).toHaveCount(3);
+  await expect(page.locator('[data-path]')).toHaveCount(PATHS.length);
   const over = await page.evaluate(
     () =>
       document.documentElement.scrollWidth -

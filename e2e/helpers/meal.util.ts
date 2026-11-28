@@ -241,6 +241,30 @@ export async function checkChipLayout(page: Page): Promise<void> {
   expect(new Set(heights).size, `칩 영역 높이 ${heights}`).toBe(1);
 }
 
+/** 이 사이트의 날씨 API 응답을 고정한다. 나중에 건 route가 먼저 적용된다 */
+export async function stubWeather(
+  page: Page,
+  {
+    status,
+    body,
+    delayMs = 0,
+  }: { status: number; body: unknown; delayMs?: number }
+): Promise<void> {
+  await page.route('**/api/meal/weather*', async (route) => {
+    if (delayMs > 0) {
+      await new Promise((r) => setTimeout(r, delayMs));
+    }
+    // 테스트가 끝나 페이지가 닫힌 뒤의 늦은 응답은 무시한다
+    await route
+      .fulfill({
+        status,
+        contentType: 'application/json',
+        body: JSON.stringify(body),
+      })
+      .catch(() => undefined);
+  });
+}
+
 /** 가로 넘침 픽셀 수 (0 이하면 가로 스크롤 없음) */
 export const horizontalOverflow = (page: Page) =>
   page.evaluate(

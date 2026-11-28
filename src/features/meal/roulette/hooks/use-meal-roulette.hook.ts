@@ -21,6 +21,7 @@ import type {
   MealFilterType,
   MealKeyType,
   MealMenuType,
+  MealWeatherSnapshotType,
 } from '@/features/meal/types/meal.type';
 import {
   carryOverMealCategories,
@@ -29,6 +30,7 @@ import {
   pickMealMenu,
   toggleMealCategory,
 } from '@/features/meal/utils/meal-pick.util';
+import { getMealWeatherWeightOf } from '@/features/meal/utils/meal-weather.util';
 
 // design.md 8.3 확정 타입
 type MealSpinStateType =
@@ -38,12 +40,15 @@ type MealSpinStateType =
       spinId: number;
       menuId: string;
       luckLine: string;
+      /** 뽑은 순간의 날씨. 이후 지역·스위치가 바뀌어도 고정 */
+      weather: MealWeatherSnapshotType;
     }>
   | Readonly<{
       status: 'done';
       spinId: number;
       menuId: string;
       luckLine: string;
+      weather: MealWeatherSnapshotType;
     }>;
 
 export type MealRouletteStateType = Readonly<{
@@ -62,7 +67,13 @@ type MealRouletteActionType =
   | { type: 'SET_MEAL'; meal: MealKeyType }
   | { type: 'TOGGLE_CATEGORY'; category: MealCategoryKeyType }
   | { type: 'SET_BROTH'; broth: MealBrothFilterType }
-  | { type: 'SPIN_START'; spinId: number; menuId: string; luckLine: string }
+  | {
+      type: 'SPIN_START';
+      spinId: number;
+      menuId: string;
+      luckLine: string;
+      weather: MealWeatherSnapshotType;
+    }
   | { type: 'SPIN_END'; spinId: number };
 
 const INITIAL_STATE: MealRouletteStateType = {
@@ -145,6 +156,7 @@ function mealRouletteReducer(
           spinId: action.spinId,
           menuId: action.menuId,
           luckLine: action.luckLine,
+          weather: action.weather,
         },
         spinSeq: action.spinId,
         lastPickedId: action.menuId,
@@ -204,21 +216,30 @@ export function useMealRoulette() {
   }, []);
 
   // 4.5 1~3단계. 난수는 여기서만 쓰고 돌림판은 연출만 한다
-  const spin = useCallback(() => {
-    if (!canSpin) {
-      return;
-    }
-    const picked = pickMealMenu(candidates, state.lastPickedId);
-    if (!picked) {
-      return;
-    }
-    dispatch({
-      type: 'SPIN_START',
-      spinId: state.spinSeq + 1,
-      menuId: picked.id,
-      luckLine: pickMealLuckLine(state.meal, picked.category),
-    });
-  }, [canSpin, candidates, state.lastPickedId, state.meal, state.spinSeq]);
+  const spin = useCallback(
+    (weather: MealWeatherSnapshotType) => {
+      if (!canSpin) {
+        return;
+      }
+      const picked = pickMealMenu(
+        candidates,
+        state.lastPickedId,
+        undefined,
+        getMealWeatherWeightOf(state.meal, weather)
+      );
+      if (!picked) {
+        return;
+      }
+      dispatch({
+        type: 'SPIN_START',
+        spinId: state.spinSeq + 1,
+        menuId: picked.id,
+        luckLine: pickMealLuckLine(state.meal, picked.category),
+        weather,
+      });
+    },
+    [canSpin, candidates, state.lastPickedId, state.meal, state.spinSeq]
+  );
 
   const handleSpinEnd = useCallback((spinId: number) => {
     dispatch({ type: 'SPIN_END', spinId });

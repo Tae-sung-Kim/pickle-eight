@@ -22,5 +22,5 @@ export const MEAL_MENUS: {
 export const MEAL_MENU_COUNTS = {
   lunch: 120,
   dinner: 180,
-  breakfast: 80,
+  breakfast: 82,
 } as const;

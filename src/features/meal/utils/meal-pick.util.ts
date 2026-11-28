@@ -33,13 +33,15 @@ export function filterMealMenus(
 }
 
 /**
- * 후보 중 하나를 같은 확률로 뽑는다. 후보가 비면 null.
- * previousId가 후보 안에 있고 후보가 2개 이상이면 그 메뉴를 빼고 뽑는다.
+ * 후보 중 하나를 가중치에 비례해 뽑는다. 후보가 비면 null.
+ * previousId가 후보 안에 있고 후보가 2개 이상이면 그 메뉴를 먼저 뺀 뒤 가중치를 적용한다.
+ * weightOf(양의 정수)를 생략하면 모두 1이라 같은 확률이고, 난수 호출도 기존과 같다.
  */
 export function pickMealMenu(
   candidates: readonly MealMenuType[],
   previousId: string | null,
-  randomInt: RandomIntFnType = secureRandomInt
+  randomInt: RandomIntFnType = secureRandomInt,
+  weightOf: (menu: MealMenuType) => number = () => 1
 ): MealMenuType | null {
   if (candidates.length === 0) {
     return null;
@@ -50,7 +52,15 @@ export function pickMealMenu(
       ? candidates.filter((menu) => menu.id !== previousId)
       : candidates;
 
-  return pool[randomInt(pool.length)] ?? null;
+  const weights = pool.map(weightOf);
+  let r = randomInt(weights.reduce((sum, w) => sum + w, 0));
+  for (let i = 0; i < pool.length; i++) {
+    if (r < weights[i]) {
+      return pool[i];
+    }
+    r -= weights[i];
+  }
+  return null;
 }
 
 /** 끼니와 카테고리의 운세 문구 중 하나를 같은 확률로 고른다. 문구가 없으면 빈 문자열 */

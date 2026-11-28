@@ -11,6 +11,8 @@
       "!**/.next",
       "!**/node_modules",
       "!**/.token-optimizer",
+      "!**/.archify",
+      "!docs/**/*.html",
       "!**/next-env.d.ts",
       "!**/*.tsbuildinfo",
       "!**/pnpm-lock.yaml",

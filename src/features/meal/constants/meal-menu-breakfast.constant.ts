@@ -4,7 +4,7 @@ import type {
 } from '@/features/meal/types/meal.type';
 
 /**
- * 아침·브런치 메뉴 80개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
+ * 아침·브런치 메뉴 82개. 배열 순서가 돌림판 칸 순서다. 렌더링 중에 섞지 않는다.
  * 국물 기준: 주 요리가 국물에 담겨 나오고 국물을 떠먹으면 soup, 그 밖은 dry.
  * 죽은 dry, 수프는 soup으로 둔다.
  */
@@ -220,4 +220,6 @@ export const MEAL_BREAKFAST_MENUS = [
     category: 'quick',
     broth: 'dry',
   },
+  { id: 'kalguksu', name: '칼국수', category: 'korean', broth: 'soup' },
+  { id: 'kimchi-jeon', name: '김치전', category: 'korean', broth: 'dry' },
 ] as const satisfies readonly MealMenuType<MealBreakfastCategoryKeyType>[];

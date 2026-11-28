@@ -1,0 +1,150 @@
+{
+  "x-feature": "meal",
+  "tags": [{ "name": "meal", "description": "식사 메뉴 추천 보조 데이터" }],
+  "paths": {
+    "/api/meal/weather": {
+      "get": {
+        "tags": ["meal"],
+        "summary": "시·도별 날씨 조건 조회",
+        "operationId": "mealGetWeather",
+        "description": "시·도 단위 예보를 `snow`, `rain`, `hot`, `cold`, `normal` 중 하나로 요약해 돌려준다.\n\n- 호출 제한: IP당 분당 30회. 이 수치는 코드 기준이며 서버 상황에 따라 달라질 수 있다.\n- 모든 응답에 `Cache-Control: no-store` 헤더가 붙는다.\n- 오류 응답 본문은 JSON(`{ \"error\": \"...\" }`)이다.",
+        "parameters": [
+          {
+            "name": "region",
+            "in": "query",
+            "required": true,
+            "description": "시·도 key. 목록에 없으면 400이다.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "seoul",
+                "busan",
+                "daegu",
+                "incheon",
+                "jeonnam-gwangju",
+                "daejeon",
+                "ulsan",
+                "sejong",
+                "gyeonggi",
+                "gangwon",
+                "chungbuk",
+                "chungnam",
+                "jeonbuk",
+                "gyeongbuk",
+                "gyeongnam",
+                "jeju"
+              ],
+              "example": "seoul"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "날씨 조건.",
+            "headers": {
+              "Cache-Control": {
+                "description": "항상 `no-store`",
+                "schema": { "type": "string", "example": "no-store" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MealWeatherResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "`region`이 없거나 목록에 없는 값.",
+            "headers": {
+              "Cache-Control": {
+                "description": "항상 `no-store`",
+                "schema": { "type": "string", "example": "no-store" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MealWeatherError" }
+              }
+            }
+          },
+          "429": {
+            "description": "호출 제한 초과(IP당 분당 30회).",
+            "headers": {
+              "Cache-Control": {
+                "description": "항상 `no-store`",
+                "schema": { "type": "string", "example": "no-store" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MealWeatherError" }
+              }
+            }
+          },
+          "503": {
+            "description": "기상 데이터를 가져오지 못함.",
+            "headers": {
+              "Cache-Control": {
+                "description": "항상 `no-store`",
+                "schema": { "type": "string", "example": "no-store" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MealWeatherError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MealWeatherResponse": {
+        "type": "object",
+        "required": [
+          "condition",
+          "forecastDate",
+          "minCelsius",
+          "maxCelsius",
+          "currentCelsius"
+        ],
+        "properties": {
+          "condition": {
+            "type": "string",
+            "enum": ["snow", "rain", "hot", "cold", "normal"],
+            "example": "rain"
+          },
+          "forecastDate": { "type": "string", "example": "2026-11-28" },
+          "minCelsius": {
+            "type": ["integer", "null"],
+            "description": "오늘 최저 기온(°C). 반올림한 정수, 없으면 null.",
+            "example": 4
+          },
+          "maxCelsius": {
+            "type": ["integer", "null"],
+            "description": "오늘 최고 기온(°C). 반올림한 정수, 없으면 null.",
+            "example": 9
+          },
+          "currentCelsius": {
+            "type": ["integer", "null"],
+            "description": "현재 기온(°C). 반올림한 정수, 없으면 null.",
+            "example": 6
+          }
+        }
+      },
+      "MealWeatherError": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "enum": ["invalid_region", "rate_limited", "weather_unavailable"],
+            "example": "invalid_region"
+          }
+        }
+      }
+    }
+  }
+}

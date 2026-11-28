@@ -52,6 +52,11 @@ Original content and data (Fortune):
 - No new dependencies, fonts or icon sets were added for the Fortune feature.
 - This service is not affiliated with, endorsed by or sponsored by KASI or any fortune-telling service.
 
+Public data (What to eat, weather option):
+
+- Weather classification uses the Korea Meteorological Administration (KMA) short-term forecast and ultra-short-term observation service (data.go.kr dataset 15084084, "기상청_단기예보 조회서비스"), provided under KOGL Type 1 (attribution required, commercial use allowed). Source shown in the result: "기상청 단기예보(공공데이터포털, 공공누리 제1유형)" with a link to https://www.weather.go.kr/w/index.do. The dataset creation year and author name were not found on the portal page and are unconfirmed. Record: `docs/meal-weather/source-check.md`. Only a weather class (snow, rain, hot, cold, normal) is derived; raw values are not stored or shown.
+- No new dependencies, fonts or icon sets were added for the weather option (Lucide React icons for general UI only).
+
 Notes:
 
 - Apache-2.0 packages: class-variance-authority (client bundle), TypeScript and Playwright (development only).
